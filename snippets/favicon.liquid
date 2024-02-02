@@ -1,0 +1,24 @@
+{%- capture master_scheme -%}{%- render 'scheme-eval' -%}{%- endcapture -%}
+
+{% if master_scheme == 'gro-to' %}
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ 'favicon-gro-to--apple-touch-icon.png' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ 'favicon-gro-to--favicon-32x32.png' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ 'favicon-gro-to--favicon-16x16.png' | asset_url }}">
+    <link rel="mask-icon" href="{{ 'favicon-gro-to--safari-pinned-tab.svg' | asset_url }}" color="#00bce7">
+    <meta name="msapplication-TileColor" content="#00bce7">
+    <meta name="theme-color" content="#59C160">
+{% elsif master_scheme == 'bro-to' %}
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ 'favicon-bro-to--apple-touch-icon.png' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ 'favicon-bro-to--favicon-32x32.png' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ 'favicon-bro-to--favicon-16x16.png' | asset_url }}">
+    <link rel="mask-icon" href="{{ 'favicon-bro-to--safari-pinned-tab.svg' | asset_url }}" color="#1a2a42">
+    <meta name="msapplication-TileColor" content="#1a2a42">
+    <meta name="theme-color" content="#1a2a42">
+{% else %}
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ 'favicon-go-to--apple-touch-icon.png' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ 'favicon-go-to--favicon-32x32.png' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ 'favicon-go-to--favicon-16x16.png' | asset_url }}">
+    <link rel="mask-icon" href="{{ 'favicon-go-to--safari-pinned-tab.svg' | asset_url }}" color="#f9c6b9">
+    <meta name="msapplication-TileColor" content="#f9c6b9">
+    <meta name="theme-color" content="#f9c6b9">
+{% endif %}

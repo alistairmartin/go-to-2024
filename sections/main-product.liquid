@@ -260,26 +260,23 @@
           "type": "select",
           "id": "color_mode",
           "label": "Color selector type",
-          "info": "Variant image mode requires that all variant have an associated image. [Learn more](https://help.shopify.com/en/manual/products/product-media/add-images-variants#add-images-to-existing-variants)",
+          "info": "Enable [swatches](https://help.shopify.com/en/manual/online-store/themes/theme-structure/theme-settings#options-with-swatches) on product options.",
           "options": [
             {
-              "value": "block",
-              "label": "Block"
+              "value": "swatch",
+              "label": "Swatch"
             },
             {
-              "value": "dropdown",
-              "label": "Dropdown"
-            },
-            {
-              "value": "color",
-              "label": "Color swatch"
-            },
-            {
-              "value": "variant_image",
-              "label": "Variant image"
+              "value": "none",
+              "label": "None"
             }
           ],
-          "default": "color"
+          "default": "swatch"
+        },
+        {
+          "type": "text",
+          "id": "variant_image_options",
+          "label": "Show variant image for options"
         },
         {
           "type": "page",

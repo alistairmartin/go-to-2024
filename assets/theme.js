@@ -5976,10 +5976,16 @@ var ProductVariants = class extends CustomHTMLElement {
     if (!selectedVariant) {
       return;
     }
+    this._updateDisableSelectorsForOptionLevel(0, selectedVariant);
+  }
+  _updateDisableSelectorsForOptionLevel(level, selectedVariant) {
+    if (!this.optionSelectors[level]) {
+      return;
+    }
     const applyClassToSelector = (selector, valueIndex, available, hasAtLeastOneCombination) => {
       let selectorType = selector.getAttribute("data-selector-type"), cssSelector = "";
       switch (selectorType) {
-        case "color":
+        case "swatch":
           cssSelector = `.color-swatch:nth-child(${valueIndex + 1})`;
           break;
         case "variant-image":
@@ -5999,24 +6005,25 @@ var ProductVariants = class extends CustomHTMLElement {
         selector.querySelector(cssSelector).classList.toggle("is-disabled", !available);
       }
     };
-    if (this.optionSelectors && this.optionSelectors[0]) {
-      this.product["options"][0]["values"].forEach((value, valueIndex) => {
-        const hasAtLeastOneCombination = this.product["variants"].some((variant) => variant["option1"] === value && variant), hasAvailableVariant = this.product["variants"].some((variant) => variant["option1"] === value && variant["available"]);
-        applyClassToSelector(this.optionSelectors[0], valueIndex, hasAvailableVariant, hasAtLeastOneCombination);
-        if (this.optionSelectors[1]) {
-          this.product["options"][1]["values"].forEach((value2, valueIndex2) => {
-            const hasAtLeastOneCombination2 = this.product["variants"].some((variant) => variant["option2"] === value2 && variant["option1"] === selectedVariant["option1"] && variant), hasAvailableVariant2 = this.product["variants"].some((variant) => variant["option2"] === value2 && variant["option1"] === selectedVariant["option1"] && variant["available"]);
-            applyClassToSelector(this.optionSelectors[1], valueIndex2, hasAvailableVariant2, hasAtLeastOneCombination2);
-            if (this.optionSelectors[2]) {
-              this.product["options"][2]["values"].forEach((value3, valueIndex3) => {
-                const hasAtLeastOneCombination3 = this.product["variants"].some((variant) => variant["option3"] === value3 && variant["option1"] === selectedVariant["option1"] && variant["option2"] === selectedVariant["option2"] && variant), hasAvailableVariant3 = this.product["variants"].some((variant) => variant["option3"] === value3 && variant["option1"] === selectedVariant["option1"] && variant["option2"] === selectedVariant["option2"] && variant["available"]);
-                applyClassToSelector(this.optionSelectors[2], valueIndex3, hasAvailableVariant3, hasAtLeastOneCombination3);
-              });
-            }
-          });
+    const hasCombination = (variant, level2, value, selectedVariant2) => {
+      return Array.from({ length: level2 + 1 }, (_, i) => {
+        if (i === level2) {
+          return variant[`option${level2 + 1}`] === value;
+        } else {
+          return variant[`option${i + 1}`] === selectedVariant2[`option${i + 1}`];
         }
-      });
-    }
+      }).every((condition) => condition);
+    };
+    this.product["options"][level]["values"].forEach((value, valueIndex) => {
+      const hasAtLeastOneCombination = this.product["variants"].some(
+        (variant) => hasCombination(variant, level, value, selectedVariant) && variant
+      );
+      const hasAvailableVariant = this.product["variants"].some(
+        (variant) => hasCombination(variant, level, value, selectedVariant) && variant["available"]
+      );
+      applyClassToSelector(this.optionSelectors[level], valueIndex, hasAvailableVariant, hasAtLeastOneCombination);
+      this._updateDisableSelectorsForOptionLevel(level + 1, selectedVariant);
+    });
   }
 };
 window.customElements.define("product-variants", ProductVariants);

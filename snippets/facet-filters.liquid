@@ -72,7 +72,7 @@ Code that create the faceted search for the collection and search pages. It curr
             {%- assign is_filter_group_open = true -%}
           {%- endif -%}
 
-          <div class="product-facet__filter-item">
+          {%- capture filter_content -%}
             {%- if filter.type == 'list' or filter.type == 'price_range' -%}
               <button type="button" is="toggle-button" class="collapsible-toggle text--strong" aria-controls="facet-filter-{{ filter.param_name | escape }}" aria-expanded="{% if is_filter_group_open %}true{% else %}false{% endif %}">
                 {{- filter.label -}}
@@ -197,7 +197,13 @@ Code that create the faceted search for the collection and search pages. It curr
                 </div>
               </collapsible-content>
             {%- endunless -%}
-          </div>
+          {%- endcapture -%}
+
+          {%- if filter_content != blank -%}
+            <div class="product-facet__filter-item">
+              {{- filter_content -}}
+            </div>
+          {%- endif -%}
         {%- endfor -%}
       </div>
 

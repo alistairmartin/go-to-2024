@@ -3,9 +3,9 @@
     "name": "theme_info",
     "theme_name": "Focal",
     "theme_author": "Maestrooo",
-    "theme_version": "10.4.0",
-    "theme_documentation_url": "https://support.maestrooo.com/",
-    "theme_support_url": "https://support.maestrooo.com/article/203-contact-us"
+    "theme_version": "11.1.0",
+    "theme_documentation_url": "https:\/\/support.maestrooo.com\/",
+    "theme_support_url": "https:\/\/support.maestrooo.com\/article\/203-contact-us"
   },
   {
     "name": "Appearance",
@@ -31,7 +31,7 @@
         "max": 30,
         "step": 2,
         "unit": "px",
-        "label": "Button/input border radius",
+        "label": "Button\/input border radius",
         "default": 0
       },
       {
@@ -215,14 +215,14 @@
         "type": "color",
         "id": "product_custom_label_background",
         "label": "Custom label",
-        "info": "[Learn more](https://support.maestrooo.com/article/75-collection-displaying-custom-label)",
+        "info": "[Learn more](https:\/\/support.maestrooo.com\/article\/75-collection-displaying-custom-label)",
         "default": "#1e316a"
       },
       {
         "type": "color",
         "id": "product_custom_label_2_background",
         "label": "Custom label 2",
-        "info": "[Learn more](https://support.maestrooo.com/article/75-collection-displaying-custom-label)",
+        "info": "[Learn more](https:\/\/support.maestrooo.com\/article\/75-collection-displaying-custom-label)",
         "default": "#1e316a"
       },
       {
@@ -250,7 +250,7 @@
         "type": "font_picker",
         "id": "heading_font",
         "label": "Font",
-        "info": "Selecting different fonts can affect the speed of your online store. Learn more about [system fonts.](https://help.shopify.com/en/manual/online-store/os/store-speed/improving-speed#fonts)",
+        "info": "Selecting different fonts can affect the speed of your online store. Learn more about [system fonts.](https:\/\/help.shopify.com\/en\/manual\/online-store\/os\/store-speed\/improving-speed#fonts)",
         "default": "helvetica_n4"
       },
       {
@@ -301,7 +301,7 @@
         "type": "font_picker",
         "id": "text_font",
         "label": "Font",
-        "info": "Selecting different fonts can affect the speed of your online store. Learn more about [system fonts.](https://help.shopify.com/en/manual/online-store/os/store-speed/improving-speed#fonts)",
+        "info": "Selecting different fonts can affect the speed of your online store. Learn more about [system fonts.](https:\/\/help.shopify.com\/en\/manual\/online-store\/os\/store-speed\/improving-speed#fonts)",
         "default": "helvetica_n4"
       },
       {
@@ -383,9 +383,9 @@
       {
         "type": "textarea",
         "id": "color_swatch_config",
-        "label": "Configuration",
+        "label": "Configuration (deprecated)",
         "placeholder": "Red:#ff0000\nGreen:#00ff00\nBlue:#0000ff",
-        "info": "Each rule must be in its own line. [Learn more](https://support.maestrooo.com/article/80-product-uploading-custom-color-for-color-swatch) about the exact naming convention."
+        "info": "Native color swatch should be used instead. [Learn more](https:\/\/help.shopify.com\/en\/manual\/online-store\/themes\/theme-structure\/theme-settings#options-with-swatches). Configuration based color swatches is deprecated and will be removed in the future. If you still need to use the configuration based system, you can [learn more](https:\/\/support.maestrooo.com\/article\/80-product-uploading-custom-color-for-color-swatch) about the exact naming convention."
       }
     ]
   },
@@ -414,7 +414,7 @@
         "type": "checkbox",
         "id": "show_product_rating",
         "label": "Show product rating",
-        "info": "To display a rating, add a product rating app. [Learn more](https://help.shopify.com/en/manual/products/product-reviews/installation)",
+        "info": "To display a rating, add a product rating app. [Learn more](https:\/\/help.shopify.com\/en\/manual\/products\/product-reviews\/installation)",
         "default": false
       },
       {
@@ -532,7 +532,7 @@
         "type": "checkbox",
         "id": "cart_show_free_shipping_threshold",
         "label": "Show free shipping minimum amount",
-        "info": "Make sure that you have properly configured your [shipping rates](/admin/settings/shipping).",
+        "info": "Make sure that you have properly configured your [shipping rates](\/admin\/settings\/shipping).",
         "default": false
       },
       {

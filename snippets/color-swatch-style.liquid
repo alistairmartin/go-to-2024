@@ -3,6 +3,7 @@
 
   - color_swatch_config: extracted from the theme settings
   - value: the actual color
+  - color: a single color drop (if passed, it overrides the config)
   - colors: a list of colors drop (if passed, it overrides the config)
   - image: an actual image drop (if passed, it overrides the config)
 {%- endcomment -%}
@@ -32,6 +33,9 @@
     endcapture
 
     assign color_swatch_style = 'background-image: conic-gradient(from ' | append: rotation | append: ', ' | append: conic_gradient | append: ')'
+  elsif color != blank
+    assign color_value_downcase = color | downcase
+    assign color_swatch_style = 'background-color: ' | append: color_value_downcase
   elsif image != blank
     assign color_swatch_image = image | image_url: width: 72
     assign color_swatch_style = 'background-image: url(' | append: color_swatch_image | append: ')'

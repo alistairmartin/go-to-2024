@@ -30,19 +30,20 @@
               {%- capture option_id -%}option-{{ section.id }}-{{ template.suffix }}-{{ product.id }}-{{ forloop.index }}{%- endcapture -%}
 
               {%- assign selector_type = block.settings.selector_mode -%}
+              {%- assign variant_image_options = block.settings.variant_image_options | replace: ', ', ',' | downcase | split: ',' -%}
 
-              {% if color_label_list contains option_downcase %}
-                {%- assign selector_type = block.settings.color_mode -%}
+              {%- assign swatch_count = option.values | map: 'swatch' | compact | size -%}
 
-                {%- if selector_type == 'variant_image' -%}
-                  {%- comment -%}To use this mode every variant must have an attached media{%- endcomment -%}
-                  {%- for variant in product.variants -%}
-                    {%- unless variant.featured_media -%}
-                      {%- assign selector_type = 'color' -%}
-                      {%- break -%}
-                    {%- endunless -%}
-                  {%- endfor -%}
-                {%- endif -%}
+              {%- if swatch_count > 0 and block.settings.color_mode == 'swatch' %}
+                {%- assign selector_type = 'swatch' -%}
+              {%- endif -%}
+
+              {%- if variant_image_options contains option_downcase -%}
+                {%- assign selector_type = 'variant_image' -%}
+              {%- endif -%}
+
+              {% if swatch_count == 0 and color_label_list contains option_downcase and block.settings.color_mode != 'none' %}
+                {%- assign selector_type = 'swatch' -%}
               {%- endif -%}
 
               <div class="product-form__option-selector" data-selector-type="{{ selector_type | replace: '_', '-' | escape }}">
@@ -63,27 +64,21 @@
                 {%- case selector_type -%}
                   {%- when 'variant_image' -%}
                     <div class="variant-swatch-list">
-                      {%- assign option_position0 = option.position | minus: 1 -%}
-
                       {%- for value in option.values -%}
-                        {%- comment -%}We search for the first variant that has an image for this color{%- endcomment -%}
-                        {%- for variant in product.variants -%}
-                          {%- if variant.options[option_position0] == value -%}
-                            <div class="variant-swatch">
-                              <input class="variant-swatch__radio visually-hidden" type="radio" name="option{{ option.position }}" form="{{ product_form_id }}" id="{{ option_id }}-{{ forloop.index }}" value="{{ value | escape }}" data-bind-value="{{ option_id }}-value" {% if value == option.selected_value %}checked="checked"{% endif %} aria-label="{{ value | escape }}">
-                              <label class="variant-swatch__item" for="{{ option_id }}-{{ forloop.index }}">
-                                <span class="visually-hidden">{{ value }}</span>
+                        {%- assign image = value.variant.featured_media | default: value.variant.product.featured_media -%}
 
-                                {{- variant.featured_media | image_url: width: variant.featured_media.width | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 64px, 72px', sizes: '64,72,128,144,192,216', class: 'variant-swatch__image' -}}
-                              </label>
-                            </div>
-                            {%- break -%}
-                          {%- endif -%}
-                        {%- endfor -%}
+                        <div class="variant-swatch">
+                          <input class="variant-swatch__radio visually-hidden" type="radio" name="option{{ option.position }}" form="{{ product_form_id }}" id="{{ option_id }}-{{ forloop.index }}" value="{{ value | escape }}" data-bind-value="{{ option_id }}-value" {% if value == option.selected_value %}checked="checked"{% endif %} aria-label="{{ value | escape }}">
+                          <label class="variant-swatch__item" for="{{ option_id }}-{{ forloop.index }}">
+                            <span class="visually-hidden">{{ value }}</span>
+
+                            {{- image | image_url: width: image.width | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 64px, 72px', sizes: '64,72,128,144,192,216', class: 'variant-swatch__image' -}}
+                          </label>
+                        </div>
                       {%- endfor -%}
                     </div>
 
-                  {%- when 'color' -%}
+                  {%- when 'swatch' -%}
                     <div class="color-swatch-list">
                       {%- assign color_swatch_config = settings.color_swatch_config | newline_to_br | split: '<br />' -%}
 
@@ -92,7 +87,7 @@
 
                         <div class="color-swatch {% if color_white_label == color_value_downcase %}color-swatch--white{% endif %}">
                           <input class="color-swatch__radio visually-hidden" type="radio" name="option{{ option.position }}" form="{{ product_form_id }}" id="{{ option_id }}-{{ forloop.index }}" value="{{ value | escape }}" {% if value == option.selected_value %}checked="checked"{% endif %} data-bind-value="{{ option_id }}-value">
-                          <label class="color-swatch__item" for="{{ option_id }}-{{ forloop.index }}" style="{% render 'color-swatch-style', color_swatch_config: color_swatch_config, value: value %}">
+                          <label class="color-swatch__item" for="{{ option_id }}-{{ forloop.index }}" style="{% render 'color-swatch-style', color: value.swatch.color, image: value.swatch.image, color_swatch_config: color_swatch_config, value: value %}">
                             <span class="visually-hidden">{{ value }}</span>
                           </label>
                         </div>

@@ -4,14 +4,15 @@
   "description": "Shopify 2.0 Build Tool for Javascript + CSS",
   "main": "index.js",
   "scripts": {
-    "scss": "sass src/scss:assets/css --style compressed",
-    "js": "terser src/js/*.js --compress --mangle --output assets/theme-custom.min.js",
+    "scss": "sass src/scss:assets/ --style compressed",
+    "js": "terser src/*.js --compress --mangle --output assets/theme-custom.min.js",
     "build": "npm run scss && npm run js",
-    "watch:scss": "chokidar 'src/scss/**/*.scss' -c 'npm run scss'",
-    "watch:js": "chokidar 'src/js/**/*.js' -c 'npm run js'",
+    "deploy": "npm run build && theme deploy",
     "watch": "concurrently \"npm run watch:scss\" \"npm run watch:js\" \"theme watch\"",
-    "deploy": "npm run build && theme deploy"
-  },  
+    "watch-live": "concurrently \"npm run watch:scss\" \"npm run watch:js\" \"theme watch --allow-live\"",
+    "watch:scss": "chokidar 'src/scss/**/*.scss' -c 'npm run scss'",
+    "watch:js": "chokidar 'src/js/**/*.js' -c 'npm run js'"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alistairmartin/go-to-2024.git"

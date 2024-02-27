@@ -2,6 +2,9 @@
     "type": "header",
     "name": "Header group",
     "sections": {
+        "brand-switcher": {
+            "type": "brand-switcher"
+        },
         "announcement-bar": {
             "type": "announcement-bar",
             "blocks": {
@@ -39,6 +42,7 @@
         }
     },
     "order": [
+        "brand-switcher",
         "announcement-bar",
         "header"
     ]

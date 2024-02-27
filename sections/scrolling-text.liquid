@@ -1,0 +1,102 @@
+
+<section class="section section--flush scrolling-text" style="background:{{ section.settings.background }}">
+
+
+<style>
+  #section-{{ section-id }} .marquee-text--inner {
+    animation: marquee {{ section.settings.animation_speed }}s linear infinite;
+  }
+
+  @media screen and (min-width: 768px) {
+    #section-{{ section-id }} .marquee-text--inner {
+      animation: marquee {{ section.settings.animation_speed_mobile }}s linear infinite;
+    }
+  }
+  //
+</style>
+
+  <div class="marquee-text" style="background:{{ section.settings.background }}">
+    <div class="marquee-text--inner scrolling-text--marquee">
+     <div class="scrolling-text--track">
+
+     {% for i in (1..10) %}
+      {%- for block in section.blocks -%}
+        {% if block.settings.link != blank %}<a class="text text--{{ block.settings.text_colour }}" href="{{ block.settings.link }}"{% else %}<div{% endif %} class="text" style="color:{{ block.settings.text_colour }};">
+         {{ block.settings.title }}
+        {% if block.settings.link != blank %}</a>{% else %}</div>{% endif %}
+      {%- endfor -%}
+     {% endfor %}
+
+      </div>
+    </div>
+  </div>
+
+
+  </section>
+
+
+  {% schema %}
+    {
+      "name": "Scrolling Text (Marquee)",
+      "class": "section-scrolling-text",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Animation Speed"
+        },
+        {
+          "type":"range",
+          "id":"animation_speed",
+          "min":1,
+          "max":60,
+          "step":1,
+          "default":12,
+          "label":"Desktop",
+          "info": "In Seconds"
+        },
+        {
+          "type":"range",
+          "id":"animation_speed_mobile",
+          "min":1,
+          "max":60,
+          "step":1,
+          "default":12,
+          "label":"Mobile",
+          "info": "In Seconds"
+        },
+        {
+           "type": "color",
+           "id": "background",
+           "label": "Background Colour"
+        }
+      ],
+      "blocks": [{
+       "type": "block",
+       "name": "Annoucment",
+       "settings": [
+         {
+            "type": "richtext",
+            "id": "title",
+            "label": "Text",
+            "info": "Command + U = Underline."
+         },
+          {
+           "type": "color",
+           "id": "text_colour",
+           "label": "Text Colour"
+        },
+         {
+           "label": "Link",
+           "id": "link",
+           "type": "url"
+         }
+        ]
+      }],
+      "presets": [
+        {
+          "name": "Scrolling Text (Marquee)",
+          "category": "Text"
+        }
+      ]
+    }
+  {% endschema %}

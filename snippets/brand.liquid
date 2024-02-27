@@ -1,0 +1,39 @@
+{%- liquid
+  assign brand = 'go-to'
+
+  if template.suffix contains 'bro-to'
+    assign brand = 'bro-to'
+  elsif template.suffix contains 'gro-to'
+    assign brand = 'gro-to'
+  endif
+
+  case template.name
+    when 'product'
+      if product.tags contains 'Bro-To' or product.vendor == 'Bro-To'
+        assign brand = 'bro-to'
+      elsif product.tags contains 'Gro-To' or product.vendor == 'Gro-To'
+        assign brand = 'gro-to'
+      endif
+    when 'collection'
+      unless collection.metafields.gts_theme.branding == blank
+        assign brand = collection.metafields.gts_theme.branding | downcase
+      endunless
+    when 'page'
+      unless page.metafields.gts_theme.scheme == blank
+        assign brand = page.metafields.gts_theme.scheme | downcase
+      endunless
+    when 'blog' or 'article'
+      unless blog.metafields.gts_theme.scheme == blank
+        assign brand = blog.metafields.gts_theme.scheme | downcase
+      endunless
+  endcase
+
+
+  if page.handle contains 'bro-to' or collection.handle contains 'bro-to'
+    assign brand = 'bro-to'
+  elsif page.handle contains 'gro-to' or collection.handle contains 'gro-to'
+    assign brand = 'gro-to'
+  endif
+
+  echo brand
+-%}

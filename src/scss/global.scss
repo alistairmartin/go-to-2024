@@ -1,0 +1,213 @@
+$grid-medium: 740px;
+$grid-large: 1200px;
+$grid-widescreen: 1400px;
+
+$small: 'small';
+$medium: 'medium';
+$medium-down: 'medium-down';
+$medium-up: 'medium-up';
+$large: 'large';
+$large-down: 'large-down';
+$large-up: 'large-up';
+$widescreen: 'widescreen';
+
+$grid-breakpoints: (
+  $small '(max-width: #{$grid-medium - 1})',
+  $medium '(min-width: #{$grid-medium}) and (max-width: #{$grid-large - 1})',
+  $medium-down '(max-width: #{$grid-large - 1})',
+  $medium-up '(min-width: #{$grid-medium})',
+  $large '(min-width: #{$grid-large}) and (max-width: #{$grid-widescreen - 1})',
+  $large-down '(max-width: #{$grid-widescreen - 1})',
+  $large-up '(min-width: #{$grid-large})',
+  $widescreen '(min-width: #{$grid-widescreen})'
+);
+
+/*================ Media Query Mixin ================*/
+
+@mixin media-query($media-query) {
+  @each $breakpoint in $grid-breakpoints {
+    $name: nth($breakpoint, 1);
+    $declaration: nth($breakpoint, 2);
+
+    @if $media-query == $name and $declaration {
+      @media only screen and #{$declaration} {
+        @content;
+      }
+    }
+  }
+}
+
+
+$gotoPink: #f9c6b9;
+$gotoPinkLight: #fff7f5;
+$gotoPinkLighter: #f9c6b9;
+$gotoBlack: #1c1c1c;
+$gotoGrey: #d0cccb;
+$gotoGreyLight: #f4f4f4;
+
+$brotoRed: #ef3534;
+$brotoBlue: #192a42;
+$brotoBlueLight: #0DA9C5;
+$brotoPink: #FFBEBE;
+$brotoYellow: #F9F9A3;
+$brotoMint: #99DBC9;
+$brotoBlack: #1c1b1b;
+$brotoGrey: #f0f0f5;
+$brotoGreyLight: #F9F9F9;
+
+$grotoBlue: #00bce7;
+$grotoNavy: #002DAC;
+$grotoYellow: #f9cf63;
+$grotoPurple: #b493c4;
+$grotoPink: #f06098;
+$grotoGreen: #59C160;
+$grotoOrange: #F48120;
+$grotoGrey: #DCE0E4;
+$grotoGreyLight: #F2F2F2;
+$grotoGreyDark: #484848;
+$grotoGreyDarker: #282828;
+$grotoBlack: #181818;
+$grotoError: #B20000;
+$grotoFocus: #275DC5;
+
+$colorWhite: #fff;
+
+$gotoFontHeading: 'TTCommons';
+$brotoFontHeading: 'Moderno FB';
+$brotoFontBody: 'NeologyGrotesque';
+$grotoFontHeading: 'Proxima Nova';
+$grotoFontBody: 'Sofia Pro Soft';
+
+.header__logo-image {
+    width: 100%;
+}
+
+.header__linklist {
+    .header__linklist-item  {
+        text-transform: uppercase;
+    }
+}
+
+
+.shopify-section--brand-switcher {
+
+    .container {
+        @include media-query($small) {
+            padding: 0;
+        }
+    }
+
+    .brand-switcher--brands {
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+
+        @include media-query($medium-up) {
+            display: flex;
+        }
+    }
+    
+    .brand-switcher--brand {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 20px;
+
+        @include media-query($medium-up) {
+            width: auto;
+        }
+
+        svg {
+            width: 60px;
+            height: 25px;
+            fill: $gotoGrey;
+
+            * {
+                fill: $gotoGrey !important;
+            }
+        }
+
+        &.go-to.active  {
+            background: $gotoPink;
+
+            svg, svg > * {
+                fill: $colorWhite !important;
+            }
+
+            @include media-query($medium-up) {
+                display: flex !important;
+            }
+        }
+
+        &.bro-to.active  {
+            background: $brotoBlue;
+
+            svg, svg > * {
+                fill: $colorWhite !important;
+            }
+        }
+
+        &.gro-to.active  {
+            background: $grotoBlue;
+
+            svg, svg > * {
+                fill: $colorWhite !important;
+            }
+        }
+    }
+}
+
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+.scrolling-text {
+    position: relative;
+  
+    .scrolling-text--marquee {
+      position: relative;
+      width: 100vw;
+      max-width: 100%;
+      height: 60px;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .scrolling-text--track {
+      position: absolute;
+      white-space: nowrap;
+      will-change: transform;
+      animation: marquee 62s linear infinite;
+      display: flex;
+  
+      .text {
+        margin-right: 10px;
+        font-size: 24px;
+  
+        @include media-query($medium-up) {
+          font-size: 24px;
+        }
+      }
+  
+      a, p {
+        font-size: 24px;
+        letter-spacing: 0.1rem;
+  
+        @include media-query($medium-up) {
+          font-size: 24px;
+        }
+      }
+    }
+}
+
+.logo-list__item {
+    flex-direction: column;
+    justify-content: flex-start !important;
+  }
+  
+  .logo-list__text {
+    margin-top: 40px;
+    text-align: center;
+  }

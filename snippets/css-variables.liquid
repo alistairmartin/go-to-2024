@@ -1,22 +1,5 @@
-{%- assign heading_font_italic = settings.heading_font | font_modify: 'style', 'italic' -%}
-
-{%- comment -%}
-  IMPLEMENTATION NOTE: for the main font we first try the 600 variation if it exists, as it provides a less "bold" look. If
-  the semi-bold variation does not exist we try the 500 variation, and if not found we fallback to the "bolder" variation.
-{%- endcomment -%}
-
-{%- assign text_font_italic = settings.text_font | font_modify: 'style', 'italic' -%}
-{%- assign text_font_bold = settings.text_font | font_modify: 'weight', '600' -%}
-
-{%- unless text_font_bold -%}
-  {%- assign text_font_bold = settings.text_font | font_modify: 'weight', '500' -%}
-{%- endunless -%}
-
-{%- unless text_font_bold -%}
-  {%- assign text_font_bold = settings.text_font | font_modify: 'weight', 'bolder' -%}
-{%- endunless -%}
-
-{%- assign text_font_bold_italic = text_font_bold | font_modify: 'style', 'italic' -%}
+{%- assign fontHeading = "Moderno FB" -%}
+{%- assign fontBody = "TTCommons" -%}
 
 {%- comment -%}
 We only preload the main variations of the custom fonts rather than all the variations, as per recommendation by Shopify.
@@ -24,37 +7,7 @@ It seems that preloading all the variations upfront can cause performance issue 
 other resources, such as CSS or JS
 {%- endcomment -%}
 
-{%- unless settings.heading_font.system? -%}
-  <link rel="preload" href="{{ settings.heading_font | font_url }}" as="font" type="font/woff2" crossorigin>
-{%- endunless -%}
-
-{%- unless settings.text_font.system? -%}
-  <link rel="preload" href="{{ settings.text_font | font_url }}" as="font" type="font/woff2" crossorigin>
-{%- endunless -%}
-
 <style>
-  /* Typography (heading) */
-  {{ settings.heading_font | font_face: font_display: 'swap' }}
-
-  {%- if heading_font_italic -%}
-    {{ heading_font_italic | font_face: font_display: 'swap' }}
-  {%- endif -%}
-
-  /* Typography (body) */
-  {{ settings.text_font | font_face: font_display: 'swap' }}
-
-  {%- if text_font_italic -%}
-    {{ text_font_italic | font_face: font_display: 'swap' }}
-  {%- endif -%}
-
-  {%- if text_font_bold -%}
-    {{ text_font_bold | font_face: font_display: 'swap' }}
-  {%- endif -%}
-
-  {%- if text_font_bold_italic -%}
-    {{ text_font_bold_italic | font_face: font_display: 'swap' }}
-  {%- endif -%}
-
   :root {
     {%- assign border_color = settings.background | color_mix: settings.text_color, 85 -%}
     {%- assign border_color_darker = settings.background | color_mix: settings.text_color, 60 -%}
@@ -97,14 +50,14 @@ other resources, such as CSS or JS
     --root-primary-button-text-color: {{ settings.primary_button_text_color.red }}, {{ settings.primary_button_text_color.green }}, {{ settings.primary_button_text_color.blue }};
 
     --base-font-size: {{ settings.text_font_size }}px;
-    --heading-font-family: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
-    --heading-font-weight: {{ settings.heading_font.weight }};
-    --heading-font-style: {{ settings.heading_font.style }};
-    --heading-text-transform: {{ settings.heading_text_transform }};
-    --text-font-family: {{ settings.text_font.family }}, {{ settings.text_font.fallback_families }};
-    --text-font-weight: {{ settings.text_font.weight }};
-    --text-font-style: {{ settings.text_font.style }};
-    --text-font-bold-weight: {{ text_font_bold.weight | default: '700' }};
+    --heading-font-family: "{{ fontHeading }}";
+    --heading-font-weight: bold;
+    --heading-font-style: "normal";
+    --heading-text-transform: "{{ settings.heading_text_transform }}";
+    --text-font-family: "{{ fontBody }}";
+    --text-font-weight: 400;
+    --text-font-style: "normal";
+    --text-font-bold-weight: bold;
 
     /* Typography (font size) */
     --heading-xxsmall-font-size: {% if settings.heading_font_size == 'small' %}10px{% else %}11px{% endif %};

@@ -73,6 +73,11 @@
               {%- else -%}
                 {{- 'image' | placeholder_svg_tag: 'logo-list__image logo-list__image--placeholder' -}}
               {%- endif -%}
+
+              {%- if block.settings.text != blank -%}
+                <div class="logo-list__text">{{ block.settings.text }}</div>
+              {%- endif -%}
+            
             {%- endcapture -%}
 
             {%- if block.settings.link -%}
@@ -219,6 +224,11 @@
           "id": "logo",
           "label": "Image",
           "info": "450 x 150px .png recommended"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
         },
         {
           "type": "url",

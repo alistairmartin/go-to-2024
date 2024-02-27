@@ -1,0 +1,64 @@
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+
+
+
+<section>
+  <div class="container">
+
+  <div class="brand-switcher--brands">
+    {%- for block in section.blocks -%}
+    <a href="{% if block.settings.brand == "go-to" %}{{ routes.root_url }}{% else %}{{ block.settings.brand_url }}{% endif %}" class="brand-switcher--brand {{ block.settings.brand }} {% if brand == block.settings.brand %}active{% endif %}">
+      {%- if block.settings.brand == "go-to" -%}
+        {%- render 'svg--logo-go-to' -%}
+      {%- elsif block.settings.brand == "bro-to" -%}
+        {%- render 'svg--logo-bro-to' -%}
+      {%- elsif block.settings.brand == "gro-to" -%}
+        {%- render 'svg--logo-gro-to' -%}
+      {%- endif -%}
+      </a>
+    {%- endfor -%}
+  </div>
+
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brand Switcher",
+  "class": "shopify-section--brand-switcher",
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        {
+          "type": "radio",
+          "id": "brand",
+          "label": "Brand",
+          "options": [
+            {
+              "value": "go-to",
+              "label": "🟪 Go-To"
+            },
+            {
+              "value": "bro-to",
+              "label": "🟥 Bro-To"
+            },
+            {
+              "value": "gro-to",
+              "label": "🟩 Gro-To"
+            }
+          ]
+        },
+        {
+          "type": "url",
+          "id": "brand_url",
+          "label": "Brand Landing Page",
+          "info": "If Go-To - can leave blanks. Will automatically go to homepage."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

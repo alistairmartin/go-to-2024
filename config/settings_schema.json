@@ -82,7 +82,7 @@
     ]
   },
   {
-    "name": "Colors",
+    "name": "🟪 Colors (Go-To)",
     "settings": [
       {
         "type": "header",
@@ -240,19 +240,13 @@
     ]
   },
   {
-    "name": "Typography",
+    "name": "🟪 Typography (Go-To)",
     "settings": [
       {
         "type": "header",
         "content": "Headings"
       },
-      {
-        "type": "font_picker",
-        "id": "heading_font",
-        "label": "Font",
-        "info": "Selecting different fonts can affect the speed of your online store. Learn more about [system fonts.](https:\/\/help.shopify.com\/en\/manual\/online-store\/os\/store-speed\/improving-speed#fonts)",
-        "default": "helvetica_n4"
-      },
+ 
       {
         "type": "select",
         "id": "heading_font_size",
@@ -298,15 +292,450 @@
         "content": "Body text"
       },
       {
-        "type": "font_picker",
-        "id": "text_font",
-        "label": "Font",
-        "info": "Selecting different fonts can affect the speed of your online store. Learn more about [system fonts.](https:\/\/help.shopify.com\/en\/manual\/online-store\/os\/store-speed\/improving-speed#fonts)",
-        "default": "helvetica_n4"
+        "type": "range",
+        "id": "text_font_size",
+        "label": "Base size",
+        "min": 12,
+        "max": 20,
+        "unit": "px",
+        "default": 15
+      }
+    ]
+  },
+  {
+    "name": "🟥 Colors (Bro-To)",
+    "settings": [
+      {
+        "type": "header",
+        "content": "General"
+      },
+      {
+        "type": "color",
+        "id": "broto_heading_color",
+        "label": "Heading",
+        "default": "#1c1b1b"
+      },
+      {
+        "type": "color",
+        "id": "broto_text_color",
+        "label": "Body text",
+        "default": "#677279"
+      },
+      {
+        "type": "color",
+        "id": "broto_background",
+        "label": "Background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "broto_secondary_background",
+        "label": "Secondary background",
+        "info": "Use a color close to the main background.",
+        "default": "#f7f8fd"
+      },
+      {
+        "type": "color",
+        "id": "broto_success_color",
+        "label": "Success",
+        "default": "#168342"
+      },
+      {
+        "type": "color",
+        "id": "broto_error_color",
+        "label": "Error",
+        "default": "#e00000"
+      },
+      {
+        "type": "header",
+        "content": "Header"
+      },
+      {
+        "type": "color",
+        "id": "broto_header_background",
+        "label": "Background",
+        "default": "#1e316a"
+      },
+      {
+        "type": "color",
+        "id": "broto_header_text_color",
+        "label": "Text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Footer"
+      },
+      {
+        "type": "color",
+        "id": "broto_footer_background",
+        "label": "Background",
+        "default": "#f3f5f6"
+      },
+      {
+        "type": "color",
+        "id": "broto_footer_text_color",
+        "label": "Text",
+        "default": "#677279"
+      },
+      {
+        "type": "header",
+        "content": "Primary button"
+      },
+      {
+        "type": "color",
+        "id": "broto_primary_button_background",
+        "label": "Background",
+        "default": "#00badb"
+      },
+      {
+        "type": "color",
+        "id": "broto_primary_button_text_color",
+        "label": "Text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Secondary button"
+      },
+      {
+        "type": "color",
+        "id": "broto_secondary_button_background",
+        "label": "Background",
+        "default": "#1e2d7d"
+      },
+      {
+        "type": "color",
+        "id": "broto_secondary_button_text_color",
+        "label": "Text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Product"
+      },
+      {
+        "type": "color",
+        "id": "broto_product_rating_color",
+        "label": "Star rating",
+        "default": "#f6a429"
+      },
+      {
+        "type": "color",
+        "id": "broto_product_on_sale_accent",
+        "label": "On sale accent",
+        "default": "#e00000"
+      },
+      {
+        "type": "color",
+        "id": "broto_product_sold_out_accent",
+        "label": "Sold out accent",
+        "default": "#6f719b"
+      },
+      {
+        "type": "color",
+        "id": "broto_product_custom_label_background",
+        "label": "Custom label",
+        "info": "[Learn more](https:\/\/support.maestrooo.com\/article\/75-collection-displaying-custom-label)",
+        "default": "#1e316a"
+      },
+      {
+        "type": "color",
+        "id": "broto_product_custom_label_2_background",
+        "label": "Custom label 2",
+        "info": "[Learn more](https:\/\/support.maestrooo.com\/article\/75-collection-displaying-custom-label)",
+        "default": "#1e316a"
+      },
+      {
+        "type": "color",
+        "id": "broto_product_in_stock_text_color",
+        "label": "In stock accent",
+        "default": "#168342"
+      },
+      {
+        "type": "color",
+        "id": "broto_product_low_stock_text_color",
+        "label": "Low stock accent",
+        "default": "#e00000"
+      }
+    ]
+  },
+  {
+    "name": "🟥 Typography (Bro-To)",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Headings"
+      },
+ 
+      {
+        "type": "select",
+        "id": "broto_heading_font_size",
+        "label": "Heading size",
+        "options": [
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          }
+        ],
+        "default": "medium"
+      },
+      {
+        "type": "select",
+        "id": "broto_heading_text_transform",
+        "label": "Heading style",
+        "options": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          }
+        ],
+        "default": "uppercase"
+      },
+      {
+        "type": "header",
+        "content": "Body text"
       },
       {
         "type": "range",
-        "id": "text_font_size",
+        "id": "broto_text_font_size",
+        "label": "Base size",
+        "min": 12,
+        "max": 20,
+        "unit": "px",
+        "default": 15
+      }
+    ]
+  },
+  {
+    "name": "🟩 Colors (Gro-To)",
+    "settings": [
+      {
+        "type": "header",
+        "content": "General"
+      },
+      {
+        "type": "color",
+        "id": "groto_heading_color",
+        "label": "Heading",
+        "default": "#1c1b1b"
+      },
+      {
+        "type": "color",
+        "id": "groto_text_color",
+        "label": "Body text",
+        "default": "#677279"
+      },
+      {
+        "type": "color",
+        "id": "groto_background",
+        "label": "Background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "groto_secondary_background",
+        "label": "Secondary background",
+        "info": "Use a color close to the main background.",
+        "default": "#f7f8fd"
+      },
+      {
+        "type": "color",
+        "id": "groto_success_color",
+        "label": "Success",
+        "default": "#168342"
+      },
+      {
+        "type": "color",
+        "id": "groto_error_color",
+        "label": "Error",
+        "default": "#e00000"
+      },
+      {
+        "type": "header",
+        "content": "Header"
+      },
+      {
+        "type": "color",
+        "id": "groto_header_background",
+        "label": "Background",
+        "default": "#1e316a"
+      },
+      {
+        "type": "color",
+        "id": "groto_header_text_color",
+        "label": "Text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Footer"
+      },
+      {
+        "type": "color",
+        "id": "groto_footer_background",
+        "label": "Background",
+        "default": "#f3f5f6"
+      },
+      {
+        "type": "color",
+        "id": "groto_footer_text_color",
+        "label": "Text",
+        "default": "#677279"
+      },
+      {
+        "type": "header",
+        "content": "Primary button"
+      },
+      {
+        "type": "color",
+        "id": "groto_primary_button_background",
+        "label": "Background",
+        "default": "#00badb"
+      },
+      {
+        "type": "color",
+        "id": "groto_primary_button_text_color",
+        "label": "Text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Secondary button"
+      },
+      {
+        "type": "color",
+        "id": "groto_secondary_button_background",
+        "label": "Background",
+        "default": "#1e2d7d"
+      },
+      {
+        "type": "color",
+        "id": "groto_secondary_button_text_color",
+        "label": "Text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Product"
+      },
+      {
+        "type": "color",
+        "id": "groto_product_rating_color",
+        "label": "Star rating",
+        "default": "#f6a429"
+      },
+      {
+        "type": "color",
+        "id": "groto_product_on_sale_accent",
+        "label": "On sale accent",
+        "default": "#e00000"
+      },
+      {
+        "type": "color",
+        "id": "groto_product_sold_out_accent",
+        "label": "Sold out accent",
+        "default": "#6f719b"
+      },
+      {
+        "type": "color",
+        "id": "groto_product_custom_label_background",
+        "label": "Custom label",
+        "info": "[Learn more](https:\/\/support.maestrooo.com\/article\/75-collection-displaying-custom-label)",
+        "default": "#1e316a"
+      },
+      {
+        "type": "color",
+        "id": "groto_product_custom_label_2_background",
+        "label": "Custom label 2",
+        "info": "[Learn more](https:\/\/support.maestrooo.com\/article\/75-collection-displaying-custom-label)",
+        "default": "#1e316a"
+      },
+      {
+        "type": "color",
+        "id": "groto_product_in_stock_text_color",
+        "label": "In stock accent",
+        "default": "#168342"
+      },
+      {
+        "type": "color",
+        "id": "groto_product_low_stock_text_color",
+        "label": "Low stock accent",
+        "default": "#e00000"
+      }
+    ]
+  },
+  {
+    "name": "🟩 Typography (Gro-To)",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Headings"
+      },
+ 
+      {
+        "type": "select",
+        "id": "groto_heading_font_size",
+        "label": "Heading size",
+        "options": [
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          }
+        ],
+        "default": "medium"
+      },
+      {
+        "type": "select",
+        "id": "groto_heading_text_transform",
+        "label": "Heading style",
+        "options": [
+          {
+            "value": "normal",
+            "label": "Normal"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          }
+        ],
+        "default": "uppercase"
+      },
+      {
+        "type": "header",
+        "content": "Body text"
+      },
+      {
+        "type": "range",
+        "id": "groto_text_font_size",
         "label": "Base size",
         "min": 12,
         "max": 20,

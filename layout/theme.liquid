@@ -7,6 +7,8 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
 ------------------------------------------------------------------------------------------------------------------------
 {%- endcomment -%}
 
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+
 <!doctype html>
 
 {%- assign direction = 'ltr' -%}
@@ -48,10 +50,6 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
     <link rel="dns-prefetch" href="https://www.google-analytics.com">
 
-    {%- unless settings.heading_font.system? and settings.text_font.system? -%}
-      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
-    {%- endunless -%}
-
     {%- comment -%}Preload important resources{%- endcomment -%}
     <link rel="preload" as="style" href="{{ 'theme.css' | asset_url }}">
     <link rel="preload" as="script" href="{{ 'vendor.js' | asset_url }}">
@@ -76,12 +74,21 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     {% render 'microdata-schema' %}
 
 
-    {% render 'css-variables', direction: direction %}
+    {%- if brand == "go-to" -%}
+      {% render 'css-variables', direction: direction %}
+    {%- elsif brand == "bro-to" -%}
+      {% render 'css-variables--bro-to', direction: direction %}
+    {%- elsif brand == "gro-to" -%}
+      {% render 'css-variables--gro-to', direction: direction %}
+    {%- endif -%}
+
 
     
     {% render 'js-variables', direction: direction %}
 
     <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
+    {%- include "fonts" -%}
+    <link rel="stylesheet" href="{{ 'global.css' | asset_url }}">
 
     <script src="{{ 'vendor.js' | asset_url }}" defer></script>
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
@@ -108,10 +115,19 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     <a href="#main" class="visually-hidden skip-to-content">{{ 'general.accessibility.skip_to_content' | t }}</a>
     <loading-bar class="loading-bar"></loading-bar>
 
-    {%- if request.page_type != 'gift_card' and request.page_type != 'password' -%}
-      {%- sections 'header-group' -%}
-      {%- sections 'overlay-group' -%}
+    {% comment %} {%- sections 'overlay-group' -%} 
+    {%- sections 'overlay-group--gro-to' -%} 
+    {%- sections 'overlay-group--bro-to' -%}  {% endcomment %}
 
+    {%- if request.page_type != 'gift_card' and request.page_type != 'password' -%}
+      {%- if brand == "go-to" -%}
+        {%- sections 'header-group' -%}
+      {%- elsif brand == "bro-to" -%}
+        {%- sections 'header-group--bro-to' -%}
+      {%- elsif brand == "gro-to" -%}
+        {%- sections 'header-group--gro-to' -%}
+      {%- endif -%}
+   
       {%- unless settings.cart_type == 'page' or request.page_type == 'cart' -%}
         {%- section 'mini-cart' -%}
       {%- endunless -%}
@@ -164,6 +180,14 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
 
     {%- if request.page_type != 'gift_card' and request.page_type != 'password' -%}
       {%- sections 'footer-group' -%}
+
+      {%- if brand == "go-to" -%}
+        {%- sections 'footer-group--go-to' -%}
+      {%- elsif brand == "bro-to" -%}
+        {%- sections 'footer-group--bro-to' -%}
+      {%- elsif brand == "gro-to" -%}
+        {%- sections 'footer-group--gro-to' -%}
+      {%- endif -%}
     {%- endif -%}
   </body>
 </html>

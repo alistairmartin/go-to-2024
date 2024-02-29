@@ -1,0 +1,22 @@
+{%- assign product = all_products[section.settings.product] -%}
+{%- render 'product-sticky-form--product-bar', product: product -%}
+
+{% schema %}
+    {
+      "name": "Product Bar",
+      "class": "section-product-bar",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ],
+      "presets": [
+        {
+          "name": "Product Bar",
+          "category": "Product"
+        }
+      ]
+    }
+  {% endschema %}

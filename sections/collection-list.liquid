@@ -132,7 +132,7 @@
 
             {%- assign collection = block.settings.collection -%}
 
-            <a id="block-{{ section.id }}-{{ block.id }}" href="{{ block.settings.link_url | default: collection.url }}" class="list-collections__item {% if is_highlighted %}list-collections__item--highlight {% if is_shifted %}list-collections__item--shift{% endif %}{% endif %} {% if collection_content != blank %}has-overlay{% endif %} image-zoom" {{ block.shopify_attributes }}>
+            <a id="block-{{ section.id }}-{{ block.id }}" href="{{ block.settings.link_url | default: collection.url }}" class="list-collections__item {% if is_highlighted %}list-collections__item--highlight {% if is_shifted %}list-collections__item--shift{% endif %}{% endif %} {% if collection_content != blank or block.settings.title_below_image != true %}has-overlay{% endif %} image-zoom  {% if section.settings.title_below_image %}text-below-image{% endif %}" {{ block.shopify_attributes }}>
               <div class="list-collections__item-image-wrapper">
                 {%- assign collection_image = block.settings.image | default: collection.featured_image -%}
 
@@ -294,6 +294,12 @@
       "label": "Reveal on scroll",
       "info": "Show animation when section becomes visible.",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "title_below_image",
+      "label": "Title Below Image?",
+      "default": true
     },
     {
       "type": "select",

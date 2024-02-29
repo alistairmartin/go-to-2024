@@ -30,7 +30,7 @@
   }
 </style>
 
-<section class="section {% unless blends_with_background %}section--flush{% endunless %}">
+<section class="section {% unless blends_with_background %}section--flush{% endunless %} {% if section.settings.overlay_text_on_image %}blog-posts--overlay-text{% endif %}">
   <div class="section__color-wrapper">
     <div class="{% unless blends_with_background %}vertical-breather{% endunless %}">
       <div class="container">
@@ -156,6 +156,12 @@
     "groups": ["header", "custom.overlay"]
   },
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "overlay_text_on_image",
+      "label": "Overlay Text On Image?",
+      "default": true
+    },
     {
       "type": "blog",
       "id": "blog",

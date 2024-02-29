@@ -1,0 +1,96 @@
+
+<section class="section section--flush scrolling-text scrolling-image" style="background:{{ section.settings.background }}">
+
+
+<style>
+  #section-{{ section-id }} .marquee-text--inner {
+    animation: marquee {{ section.settings.animation_speed }}s linear infinite;
+  }
+
+  @media screen and (min-width: 768px) {
+    #section-{{ section-id }} .marquee-text--inner {
+      animation: marquee {{ section.settings.animation_speed_mobile }}s linear infinite;
+    }
+  }
+  //
+</style>
+
+  <div class="marquee-text" style="background:{{ section.settings.background }}">
+    <div class="marquee-text--inner scrolling-text--marquee">
+     <div class="scrolling-text--track">
+
+     {% for i in (1..10) %}
+      {%- for block in section.blocks -%}
+        {% if block.settings.link != blank %}<a class="text text--{{ block.settings.text_colour }}" href="{{ block.settings.link }}"{% else %}<div{% endif %} class="text">
+          {{- block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: 'lazy', widths: '500,600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000' -}}
+        {% if block.settings.link != blank %}</a>{% else %}</div>{% endif %}
+      {%- endfor -%}
+     {% endfor %}
+
+      </div>
+    </div>
+  </div>
+
+
+  </section>
+
+
+  {% schema %}
+    {
+      "name": "Scrolling Image (Marquee)",
+      "class": "section-scrolling-text",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Animation Speed"
+        },
+        {
+          "type":"range",
+          "id":"animation_speed",
+          "min":1,
+          "max":60,
+          "step":1,
+          "default":12,
+          "label":"Desktop",
+          "info": "In Seconds"
+        },
+        {
+          "type":"range",
+          "id":"animation_speed_mobile",
+          "min":1,
+          "max":60,
+          "step":1,
+          "default":12,
+          "label":"Mobile",
+          "info": "In Seconds"
+        },
+        {
+           "type": "color",
+           "id": "background",
+           "label": "Background Colour"
+        }
+      ],
+      "blocks": [{
+       "type": "block",
+       "name": "Image",
+       "settings": [
+         {
+           "type": "image_picker",
+           "id": "image",
+           "label": "Image"
+         },
+         {
+           "label": "Link",
+           "id": "link",
+           "type": "url"
+         }
+        ]
+      }],
+      "presets": [
+        {
+          "name": "Scrolling Image (Marquee)",
+          "category": "Images"
+        }
+      ]
+    }
+  {% endschema %}

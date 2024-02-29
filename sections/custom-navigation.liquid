@@ -1,0 +1,103 @@
+{% comment %} <style>
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color = settings.heading_color -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_background == 'rgba(0,0,0,0)' -%}
+      {%- assign button_background = settings.primary_button_background -%}
+    {%- else -%}
+      {%- assign button_background = section.settings.button_background -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign button_text_color = settings.primary_button_text_color -%}
+    {%- else -%}
+      {%- assign button_text_color = section.settings.button_text_color -%}
+    {%- endif -%}
+
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --primary-button-background: {{ button_background.red }}, {{ button_background.green }}, {{ button_background.blue }};
+    --primary-button-text-color: {{ button_text_color.red }}, {{ button_text_color.green }}, {{ button_text_color.blue }};
+
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+  }
+</style> {% endcomment %}
+
+<section>
+<div class="container">
+  <div class="page-header">
+    <link-bar class="link-bar">
+      <div class="container">
+        <div class="link-bar__wrapper">
+
+        {%- if section.settings.main_text != blank -%}
+          <span class="link-bar__title heading heading--small text--subdued">{{ section.settings.main_text }}</span>
+        {%- endif -%}
+
+          <div class="link-bar__scroller hide-scrollbar">
+            <ul class="link-bar__linklist list--unstyled" role="list">
+              {%- for block in section.blocks -%}
+                <li class="link-bar__link-item {% if canonical_url contains block.settings.url %}link-bar__link-item--selected text--underlined{% endif %}">
+                  <a href="{{ block.settings.url }}">
+                    {{ block.settings.text }}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </link-bar>
+  </div>
+</div>
+</section>
+
+
+{% schema %}
+  {
+    "name": "Custom Navigation",
+    "class": "shopify-section--custom-navigation",
+    "settings": [
+      {
+        "type": "text",
+        "id": "main_text",
+        "label": "Navigation Title",
+        "info": "Optional"
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Link",
+        "type": "link",
+        "settings": [
+          {
+            "type": "url",
+            "id": "url",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text",
+            "label": "Text"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Custom Navigation"
+      }
+    ]
+  }
+{% endschema %}

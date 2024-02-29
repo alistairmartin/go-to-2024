@@ -1,12 +1,12 @@
-# development:
-#   password: shptka_5ade013fd92c76168c566da7e72001db
-#   theme_id: 124129869958
-#   store: go-to-skincare.myshopify.com
-#   ignore_files:
-#       - config/settings_data.json
-#       - locales/*.json
-#       - templates/*.json
-#       - sections/*.json
+development:
+  password: shptka_5ade013fd92c76168c566da7e72001db
+  theme_id: 124751806598
+  store: go-to-skincare.myshopify.com
+  ignore_files:
+      - config/settings_data.json
+      - locales/*.json
+      - templates/*.json
+      - sections/*.json
 
 # staging:
 #   password: shptka_88612106c9b0965e77f6224ac7c029bc
@@ -19,12 +19,12 @@
 #       - sections/*.json
 
 
-development:
-  password: shptka_befefab02b83f221e3325565bb44e982
-  theme_id: 134889472175
-  store: go-to-dev-checkout.myshopify.com
-  ignore_files:
-      - config/settings_data.json
-      - locales/*.json
-      - templates/*.json
-      - sections/*.json
+# development:
+#   password: shptka_befefab02b83f221e3325565bb44e982
+#   theme_id: 134889472175
+#   store: go-to-dev-checkout.myshopify.com
+#   ignore_files:
+#       - config/settings_data.json
+#       - locales/*.json
+#       - templates/*.json
+#       - sections/*.json

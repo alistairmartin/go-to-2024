@@ -1,12 +1,6 @@
 {%- assign fontHeading = "Moderno FB" -%}
 {%- assign fontBody = "TTCommons" -%}
 
-{%- comment -%}
-We only preload the main variations of the custom fonts rather than all the variations, as per recommendation by Shopify.
-It seems that preloading all the variations upfront can cause performance issue and delay the loading of more important
-other resources, such as CSS or JS
-{%- endcomment -%}
-
 <style>
   :root {
     {%- assign border_color = settings.background | color_mix: settings.text_color, 85 -%}

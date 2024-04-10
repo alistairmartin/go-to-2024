@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "scss": "sass src/scss:assets/ --style compressed",
-    "js": "terser src/*.js --compress --mangle --output assets/theme-custom.min.js",
+    "js": "terser src/js/*.js --compress --mangle --output assets/theme-custom.min.js",
     "build": "npm run scss && npm run js",
     "deploy": "npm run build && theme deploy",
     "watch": "concurrently \"npm run watch:scss\" \"npm run watch:js\" \"theme watch\"",

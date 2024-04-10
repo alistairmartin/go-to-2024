@@ -4,9 +4,10 @@ development:
   store: go-to-skincare.myshopify.com
   ignore_files:
       - config/settings_data.json
-      - locales/*.json
       - templates/*.json
       - sections/*.json
+
+            # - locales/*.json
 
 # staging:
 #   password: shptka_88612106c9b0965e77f6224ac7c029bc

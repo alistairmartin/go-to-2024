@@ -42,12 +42,12 @@
 {%- if section.blocks.size > 0 -%}
   <section>
     <announcement-bar {% if section.blocks.size > 1 and section.settings.autoplay %}auto-play cycle-speed="{{ section.settings.cycle_speed | escape }}"{% endif %} class="announcement-bar {% if section.blocks.size > 1 %}announcement-bar--multiple{% endif %}">
-      {%- if section.blocks.size > 1 -%}
+      {% comment %} {%- if section.blocks.size > 1 -%}
         <button data-action="prev" class="tap-area tap-area--large">
           <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
           {% render 'icon' with 'nav-arrow-left-small', direction_aware: true %}
         </button>
-      {%- endif -%}
+      {%- endif -%} {% endcomment %}
 
       <div class="announcement-bar__list">
         {%- for block in section.blocks -%}
@@ -70,12 +70,12 @@
             <div class="announcement-bar__message {{ text_size_class }}">
               {%- if block.settings.content != blank or block.settings.image != blank -%}
                 {%- if block.settings.learn_more_text != blank -%}
-                  <p>{{ block.settings.text | escape }} <button class="link" data-action="open-content">{{ block.settings.learn_more_text | escape }}</button></p>
+                  <div class="announcement-bar__message-inner">{{ block.settings.text }} <button class="link" data-action="open-content">{{ block.settings.learn_more_text | escape }}</button></div>
                 {%- else -%}
-                  <button class="link" data-action="open-content">{{ block.settings.text | escape }}</button>
+                  <button class="link" data-action="open-content">{{ block.settings.text | strip_html | escape }}</button>
                 {%- endif -%}
               {%- else -%}
-                <p>{{ block.settings.text | escape }}</p>
+                <div class="announcement-bar__message-inner">{{ block.settings.text }}</div>
               {%- endif -%}
             </div>
 
@@ -122,12 +122,12 @@
         {%- endfor -%}
       </div>
 
-      {%- if section.blocks.size > 1 -%}
+      {% comment %} {%- if section.blocks.size > 1 -%}
         <button data-action="next" class="tap-area tap-area--large">
           <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
           {% render 'icon' with 'nav-arrow-right-small', direction_aware: true %}
         </button>
-      {%- endif -%}
+      {%- endif -%} {% endcomment %}
     </announcement-bar>
   </section>
 
@@ -147,10 +147,10 @@
       "name": "Message",
       "settings": [
         {
-          "type": "text",
+          "type": "richtext",
           "id": "text",
           "label": "Text",
-          "default": "Announce something here"
+          "default": "<p>Announce something here</p>"
         },
         {
           "type": "text",

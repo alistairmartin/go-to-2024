@@ -1,0 +1,109 @@
+{%- liquid
+  capture brand
+    render 'brand'
+  endcapture
+
+  case brand
+    when 'bro-to'
+      assign ingredientsPage = section.settings.ingredients_page-bro_to
+    when 'gro-to'
+      assign ingredientsPage = section.settings.ingredients_page-gro_to
+    when 'go-to'
+      assign ingredientsPage = section.settings.ingredients_page-go_to
+  endcase
+  
+  if localization.language.primary == false
+    assign ingredientsPage = ingredientsPage | append: '-' | append: localization.language.iso_code
+  endif
+
+  unless ingredientsPage == blank
+    assign ingredientsGlossary = pages[ingredientsPage].content
+  else
+    assign ingredientsGlossary = section.settings.default_ingredients_glossary | replace: '<p><strong>', '<h3>' | replace: '</strong></p>', '</h3>'
+  endunless
+
+  assign ingredientsGlossary = ingredientsGlossary | split: '<h3>'
+  assign productIngredients = product.metafields.custom.product_key_ingredients__ingredients_highlight | downcase
+  
+  unless productIngredients == blank
+    assign ingredientFound = true
+  else
+    for tag in product.tags
+      if tag contains 'ing_'
+        assign ingredientFound = true
+        assign productIngredients = productIngredients | append: tag | remove: 'ing_' | downcase
+        
+        unless forloop.last
+          assign productIngredients = productIngredients | append: ','
+        endunless
+      endif
+    endfor
+  endunless
+
+  if ingredientFound
+    echo '<section class="Section Section--spacingLarge" data-section-type="content">'
+      case brand
+        when 'gro-to'
+          render 'product-content-ingredients--gro-to', section: section, productIngredients: productIngredients, ingredientsGlossary: ingredientsGlossary
+        when 'go-to'
+          render 'product-content-ingredients--go-to', section: section, productIngredients: productIngredients, ingredientsGlossary: ingredientsGlossary
+      endcase
+    echo '</section>'
+  endif
+-%}
+
+{% schema %}
+  {
+    "name": "Prod. Con: Ingredients",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile",
+        "label": "Image - Mobile"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_desktop",
+        "label": "Image - Desktop"
+      },
+      {
+        "type": "richtext",
+        "id": "default_ingredients_glossary",
+        "label": "Ingredients Glossary content",
+        "default": "<p></p>",
+        "info": "Highlight ingredient title in bold"
+      },
+      {
+        "type": "header",
+        "content": "Page content",
+        "info": "Select the pages to fetch the ingredients from"
+      },
+      {
+        "type": "page",
+        "id": "ingredients_page-go_to",
+        "label": "Go-To"
+      },
+      {
+        "type": "page",
+        "id": "ingredients_page-gro_to",
+        "label": "Gro-To"
+      },
+      {
+        "type": "page",
+        "id": "ingredients_page-bro_to",
+        "label": "Bro-To"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Prod. Con: Ingredients",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}

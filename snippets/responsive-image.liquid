@@ -1,0 +1,115 @@
+{% assign grid_small = "480" %}
+{% assign grid_medium = "768" %}
+{% assign grid_large = "990" %}
+{% assign grid_widescreen = "1340" %}
+
+{%- comment %}
+  Parameters
+  src_mobile: Source of the image used at mobile breakpoint
+  src_desktop: Source of the image used at desktop breakpoint
+  alt: The alt attribute on the image element
+  class: The class attribute on the picture element
+  type: Where the file is hosted in shopify. Options: blank OR 'file' default blank. This dictates which asset filter to use
+  img_attr: (optional) additional attributes for the image element eg. class="my-class"
+{% endcomment -%}
+
+{% assign lazyload = false %}
+
+{%- if lazyload != false -%}
+  {% assign lazyload = true %}
+  {% assign class = class | append: " lazyload" %}
+{%- endif -%}
+
+{%- if src_mobile != blank or src_desktop != blank -%}
+    <picture id="image-{{ id }}"{% if class %}class="{{ class }}"{% endif %} {% if id != blank %}data-id="{{ id }}"{% endif %}>
+      {%- if src_mobile != blank -%}
+        {% assign mobile = grid_small | append: 'x' %}
+        {% assign mobile_retina = grid_small | times: 2 | append: 'x' %}
+        {%- if src_mobile contains '.png' -%}
+          {% assign mobile_metafield = grid_small | append: 'x' | prepend: '_' | append: '.png' %}
+          {% assign mobile_retina_metafield = grid_small | times: 2 | append: 'x'  | prepend: '_' | append: '.png' %}
+        {% else %}
+          {% assign mobile_metafield = grid_small | append: 'x' | prepend: '_' | append: '.jpg' %}
+          {% assign mobile_retina_metafield = grid_small | times: 2 | append: 'x'  | prepend: '_' | append: '.jpg' %}
+        {%- endif -%}
+        {%- if type == 'file' -%}
+          <source media="(max-width: {{ grid_small }}px)"
+                  loading="lazy" srcset="{{ src_mobile | file_img_url: mobile }} {{ grid_small }}w,
+                          {{ src_mobile | file_img_url: mobile_retina }} {{ grid_small | times: 2 }}w">
+        {%- elsif type == 'metafield' -%}
+            {%- if src_mobile contains '.png' -%}
+            <source media="(max-width: {{ grid_small }}px)"
+                    loading="lazy" srcset="{{ src_mobile | replace: '.png', mobile_metafield }} {{ grid_small }}w,
+                            {{ src_mobile | replace: '.png', mobile_retina_metafield }} {{ grid_small | times: 2 }}w">
+            {% else %}
+            <source media="(max-width: {{ grid_small }}px)"
+                    loading="lazy" srcset="{{ src_mobile | replace: '.jpg', mobile_metafield }} {{ grid_small }}w,
+                            {{ src_mobile | replace: '.jpg', mobile_retina_metafield }} {{ grid_small | times: 2 }}w">
+            {% endif %}
+        {%- else -%}
+          <source media="(max-width: {{ grid_small }}px)"
+                  loading="lazy" srcset="{{ src_mobile | img_url: mobile }} {{ grid_small }}w,
+                          {{ src_mobile | img_url: mobile_retina }} {{ grid_small | times: 2 }}w">
+        {%- endif -%}
+      {%- endif -%}
+      {%- if src_desktop != blank -%}
+        {% assign medium = grid_medium | append: 'x' %}
+        {% assign large = grid_large | append: 'x' %}
+        {% assign widescreen = grid_widescreen | append: 'x' %}
+        {%- if src_desktop contains '.png' -%}
+          {% assign medium_metafield = grid_medium | append: 'x' | prepend: '_' | append: '.png' %}
+          {% assign large_metafield = grid_large | append: 'x' | prepend: '_' | append: '.png' %}
+          {% assign widescreen_metafield = grid_widescreen | append: 'x' | prepend: '_' | append: '.png' %}
+        {% else %}
+          {% assign medium_metafield = grid_medium | append: 'x' | prepend: '_' | append: '.jpg' %}
+          {% assign large_metafield = grid_large | append: 'x' | prepend: '_' | append: '.jpg' %}
+          {% assign widescreen_metafield = grid_widescreen | append: 'x' | prepend: '_' | append: '.jpg' %}
+        {%- endif -%}
+        {%- if type == 'file' -%}
+          <source media="(min-width: {{ grid_small | plus: 1 }}px)"
+                  loading="lazy" srcset="{{ src_desktop | file_img_url: medium }} {{ grid_medium }}w,
+                          {{ src_desktop | file_img_url: large }} {{ grid_large }}w,
+                          {{ src_desktop | file_img_url: widescreen }} {{ grid_widescreen }}w">
+        {%- elsif type == 'metafield' -%}
+              {%- if src_desktop contains '.png' -%}
+              <source media="(min-width: {{ grid_small | plus: 1 }}px)"
+                      loading="lazy" srcset="{{ src_desktop | replace: '.png', medium_metafield }} {{ grid_medium }}w,
+                              {{ src_desktop | replace: '.png', large_metafield }} {{ grid_large }}w,
+                              {{ src_desktop | replace: '.png', widescreen_metafield }} {{ grid_widescreen }}w">
+              {% else %}
+              <source media="(min-width: {{ grid_small | plus: 1 }}px)"
+                      loading="lazy" srcset="{{ src_desktop | replace: '.jpg', medium_metafield }} {{ grid_medium }}w,
+                              {{ src_desktop | replace: '.jpg', large_metafield }} {{ grid_large }}w,
+                              {{ src_desktop | replace: '.jpg', widescreen_metafield }} {{ grid_widescreen }}w">
+              {% endif %}
+        {%- else -%}
+          <source media="(min-width: {{ grid_small | plus: 1 }}px)"
+                  loading="lazy" srcset="{{ src_desktop | img_url: medium }} {{ grid_medium }}w,
+                          {{ src_desktop | img_url: large }} {{ grid_large }}w,
+                          {{ src_desktop | img_url: widescreen }} {{ grid_widescreen }}w">
+        {%- endif -%}
+      {%- endif -%}
+      {%- comment %} fallback image {% endcomment -%}
+      {%- if src_desktop != blank -%}
+        {%- if type == 'file' -%}
+          <img loading="lazy" src="{{ src_desktop | file_img_url: 'master' }}" alt="{{ alt | escape }}" {{ img_attr }}>
+        {%- elsif type == 'metafield' -%}
+          <img loading="lazy" src="{{ src_desktop }}" alt="{{ alt | escape }}" {{ img_attr }}>
+        {%- else -%}
+          <img loading="lazy" src="{{ src_desktop | img_url: 'master' }}" alt="{{ alt | escape }}" {{ img_attr }}>
+        {%- endif -%}
+      {%- elsif src_mobile != blank -%}
+        {%- if type == 'file' -%}
+          <img loading="lazy" src="{{ src_mobile | file_img_url: 'master' }}" alt="{{ alt | escape }}" {{ img_attr }}>
+        {%- elsif type == 'metafield' -%}
+          <img loading="lazy" src="{{ src_mobile }}" alt="{{ alt | escape }}" {{ img_attr }}>
+        {%- else -%}
+          <img loading="lazy" src="{{ src_mobile | img_url: 'master' }}" alt="{{ alt | escape }}" {{ img_attr }}>
+        {%- endif -%}
+      {%- endif -%}
+    </picture>
+{%- endif -%}
+
+{%- if src_mobile == blank and src_desktop == blank -%}
+  <img loading="lazy" src="{{ 'placeholder-landscape.svg' | asset_url }}" alt="" {{ img_attr }}>
+{%- endif -%}

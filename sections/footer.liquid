@@ -10,6 +10,10 @@
 </style>
 
 <footer class="footer {% if settings.footer_background == settings.background %}footer--bordered{% endif %}">
+
+
+  <button onclick="openAccessabilityWidget()" class="link--faded">OPEN ACCESSABILITY</button>
+
   <div class="container">
     <div class="footer__inner">
       <div class="footer__item-list">
@@ -209,11 +213,11 @@
             </div>
           {%- endif -%}
 
-          {%- if shop.features.follow_on_shop? and section.settings.enable_follow_on_shop -%}
+          {% comment %} {%- if shop.features.follow_on_shop? and section.settings.enable_follow_on_shop -%}
             <div class="footer__follow-on-shop">
               {{- shop | login_button: action: 'follow' -}}
             </div>
-          {%- endif -%}
+          {%- endif -%} {% endcomment %}
         </div>
       </div>
     </div>

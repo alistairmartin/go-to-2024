@@ -1,0 +1,54 @@
+{% assign grid_small = "480" %}
+{% assign grid_medium = "768" %}
+{% assign grid_large = "990" %}
+{% assign grid_widescreen = "1340" %}
+
+{% assign imgDesktop = src_desktop | first %}
+{% assign imgDesktopSrc = imgDesktop.cloudinary_src %}
+
+{% assign imgMobile = src_mobile | first %}
+{% assign imgMobileSrc = imgMobile.cloudinary_src %}
+
+{%- if imgMobileSrc != blank or imgDesktopSrc != blank -%}
+    <picture {% if class %}class="{{ class }}"{% endif %}>
+      {%- if imgMobileSrc != blank -%}
+          <source media="(max-width: {{ grid_small }}px)"
+                srcset="{{ imgMobileSrc | append: '&transform=&resize=480' }} {{ grid_small }}w,
+                        {{ imgMobileSrc | append: '&transform=&resize=800' }} {{ grid_small | times: 2 }}w">
+      {%- endif -%}
+      {%- if imgDesktopSrc != blank -%}
+          <source media="(min-width: {{ grid_small | plus: 1 }}px)"
+                  srcset="{{ imgDesktopSrc | append: '&transform=&resize=768'  }} {{ grid_medium }}w,
+                          {{ imgDesktopSrc | append: '&transform=&resize=990' }} {{ grid_large }}w,
+                          {{ imgDesktopSrc | append: '&transform=&resize=1340' }} 2880w">
+      {%- endif -%}
+      {%- comment %} fallback image {% endcomment -%}
+      {%- if imgDesktopSrc != blank -%}
+          <img loading="lazy" src="{{ imgDesktopSrc | append: '&transform=&resize=1340' }}" alt="{{ alt | escape }}" {{ img_attr }} class="{{ img_class }}">
+      {%- elsif imgMobileSrc != blank -%}
+          <img loading="lazy" src="{{ imgMobileSrc | append: '&transform=&resize=800' }}" alt="{{ alt | escape }}" {{ img_attr }} class="{{ img_class }}">
+      {%- endif -%}
+
+    </picture>
+{%- endif -%}
+
+
+{%- comment %}
+<source media="(max-width: {{ grid_small }}px)"
+      srcset="{{ imgMobileSrc | append: '&transform=resize=480' }} {{ grid_small }}w,
+              {{ imgMobileSrc | append: '&transform=resize=800' }} {{ grid_small | times: 2 }}w">
+<source media="(min-width: {{ grid_small | plus: 1 }}px)"
+        srcset="{{ imgDesktopSrc | append: '&transform=resize=768'  }} {{ grid_medium }}w,
+                {{ imgDesktopSrc | append: '&transform=resize=990' }} {{ grid_large }}w,
+                {{ imgDesktopSrc | append: '&transform=resize=1340' }} 2880w">
+
+                ---
+                <source media="(max-width: {{ grid_small }}px)"
+                      srcset="{{ imgMobileSrc | append: '&transform=&resize=720' }} {{ grid_small }}w,
+                              {{ imgMobileSrc | append: '&transform=&resize=1200' }} {{ grid_small | times: 2 }}w">
+
+                <source media="(min-width: {{ grid_small | plus: 1 }}px)"
+                        srcset="{{ imgDesktopSrc | append: '&transform=&resize=1152'  }} {{ grid_medium }}w,
+                                {{ imgDesktopSrc | append: '&transform=&resize=1485' }} {{ grid_large }}w,
+                                {{ imgDesktopSrc | append: '&transform=&resize=2010' }} 2880w">
+{% endcomment -%}

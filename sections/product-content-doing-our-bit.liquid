@@ -1,0 +1,50 @@
+{%- if product.metafields.custom.product_doing_our_bit__how_its_made != blank or product.metafields.custom.product_doing_our_bit__how_to_recycle != blank -%}
+<section class="Section Section--spacingLarge Section--ProductContentBoughtWith" data-section-type="content">
+  <div class="ContentWidth">
+    <div class="ProductContentDoingOurBit">
+      <div class="ProductContentDescription--content">
+        <h3 class="SectionHeader__Heading Heading Text--bold u-h1">{{ section.settings.title }}</h3>
+        <div class="TabList" role="tablist" >
+          <button role="tab" data-action="toggle-tab" aria-selected="true" aria-controls="ProductContentDoingOurBit-panel-1" class="is-active">{{ 'product.content.how_its_made' | t }}</button>
+          <button role="tab" data-action="toggle-tab" aria-selected="false" aria-controls="ProductContentDoingOurBit-panel-2">{{ 'product.content.how_to_recycle' | t }}</button>
+        </div>
+        <div class="ProductContentDoingOurBit--content-inner TabPanel how-its-made" id="ProductContentDoingOurBit-panel-1" role="tabpanel" aria-labelledby="tab-1--doing-our-bit" aria-hidden="false">
+          {%- if product.metafields.custom.product_doing_our_bit__how_its_made != blank -%}
+            {{ product.metafields.custom.product_doing_our_bit__how_its_made }}
+          {%- endif -%}
+        </div>
+        <div class="ProductContentDoingOurBit--content-inner TabPanel how-to-recycle" id="ProductContentDoingOurBit-panel-2" role="tabpanel" aria-labelledby="tab-2--how-to-recycle" aria-hidden="true">
+          {%- if product.metafields.custom.product_doing_our_bit__how_to_recycle != blank -%}
+            {{ product.metafields.custom.product_doing_our_bit__how_to_recycle }}
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="ProductContentDescription--image">
+        {%- if product.metafields.custom.product_doing_our_bit__image_desktop != blank or product.metafields.custom.product_doing_our_bit__image_mobile != blank -%}
+          {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_doing_our_bit__image_desktop, src_mobile: product.metafields.custom.product_doing_our_bit__image_mobile %}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Prod. Con: Doing our bit",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      }
+    ],
+    "presets":[
+      {
+        "name": "Prod. Con: Doing our bit",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}

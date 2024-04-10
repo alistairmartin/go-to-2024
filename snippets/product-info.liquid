@@ -24,6 +24,30 @@
       </h2>
     {% endunless %}
 
+    <div class="product-meta__subtitle">
+
+      {%- comment %}START -- Metafield - Volume and Subtitle {% endcomment -%}
+      {%- if product.metafields.custom.product_subtitle__description != blank or product.metafields.custom.product_subtitle__measurement != blank -%}
+      <p>
+        {%- if product.metafields.custom.product_subtitle__description != blank -%}
+          {{- product.metafields.custom.product_subtitle__description -}}
+        {%- endif -%}
+
+        {%- if product.metafields.custom.product_subtitle__description != blank and product.metafields.custom.product_subtitle__measurement != blank -%}
+          <span class="separator--dot">•</span>
+        {%- endif -%}
+
+        {%- if product.metafields.custom.product_subtitle__measurement != blank -%}
+          {{- product.metafields.custom.product_subtitle__measurement -}}
+        {%- endif -%}
+
+      </p>
+      {%- endif -%}
+      {%- comment %}END -- Metafield - Volume and Subtitle {% endcomment -%}
+
+    </div>
+
+
     <div class="product-meta__price-list-container" role="region" aria-live="polite">
       <div class="price-list" data-product-price-list>
         {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
@@ -31,9 +55,9 @@
             <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
 
             {%- if settings.currency_code_enabled -%}
-              {{- product.selected_or_first_available_variant.price | money_with_currency -}}
+              {{- product.selected_or_first_available_variant.price | money_with_currency | remove: ".00" | remove: ",00" -}}
             {%- else -%}
-              {{- product.selected_or_first_available_variant.price | money -}}
+              {{- product.selected_or_first_available_variant.price | money | remove: ".00" | remove: ",00" -}}
             {%- endif -%}
           </span>
 
@@ -41,18 +65,18 @@
             <span class="visually-hidden">{{ 'product.general.regular_price' | t }}</span>
 
             {%- if settings.currency_code_enabled -%}
-              {{- product.selected_or_first_available_variant.compare_at_price | money_with_currency -}}
+              {{- product.selected_or_first_available_variant.compare_at_price | money_with_currency | remove: ".00" | remove: ",00" -}}
             {%- else -%}
-              {{- product.selected_or_first_available_variant.compare_at_price | money -}}
+              {{- product.selected_or_first_available_variant.compare_at_price | money | remove: ".00" | remove: ",00" -}}
             {%- endif -%}
           </span>
         {%- else -%}
           <span class="price price--large">
             <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
             {%- if settings.currency_code_enabled -%}
-              {{- product.selected_or_first_available_variant.price | money_with_currency -}}
+              {{- product.selected_or_first_available_variant.price | money_with_currency | remove: ".00" | remove: ",00" -}}
             {%- else -%}
-              {{- product.selected_or_first_available_variant.price | money -}}
+              {{- product.selected_or_first_available_variant.price | money | remove: ".00" | remove: ",00" -}}
             {%- endif -%}
           </span>
         {%- endif -%}
@@ -60,7 +84,7 @@
         {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
           <div class="price text--subdued">
             <div class="unit-price-measurement">
-              <span class="unit-price-measurement__price">{{ product.selected_or_first_available_variant.unit_price | money }}</span>
+              <span class="unit-price-measurement__price">{{ product.selected_or_first_available_variant.unit_price | money | remove: ".00" | remove: ",00" }}</span>
               <span class="unit-price-measurement__separator">/</span>
 
               {%- if product.selected_or_first_available_variant.unit_price_measurement.reference_value != 1 -%}

@@ -1,0 +1,125 @@
+{%- liquid
+assign counter = 1
+assign indexCounter = 0
+assign imageFound = false
+assign sectionNumber = section.settings.section_number | times: 1
+
+for mediaWithText in product.metafields.custom.product_media_with_text__title 
+  if sectionNumber == counter 
+    assign title = product.metafields.custom.product_media_with_text__title[indexCounter]
+    assign text = product.metafields.custom.product_media_with_text__text[indexCounter]
+    assign text_position_desktop = product.metafields.custom.product_media_with_text__text_position_desktop[indexCounter]
+    assign text_position_mobile = product.metafields.custom.product_media_with_text__text_position_mobile[indexCounter]
+    assign text_color_desktop = product.metafields.custom.product_media_with_text__text_color_desktop[indexCounter]
+    assign text_color_mobile = product.metafields.custom.product_media_with_text__text_color_mobile[indexCounter]
+    assign button_title = product.metafields.custom.product_media_with_text__button_title[indexCounter]
+    assign button_url = product.metafields.custom.product_media_with_text__button_url[indexCounter]
+    assign image_desktop = product.metafields.custom.product_media_with_text__image_desktop[indexCounter]
+    assign image_mobile = product.metafields.custom.product_media_with_text__image_mobile[indexCounter]
+    assign vimeo_id = product.metafields.custom.product_media_with_text__vimeo[indexCounter]
+  endif
+
+  assign counter = counter | plus: 1
+  assign indexCounter = indexCounter | plus: 1
+endfor
+
+if image_desktop != blank or image_mobile != blank
+  assign imageFound = true
+endif
+-%}
+
+{%- if imageFound == true or title != blank -%}
+<section class="Section Section--spacingLarge Section--ProductContentImageWithText Text-Color-Desktop--{{ text_color_desktop }}">
+  <div class="ContentWidth">
+    <div class="ProductContentImageWithText ProductContentImageWithText--text-position-desktop__{{ text_position_desktop }} ProductContentImageWithText--text-position-mobile__{{ text_position_mobile }}">
+      <div class="ProductContentImageWithText--content">
+        {%- if title != blank -%}
+          <h3 class="SectionHeader__Heading Heading Text--bold u-h1">{{ title }}</h3>
+        {%- endif -%}
+        {%- if title != blank -%}
+          <p>{{ text }}</p>
+        {%- endif -%}
+
+        {%- if button_url != blank -%}
+        <a href="{{ button_url }}" type="button" name="button" class="Button--link Button--withArrow Text--sizeTiny Button--link-primary">{{ button_title }} {%- render 'icon', icon: 'arrow-link' -%}</a>
+        {%- endif -%}
+      </div>
+
+      <div class="ProductContentImageWithText--image">
+        {%- if image_desktop != blank or image_mobile != blank -%}
+          {% render "responsive-image-metafields", src_desktop: image_desktop, src_mobile: image_mobile %}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Prod. Con: Image /W Text",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "description",
+        "label": "Description"
+      },
+      {
+         "type": "radio",
+         "id": "section_number",
+         "label": "Section Number",
+         "info": "Relates to the Accentuate Metafields Repeatable Section.",
+         "options": [
+            {
+              "value": "1",
+              "label": "1st Section"
+            },
+            {
+              "value": "2",
+              "label": "2nd Section"
+            }
+         ]
+      },
+      {
+        "type": "header",
+        "content": "Images"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile",
+        "label": "Image - Mobile"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_desktop",
+        "label": "Image - Desktop"
+      },
+      {
+        "type": "header",
+        "content": "Buttons"
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button - Text",
+        "info": "Optional"
+      },
+      {
+        "type": "url",
+        "id": "button_url",
+        "label": "Button / Image - Link"
+      }
+    ],
+    "presets":[
+      {
+        "name": "Prod. Con: Image /W Text",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}

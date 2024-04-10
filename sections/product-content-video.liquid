@@ -1,0 +1,97 @@
+{% assign vimeoVideoId = section.settings.vimeo_video_id %}
+{%- if product.metafields.custom.product_video_with_title__vimeo != blank -%}
+  {% assign vimeoVideoId = product.metafields.custom.product_video_with_title__vimeo %}
+{%- endif -%}
+
+{%- if product.metafields.custom.product_video_with_title__vimeo != blank -%}
+<section class="section">
+  <div class="container">
+    <div id="product-content-video-{{ section.id | remove: '-' }}" class="product-content-video">
+      <div class="product-content-video--image">
+        <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M48 96C74.5097 96 96 74.5097 96 48C96 21.4903 74.5097 0 48 0C21.4903 0 0 21.4903 0 48C0 74.5097 21.4903 96 48 96ZM35.863 64.0632L64.001 47.4355L35.863 30.8078V64.0632Z" fill="white"/>
+        </svg>
+        <div class="product-content-video--image-text">
+          {%- if product.metafields.custom.product_video_with_title__title != blank -%}
+          <p class="text--bold">{{ product.metafields.custom.product_video_with_title__title }}</p>
+          {%- else -%}
+          <p class="text--bold">{{ section.settings.title }}</p>
+          {%- endif -%}
+        </div>
+        {%- if product.metafields.custom.product_video_with_title__image_desktop != blank or product.metafields.custom.product_video_with_title__image_mobile != blank -%}
+          {% include "responsive-image-metafields", src_desktop: product.metafields.custom.product_video_with_title__image_desktop, src_mobile: product.metafields.custom.product_video_with_title__image_mobile %}
+        {%- endif -%}
+      </div>
+      <div class="product-content-video--video hidden">
+        <div id="video-{{ section.id | remove: '-' }}">
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    if (window.innerWidth > 469) {
+      var videoOptions{{ section.id | remove: '-' }} = {
+          id: {{ vimeoVideoId }},
+          quality: "720p",
+          background: false,
+          loop: true,
+          autoplay:false,
+          muted: true
+      };
+    } else {
+      var videoOptions{{ section.id | remove: '-' }} = {
+          id: {{ vimeoVideoId }},
+          quality: "360p",
+          background: false,
+          loop: true,
+          autoplay:false,
+          muted: true
+      };
+    }
+    document.addEventListener("DOMContentLoaded", function(event) {
+      var videoSection{{ section.id | remove: "-" }} = new Vimeo.Player('video-{{ section.id | remove: "-" }}', videoOptions{{ section.id | remove: '-' }});
+      console.log(videoSection{{ section.id | remove: "-" }})
+      $("#product-content-video-{{ section.id | remove: '-' }} .product-content-video--image").on( "click", function() {
+        $(this).addClass("hidden")
+        $("#product-content-video-{{ section.id | remove: '-' }} .product-content-video--video").removeClass("hidden");
+        videoSection{{ section.id | remove: "-" }}.play();
+      });
+  });
+  </script>
+</section>
+{%- endif -%}
+{% schema %}
+  {
+    "name": "Prod. Con: Video",
+    "settings": [
+    {
+      "type": "text",
+      "id": "vimeo_video_id",
+      "label": "Vimeo Id",
+      "info": "Enter in vimeo video ID - Look at the end of the video URL https://vimeo.com/237024588 e.g. 237024588 is the ID."
+    },
+    {
+      "type": "image_picker",
+      "id": "vimeo_poster_mobile",
+      "label": "Poster Image - Mobile"
+    },
+    {
+      "type": "image_picker",
+      "id": "vimeo_poster_desktop",
+      "label": "Poster Image - Desktop"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "info": "Use '<br>' element to break line."
+    }
+    ],
+    "presets":[
+      {
+        "name": "Prod. Con: Video",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}

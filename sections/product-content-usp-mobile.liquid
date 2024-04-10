@@ -1,0 +1,45 @@
+{%- if product.metafields.custom.product_usp__text != blank -%}
+  <section>
+    <div class="Product__USP hidden-lap-and-up">
+      {% assign USPtextSize = product.metafields.custom.product_usp__text | size %}
+
+      <h3 class="SectionHeader__Heading Heading {% if USPtextSize > 100 %}Product__USP-title-smallx{% elsif USPtextSize > 40 %}Product__USP-title-small{% endif %}">{{ product.metafields.custom.product_usp__text | remove: "<p>" | remove: "</p>" }}</h3>
+
+      {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_usp__image_desktop, src_mobile: product.metafields.custom.product_usp__image_mobile %}
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Prod. Con: USP Mobile",
+    "settings": [
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button label",
+        "default": "Swipe Me"
+      },
+      {
+        "type": "header",
+        "content": "Titles"
+      },
+      {
+        "type": "text",
+        "id": "title_morning",
+        "label": "Morning"
+      },
+      {
+        "type": "text",
+        "id": "title_evening",
+        "label": "Evening"
+      }
+    ],
+    "presets":[
+      {
+        "name": "Prod. Con: USP Mobile",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}

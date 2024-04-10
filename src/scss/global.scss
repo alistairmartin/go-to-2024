@@ -1,82 +1,27 @@
-$grid-medium: 740px;
-$grid-large: 1200px;
-$grid-widescreen: 1400px;
+@import "components/media-queries";
+@import "components/variables";
 
-$small: 'small';
-$medium: 'medium';
-$medium-down: 'medium-down';
-$medium-up: 'medium-up';
-$large: 'large';
-$large-down: 'large-down';
-$large-up: 'large-up';
-$widescreen: 'widescreen';
+.hide, .hidden {
+    display: none !important;
+}
 
-$grid-breakpoints: (
-  $small '(max-width: #{$grid-medium - 1})',
-  $medium '(min-width: #{$grid-medium}) and (max-width: #{$grid-large - 1})',
-  $medium-down '(max-width: #{$grid-large - 1})',
-  $medium-up '(min-width: #{$grid-medium})',
-  $large '(min-width: #{$grid-large}) and (max-width: #{$grid-widescreen - 1})',
-  $large-down '(max-width: #{$grid-widescreen - 1})',
-  $large-up '(min-width: #{$grid-large})',
-  $widescreen '(min-width: #{$grid-widescreen})'
-);
-
-/*================ Media Query Mixin ================*/
-
-@mixin media-query($media-query) {
-  @each $breakpoint in $grid-breakpoints {
-    $name: nth($breakpoint, 1);
-    $declaration: nth($breakpoint, 2);
-
-    @if $media-query ==$name and $declaration {
-      @media only screen and #{$declaration} {
-        @content;
-      }
-    }
+.hide-desktop {
+  display: block !important;
+  @include media-query($medium-up) {
+    display: none !important;
   }
 }
 
+.hide-mobile {
+  display: none !important;
+  @include media-query($medium-up) {
+    display: block !important;
+  }
+}
 
-$gotoPink: #f9c6b9;
-$gotoPinkLight: #fff7f5;
-$gotoPinkLighter: #f9c6b9;
-$gotoBlack: #1c1c1c;
-$gotoGrey: #d0cccb;
-$gotoGreyLight: #f4f4f4;
-
-$brotoRed: #ef3534;
-$brotoBlue: #192a42;
-$brotoBlueLight: #0DA9C5;
-$brotoPink: #FFBEBE;
-$brotoYellow: #F9F9A3;
-$brotoMint: #99DBC9;
-$brotoBlack: #1c1b1b;
-$brotoGrey: #f0f0f5;
-$brotoGreyLight: #F9F9F9;
-
-$grotoBlue: #00bce7;
-$grotoNavy: #002DAC;
-$grotoYellow: #f9cf63;
-$grotoPurple: #b493c4;
-$grotoPink: #f06098;
-$grotoGreen: #59C160;
-$grotoOrange: #F48120;
-$grotoGrey: #DCE0E4;
-$grotoGreyLight: #F2F2F2;
-$grotoGreyDark: #484848;
-$grotoGreyDarker: #282828;
-$grotoBlack: #181818;
-$grotoError: #B20000;
-$grotoFocus: #275DC5;
-
-$colorWhite: #fff;
-
-$gotoFontHeading: 'TTCommons';
-$brotoFontHeading: 'Moderno FB';
-$brotoFontBody: 'NeologyGrotesque';
-$grotoFontHeading: 'Proxima Nova';
-$grotoFontBody: 'Sofia Pro Soft';
+.text--bold, .text--bold * {
+  font-weight: bold !important;
+}
 
 .header__logo-image {
   width: 100%;
@@ -111,6 +56,7 @@ $grotoFontBody: 'Sofia Pro Soft';
     justify-content: center;
     align-items: center;
     padding: 10px 20px;
+    position: relative;
 
     @include media-query($medium-up) {
       width: auto;
@@ -126,6 +72,16 @@ $grotoFontBody: 'Sofia Pro Soft';
       }
     }
 
+    &.go-to {
+      &:after {
+        content: "";
+        height: 25px;
+        right: 0;
+        border-left: 1px solid #e5e5e5;
+        position: absolute;
+      }
+    }
+
     &.go-to.active {
       background: $gotoPink;
 
@@ -137,6 +93,20 @@ $grotoFontBody: 'Sofia Pro Soft';
       @include media-query($medium-up) {
         display: flex !important;
       }
+
+      &:after {
+        display: none;
+      }
+    }
+
+    &.bro-to {
+      &:after {
+        content: "";
+        height: 25px;
+        right: 0;
+        border-left: 1px solid #e5e5e5;
+        position: absolute;
+      }
     }
 
     &.bro-to.active {
@@ -145,6 +115,10 @@ $grotoFontBody: 'Sofia Pro Soft';
       svg,
       svg>* {
         fill: $colorWhite !important;
+      }
+
+      &:after {
+        display: none;
       }
     }
 
@@ -288,5 +262,107 @@ $grotoFontBody: 'Sofia Pro Soft';
     transform: unset;
     left: unset;
   
+  }
+}
+
+.uwy {
+  display: none !important;
+  &.show {
+    display: block !important;
+  }
+}
+
+store-header.background-blur {
+  @include media-query($medium-up) {
+  background: rgba(255,255,255,0.8) !important;
+  backdrop-filter: saturate(180%) blur(20px) !important;
+  }
+}
+
+
+.announcement-bar__message {
+  @include media-query($medium-up) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+
+    p {
+      gap: 5px;
+      line-height: 1.2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
+.compact-mobile-header {
+  @include media-query($small) {
+
+    .header__logo-image {
+      transition: 300ms opacity;
+    }
+
+    store-header {
+      margin-top: calc(var(--announcement-bar-height) * -1);
+      background: rgba(249,198,185,0.8) !important;
+      backdrop-filter: saturate(180%) blur(20px) !important;
+    }
+
+    .header__icon-wrapper {
+      color: #fff;
+    }
+
+    .shopify-section--announcement-bar {
+      z-index: 7;
+      max-width: calc(100vw - 180px);
+      margin: 0 auto;
+
+      .announcement-bar {
+        padding: 0;
+        background: transparent;
+      }
+
+       .announcement-bar__list  {
+        padding: 0;
+        width: 100%;
+      }
+
+      .announcement-bar__item:not([hidden]) {
+        height: var(--header-height);
+      }
+
+      .announcement-bar__message {
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: var(--header-height);
+
+        p {
+          line-height: 1.2;
+        }
+      }
+    }
+
+    &.header-position--top {
+      .header__logo-image {
+        opacity: 0;
+      }
+
+      store-header {
+        background: $gotoPink !important;
+        backdrop-filter: none !important;
+      }
+    }
+  }
+}
+
+
+
+.list-collections__item-list {
+  @include media-query($small) {
+    grid-template-columns: 1fr 1fr;
   }
 }

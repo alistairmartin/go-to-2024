@@ -1,0 +1,210 @@
+
+
+<section>
+  <div class="container">
+    <div class="product-content-description">
+    {%- comment %} CONTENT {% endcomment -%}
+
+      <div class="product-content-description--content">
+
+        {%- comment %} CONTENT -  TABS {% endcomment -%}
+
+        <div class="TabList" role="tablist">
+          <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-1" class="is-active">{{ 'product.content.what_is_it' | t }}</button>
+
+          {%- if product.metafields.custom.product_main_information__review_title != blank -%}
+            <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-2">{{ 'product.content.reviews' | t }}</button>
+          {%- endif -%}
+
+          {%- if product.metafields.accentuate.product_main_information__whats_in_it != blank -%}
+            <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-3">{{ 'product.content.whats_in_it' | t }}</button>
+          {%- endif -%}
+
+          {%- if product.metafields.custom.product_main_information__included_products != blank -%}
+            <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-4">{{ 'product.content.whats_included' | t }}</button>
+          {%- endif -%}
+        </div>
+
+        {%- comment %} CONTENT -  DESCRIPTION {% endcomment -%}
+
+        <div class="product-content-description--content-inner TabPanel description" id="product-content-description--tab-1" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-1" aria-hidden="false">
+          {% assign product_desc = product.description | split: ' ' %}
+          <div class="product-content-description--teaser" aria-revealed="{% if product_desc.size > 110 %}false{% else %}true{% endif %}">
+            {%- capture callout_image -%}
+              {%- if product.metafields.custom.product_gwp__image_mobile != blank or product.metafields.custom.product_gwp__image_desktop != blank -%}
+                {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_gwp__image_desktop, src_mobile: product.metafields.custom.product_gwp__image_mobile, class: "ProductGWP" %}
+              {%- endif -%}
+            {%- endcapture -%}
+
+            {%- if product.metafields.custom.product_gwp__url != blank -%}
+              {%- assign product_gwp__url = product.metafields.custom.product_gwp__url | split: '#' -%}
+
+              {%- if product_gwp__url.size > 1 -%}
+                {%- assign modal_target = product_gwp__url | last -%}
+                <button type="button" data-target="{{ modal_target }}" aria-controls="{{ modal_target }}" data-toggle="modal" data-action="open-modal">{{ callout_image }}</button>
+              {%- else -%}
+                <a href="{{ product.metafields.custom.product_gwp__url }}">{{ callout_image }}</a>
+              {%- endif -%}
+            {%- elsif product.metafields.custom.product_gwp__link != blank -%}
+              <a href="{{ product.metafields.custom.product_gwp__link }}">{{ callout_image }}</a>              
+            {%- else -%}
+              {{ callout_image }}
+            {%- endif -%}
+
+            {{ product.description }}
+          </div>
+
+          {% unless product_desc.size < 110 %}
+            <button type="button" name="button" data-action="toggle-teaser" aria-controls="product-content-description--teaser" data-x-label="{{ 'product.general.show_less' | t }}" class="Text--decorationUnderline">{{ 'product.general.read_more' | t }}</button>
+          {% endunless %}
+
+          <div class="perfect-for">
+            <h3 class="text--bold">{{ 'product.content.plays_nice_with' | t }}</h3>
+            <div class="perfect-for--container">
+              {%- for tag in product.tags -%}
+                {%- if tag contains "skintype_" -%}
+                  {% assign skinTypeFound = true %}
+                  {% assign icon = tag | remove: "skintype_" %}
+                  {% render "product-content-icons--perfect-for", icon: icon %}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+
+          {%- if skinTypeFound -%}
+          <style>.perfect-for {display: block !important;}</style>
+          {%- endif -%}
+
+          <div class="who-is-it-for">
+            <h3 class="text--bold">{{ 'product.content.good_to_know' | t }}</h3>
+            <div class="who-is-it-for--container">
+              {%- for tag in product.tags -%}
+                {%- if tag contains "badge_" -%}
+                  {% assign badgeFound = true %}
+                  {% assign icon = tag | remove: "badge_" %}
+                  {% render "product-content-icons--good-to-know", icon: icon %}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+
+          {%- if badgeFound -%}
+          <style>.who-is-it-for {display: block !important;}</style>
+          {%- endif -%}
+        </div>
+
+        {%- comment %} CONTENT -  REVIEWS {% endcomment -%}
+
+        {%- if product.metafields.custom.product_main_information__review_title  != blank -%}
+
+        <div class="product-content-description--content-inner TabPanel product-reviews" id="product-content-description--tab-2" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-2" aria-hidden="true">
+
+          <div class="product-reviews--items">
+            {% for review_title in product.metafields.custom.product_main_information__review_title %}
+              <div class="product-reviews--item">
+                <p class="product-reviews--item-author">{{ product.metafields.custom.product_main_information__review_author[forloop.index0] }}</p>
+                <div class="product-reviews--item-stars">
+                  <svg width="96" height="16" viewBox="0 0 96 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 0L9.79611 5.52786H15.6085L10.9062 8.94427L12.7023 14.4721L8 11.0557L3.29772 14.4721L5.09383 8.94427L0.391548 5.52786H6.20389L8 0Z" fill="#181818"/>
+                    <path d="M48 0L49.7961 5.52786H55.6085L50.9062 8.94427L52.7023 14.4721L48 11.0557L43.2977 14.4721L45.0938 8.94427L40.3915 5.52786H46.2039L48 0Z" fill="#181818"/>
+                    <path d="M28 0L29.7961 5.52786H35.6085L30.9062 8.94427L32.7023 14.4721L28 11.0557L23.2977 14.4721L25.0938 8.94427L20.3915 5.52786H26.2039L28 0Z" fill="#181818"/>
+                    <path d="M68 0L69.7961 5.52786H75.6085L70.9062 8.94427L72.7023 14.4721L68 11.0557L63.2977 14.4721L65.0938 8.94427L60.3915 5.52786H66.2039L68 0Z" fill="#181818"/>
+                    <path d="M88 0L89.7961 5.52786H95.6085L90.9062 8.94427L92.7023 14.4721L88 11.0557L83.2977 14.4721L85.0938 8.94427L80.3915 5.52786H86.2039L88 0Z" fill="#181818"/>
+                  </svg>
+                </div>
+                <p class="product-reviews--item-title">{{ review_title }}</p>
+                <p class="product-reviews--item-review">{{ product.metafields.custom.product_main_information__review_description[forloop.index0] | strip_html }}</p>
+              </div>
+            {% endfor %}
+          </div>
+
+          <button class="Button--link Button--link-primary Button--withArrow Text--sizeTiny" data-action="scroll-to" data-offset="0" data-target="#customer-reviews">
+            {{ 'product.general.read_more_reviews' | t }} {%- render 'icon', icon: 'arrow-link' -%}
+          </button>
+        </div>
+        {%- endif -%}
+
+        {%- comment %} CONTENT -  WHAT IS IN IT {% endcomment -%}
+
+        {%- if product.metafields.accentuate.product_main_information__whats_in_it != blank -%}
+        <div class="product-content-description--content-inner TabPanel whats-in-it" id="product-content-description--tab-3" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-3" aria-hidden="true">
+          {{ product.metafields.accentuate.product_main_information__whats_in_it }}
+
+          {%- comment %}
+          <div class="">
+            {% assign ingredientsCounter = 0 %}
+            {% assign ingredientsCounter = ingredientsCounter | plus: 1 %}
+
+            {%- for tag in product.tags -%}
+              {%- if tag contains "ing_" -%}
+                {% assign pageHandle = tag | replace: "ing_"," ingredient-" | handle %}
+                {% assign ingredientPage = pages[pageHandle].content %}
+                {%- if ingredientPage != blank -%}
+                  <h3>{{ tag | split: "ing_" | last }}</h3>
+                  {{ ingredientPage }}
+                {%- endif -%}
+              {%- endif -%}
+
+            {%- endfor -%}
+          </div>
+          {% endcomment -%}
+
+
+        </div>
+        {%- endif -%}
+
+        {%- if product.metafields.custom.product_main_information__included_products != blank -%}
+        <div class="product-content-description--content-inner TabPanel whats-included" id="product-content-description--tab-4" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-4" aria-hidden="true">
+
+          <div class="whats-included__container NoScrollBar--lap-and-up">
+          {% assign whatsIncludedProducts = product.metafields.custom.product_main_information__included_products | split: "|" %}
+          {%- for whatsIncludedProductHandle in whatsIncludedProducts -%}
+
+            {% assign whatsIncludedProduct = all_products[whatsIncludedProductHandle] %}
+            <div class="whats-included--item">
+              <div class="whats-included--item-image">
+                {{ whatsIncludedProduct | image_url: width: "300x" | image_tag }}
+              </div>
+              <div class="whats-included--item-text">
+                <div class="inner">
+                  <p><strong>{{ whatsIncludedProduct.title }}</strong></p>
+                  {%- if whatsIncludedProduct.metafields.custom.product_subtitle__description != blank -%}
+                    <p>{{ whatsIncludedProduct.metafields.custom.product_subtitle__description }}</p>
+                  {%- endif -%}
+                  {%- if whatsIncludedProduct.metafields.custom.product_subtitle__measurement != blank -%}
+                    <p>{{ whatsIncludedProduct.metafields.custom.product_subtitle__measurement }}</p>
+                  {%- endif -%}
+                </div>
+
+                {%- unless whatsIncludedProduct.template_suffix == "hidden" or whatsIncludedProduct.tag contains "hidden" -%}
+                <a href="{{ whatsIncludedProduct.url }}" class="Button--link Button--link-primary Button--withArrow Text--sizeTiny">MORE DETAILS {%- render 'icon', icon: 'arrow-link' -%}</a>
+                {%- endunless -%}
+              </div>
+
+            </div>
+          {%- endfor -%}
+          </div>
+        </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment %} IMAGE {% endcomment -%}
+      <div class="product-content-description--image">
+        {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_main_information__whats_in_it_image, src_mobile: product.metafields.custom.product_main_information__whats_in_it_image %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Prod. Con: Description",
+  "settings": [],
+  "presets":[
+    {
+      "name": "Prod. Con: Description",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

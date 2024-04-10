@@ -186,7 +186,11 @@
   },
 
   "product": {
+
     "general": {
+      "read_more": "Read more",
+      "show_less": "Show less",
+      "read_more_reviews": "Read more reviews",
       "description": "Description",
       "reviews": "Reviews ({{ rating_count }})",
       "sku": "SKU:",
@@ -206,7 +210,16 @@
         "other": "{{ count }} reviews"
       }
     },
-
+    "content": {
+      "plays_nice_with": "PLAYS NICE WITH",
+      "good_to_know": "GOOD TO KNOW",
+      "what_is_it": "WHAT IS IT?",
+      "reviews": "REVIEWS",
+      "whats_in_it": "WHAT'S IN IT?",
+      "whats_included": "WHAT'S INCLUDED?",
+      "how_its_made": "HOW IT'S MADE",
+      "how_to_recycle": "HOW TO RECYCLE"
+    },
     "form": {
       "choose_options": "Choose options",
       "quantity": "Quantity",

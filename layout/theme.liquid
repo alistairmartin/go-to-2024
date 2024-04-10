@@ -90,17 +90,30 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     {%- include "fonts" -%}
     <link rel="stylesheet" href="{{ 'global.css' | asset_url }}">
 
+    {%- if product -%}
+      <link rel="stylesheet" href="{{ 'products.css' | asset_url }}">
+    {%- endif -%}
+
     <script src="{{ 'vendor.js' | asset_url }}" defer></script>
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
     <script src="{{ 'custom.js' | asset_url }}" defer></script>
+    <script src="{{ 'theme-custom.min.js' | asset_url }}" defer></script>
+
+    {%- if product -%}
+      <script src="https://player.vimeo.com/api/player.js" defer></script>
+    {%- endif -%}
 
     {{ content_for_header }}
   </head>
 
-  {%- assign feature_classes = '' -%}
+  {%- assign feature_classes = 'header-position--top' -%}
 
   {%- if settings.show_image_zoom -%}
     {% assign feature_classes = feature_classes | append: ' features--image-zoom' %}
+  {%- endif -%}
+
+  {%- if settings.enable_compact_mobile_header -%}
+    {% assign feature_classes = feature_classes | append: ' compact-mobile-header' %}
   {%- endif -%}
 
   <body class="no-focus-outline {{ feature_classes }}" data-instant-allow-query-string>

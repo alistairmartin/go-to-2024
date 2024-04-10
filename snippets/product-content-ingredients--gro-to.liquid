@@ -1,0 +1,55 @@
+<div class="ContentWidth ContentWidth--no-padding-mobile">
+  <div class="ProductContentIngredients">
+    <h3 class="SectionHeader__Heading Heading Text--bold u-h1">{{ section.settings.title }}</h3>
+
+    <div class="ProductContentIngredients--container">
+      {%- assign ingredientCounter = 0 -%}
+      {%- assign alphabet = 'A,C,H,J,O,R,S' | split: ',' -%}
+      {%- assign words = 'Apple,Cat,Hat,Jellyfish,Octopus,Rabbit,Spaceship' | split: ',' -%}
+      
+      {%- for ingredient in ingredientsGlossary -%}
+        {%- assign ingredientTitle = ingredient | split: '</h3>' | first -%}
+        {%- assign ingredientContent = ingredient | split: '</h3>' | last -%}
+        {%- assign ingredientInitial = ingredientTitle | strip_html | slice: 0 | upcase -%}
+        {%- assign ingredientDowncased = ingredientTitle | downcase -%}
+
+        {%- if productIngredients contains ingredientDowncased and ingredientTitle != blank -%}
+          <div class="ProductContentIngredients--text-item {% if ingredientCounter == 0 %}active{% endif %}" data-action="activate">
+            {%- for alpha in alphabet -%}
+              {%- if alpha == ingredientInitial -%}
+                {%- assign word = words[forloop.index0] -%}
+              {%- endif -%}
+            {%- endfor -%}
+            
+            <div class="ProductContentIngredients--icons">
+              {%- if ingredientInitial == 'S' -%}
+                {%- capture word -%}{%- cycle 'Spaceship', 'Sock' -%}{%- endcapture -%}
+              {%- endif -%}
+            
+              <img src="{{ '0223_GRT_Illustrations_ProductPage_' | append: word | append: '.svg' | asset_url }}" alt="{{ word }}" width="auto" height="auto" loading="lazy">
+              <img src="{{ '0223_GRT_Illustrations_ProductPage_' | append: word | append: '_copy.svg' | asset_url }}" alt="{{ word }}" width="auto" height="auto" loading="lazy">
+            </div>
+            
+            <p class="title u-h1 Heading">
+              <span class="slice-title">{{ ingredientInitial }}</span>
+              <span class="is-for">Is For <span class="Text--bold">{{ ingredientTitle }}</span></span>
+            </p>
+
+            <div class="content">{{ ingredientContent }}</div>
+          </div>
+
+          {% if ingredientCounter == 3 %}
+            {% break %}
+          {% else %}  
+            {%- assign ingredientCounter = ingredientCounter | plus: 1 -%}            
+          {% endif %}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="button-container">
+      <button type="button" rel="modal:open" data-action="open-modal" aria-controls="modal-ingredients" title="VIEW FULL INGREDIENT GLOSSARY" class="Button--link Button--withArrow Text--sizeTiny Button--link-primary">VIEW FULL INGREDIENT GLOSSARY {%- render 'icon', icon: 'arrow-link' -%}</button>
+      {% render 'modal', id: 'modal-ingredients', class: 'Modal--medium' title: 'Full Ingredient Glossary', content: pages[section.settings.ingredients_page-gro_to].content %}
+    </div>
+  </div>
+</div>

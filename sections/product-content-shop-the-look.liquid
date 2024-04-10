@@ -1,0 +1,138 @@
+
+
+{%- if product.metafields.custom.shop_the_set__image-desktop != blank and product.metafields.accentuate.shop_the_set__image-mobile != blank -%}
+<section class="Section Section--spacingLarge Section--ProductContentShopTheSet">
+  <div class="ContentWidth">
+    <div class="ProductContentShopTheSet">
+
+
+        {% for productItem in product.metafields.custom.shop_the_set__product %}
+
+        {%- liquid
+              assign productObject = product.metafields.custom.shop_the_set__product[forloop.index0]
+              assign positionHorizontalMobile = product.metafields.custom.shop_the_set__horizontal-position-mobile[forloop.index0]
+              assign positionVerticalMobile = product.metafields.custom.shop_the_set__vertical-position-mobile[forloop.index0]
+              assign positionHorizontalDesktop = product.metafields.custom.shop_the_set__horizontal-position[forloop.index0]
+              assign positionVerticalDesktop = product.metafields.custom.shop_the_set__vertical-position[forloop.index0]
+          -%}
+
+          <style>
+          #section-{{ section.id }}-{{ forloop.index0}}.ProductContentShopTheSet--dot {
+            left: {{ positionHorizontalMobile }}%;
+            top: {{ positionVerticalMobile }}%;
+          }
+
+          @media only screen and (min-width: 768px) {
+            #section-{{ section.id }}-{{ forloop.index0}}.ProductContentShopTheSet--dot {
+            left: {{ positionHorizontalDesktop }}%;
+            top: {{ positionVerticalDesktop }}%;
+            }
+          }
+          </style>
+
+          <button id="section-{{ section.id }}-{{ forloop.index0 }}" class="ProductContentShopTheSet--dot">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 196 196"><circle cx="98" cy="98" r="98" style="fill:#f9c6b9;"/><circle cx="98" cy="98" r="55.38" style="fill:#fff;"/></svg>
+
+            <div class="ProductContentShopTheSet--dot-product">
+            {% assign productDetails = all_products[productObject] %}
+
+            <div class="image">
+              <img src="{{ productDetails | img_url: '140x' }}">
+            </div>
+
+            <div class="text">
+              <p class="title"><strong>{{ productDetails.title }}</strong></p>
+
+              {%- if productDetails.metafields.custom.product_subtitle__description != blank -%}
+                <p class="subtitle">{{ productDetails.metafields.custom.product_subtitle__description }}</p>
+              {%- endif -%}
+              
+              {%- if productDetails.metafields.custom.product_subtitle__measurement != blank -%}
+                <p class="measurement">{{ productDetails.metafields.custom.product_subtitle__measurement }}</p>
+              {%- endif -%}
+
+              <p class="price">{{ productDetails.price | money  }}</p>
+
+         
+            </div>
+      
+            </div>
+          </button>
+
+        {% endfor %}
+
+        {% render "responsive-image-metafields", src_desktop: product.metafields.custom.shop_the_set__image-desktop, src_mobile: product.metafields.accentuate.shop_the_set__image-mobile %}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Prod. Con: Shop The Set",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "description",
+        "label": "Description"
+      },
+      {
+         "type": "radio",
+         "id": "section_number",
+         "label": "Section Number",
+         "info": "Relates to the Accentuate Metafields Repeatable Section.",
+         "options": [
+            {
+              "value": "1",
+              "label": "1st Section"
+            },
+            {
+              "value": "2",
+              "label": "2nd Section"
+            }
+         ]
+      },
+      {
+        "type": "header",
+        "content": "Images"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile",
+        "label": "Image - Mobile"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_desktop",
+        "label": "Image - Desktop"
+      },
+      {
+        "type": "header",
+        "content": "Buttons"
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button - Text",
+        "info": "Optional"
+      },
+      {
+        "type": "url",
+        "id": "button_url",
+        "label": "Button / Image - Link"
+      }
+    ],
+    "presets":[
+      {
+        "name": "Prod. Con: Shop The Set",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}

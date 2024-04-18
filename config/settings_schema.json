@@ -239,6 +239,95 @@
     ]
   },
   {
+    "name": "🟪 Social media (Go-To)",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Accounts"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter",
+        "label": "X (formerly Twitter)"
+      },
+      {
+        "type": "text",
+        "id": "social_threads",
+        "label": "Threads"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest",
+        "label": "Pinterest"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram"
+      },
+      {
+        "type": "text",
+        "id": "social_vimeo",
+        "label": "Vimeo"
+      },
+      {
+        "type": "text",
+        "id": "social_tumblr",
+        "label": "Tumblr"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok"
+      },
+      {
+        "type": "text",
+        "id": "social_linkedin",
+        "label": "LinkedIn"
+      },
+      {
+        "type": "text",
+        "id": "social_snapchat",
+        "label": "Snapchat"
+      },
+      {
+        "type": "text",
+        "id": "social_fancy",
+        "label": "Fancy"
+      },
+      {
+        "type": "text",
+        "id": "social_wechat",
+        "label": "WeChat"
+      },
+      {
+        "type": "text",
+        "id": "social_reddit",
+        "label": "Reddit"
+      },
+      {
+        "type": "text",
+        "id": "social_line",
+        "label": "LINE"
+      },
+      {
+        "type": "text",
+        "id": "social_spotify",
+        "label": "Spotify"
+      }
+    ]
+  },
+  {
     "name": "🟥 Colors (Bro-To)",
     "settings": [
       {
@@ -460,6 +549,95 @@
     ]
   },
   {
+    "name": "🟥 Social media (Bro-To)",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Accounts"
+      },
+      {
+        "type": "text",
+        "id": "broto_social_facebook",
+        "label": "Facebook"
+      },
+      {
+        "type": "text",
+        "id": "broto_social_twitter",
+        "label": "X (formerly Twitter)"
+      },
+      {
+        "type": "text",
+        "id": "broto_social_threads",
+        "label": "Threads"
+      },
+      {
+        "type": "text",
+        "id": "broto_social_pinterest",
+        "label": "Pinterest"
+      },
+      {
+        "type": "text",
+        "id": "broto_social_instagram",
+        "label": "Instagram"
+      },
+      {
+        "type": "text",
+        "id": "broto_social_vimeo",
+        "label": "Vimeo"
+      },
+      {
+        "type": "text",
+        "id": "broto_social_tumblr",
+        "label": "Tumblr"
+      },
+      {
+        "type": "text",
+        "id": "broto_social_youtube",
+        "label": "YouTube"
+      },
+      {
+        "type": "text",
+        "id": "broto_social_tiktok",
+        "label": "TikTok"
+      },
+      {
+        "type": "text",
+        "id": "broto_social_linkedin",
+        "label": "LinkedIn"
+      },
+      {
+        "type": "text",
+        "id": "broto_social_snapchat",
+        "label": "Snapchat"
+      },
+      {
+        "type": "text",
+        "id": "broto_social_fancy",
+        "label": "Fancy"
+      },
+      {
+        "type": "text",
+        "id": "broto_social_wechat",
+        "label": "WeChat"
+      },
+      {
+        "type": "text",
+        "id": "broto_social_reddit",
+        "label": "Reddit"
+      },
+      {
+        "type": "text",
+        "id": "broto_social_line",
+        "label": "LINE"
+      },
+      {
+        "type": "text",
+        "id": "broto_social_spotify",
+        "label": "Spotify"
+      }
+    ]
+  },
+  {
     "name": "🟩 Colors (Gro-To)",
     "settings": [
       {
@@ -677,6 +855,95 @@
         "max": 20,
         "unit": "px",
         "default": 15
+      }
+    ]
+  },
+  {
+    "name": "🟩 Social media (Gro-To)",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Accounts"
+      },
+      {
+        "type": "text",
+        "id": "groto_social_facebook",
+        "label": "Facebook"
+      },
+      {
+        "type": "text",
+        "id": "groto_social_twitter",
+        "label": "X (formerly Twitter)"
+      },
+      {
+        "type": "text",
+        "id": "groto_social_threads",
+        "label": "Threads"
+      },
+      {
+        "type": "text",
+        "id": "groto_social_pinterest",
+        "label": "Pinterest"
+      },
+      {
+        "type": "text",
+        "id": "groto_social_instagram",
+        "label": "Instagram"
+      },
+      {
+        "type": "text",
+        "id": "groto_social_vimeo",
+        "label": "Vimeo"
+      },
+      {
+        "type": "text",
+        "id": "groto_social_tumblr",
+        "label": "Tumblr"
+      },
+      {
+        "type": "text",
+        "id": "groto_social_youtube",
+        "label": "YouTube"
+      },
+      {
+        "type": "text",
+        "id": "groto_social_tiktok",
+        "label": "TikTok"
+      },
+      {
+        "type": "text",
+        "id": "groto_social_linkedin",
+        "label": "LinkedIn"
+      },
+      {
+        "type": "text",
+        "id": "groto_social_snapchat",
+        "label": "Snapchat"
+      },
+      {
+        "type": "text",
+        "id": "groto_social_fancy",
+        "label": "Fancy"
+      },
+      {
+        "type": "text",
+        "id": "groto_social_wechat",
+        "label": "WeChat"
+      },
+      {
+        "type": "text",
+        "id": "groto_social_reddit",
+        "label": "Reddit"
+      },
+      {
+        "type": "text",
+        "id": "groto_social_line",
+        "label": "LINE"
+      },
+      {
+        "type": "text",
+        "id": "groto_social_spotify",
+        "label": "Spotify"
       }
     ]
   },
@@ -980,95 +1247,6 @@
         "label": "Free shipping minimum amount",
         "info": "Enter amount using number only. If using multiple currencies, separate each currency code with its amount (eg.: USD:50,EUR:60,JPY:9000)",
         "default": "50"
-      }
-    ]
-  },
-  {
-    "name": "Social media",
-    "settings": [
-      {
-        "type": "header",
-        "content": "Accounts"
-      },
-      {
-        "type": "text",
-        "id": "social_facebook",
-        "label": "Facebook"
-      },
-      {
-        "type": "text",
-        "id": "social_twitter",
-        "label": "X (formerly Twitter)"
-      },
-      {
-        "type": "text",
-        "id": "social_threads",
-        "label": "Threads"
-      },
-      {
-        "type": "text",
-        "id": "social_pinterest",
-        "label": "Pinterest"
-      },
-      {
-        "type": "text",
-        "id": "social_instagram",
-        "label": "Instagram"
-      },
-      {
-        "type": "text",
-        "id": "social_vimeo",
-        "label": "Vimeo"
-      },
-      {
-        "type": "text",
-        "id": "social_tumblr",
-        "label": "Tumblr"
-      },
-      {
-        "type": "text",
-        "id": "social_youtube",
-        "label": "YouTube"
-      },
-      {
-        "type": "text",
-        "id": "social_tiktok",
-        "label": "TikTok"
-      },
-      {
-        "type": "text",
-        "id": "social_linkedin",
-        "label": "LinkedIn"
-      },
-      {
-        "type": "text",
-        "id": "social_snapchat",
-        "label": "Snapchat"
-      },
-      {
-        "type": "text",
-        "id": "social_fancy",
-        "label": "Fancy"
-      },
-      {
-        "type": "text",
-        "id": "social_wechat",
-        "label": "WeChat"
-      },
-      {
-        "type": "text",
-        "id": "social_reddit",
-        "label": "Reddit"
-      },
-      {
-        "type": "text",
-        "id": "social_line",
-        "label": "LINE"
-      },
-      {
-        "type": "text",
-        "id": "social_spotify",
-        "label": "Spotify"
       }
     ]
   },

@@ -1,6 +1,29 @@
 @import "components/media-queries";
 @import "components/variables";
 
+.link--primary {
+  text-underline-offset: 2px;
+  text-decoration: underline;
+  text-decoration-color: $gotoPink;
+  text-decoration-thickness: 5px;
+  text-transform: uppercase;
+  font-weight: bold;
+
+  &:after {
+    background: transparent;
+  }
+
+  &:hover {
+    text-decoration-color: rgb(var(--text-color));
+    color: rgb(var(--text-color));
+  }
+}
+
+.label--label-custom {
+  background-color: $gotoPink;
+  border-radius: 8px;
+}
+
 .hide, .hidden {
     display: none !important;
 }
@@ -364,5 +387,17 @@ store-header.background-blur {
 .list-collections__item-list {
   @include media-query($small) {
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+
+
+.product-item  {
+  .product-item-meta__title {
+    font-weight: bold;
+  }
+
+  .product-item__quick-form-alt {
+    margin: 0 auto;
   }
 }

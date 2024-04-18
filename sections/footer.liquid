@@ -1,3 +1,4 @@
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
 <style>
   #shopify-section-{{ section.id }} .footer {
     {%- assign border_color = settings.footer_background | color_mix: settings.footer_text_color, 85 -%}
@@ -65,7 +66,14 @@
                     {{- block.settings.content -}}
                   {%- endif -%}
 
-                  {%- render 'social-media' -%}
+                  {%- if brand == "go-to" -%}
+                      {%- render 'social-media' -%}
+                  {%- elsif brand == "bro-to" -%}
+                    {%- render 'social-media--bro-to' -%}
+                  {%- elsif brand == "gro-to" -%}
+                    {%- render 'social-media--gro-to' -%}
+                  {%- endif -%}
+             
                 </div>
 
               {%- when 'newsletter' -%}

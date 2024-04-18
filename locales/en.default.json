@@ -186,7 +186,15 @@
   },
 
   "product": {
-
+    "labels": {
+      "soldout": "Sold Out",
+      "sold_out": "Sold Out",
+      "out_of_stock": "Out of stock",
+      "waitlist": "Waitlist Me",
+      "coming_soon": "Coming Soon",
+      "pre_order": "Pre-Order Now",
+      "on_sale": "On sale"
+    },
     "general": {
       "read_more": "Read more",
       "show_less": "Show less",

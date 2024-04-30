@@ -1,97 +1,86 @@
-{%- capture flickity_options -%}
-  {
-    "prevNextButtons": false,
-    "pageDots": true,
-    "contain": true,
-    "cellAlign": "left"
+<style>
+  @media screen and (min-width: 999px) {
+    #shopify-section-{{ section.id }} {
+      --section-products-per-row: 3;
+    }
   }
-{%- endcapture -%}
+</style>
 
-{%- capture section_settings -%}
-{
-  "useAjaxCart": {% if settings.cart_type == 'drawer' %}true{% else %}false{% endif %},
-  "carouselCellSelector": ".ProductContentBoughtWith--item"
-}
-{%- endcapture -%}
-<section class="Section Section--spacingLarge Section--ProductContentBoughtWith" data-section-type="product-upsell" data-section-settings='{{ section_settings }}'>
-  <div class="ContentWidth">
-    <product-recommendations data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.products_count }}&intent=complementary">
-      {%- if recommendations.performed and recommendations.products_count > 0 -%}
-        <h3 class="SectionHeader__Heading Heading Text--bold u-h1">
-          {% if product.metafields.custom.product_upsell__title != blank %}
-            {{ product.metafields.custom.product_upsell__title }}
-          {% else %}
-            {{ section.settings.title }}
-          {% endif %}
-        </h3>
+<product-recommendations section-id="{{ section.id }}" intent="complementary" product-id="{{ product.id }}" recommendations-count="10" class="section {% unless blends_with_background %}section--flush{% endunless %}" hidden>
+  {%- assign acceptable_recommendations_count = 0 -%}
 
-        <div class="ProductContentBoughtWith" data-flickity-config='{{ flickity_options }}' >
-          {%- for productBoughtWith in recommendations.products -%}
-            <div class="ProductContentBoughtWith--item">
-              <a href="{{ productBoughtWith.url }}" class="ProductContentBoughtWith--item-inner">
-                <div class="ProductContentBoughtWith--item-image">
-                  {%- render 'image', img_src: productBoughtWith.featured_image, placeholder: 'product-1' -%}
-                </div>
-                <div class="ProductContentBoughtWith--item-text">
+  {% comment %} {%- for product in recommendations.products -%}
+    {%- assign matching_product = cart.items | where: 'product_id', product.id | first -%}
 
-                  <div class="ProductContentBoughtWith--item-title">
-                    <p>{{ productBoughtWith.title }}</p>
-                    <p>{{ productBoughtWith.selected_or_first_available_variant.price | money_without_trailing_zeros }}</p>
-                  </div>
-                  {{ productBoughtWith.metafields.custom.product_usp__text }}
-                </div>
-              </a>
-              <div class="ProductContentBoughtWith--item-button Text--alignCenter">
-                {%- if settings.cart_type == 'disabled' -%}
-                  {%- assign shop_now_text = 'cart.general.shop_now' | t -%}
-                  <a href="{{ productBoughtWith.metafields.gts_theme.custom_url | default: productBoughtWith.url }}" title="{{ productBoughtWith.metafields.gts_theme.add_to_cart_text | default: shop_now_text }}" class="Button Button--link Button--link-primary Text--bold">
-                    {{ productBoughtWith.metafields.gts_theme.add_to_cart_text | default: shop_now_text | upcase }}
-                  </a>
-                {%- else -%}
-                  {%- render 'product-item-form', product: productBoughtWith -%}
-                {%- endif -%}
-              </div>
-            </div>
-          {%- endfor -%}
-        </div>
+    {%- if matching_product == blank -%}
+      {%- assign acceptable_recommendations_count = acceptable_recommendations_count | plus: 1 -%}
+    {%- endif -%}
+  {%- endfor -%} {% endcomment %}
+
+  {%- if recommendations.performed -%}
+    <div class="container container--medium vertical-breather vertical-breather--tight vertical-breather--margin">
+      {%- if section.settings.title != blank or section.settings.subheading != blank -%}
+        <header class="section__header">
+          <div class="text-container">
+            {%- if section.settings.title != blank -%}
+              <h2 class="heading h4">
+                {% if product.metafields.custom.product_upsell__title != blank %}
+                  {{ product.metafields.custom.product_upsell__title }}
+                {% else %}
+                  {{ section.settings.title }}
+                {% endif %}
+                </h2>
+            {%- endif -%}
+
+            
+          </div>
+        </header>
       {%- endif -%}
-    </product-recommendations>
-  </div>
-</section>
+
+      {%- comment -%}
+        IMPLEMENTATION NOTE: we show only 4 products at max, but we load 10, to avoid showing the products that are already in the cart
+      {%- endcomment -%}
+
+      <product-list {% if settings.stagger_products_apparition %}stagger-apparition{% endif %} class="product-list">
+        {%- assign largest_image_aspect_ratio = 1 -%}
+        {%- assign shown_products_count = 0 -%}
+
+        <div class="scroller">
+          <div class="product-list__inner product-list__inner--scroller product-list__inner--desktop-no-scroller hide-scrollbar">
+            {%- for product in recommendations.products -%}
+              {%- if shown_products_count >= 3 -%}
+                {%- break -%}
+              {%- endif -%}
+
+                {%- assign shown_products_count = shown_products_count | plus: 1 -%}
+                {%- assign largest_image_aspect_ratio = largest_image_aspect_ratio | at_most: product.featured_media.aspect_ratio -%}
+
+                {%- capture sizes_attribute -%}(max-width: 740px) 75vw, min({{ 100.0 | divided_by: 3 | ceil }}vw, {{ 1520.0 | divided_by: 3 | ceil }}px){%- endcapture -%}
+                {%- render 'product-item', product: product, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, horizontal: true -%}
+
+            {%- endfor -%}
+          </div>
+        </div>
+      </product-list>
+    </div>
+  {%- endif -%}
+</product-recommendations>
+
 {% schema %}
-  {
-    "name": "Prod. Con: Bought With",
-    "settings": [
-      {
-        "type": "text",
-        "id": "title",
-        "label": "Title"
-      },
-      {
-        "type": "image_picker",
-        "id": "image_mobile",
-        "label": "Image - Mobile"
-      },
-      {
-        "type": "image_picker",
-        "id": "image_desktop",
-        "label": "Image - Desktop"
-      },
-      {
-        "type": "range",
-        "id": "products_count",
-        "min": 3,
-        "max": 8,
-        "step": 1,
-        "label": "Products count",
-        "default": 3
-      }
-    ],
-    "presets":[
-      {
-        "name": "Prod. Con: Bought With",
-        "category": "Product"
-      }
-    ]
-  }
+{
+  "name": "Prod. Con: Bought With",
+  "class": "shopify-section--product-recommendations",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Dynamic recommendations are based on the items in your cart. They change and improve with time. [Learn more](https://help.shopify.com/en/themes/development/recommended-products)"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "You may also like"
+    }
+  ]
+}
 {% endschema %}

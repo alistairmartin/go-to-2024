@@ -9,25 +9,28 @@
 
         {%- comment %} CONTENT -  TABS {% endcomment -%}
 
-        <div class="TabList" role="tablist">
-          <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-1" class="is-active">{{ 'product.content.what_is_it' | t }}</button>
+        <div class="tab-list">
+          <div class="tab-list--outer">
+            <div class="tab-list--inner" role="tablist">
+              <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-1" class="tab-list--tab is-active link--primary">{{ 'product.content.what_is_it' | t }}</button>
 
-          {%- if product.metafields.custom.product_main_information__review_title != blank -%}
-            <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-2">{{ 'product.content.reviews' | t }}</button>
-          {%- endif -%}
+              {%- if product.metafields.custom.product_main_information__review_title != blank -%}
+                <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-2" class="tab-list--tab link--secondary">{{ 'product.content.reviews' | t }}</button>
+              {%- endif -%}
 
-          {%- if product.metafields.accentuate.product_main_information__whats_in_it != blank -%}
-            <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-3">{{ 'product.content.whats_in_it' | t }}</button>
-          {%- endif -%}
+              {%- if product.metafields.accentuate.product_main_information__whats_in_it != blank -%}
+                <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-3" class="tab-list--tab link--secondary">{{ 'product.content.whats_in_it' | t }}</button>
+              {%- endif -%}
 
-          {%- if product.metafields.custom.product_main_information__included_products != blank -%}
-            <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-4">{{ 'product.content.whats_included' | t }}</button>
-          {%- endif -%}
-        </div>
-
+              {%- if product.metafields.custom.product_main_information__included_products != blank -%}
+                <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-4" class="tab-list--tab link--secondary">{{ 'product.content.whats_included' | t }}</button>
+              {%- endif -%}
+            </div>
+          </div>
+      
         {%- comment %} CONTENT -  DESCRIPTION {% endcomment -%}
 
-        <div class="product-content-description--content-inner TabPanel description" id="product-content-description--tab-1" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-1" aria-hidden="false">
+        <div class="product-content-description--content-inner tab-panel description" id="product-content-description--tab-1" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-1" aria-hidden="false">
           {% assign product_desc = product.description | split: ' ' %}
           <div class="product-content-description--teaser" aria-revealed="{% if product_desc.size > 110 %}false{% else %}true{% endif %}">
             {%- capture callout_image -%}
@@ -55,7 +58,9 @@
           </div>
 
           {% unless product_desc.size < 110 %}
-            <button type="button" name="button" data-action="toggle-teaser" aria-controls="product-content-description--teaser" data-x-label="{{ 'product.general.show_less' | t }}" class="Text--decorationUnderline">{{ 'product.general.read_more' | t }}</button>
+            <button type="button" name="button" data-action="toggle-teaser" aria-controls="product-content-description--teaser" class="product-content-description--teaser-open link">{{ 'product.general.read_more' | t }}</button>
+            <button type="button" name="button" data-action="toggle-teaser" aria-controls="product-content-description--teaser" class="product-content-description--teaser-close hidden link">{{ 'product.general.show_less' | t }}</button>
+
           {% endunless %}
 
           <div class="perfect-for">
@@ -97,7 +102,7 @@
 
         {%- if product.metafields.custom.product_main_information__review_title  != blank -%}
 
-        <div class="product-content-description--content-inner TabPanel product-reviews" id="product-content-description--tab-2" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-2" aria-hidden="true">
+        <div class="product-content-description--content-inner tab-panel product-reviews" id="product-content-description--tab-2" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-2" aria-hidden="true">
 
           <div class="product-reviews--items">
             {% for review_title in product.metafields.custom.product_main_information__review_title %}
@@ -127,7 +132,7 @@
         {%- comment %} CONTENT -  WHAT IS IN IT {% endcomment -%}
 
         {%- if product.metafields.accentuate.product_main_information__whats_in_it != blank -%}
-        <div class="product-content-description--content-inner TabPanel whats-in-it" id="product-content-description--tab-3" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-3" aria-hidden="true">
+        <div class="product-content-description--content-inner tab-panel whats-in-it" id="product-content-description--tab-3" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-3" aria-hidden="true">
           {{ product.metafields.accentuate.product_main_information__whats_in_it }}
 
           {%- comment %}
@@ -154,9 +159,9 @@
         {%- endif -%}
 
         {%- if product.metafields.custom.product_main_information__included_products != blank -%}
-        <div class="product-content-description--content-inner TabPanel whats-included" id="product-content-description--tab-4" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-4" aria-hidden="true">
+        <div class="product-content-description--content-inner tab-panel whats-included" id="product-content-description--tab-4" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-4" aria-hidden="true">
 
-          <div class="whats-included__container NoScrollBar--lap-and-up">
+          <div class="whats-included__container no-scroll-bar--medium-and-up">
           {% assign whatsIncludedProducts = product.metafields.custom.product_main_information__included_products | split: "|" %}
           {%- for whatsIncludedProductHandle in whatsIncludedProducts -%}
 
@@ -187,6 +192,7 @@
         </div>
         {%- endif -%}
       </div>
+      </div>
 
       {%- comment %} IMAGE {% endcomment -%}
       <div class="product-content-description--image">
@@ -194,6 +200,21 @@
       </div>
     </div>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+      $(".product-content-description--teaser-open").on( "click", function() {
+        $(this).addClass("hidden");
+        $(".product-content-description--teaser-close").removeClass("hidden");
+        $(".product-content-description--teaser").attr('aria-revealed', 'true');
+      });
+      $(".product-content-description--teaser-close").on( "click", function() {
+        $(this).addClass("hidden");
+        $(".product-content-description--teaser-open").removeClass("hidden");
+        $(".product-content-description--teaser").attr('aria-revealed', 'false');
+      });
+    });
+  </script>
 </section>
 
 {% schema %}

@@ -1,30 +1,30 @@
 {%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
 
-  {% assign startOnEvening = false %}
+  {% assign startOnevening = false %}
 
 
 
 {% if product.metafields.custom.product_routine__steps-morning != blank %}
-{% assign stepsClasses = "Active--Morning" %}
+{% assign stepsClasses = "active--morning" %}
 {% else %}
-{% assign stepsClasses = "Active--Evening" %}
+{% assign stepsClasses = "active--evening" %}
 {% endif %}
 
 
 {% if product.metafields.custom.product_routine__start_on_evening == "true" %}
-  {% assign stepsClasses = "Active--Evening" %}
+  {% assign stepsClasses = "active--evening" %}
 {% endif %}
 
 
 
 {%- if product.metafields.custom.product_routine__steps-morning != blank or product.metafields.custom.product_routine__steps-evening != blank -%}
-<section class="Section Section--spacingLarge Section--ProductContentRoutine" data-section-type="product-content" data-section-subtype="routine">
-  <div class="ContentWidth">
-    <div class="ProductContentRoutine {{ stepsClasses }}">
-      <div class="ProductContentRoutine-Text">
+<section class="section" data-section-type="product-content" data-section-subtype="routine">
+  <div class="container">
+    <div class="product-content-routine {{ stepsClasses }}">
+      <div class="product-content-routine--text">
         {%- if product.metafields.custom.product_routine__steps-morning != blank and product.metafields.custom.product_routine__steps-evening != blank -%}
-          <div class="ProductContentRoutine-Text__Switcher-Outer">
-            <div class="ProductContentRoutine-Text__Switcher-Swipe-Me">
+          <div class="product-content-routine--text__switcher-outer">
+            <div class="product-content-routine--text__switcher-swipe-me">
               <svg width="123" height="121" viewBox="0 0 123 121" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M114.187 70.3072C115.982 63.8502 115.101 57.0615 112.332 51.5887C111.032 49.0679 109.43 46.7813 107.271 44.9236C105.265 43.1595 102.602 41.9025 100.008 40.9443C98.77 40.4899 97.4652 40.1577 96.1945 39.8697C94.5512 39.5168 92.9078 39.1639 91.2315 38.9774C87.9975 38.6536 84.5326 39.4944 81.3743 40.7328C78.0303 42.044 74.8752 43.9139 71.9411 45.9658C68.7035 48.2516 65.4847 50.8753 62.8088 53.7848C60.0658 56.8164 58.0879 60.5262 58.1414 64.3599C58.2092 67.6894 60.0512 70.4959 63.2214 71.5734C66.0695 72.547 69.5365 72.1273 72.4915 70.8344C75.7333 69.3907 78.2586 66.8088 79.8165 63.7048C83.0831 57.1693 81.9769 49.3566 79.1216 43.6681C77.6511 40.716 75.5386 37.9772 72.6863 36.1614C69.5965 34.2469 65.9041 33.6427 61.9808 34.2029C57.7871 34.8309 53.6153 36.4283 49.6292 37.9528C45.3222 39.5841 41.0668 41.3868 36.9312 43.4495C28.6764 47.4916 20.6964 52.3082 13.1935 57.7432C11.3389 59.1032 9.56898 60.4684 7.78254 61.9168C6.19839 63.2092 7.90201 65.4179 9.48617 64.1255C22.9356 53.3288 38.1907 44.8734 54.2053 39.2845C57.7021 38.0669 61.4694 36.7815 65.0409 36.9153C68.1891 37.0234 70.9206 38.3687 72.9617 40.3876C75.1051 42.5389 76.6251 45.2415 77.5536 48.1184C78.4646 50.868 78.9711 53.9297 78.6652 56.9838C78.3758 59.9548 77.3928 62.9675 75.2731 65.4479C73.5405 67.4889 70.8054 68.7531 68.2013 69.1413C65.6982 69.4515 63.292 68.8416 62.0302 66.9967C60.4783 64.671 61.2229 61.349 62.6819 58.7441C64.5432 55.406 67.8973 52.7485 70.8634 50.3198C73.3072 48.3643 75.972 46.5907 78.7565 45.077C81.5246 43.6464 84.463 42.4367 87.5069 41.9912C90.4156 41.5794 93.2285 42.2984 95.9392 42.8848C98.4806 43.4609 100.804 44.4867 102.994 45.7569C105.081 46.8946 106.494 48.412 107.874 50.3063C110.891 54.5315 112.477 60.1425 112.015 65.7127C111.887 67.2203 111.606 68.6343 111.225 70.1264C111.026 70.914 111.656 71.6259 112.417 71.6724C113.264 71.7241 113.988 71.0949 114.187 70.3072Z" fill="#181818"/>
                 <path d="M39.6784 57.8882C32.2087 59.9157 24.6853 61.3506 17.1256 62.3202C15.2821 62.5444 13.354 62.7635 11.527 62.9045C10.8334 62.9463 9.98805 63.1052 9.29334 62.9365C8.80199 62.8223 8.83498 62.6559 9.01861 62.162C9.25173 61.4186 9.60357 60.7244 9.9554 60.0303C10.3402 59.1699 10.8097 58.3146 11.2792 57.4593C12.117 55.8267 13.0735 54.2435 14.1146 52.6654C16.4322 49.1869 19.1059 45.8563 22.0181 42.835C22.6074 42.2396 22.4327 41.1766 21.8216 40.8026C21.1423 40.3402 20.2805 40.5822 19.6747 41.2608C16.8131 44.2431 14.2064 47.4514 11.9394 50.891C10.7806 52.6302 9.65586 54.4137 8.70043 56.2074C7.81206 57.879 6.82256 59.6286 6.22219 61.3599C5.53825 63.2965 5.98768 65.134 7.92011 65.7571C9.69975 66.2867 11.9313 65.8336 13.8088 65.6536C17.919 65.231 22.0621 64.6421 26.1536 63.8816C30.7354 63.0248 35.2996 62.0407 39.8287 60.8018C40.6399 60.5988 41.2963 59.8812 41.2414 59.0781C41.2711 58.2801 40.4556 57.641 39.6784 57.8882Z" fill="#181818"/>
@@ -32,10 +32,10 @@
               <p>{{ section.settings.button_label }}</p>
             </div>
 
-            <button class="ProductContentRoutine-Text__Switcher">
-              <div class="ProductContentRoutine-Text__Switcher-Cirlce"></div>
+            <button class="product-content-routine--text__switcher">
+              <div class="product-content-routine--text__switcher-circle"></div>
               {% if brand == 'gro-to' %}
-                <svg class="ProductContentRoutine-Text__Switcher-Moon" width="453" height="331" viewBox="0 0 453 331" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="product-content-routine--text__switcher-moon" width="453" height="331" viewBox="0 0 453 331" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M62.0978 0.0484656L405.227 15.5699C432.389 16.7985 453.449 39.8537 452.22 67.016L441.625 301.246C440.858 318.209 426.458 331.362 409.496 330.595L29.4045 313.401C12.4418 312.634 -0.710953 298.235 0.0563508 281.272L10.6517 47.0417C11.8804 19.8795 34.9356 -1.18021 62.0978 0.0484656Z" fill="#FFD006"/>
                   <path d="M153.77 182.59C153.33 184.01 152.18 186.97 151.39 188.28C150.88 189.12 150.72 190.18 149.46 191.8C145.62 196.71 138.68 199.51 129.83 197.74C127.46 197.27 122.6 195.08 120.41 193.21C113.48 187.3 111.33 176.04 114.74 167.68C119.06 157.08 129.72 154.08 140.56 157.78C149.82 160.94 154.78 164.85 154.87 175.68C154.89 178.12 154.5 180.29 153.78 182.59H153.77Z" fill="white"/>
                   <path d="M344.23 189.64C343.79 191.06 342.64 194.02 341.85 195.33C341.34 196.17 341.18 197.23 339.92 198.85C336.08 203.76 329.14 206.56 320.29 204.79C317.92 204.32 313.06 202.13 310.87 200.26C303.94 194.35 301.79 183.09 305.2 174.73C309.52 164.13 320.18 161.13 331.02 164.83C340.28 167.99 345.24 171.9 345.33 182.73C345.35 185.17 344.96 187.34 344.24 189.64H344.23Z" fill="white"/>
@@ -55,13 +55,13 @@
                   <path d="M249.96 176.46C249.96 176.46 238.39 180.85 223.17 179.2C211.27 177.91 211.47 176.48 201.94 176.2C198.99 176.11 195.89 175.48 192.58 177.13C179.5 183.65 182.73 196.82 192.45 205.19C194.82 207.12 196.55 209.18 198.57 210.01C206.83 213.36 208.67 215.23 218.84 215.55C239.72 216.21 250.64 215.35 265.34 204.24C274.74 197.54 275.67 192.15 276.76 187.36C277.57 181.16 276.11 176.04 270.27 172.81C268.17 171.65 265.75 171.19 261.38 172.32C258.25 173.43 257.11 174.72 249.95 176.46H249.96Z" fill="#EE3124"/>
                 </svg>
               {% else %}
-                <svg class="ProductContentRoutine-Text__Switcher-Moon" width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="product-content-routine--text__switcher-moon" width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M48.9998 29.8433C48.6327 33.8151 47.1421 37.6003 44.7023 40.7558C42.2626 43.9114 38.9746 46.3069 35.2231 47.6619C31.4716 49.017 27.4117 49.2756 23.5186 48.4075C19.6255 47.5395 16.0601 45.5806 13.2396 42.7601C10.4192 39.9397 8.4603 36.3743 7.59222 32.4812C6.72415 28.588 6.98277 24.5282 8.33784 20.7767C9.69291 17.0252 12.0884 13.7372 15.2439 11.2974C18.3995 8.85766 22.1846 7.36705 26.1564 7C23.8311 10.146 22.7121 14.022 23.003 17.9233C23.2939 21.8246 24.9754 25.4918 27.7417 28.2581C30.508 31.0243 34.1752 32.7058 38.0765 32.9968C41.9777 33.2877 45.8538 32.1687 48.9998 29.8433Z" fill="#484848" stroke="#484848" stroke-width="5.66667" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               {% endif %}
 
               {% if brand == 'gro-to' %}
-                <svg class="ProductContentRoutine-Text__Switcher-Sun" width="346" height="467" viewBox="0 0 346 467" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="product-content-routine--text__switcher-sun" width="346" height="467" viewBox="0 0 346 467" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M304.88 0.020094L19.13 13.5801C8.04995 14.1001 -0.500048 23.5101 0.0199524 34.5901L1.63995 67.5601L3.96995 67.4201L7.32995 70.5101L4.63995 73.3201L1.85995 73.3901L19.62 447.81C20.15 458.89 29.55 467.44 40.63 466.92L326.38 453.37C337.46 452.84 346.01 443.44 345.49 432.36L327.8 59.3401L326.77 59.4401L323.15 56.3801C322.88 56.1401 322.91 56.6501 323.15 56.3801L325.98 53.3401L327.61 53.1401L325.88 19.1501C325.35 8.07009 315.95 -0.479906 304.87 0.040094L304.88 0.020094Z" fill="#F8C6B9"/>
                   <path d="M219.58 169.6C221.93 189.16 231.35 204.29 241.06 204.71C237.43 208.62 233.12 211.6 228.15 212.2C226.37 212.41 225.77 212.1 224.02 211.82C222.47 211.57 219.65 210.96 218.15 210.35C210.62 207.32 205.53 202.59 201.17 192.7C200.55 191.29 198.43 185.27 197.91 183.76C196.51 179.69 195.4 177.2 194.85 172.57C192.03 149.08 201.88 128.05 217.38 126.19C218.67 126.03 220.39 126.49 221.67 126.6C222.96 126.71 224.23 126.95 225.49 127.3C227.78 127.95 230.85 129.62 232.98 131.02C223.64 133.72 217.23 150.04 219.58 169.6Z" fill="white"/>
                   <path d="M251 165.83C251.33 168.54 250.9 170.71 250.89 173.32C250.85 183.23 249.03 192.73 244.96 199.48C244.08 200.93 243.17 202.43 242.14 203.66C241.8 204.07 241.69 204.73 240.5 204.59C238.03 204.49 236.06 204.53 233.74 202.69C232.35 201.59 230.86 199.38 229.81 197.59C225.15 189.67 220.52 181.45 219.13 169.84C218.28 162.72 218.77 163.18 218.29 154.35C218.11 150.97 220.31 146.19 220.52 144.99C221.85 137.17 224.31 135.15 228.06 132.48C230.35 130.84 232.53 130.66 233.37 131.16C236.7 133.36 237.78 134.26 240.46 137.99C245.4 144.88 249.75 155.46 250.99 165.82L251 165.83Z" fill="black"/>
@@ -79,7 +79,7 @@
                   <path d="M190.265 250.051C198.713 248.599 204.673 242.255 203.578 235.882C202.483 229.508 194.747 225.518 186.299 226.969C177.851 228.421 171.891 234.764 172.986 241.138C174.081 247.512 181.818 251.502 190.265 250.051Z" fill="#00BDE8"/>
                 </svg>
               {% else %}
-                <svg class="ProductContentRoutine-Text__Switcher-Sun" width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="product-content-routine--text__switcher-sun" width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g clip-path="url(#clip0_1065_3057)">
                     <path d="M28 39.6663C34.4433 39.6663 39.6667 34.443 39.6667 27.9997C39.6667 21.5564 34.4433 16.333 28 16.333C21.5567 16.333 16.3333 21.5564 16.3333 27.9997C16.3333 34.443 21.5567 39.6663 28 39.6663Z" fill="#FCDF79" stroke="#FCDF79" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M28 2.33301V6.99968" stroke="#FCDF79" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -102,8 +102,8 @@
           </div>
         {% endif %}
 
-        <div class="ProductContentRoutine-Text__Morning">
-          <h3 class="SectionHeader__Heading Heading Text--bold u-h1">
+        <div class="product-content-routine--text__morning">
+          <h3 class="SectionHeader__Heading Heading text--bold u-h1">
             {%- if product.metafields.custom.product_routine__title_morning != blank -%}
               {{ product.metafields.custom.product_routine__title_morning }}
             {%- else -%}
@@ -111,33 +111,33 @@
             {%- endif -%}
           </h3>
 
-          <div class="ProductContentRoutine-Text__Morning-text">
+          <div class="product-content-routine--text__morning-text">
             {{ product.metafields.custom.product_routine__steps-morning }}
           </div>
         </div>
 
-        <div class="ProductContentRoutine-Text__Evening">
-          <h3 class="SectionHeader__Heading Heading Text--bold u-h1">
+        <div class="product-content-routine--text__evening">
+          <h3 class="SectionHeader__Heading Heading text--bold u-h1">
             {%- if product.metafields.custom.product_routine__title_evening != blank -%}
               {{ product.metafields.custom.product_routine__title_evening }}
             {%- else -%}
               {{ section.settings.title_evening }}
             {%- endif -%}
           </h3>
-          <div class="ProductContentRoutine-Text__Evening-text">
+          <div class="product-content-routine--text__evening-text">
             {{ product.metafields.custom.product_routine__steps-evening }}
           </div>
         </div>
 
       </div>
 
-      <div class="ProductContentRoutine-Image">
-        <div class="ProductContentRoutine-Image__Morning">
+      <div class="product-content-routine--image">
+        <div class="product-content-routine--image__morning">
           {%- if product.metafields.custom.product_routine__image_desktop_morning != blank or product.metafields.custom.product_routine__image_mobile_morning != blank -%}
             {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_routine__image_desktop_morning, src_mobile: product.metafields.custom.product_routine__image_mobile_morning %}
           {%- endif -%}
         </div>
-        <div class="ProductContentRoutine-Image__Evening">
+        <div class="product-content-routine--image__evening">
           {%- if product.metafields.custom.product_routine__image_desktop_evening != blank or product.metafields.custom.product_routine__image_mobile_evening != blank -%}
             {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_routine__image_desktop_evening, src_mobile: product.metafields.custom.product_routine__image_mobile_evening %}
           {%- endif -%}
@@ -165,12 +165,12 @@
       {
         "type": "text",
         "id": "title_morning",
-        "label": "Morning"
+        "label": "morning"
       },
       {
         "type": "text",
         "id": "title_evening",
-        "label": "Evening"
+        "label": "evening"
       }
     ],
     "presets":[

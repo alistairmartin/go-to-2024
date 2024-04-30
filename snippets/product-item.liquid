@@ -8,7 +8,7 @@
   {%- assign product_url_contains_query = false -%}
 {%- endif -%}
 
-<product-item class="product-item {% unless product.available %}product-item--sold-out{% endunless %}" {% if reveal %}reveal{% endif %}>
+<product-item class="product-item {% if horizontal == true %}horizontal{% endif %} {{ classes }} {% unless product.available %}product-item--sold-out{% endunless %}" {% if reveal %}reveal{% endif %}>
   {%- capture product_labels -%}
 
   {%- if product.template_suffix == 'coming-soon' -%}
@@ -49,9 +49,11 @@
 
   <div class="product-item__image-wrapper {% if settings.show_secondary_image and product.media.size > 1 and hide_secondary_image != true %}product-item__image-wrapper--multiple{% endif %}">
     {%- if product_labels != blank and reduced_content != true -%}
-      <div class="product-item__label-list label-list">
-        {{- product_labels -}}
-      </div>
+      {%- unless horizontal == true -%}
+        <div class="product-item__label-list label-list">
+          {{- product_labels -}}
+        </div>
+      {%- endunless -%}
     {%- endif -%}
 
     <a href="{{ product.url }}" data-instant class="product-item__aspect-ratio aspect-ratio {% if settings.product_image_size != 'natural' %}aspect-ratio--{{ settings.product_image_size }}{% endif %}" style="padding-bottom: {{ 100.0 | divided_by: product.featured_media.preview_image.aspect_ratio }}%; --aspect-ratio: {{ product.featured_media.preview_image.aspect_ratio }}">

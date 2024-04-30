@@ -1,0 +1,97 @@
+{%- capture flickity_options -%}
+  {
+    "prevNextButtons": false,
+    "pageDots": true,
+    "contain": true,
+    "cellAlign": "left"
+  }
+{%- endcapture -%}
+
+{%- capture section_settings -%}
+{
+  "useAjaxCart": {% if settings.cart_type == 'drawer' %}true{% else %}false{% endif %},
+  "carouselCellSelector": ".ProductContentBoughtWith--item"
+}
+{%- endcapture -%}
+<section class="Section Section--spacingLarge Section--ProductContentBoughtWith" data-section-type="product-upsell" data-section-settings='{{ section_settings }}'>
+  <div class="ContentWidth">
+    <product-recommendations data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.products_count }}&intent=complementary">
+      {%- if recommendations.performed and recommendations.products_count > 0 -%}
+        <h3 class="SectionHeader__Heading Heading Text--bold u-h1">
+          {% if product.metafields.custom.product_upsell__title != blank %}
+            {{ product.metafields.custom.product_upsell__title }}
+          {% else %}
+            {{ section.settings.title }}
+          {% endif %}
+        </h3>
+
+        <div class="ProductContentBoughtWith" data-flickity-config='{{ flickity_options }}' >
+          {%- for productBoughtWith in recommendations.products -%}
+            <div class="ProductContentBoughtWith--item">
+              <a href="{{ productBoughtWith.url }}" class="ProductContentBoughtWith--item-inner">
+                <div class="ProductContentBoughtWith--item-image">
+                  {%- render 'image', img_src: productBoughtWith.featured_image, placeholder: 'product-1' -%}
+                </div>
+                <div class="ProductContentBoughtWith--item-text">
+
+                  <div class="ProductContentBoughtWith--item-title">
+                    <p>{{ productBoughtWith.title }}</p>
+                    <p>{{ productBoughtWith.selected_or_first_available_variant.price | money_without_trailing_zeros }}</p>
+                  </div>
+                  {{ productBoughtWith.metafields.custom.product_usp__text }}
+                </div>
+              </a>
+              <div class="ProductContentBoughtWith--item-button Text--alignCenter">
+                {%- if settings.cart_type == 'disabled' -%}
+                  {%- assign shop_now_text = 'cart.general.shop_now' | t -%}
+                  <a href="{{ productBoughtWith.metafields.gts_theme.custom_url | default: productBoughtWith.url }}" title="{{ productBoughtWith.metafields.gts_theme.add_to_cart_text | default: shop_now_text }}" class="Button Button--link Button--link-primary Text--bold">
+                    {{ productBoughtWith.metafields.gts_theme.add_to_cart_text | default: shop_now_text | upcase }}
+                  </a>
+                {%- else -%}
+                  {%- render 'product-item-form', product: productBoughtWith -%}
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </product-recommendations>
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "Prod. Con: Bought With",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile",
+        "label": "Image - Mobile"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_desktop",
+        "label": "Image - Desktop"
+      },
+      {
+        "type": "range",
+        "id": "products_count",
+        "min": 3,
+        "max": 8,
+        "step": 1,
+        "label": "Products count",
+        "default": 3
+      }
+    ],
+    "presets":[
+      {
+        "name": "Prod. Con: Bought With",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}

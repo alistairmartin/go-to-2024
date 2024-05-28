@@ -1,3 +1,13 @@
+{% for block in section.blocks %}
+  {% assign collectionHandles = block.settings.array_of_collections | split: "," %}
+  {% for item in collectionHandles %}
+    {% if item == collection.handle %}
+      {%- assign validCollectionForImages = true -%}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
 {%- assign collection_sort_by = collection.sort_by | default: collection.default_sort_by -%}
 {%- assign active_filters_count = 0 -%}
 
@@ -38,6 +48,7 @@
   {%- endif -%}
 
   {%- for block in section.blocks -%}
+    {%- if block.type == "promotion_block" -%}
     #block-{{ section.id }}-{{ block.id }} {
       --heading-color: {{ block.settings.text_color.red }}, {{ block.settings.text_color.green }}, {{ block.settings.text_color.blue }};
       --text-color: {{ block.settings.text_color.red }}, {{ block.settings.text_color.green }}, {{ block.settings.text_color.blue }};
@@ -58,6 +69,7 @@
 
       --section-blocks-alignment: {{ section_items_alignment }};
     }
+    {%- endif -%}
   {%- endfor -%}
 
   /*
@@ -106,10 +118,18 @@
       {%- endif -%}
 
       <div id="facet-main" class="product-facet__main anchor" role="region" aria-live="polite">
-        {%- if section.blocks.size > 0 -%}
+        {%- assign promotionalBlockCounter = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == "promotion_block" -%}
+            {%- assign promotionalBlockCounter = promotionalBlockCounter | plus: 1 -%}
+          {%- endif -%}
+        {% endfor %}
+
+        {%- if promotionalBlockCounter > 0 -%}
           {%- capture promotion_blocks -%}
             <div class="promotion-block-list promotion-block-list--{{ section.settings.promotion_position }}">
               {%- for block in section.blocks -%}
+                {%- if  block.type == "promotion_block" -%}
                 {%- capture block_content -%}
                   {%- if block.settings.image != blank -%}
                     {%- capture sizes_attribute -%}(max-width: 740px) calc(100vw - 12px * 2), calc(min(100vw, 1560px) / {{ section.blocks.size }} - 20px * {{ section.blocks.size | minus: 1 }}){%- endcapture -%}
@@ -146,6 +166,7 @@
                     {{- block_content -}}
                   </div>
                 {%- endif -%}
+              {%- endif -%}
               {%- endfor -%}
             </div>
           {%- endcapture -%}
@@ -230,6 +251,8 @@
 
                 {%- for product in collection.products -%}
                   {%- render 'product-item', product: product, collection: collection, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition -%}
+
+                  {%- include 'collection--grid-images', validCollectionForImages: validCollectionForImages, reveal: settings.stagger_products_apparition -%}
                 {%- endfor -%}
               </div>
             </product-list>
@@ -268,12 +291,28 @@
 {
   "name": "Collection page",
   "class": "shopify-section--main-collection",
-  "max_blocks": 2,
   "blocks": [
     {
-      "type": "image",
+      "type": "note",
+      "name": "Note",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "Only Admin Will See This.",
+          "default": "--- Grid Image ---"
+        }
+      ]
+    },
+    {
+      "type": "promotion_block",
       "name": "Promotion block",
       "settings": [
+        {
+          "type": "paragraph",
+          "content": "Note: Only 2 Max Promotion Blocks."
+        },
         {
           "type": "image_picker",
           "id": "image",
@@ -386,6 +425,246 @@
           "id": "button_text_color",
           "label": "Button text color",
           "default": "#1e316a"
+        }
+      ]
+    },
+    {
+      "type": "grid_image",
+      "name": "Grid Image",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "array_of_collections",
+          "label": "Array of Collections",
+          "info": "Seperated by a comma."
+        },
+        {
+          "type": "header",
+          "content": "Image #1"
+        },
+        {
+          "type": "text",
+          "id": "mobile_position_1",
+          "label": "Position (Mobile)",
+          "info": "Position In The Collection"
+        },
+        {
+          "type": "text",
+          "id": "desktop_position_1",
+          "label": "Position (Desktop)",
+          "info": "Position In The Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "desktop_image_1",
+          "label": "Image (Desktop)"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image_1",
+          "label": "Image (Mobile)"
+        },
+        {
+          "type": "url",
+          "id": "mobile_link_1",
+          "label": "Link (Mobile)"
+        },
+        {
+          "type": "url",
+          "id": "desktop_link_1",
+          "label": "Link (Desktop)"
+        },
+        {
+          "type": "radio",
+          "id": "mobile_span_1",
+          "label": "Width (Mobile)",
+          "options": [
+            {
+              "value": "default",
+              "label": "Default"
+            },
+            {
+              "value": "4",
+              "label": "Full"
+            }
+          ],
+          "default": "default"
+        },
+        {
+          "type": "radio",
+          "id": "desktop_span_1",
+          "label": "Width (Desktop)",
+          "options": [
+            {
+              "value": "default",
+              "label": "Default"
+            },
+            {
+              "value": "6",
+              "label": "2 Columns"
+            },
+            {
+              "value": "9",
+              "label": "3 Columns"
+            },
+            {
+              "value": "12",
+              "label": "4 Columns (Full)"
+            }
+          ],
+          "default": "default"
+        },
+        {
+          "type": "header",
+          "content": "Image #2"
+        },
+        {
+          "type": "text",
+          "id": "mobile_position_2",
+          "label": "Position (Mobile)",
+          "info": "Position In The Collection"
+        },
+        {
+          "type": "text",
+          "id": "desktop_position_2",
+          "label": "Position (Desktop)",
+          "info": "Position In The Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "desktop_image_2",
+          "label": "Image (Desktop)"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image_2",
+          "label": "Image (Mobile)"
+        },
+        {
+          "type": "url",
+          "id": "mobile_link_2",
+          "label": "Link (Mobile)"
+        },
+        {
+          "type": "url",
+          "id": "desktop_link_2",
+          "label": "Link (Desktop)"
+        },
+        {
+          "type": "radio",
+          "id": "mobile_span_2",
+          "label": "Width (Mobile)",
+          "options": [
+            {
+              "value": "default",
+              "label": "Default"
+            },
+            {
+              "value": "4",
+              "label": "Full"
+            }
+          ],
+          "default": "default"
+        },
+        {
+          "type": "radio",
+          "id": "desktop_span_2",
+          "label": "Width (Desktop)",
+          "options": [
+            {
+              "value": "default",
+              "label": "Default"
+            },
+            {
+              "value": "6",
+              "label": "2 Columns"
+            },
+            {
+              "value": "9",
+              "label": "3 Columns"
+            },
+            {
+              "value": "12",
+              "label": "4 Columns (Full)"
+            }
+          ],
+          "default": "default"
+        },
+        {
+          "type": "header",
+          "content": "Image #3"
+        },
+        {
+          "type": "text",
+          "id": "mobile_position_3",
+          "label": "Position (Mobile)",
+          "info": "Position In The Collection"
+        },
+        {
+          "type": "text",
+          "id": "desktop_position_3",
+          "label": "Position (Desktop)",
+          "info": "Position In The Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "desktop_image_3",
+          "label": "Image (Desktop)"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image_3",
+          "label": "Image (Mobile)"
+        },
+        {
+          "type": "url",
+          "id": "mobile_link_3",
+          "label": "Link (Mobile)"
+        },
+        {
+          "type": "url",
+          "id": "desktop_link_3",
+          "label": "Link (Desktop)"
+        },
+        {
+          "type": "radio",
+          "id": "mobile_span_3",
+          "label": "Width (Mobile)",
+          "options": [
+            {
+              "value": "default",
+              "label": "Default"
+            },
+            {
+              "value": "4",
+              "label": "Full"
+            }
+          ],
+          "default": "default"
+        },
+        {
+          "type": "radio",
+          "id": "desktop_span_3",
+          "label": "Width (Desktop)",
+          "options": [
+            {
+              "value": "default",
+              "label": "Default"
+            },
+            {
+              "value": "6",
+              "label": "2 Columns"
+            },
+            {
+              "value": "9",
+              "label": "3 Columns"
+            },
+            {
+              "value": "12",
+              "label": "4 Columns (Full)"
+            }
+          ],
+          "default": "default"
         }
       ]
     }

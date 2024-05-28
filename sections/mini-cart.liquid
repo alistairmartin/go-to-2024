@@ -1,24 +1,45 @@
+
+{%- if section.settings.enable_custom_message -%}
+  <style>
+  #mini-cart .drawer__header {
+    background: {{ section.settings.custom_message_color_background }} !important;
+  }
+
+  #mini-cart .drawer__title,  #mini-cart .drawer__close-button {
+    color: {{ section.settings.custom_message_color_text }} !important;
+  }
+</style>
+{%- endif -%}
+
 <cart-drawer section="{{ section.id }}" id="mini-cart" class="mini-cart drawer drawer--large">
   <span class="drawer__overlay"></span>
 
   <header class="drawer__header">
     <p class="drawer__title heading h6">
-      {%- case settings.cart_icon -%}
-        {%- when 'shopping_bag' -%}
-          {%- render 'icon' with 'header-cart' -%}
 
-        {%- when 'shopping_cart' -%}
-          {%- render 'icon' with 'header-shopping-cart' -%}
+      {%- if section.settings.enable_custom_message -%}
+      <div>
+        {{ section.settings.custom_message }}
+      </div>
+      {% else %}
+        {%- case settings.cart_icon -%}
+          {%- when 'shopping_bag' -%}
+            {%- render 'icon' with 'header-cart' -%}
 
-        {%- when 'tote_bag' -%}
-          {%- render 'icon' with 'header-tote-bag' -%}
-      {%- endcase -%}
+          {%- when 'shopping_cart' -%}
+            {%- render 'icon' with 'header-shopping-cart' -%}
 
-      {%- if cart.item_count == 0 -%}
-        {{- 'cart.general.title' | t -}}
-      {%- else -%}
-        {{- 'cart.general.item_count' | t: count: cart.item_count -}}
+          {%- when 'tote_bag' -%}
+            {%- render 'icon' with 'header-tote-bag' -%}
+        {%- endcase -%}
+
+        {%- if cart.item_count == 0 -%}
+          {{- 'cart.general.title' | t -}}
+        {%- else -%}
+          {{- 'cart.general.item_count' | t: count: cart.item_count -}}
+        {%- endif -%}
       {%- endif -%}
+  
     </p>
 
     <button type="button" class="drawer__close-button tap-area" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
@@ -422,6 +443,30 @@
       "id": "recommendations_title",
       "label": "Recommendations heading",
       "default": "You may also like"
+    },
+    {
+      "type": "header",
+      "content": "Custom Message"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_message",
+      "label": "Enable Custom Message"
+    },
+    {
+      "type": "richtext",
+      "id": "custom_message",
+      "label": "Custom Message"
+    },
+    {
+      "type": "color",
+      "id": "custom_message_color_text",
+      "label": "Text Colour"
+    },
+    {
+      "type": "color",
+      "id": "custom_message_color_background",
+      "label": "Background Colour"
     }
   ]
 }

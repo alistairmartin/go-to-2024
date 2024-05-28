@@ -20,7 +20,11 @@
       <span class="label label--soldout">{{ 'product.labels.soldout' | t }}</span>
     {%- endif -%}
   {%-  elsif product.metafields.gts_theme.label != blank -%}
-    <span class="label label--label-custom">{{ product.metafields.gts_theme.label }}</span>
+    <span class="label label--label-custom label--{{ product.metafields.gts_theme.label | handle }}">{{ product.metafields.gts_theme.label }}</span>
+  {%- endif  -%}
+
+  {%- if product.metafields.gts_theme.label2 != blank -%}
+    <span class="label label--label-custom label--{{ product.metafields.gts_theme.label2 | handle }}">{{ product.metafields.gts_theme.label2 }}</span>
   {%- endif  -%}
 
 
@@ -100,7 +104,14 @@
         {%- endunless -%}
       {%- endif -%}
 
+
+      
+
       <a href="{{ product.url }}" data-instant class="product-item-meta__title">{{ product.title }}</a>
+
+      {%- if product.metafields.custom.product_subtitle__description != blank -%}
+        <a href="{{ product.url }}" data-instant class="product-item-meta__subtitle">{{ product.metafields.custom.product_subtitle__description }}</a>
+      {%- endif -%}
 
       <div class="product-item-meta__price-list-container">
         <div class="price-list price-list--centered">

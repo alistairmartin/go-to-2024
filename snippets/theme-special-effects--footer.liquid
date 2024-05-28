@@ -1,0 +1,8 @@
+{%- if settings.show_glitter == true and settings.show_glitter_on_template contains template.suffix or settings.show_glitter == true and settings.show_glitter_on_template contains template -%}
+  <script type="text/javascript" src="{{ 'glitter.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{%- if settings.show_confetti == true and settings.show_confetti_on_template contains template.suffix or settings.show_confetti == true and settings.show_confetti_on_template contains template -%}
+  <script type="text/javascript" src="{{- 'confetti.min.js' | asset_url -}}" defer></script>
+  <script>window.confettiColors = [{{- settings.confetti_colors -}}];</script>
+{%- endif -%}

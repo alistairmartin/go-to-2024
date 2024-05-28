@@ -1,0 +1,48 @@
+<style>
+  {% for block in section.blocks %}
+      .label--{{ block.settings.title | handle }} {
+        background: {{ block.settings.color_background }} !important;
+        color: {{ block.settings.color_text }} !important;
+        {% if block.settings.hide_label %}
+          display: none !important;
+        {% endif %}
+      }
+  {% endfor %}
+</style>
+
+{% schema %}
+  {
+    "name": "Label Colours",
+    "blocks": [
+      {
+        "type": "label-item",
+        "name": "Label Item",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "hide_label",
+            "label": "Hide Label?"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Tag Name / Metafield",
+            "info": "Everything after the '__label:' or '__label2:'"
+          },
+          {
+            "type": "color",
+            "id": "color_text",
+            "label": "Text",
+            "default": "#000000"
+          },
+          {
+            "type": "color",
+            "id": "color_background",
+            "label": "Background",
+            "default": "#000000"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

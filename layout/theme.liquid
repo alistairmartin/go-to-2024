@@ -72,6 +72,7 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
 
     {% render 'social-meta-tags' %}
     {% render 'microdata-schema' %}
+    {% render 'hreflang' %}
 
 
     {%- if brand == "go-to" -%}
@@ -94,6 +95,10 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
       <link rel="stylesheet" href="{{ 'products.css' | asset_url }}">
     {%- endif -%}
 
+    {%- if settings.show_glitter == true and settings.show_glitter_on_template contains template.suffix or settings.show_glitter == true and settings.show_glitter_on_template contains template -%}
+      <link rel="stylesheet" href="{{ 'glitter.css' | asset_url }}">
+    {%- endif -%}
+
     <script src="{{ 'vendor.js' | asset_url }}" defer></script>
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
     <script src="{{ 'custom.js' | asset_url }}" defer></script>
@@ -104,6 +109,8 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     {%- endif -%}
 
     {{ content_for_header }}
+
+    {% section "label-colours" %}
   </head>
 
   {%- assign feature_classes = 'header-position--top' -%}
@@ -147,11 +154,16 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     {%- endif -%}
 
     <div id="main" role="main" class="anchor">
+
+    
       {%- comment -%}
       IMPLEMENTATION NOTE: on collection and search page, the theme was designed to show on mobile the filter bar and/or sort
         by at the very top of the page. However, due to the fact that sections are isolated, I had to move the code
         here. Then, the collection section, based on the selected settings, will eventually hide those elements in CSS
       {%- endcomment -%}
+
+      {%- render 'theme-special-effects--header' -%}
+
       {%- if request.page_type == 'collection' or request.page_type == 'search' -%}
         {%- assign active_filters_count = 0 -%}
 
@@ -202,5 +214,8 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
         {%- sections 'footer-group--gro-to' -%}
       {%- endif -%}
     {%- endif -%}
+
+    {%- render 'theme-special-effects--footer' -%}
+
   </body>
 </html>

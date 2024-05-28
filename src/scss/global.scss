@@ -268,6 +268,30 @@
   text-align: center;
 }
 
+.section-logo-list--alt-style {
+  margin-top: 0;
+
+  .section__header {
+   margin: 0; 
+  }
+
+  .logo-list__text {
+    width: 100%;
+    margin-top: 2px;
+    text-align: left;
+    @include media-query($small) {
+      font-size: 12px;
+    }
+  }
+
+  .logo-list__item {
+    padding: 0;
+
+    img {
+      width: 100% !important;
+    }
+  }
+}
 
 .blog-posts--overlay-text {
   .article-item {
@@ -527,6 +551,8 @@ store-header.background-blur {
     }
   }
 }
+
+
 
 
 .shopify-section--blog-posts-featured {

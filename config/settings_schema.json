@@ -1260,5 +1260,66 @@
         "info": "96 x 96px .png recommended"
       }
     ]
+  },
+  {
+    "name": "Theme effects",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Confetti"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_confetti",
+        "label": "Show confetti on theme",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "confetti_colors",
+        "label": "Comma-separated hex colours of the confetti you want",
+        "info": "E.g.: '#ffd400','#f58220','#ef5ba1','#ef4123','#b493c4','#39bb9d','#14b1e7'"
+      },
+      {
+        "type": "text",
+        "id": "show_confetti_on_template",
+        "label": "Comma-separated template names where to show confetti",
+        "info": "E.g.: index, product, blog, etc"
+      },
+      {
+        "type": "header",
+        "content": "Glitter"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_glitter",
+        "label": "Show glitter effects on theme",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "show_glitter_on_template",
+        "label": "Comma-separated template suffix names where to show glitter",
+        "info": "E.g.: index, christmas-landing, etc"
+      },
+      {
+        "type": "range",
+        "id": "glitter_count",
+        "label": "Count",
+        "min": 200,
+        "max": 1000,
+        "step": 10,
+        "default": 200
+      },
+      {
+        "type": "range",
+        "id": "glitter_frequency",
+        "label": "Frequency",
+        "min": 1,
+        "max": 50,
+        "default": 10,
+        "step": 1
+      }
+    ]
   }
 ]

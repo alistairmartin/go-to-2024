@@ -4,6 +4,7 @@
   {%- assign blends_with_background = true -%}
 {%- endif -%}
 
+
 <style>
   #shopify-section-{{ section.id }} {
     {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
@@ -42,11 +43,18 @@
 
     --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
     --section-logo-background: {{ section.settings.logo_background.red }} {{ section.settings.logo_background.green }} {{ section.settings.logo_background.blue }} / {{ section.settings.logo_background.alpha }};
-    --section-logo-count: {{ section.blocks.size | default: 6 }};
+    --section-logo-count: {{ section.blocks.size | default: 6 }}; 
   }
+  
+  {% if section.settings.enable_alt_style %}
+  #shopify-section-{{ section.id }} .logo-list__list {
+    --logos-gap: 5px;
+    grid-template-columns: repeat(min(var(--logos-per-row),var(--section-logo-count)),minmax(140px,400px))
+  }
+{%- endif -%}
 </style>
 
-<section class="section {% unless blends_with_background or is_boxed %}section--flush{% endunless %}">
+<section class="section {% unless blends_with_background or is_boxed %}section--flush{% endunless %} {% if section.settings.enable_alt_style %}section-logo-list--alt-style{% endif %}">
   <div class="section__color-wrapper">
     <div class="container {% unless blends_with_background %}vertical-breather{% endunless %}">
       <header class="section__header text-container">
@@ -150,6 +158,11 @@
       "label": "Reveal on scroll",
       "info": "Show animation when section becomes visible.",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_alt_style",
+      "label": "Enable Alternative Style"
     },
     {
       "type": "text",

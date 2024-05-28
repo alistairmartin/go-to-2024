@@ -11723,6 +11723,10 @@ shopify-payment-terms {
   animation-fill-mode: forwards;
 }
 
+.slideshow__slide--split .slideshow__image-wrapper--secondary-mobile {
+  width: calc(50% + 1px);
+}
+
 @media screen and (min-width: 741px) {
   .slideshow--small {
     --slideshow-min-height: 70vw;

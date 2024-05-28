@@ -1,0 +1,93 @@
+
+
+{%- liquid
+  assign maindomain = 'gotoskincare'
+  
+  comment
+  Removes 'https://us.' or 'https://uk.'
+  endcomment
+  capture currentURL
+    echo canonical_url | slice: 25, 99
+  endcapture
+  
+  if settings.store == "AU"
+    comment
+    Removes 'https://www.' 
+    endcomment
+    capture currentURL
+      echo canonical_url | slice: 25, 99
+    endcapture
+  endif
+
+if request.host contains "eu" or request.host contains "uk" or request.host contains "us"
+  comment
+  Removes 'https://www.' 
+  endcomment
+  capture currentURL
+    echo canonical_url | slice: 28, 99
+  endcapture
+endif
+  
+  assign selectedLang = request.path | slice: 1, 2 | upcase
+  if selectedLang == "FR" or selectedLang == "DE"
+    capture currentURL
+      echo canonical_url | slice: 31, 99
+    endcapture
+  endif
+  
+  comment
+  Adds collection URL with product, if the user has navigated from a collection page onto a product page.
+  endcomment
+  if product
+    if collection
+      capture currentURL
+        echo "collections/" | append : collection.handle | append: "/products/" | append: product.handle
+      endcapture
+    endif
+  endif
+  
+  comment
+  Amercias - North, Central and South
+  endcomment
+  assign UsStoreList = "US,CA,MX" | split: ","
+  
+  comment
+  Europe + Africa 
+  endcomment
+  assign UkStoreList = "GB" | split: ","
+  
+  comment
+  Europe + Africa 
+  endcomment
+  assign EuStoreList = "IT,ES,SE,NL,PL,IE,BE,DK,AT,PT,RO,HU,GR,FI,CH,FR" | split: ","
+  
+  comment
+  Oceania + Asia + Middle East
+  endcomment
+  assign AuStoreList = "AU,NZ,CN,HK" | split: ","
+-%}
+
+<!-- US -->
+{% for country in UsStoreList -%}
+<link rel="alternate" hreflang="en-{{ country }}" href="https://us.{{ maindomain }}.com/{{ currentURL }}" />
+{% endfor %}
+<!-- UK -->
+<link rel="alternate" hreflang="en-GB" href="https://uk.{{ maindomain }}.com/{{ currentURL }}" />
+
+<!-- AU -->
+{% for country in AuStoreList -%}
+<link rel="alternate" hreflang="en-{{ country }}" href="https://www.{{ maindomain }}.com/{{ currentURL }}" />
+{% endfor %}
+<!-- EU -->
+{% for country in EuStoreList -%}
+<link rel="alternate" hreflang="en-{{ country }}" href="https://eu.{{ maindomain }}.com/{{ currentURL }}" />
+{% endfor %}
+
+{% comment %} <!-- FR -->
+<link rel="alternate" hreflang="fr-FR" href="https://eu.{{ maindomain }}.com/fr/{{ currentURL }}" /> {% endcomment %}
+
+<!-- DE -->
+<link rel="alternate" hreflang="de-DE" href="https://eu.{{ maindomain }}.com/de/{{ currentURL }}" />
+<link rel="alternate" href="https://www.{{ maindomain }}.com/{{ currentURL }}" hreflang="x-default" />
+
+<link rel="canonical" href="{{ canonical_url }}">

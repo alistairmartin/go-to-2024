@@ -669,3 +669,119 @@
 
 
   .product-USP--title__smallx{font-size:50px !important;}
+
+
+  .recharge-subscription-widget {
+    .rc-tooltip {
+      max-width: unset;
+      border: 1px solid #F9C6B9;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      -o-border-radius: 4px;
+      border-radius: 4px;
+      font-weight: 400;
+
+      .arrow {
+        left: unset;
+        right: 30px;
+
+        &::before {
+          box-shadow: 1px 1px 0px #f9c6b9
+        }
+      }
+    }
+
+    .rc-tooltip__content {
+      font-size: 18px;
+      line-height: 28px;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      -o-border-radius: 4px;
+      border-radius: 4px;
+      font-weight: 400;
+
+      .learn-more {
+        display: none;
+      }
+    }
+
+    .rc-subscription-details {
+      margin-top: 8px;
+      font-size: 12px;
+      line-height: 1;
+      justify-content: flex-end;
+      padding: 0;
+      text-decoration: underline;
+      font-weight: 500;
+
+      .rc-subscription-details__button svg {
+        display: none;
+      }
+    }
+
+    .rc-selling-plans-dropdown__select {
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      -o-border-radius: 4px;
+      border-radius: 4px;
+      padding: 10px 16px;
+      font-size: 18px;
+      line-height: 28px;
+    }
+
+    .rc-template__radio {
+      padding: 16px;
+      background: white;
+      border: 1px solid #f9c6b9;
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+      -o-border-radius: 8px;
+      border-radius: 8px;
+      display: grid;
+      gap: 16px;
+    }
+      
+    .rc-radio {
+      padding: 0;
+      font-size: 18px;
+      line-height: 28px;
+
+      .rc-radio__input {
+        cursor: pointer;
+        height: 0;
+        position: relative;
+
+        &::before {
+          -webkit-border-radius: 50%;
+          -moz-border-radius: 50%;
+          -o-border-radius: 50%;
+          border-radius: 50%;
+          width: 24px;
+          height: 24px;
+          border: 1px solid #585C60;
+          content: ' ';
+          position: absolute;
+          top: -12px;
+          text-align: center;
+          font-weight: bold;
+          color: white;
+          padding-top: 2px;
+        }
+      }
+
+      &.rc-radio--active {
+        background: none;
+
+        .rc-radio__input::before {
+          font-family: 'Proxima Nova';
+          border: none;
+          content: '✓';
+          background:#f9c6b9;
+        }
+
+        .rc-selling-plans {
+          background-color: transparent;
+        }
+      }
+    }
+  }

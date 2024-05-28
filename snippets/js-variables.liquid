@@ -26,6 +26,7 @@
       predictiveSearchUrl: {{ routes.predictive_search_url | json }},
       productRecommendationsUrl: {{ routes.product_recommendations_url | json }}
     },
+    
 
     strings: {
       accessibilityDelete: {{ 'general.accessibility.delete' | t | json }},
@@ -70,6 +71,13 @@
       lapAndUp: 'screen and (min-width: 1000px)',
       desktop: 'screen and (min-width: 1200px)',
       wide: 'screen and (min-width: 1400px)'
+    },
+
+    effects: {
+      glitter: {
+        count: {{ settings.glitter_count | json }},
+        frequency: {{ settings.glitter_frequency | json }}
+      }
     }
   };
 

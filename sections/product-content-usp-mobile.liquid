@@ -1,9 +1,9 @@
 {%- if product.metafields.custom.product_usp__text != blank -%}
   <section>
-    <div class="Product__USP hidden-lap-and-up">
+    <div class="product-USP hide-desktop">
       {% assign USPtextSize = product.metafields.custom.product_usp__text | size %}
 
-      <h3 class="SectionHeader__Heading Heading {% if USPtextSize > 100 %}Product__USP-title-smallx{% elsif USPtextSize > 40 %}Product__USP-title-small{% endif %}">{{ product.metafields.custom.product_usp__text | remove: "<p>" | remove: "</p>" }}</h3>
+      <h3 class="heading {% if USPtextSize > 100 %}product-USP--title__smallx{% elsif USPtextSize > 40 %}product__USP--title__small{% endif %}">{{ product.metafields.custom.product_usp__text | remove: "<p>" | remove: "</p>" }}</h3>
 
       {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_usp__image_desktop, src_mobile: product.metafields.custom.product_usp__image_mobile %}
     </div>

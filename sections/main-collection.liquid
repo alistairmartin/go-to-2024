@@ -163,7 +163,7 @@
               </button>
             {%- endif -%}
 
-            <span class="product-facet__meta-bar-item product-facet__meta-bar-item--count" role="status">{{ 'collection.general.products_count' | t: count: collection.products_count }}</span>
+            {% comment %} <span class="product-facet__meta-bar-item product-facet__meta-bar-item--count" role="status">{{ 'collection.general.products_count' | t: count: collection.products_count }}</span> {% endcomment %}
 
             {%- if section.settings.show_sort_by -%}
               <div class="product-facet__meta-bar-item product-facet__meta-bar-item--sort">

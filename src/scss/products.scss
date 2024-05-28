@@ -17,6 +17,13 @@
     margin-top: 50px;
 }
 
+.product__media {
+  @include media-query($medium-up) {
+  position: sticky;
+  top: 90px;
+  }
+}
+
 
 .who-is-it-for, .perfect-for {
     display: none;
@@ -588,3 +595,77 @@
   .oke-w-review-side, .oke-media-image {
     border-radius: 8px;
   }
+
+
+
+
+
+  // .product-content-doing-our-bit --- START
+  .product-content-doing-our-bit {
+    display: flex;
+    flex-direction: column;
+    background: #FDE4DB;
+    padding: 24px 16px 16px;
+    border-radius: 8px;
+
+    @include media-query($medium-up) {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      grid-gap: 30px;
+      padding: 48px;
+    }
+
+    img {
+      width: 100%;
+    }
+
+    .product-content-doing-our-bit--content-inner {
+      padding-top: 20px;
+    }
+
+    .product-content-doing-our-bit--image {
+      img {
+        border-radius: 8px;
+      }
+    }
+  }
+  // .product-content-doing-our-bit --- END
+
+
+  .product-USP {
+    position: relative;
+    min-height: 250px;
+
+    @include media-query($medium-up) {
+      margin-top: 40px;
+      min-height: 350px;
+    }
+
+    h3 {
+      width: 100%;
+      text-align: center;
+      z-index: 2;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      font-size: 72px;
+      line-height: 125%;
+
+      &.Product__USP-title-small {
+        font-size: 62px;
+
+        @include media-query($medium-up) {
+          font-size: 62px;
+        }
+      }
+    }
+
+    picture, img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+
+  .product-USP--title__smallx{font-size:50px !important;}

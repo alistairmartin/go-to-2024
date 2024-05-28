@@ -107,14 +107,14 @@
                             to create some "breath" and minimum spacing
      */
     --container-max-width: 1440px;
-    --container-gutter: 24px;
+    --container-gutter: 10px;
     --container-max-width-minus-gutters: calc(var(--container-max-width) - (var(--container-gutter)) * 2);
     --container-outer-width: max(calc((100vw - var(--container-max-width-minus-gutters)) / 2), var(--container-gutter));
     --container-outer-margin: var(--container-outer-width);
     --container-inner-width: calc(100vw - var(--container-outer-width) * 2);
 
     --grid-column-count: 10;
-    --grid-gap: 24px;
+    --grid-gap: 10px;
     --grid-column-width: calc((100vw - var(--container-outer-width) * 2 - var(--grid-gap) * (var(--grid-column-count) - 1)) / var(--grid-column-count));
 
     --vertical-breather: {% if settings.vertical_spacing == 'small' %}28px{% elsif settings.vertical_spacing == 'medium' %}36px{% else %}48px{% endif %};

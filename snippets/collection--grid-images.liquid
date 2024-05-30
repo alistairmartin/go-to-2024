@@ -5,7 +5,7 @@
     {%- assign outerForloop = forloop.index -%}
 
     {% for block in section.blocks %}
-        {%- if block.type == "grid_image" -%}
+      {%- if block.type == "grid_image" -%}
         
       {% assign collectionHandles = block.settings.array_of_collections | split: "," %}
 
@@ -23,7 +23,7 @@
           {%- assign mobileImage = block.settings[mobileImageSettings] -%}
           {%- assign mobilePosition = block.settings[mobilePositionSettings] | times: 1  -%}
           {%- assign mobileLink = block.settings[mobileLinkSettings]  -%}
-          {%- assign mobileSpan = block.settings[mobileSpanSettings]  -%}
+          {%- assign mobileSpan = block.settings[mobileSpanSettings] | times: 1 -%}
 
           {% capture desktopImageSettings %}desktop_image_{{ i }}{% endcapture %}
           {% capture desktopPositionSettings %}desktop_position_{{ i }}{% endcapture %}
@@ -33,35 +33,27 @@
           {%- assign desktopImage = block.settings[desktopImageSettings] -%}
           {%- assign desktopPosition = block.settings[desktopPositionSettings] | times: 1 -%}
           {%- assign desktopLink = block.settings[desktopLinkSettings]  -%}
-          {%- assign desktopSpan = block.settings[desktopSpanSettings]  -%}
+          {%- assign desktopSpan = block.settings[desktopSpanSettings] | times: 1 -%}
 
           {% if outerForloop == desktopPosition  %}
 
-            {%- if desktopSpan == "default" -%}
-              {{ product_item_open | replace: 'class="', 'class="hide-mobile ' }}
-            {% else %}
-              {%- assign desktopSpan = desktopSpan | times: 1 -%}
-              {% capture desktopSpanCSS %}style="grid-column: span {{ desktopSpan }} !important;" class={% endcapture %}
-              {{ product_item_open | replace: 'class="', 'class="hide-mobile ' | replace: 'class=', desktopSpanCSS }}
-            {%- endif -%}
-            <product-item class="product-item" {% if reveal %}reveal{% endif %}>
+            <product-item class="product-item product-item__grid-image hide-mobile" {% if reveal %}reveal{% endif %} style="grid-column: span {{ desktopSpan }} !important;">
             {%- if desktopLink != blank -%}
-            <a  href="{{ desktopLink }}" class="product-item--link"> 
+            <a  href="{{ desktopLink }}" class="product-item__grid-image--link"> 
             {% else %}
-            <div class="product-item--link test2">
+            <div class="product-item__grid-image--link">
             {%- endif -%}
 
-                <div class="ProductItem__Wrapper">
-                  {%- if desktopSpan == 12 -%}
+                <div class="product-item__grid-image--image">
+                  {%- if desktopSpan == 4 -%}
                     {{ desktopImage | image_url: width: 1200 | image_tag }}
-                  {%- elsif desktopSpan == 9 -%}
+                  {%- elsif desktopSpan == 3 -%}
                     {{ desktopImage | image_url: width: 1000 | image_tag }}
-                  {%- elsif desktopSpan == 6 -%}
+                  {%- elsif desktopSpan == 2 -%}
                     {{ desktopImage | image_url: width: 800 | image_tag }}
                   {%- else -%}
                     {{ desktopImage | image_url: width: 600 | image_tag }}
                   {%- endif -%}
-
                 </div>
             
             {%- if desktopLink != blank -%}
@@ -69,35 +61,25 @@
             {% else %}
               </div>
             {%- endif -%}
-            </product-item>
 
-            {{ product_item_close }}  
+            </product-item>
           {% endif %}
 
           {% if outerForloop == mobilePosition  %}
-
-            {%- if mobileSpan == "default" -%}
-            {{ product_item_open | replace: 'class="', 'class="hide-desktop ' }}
-            {% else %}
-            {%- assign mobileSpan = mobileSpan | times: 1 -%}
-            {% capture mobileSpanCSS %}style="grid-column: span {{ mobileSpan }} !important;" class={% endcapture %}
-            {{ product_item_open | replace: 'class="', 'class="hide-desktop ' | replace: 'class=', mobileSpanCSS }}
-            {%- endif -%}
+            <product-item class="product-item product-item__grid-image hide-desktop" {% if reveal %}reveal{% endif %} style="grid-column: span {{ mobileSpan }} !important;" >
             
             {%- if mobileLink != blank -%}
-            <a  href="{{ mobileLink }}" class="product-item test3" {% if reveal %}reveal{% endif %}>
+            <a  href="{{ mobileLink }}" class="product-item__grid-image--link hide-desktop">
             {% else %}
-            <div class="product-item test4" {% if reveal %}reveal{% endif %}>
+            <div class="product-item__grid-image--link hide desktop">
             {%- endif -%}
             
-                <div class="ProductItem__Wrapper">
-                 
-                  {%- if mobileSpan == 4 -%}
+                <div class="product-item__grid-image--image">
+                  {%- if mobileSpan == 2 -%}
                     {{ mobileImage | image_url: width: 500 | image_tag }}
                   {%- else -%}
                     {{ mobileImage | image_url: width: 300 | image_tag }}
                   {%- endif -%}
-
                 </div>
             
             {%- if mobileLink != blank -%}
@@ -105,8 +87,8 @@
             {% else %}
               </div>
             {%- endif -%}
-            
-            {{ product_item_close }}  
+
+            </product-item>
             {% endif %}  
 
         

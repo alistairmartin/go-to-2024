@@ -1,2 +1,9 @@
 @import "components/media-queries";
 @import "components/variables";
+
+
+.product-item__grid-image {
+    img {
+        border-radius: var(--image-border-radius);
+    }
+}

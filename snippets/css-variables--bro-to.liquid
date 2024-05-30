@@ -10,6 +10,9 @@
     {%- assign product_custom_label_brightness = settings.broto_product_custom_label_background | color_brightness -%}
     {%- assign product_custom_label_2_brightness = settings.broto_product_custom_label_2_background | color_brightness -%}
 
+    --color-primary: #ef3534;
+    --color-secondary: #192a42;
+
     --heading-color: {{ settings.broto_heading_color.red }}, {{ settings.broto_heading_color.green }}, {{ settings.broto_heading_color.blue }};
     --text-color: {{ settings.broto_text_color.red }}, {{ settings.broto_text_color.green }}, {{ settings.broto_text_color.blue }};
     --background: {{ settings.broto_background.red }}, {{ settings.broto_background.green }}, {{ settings.broto_background.blue }};
@@ -66,6 +69,7 @@
     --heading-h6-font-size: {% if settings.broto_heading_font_size == 'small' %}16px{% elsif settings.broto_heading_font_size == 'medium' %}16px{% else %}18px{% endif %};
 
     /* Control the look and feel of the theme by changing radius of various elements */
+    --image-border-radius: 0;
     --button-border-radius: {{ settings.broto_button_border_radius }}px;
     --block-border-radius: {% if settings.broto_block_border_radius == 'none' %}0{% elsif settings.broto_block_border_radius == 'small' %}8{% elsif settings.broto_block_border_radius == 'medium' %}16{% else %}32{% endif %}px;
     --block-border-radius-reduced: {% if settings.broto_block_border_radius == 'none' %}0{% elsif settings.broto_block_border_radius == 'small' %}4{% elsif settings.broto_block_border_radius == 'medium' %}8{% else %}16{% endif %}px;

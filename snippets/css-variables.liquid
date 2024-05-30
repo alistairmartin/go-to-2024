@@ -10,6 +10,9 @@
     {%- assign product_custom_label_brightness = settings.product_custom_label_background | color_brightness -%}
     {%- assign product_custom_label_2_brightness = settings.product_custom_label_2_background | color_brightness -%}
 
+    --color-primary: #f9c6b9;
+    --color-secondary: #f9c6b9;
+
     --heading-color: {{ settings.heading_color.red }}, {{ settings.heading_color.green }}, {{ settings.heading_color.blue }};
     --text-color: {{ settings.text_color.red }}, {{ settings.text_color.green }}, {{ settings.text_color.blue }};
     --background: {{ settings.background.red }}, {{ settings.background.green }}, {{ settings.background.blue }};
@@ -66,6 +69,7 @@
     --heading-h6-font-size: {% if settings.heading_font_size == 'small' %}16px{% elsif settings.heading_font_size == 'medium' %}16px{% else %}18px{% endif %};
 
     /* Control the look and feel of the theme by changing radius of various elements */
+    --image-border-radius: 8px;
     --button-border-radius: {{ settings.button_border_radius }}px;
     --block-border-radius: {% if settings.block_border_radius == 'none' %}0{% elsif settings.block_border_radius == 'small' %}8{% elsif settings.block_border_radius == 'medium' %}16{% else %}32{% endif %}px;
     --block-border-radius-reduced: {% if settings.block_border_radius == 'none' %}0{% elsif settings.block_border_radius == 'small' %}4{% elsif settings.block_border_radius == 'medium' %}8{% else %}16{% endif %}px;

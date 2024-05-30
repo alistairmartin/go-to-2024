@@ -82,8 +82,6 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     {%- elsif brand == "gro-to" -%}
       {% render 'css-variables--gro-to', direction: direction %}
     {%- endif -%}
-
-
     
     {% render 'js-variables', direction: direction %}
 
@@ -93,6 +91,10 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
 
     {%- if product -%}
       <link rel="stylesheet" href="{{ 'products.css' | asset_url }}">
+    {%- endif -%}
+
+    {%- if collection -%}
+      <link rel="stylesheet" href="{{ 'collections.css' | asset_url }}">
     {%- endif -%}
 
     {%- if settings.show_glitter == true and settings.show_glitter_on_template contains template.suffix or settings.show_glitter == true and settings.show_glitter_on_template contains template -%}

@@ -1,7 +1,7 @@
 <section>
   <div class="container">
     <div class="page-header">
-      <nav aria-label="{{ 'general.breadcrumb.title' | t }}" class="breadcrumb breadcrumb--floating text--xsmall hidden-phone">
+      <nav aria-label="{{ 'general.breadcrumb.title' | t }}" class="breadcrumb breadcrumb--floating text--xsmall hidden-phone {% unless section.settings.show_breadcrumbs %}hide{% endunless %}">
         <ol class="breadcrumb__list" role="list">
           <li class="breadcrumb__item">
             <a class="breadcrumb__link" href="{{ routes.root_url }}">{{ 'general.breadcrumb.home' | t }}</a>
@@ -13,11 +13,8 @@
         </ol>
       </nav>
 
-      <div class="page-header__text-wrapper text-container">
-        {%- if section.settings.show_title -%}
-          <h1 class="heading h2">{{ page.title }}</h1>
-        {%- endif -%}
-
+      <div class="page-header__text-wrapper text-container {% unless section.settings.show_title and page.content == blank %}hide{% endunless %}">
+        <h1 class="heading h2  {% if section.settings.show_title %}hide{% endif %}">{{ page.title }}</h1>
         {%- if template.suffix contains 'contact' or template.suffix contains 'faq' -%}
           {{- page.content -}}
         {%- endif -%}
@@ -25,7 +22,7 @@
     </div>
 
     {%- unless template.suffix contains 'contact' or template.suffix contains 'faq' -%}
-      <div class="page-content page-content--{{ section.settings.page_width }} rte">
+    <div class="page-content page-content--{{ section.settings.page_width }} rte {% if page.content == blank %}hide{% endif %}">
         {{- page.content -}}
       </div>
     {%- endunless -%}
@@ -41,6 +38,12 @@
       "type": "checkbox",
       "id": "show_title",
       "label": "Show page title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show Breadcrumbs",
       "default": true
     },
     {

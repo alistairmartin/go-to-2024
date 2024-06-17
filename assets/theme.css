@@ -389,14 +389,14 @@ td, th {
   visibility: hidden;
 }
 
-html {
+html,body {
   font-family: var(--text-font-family);
   font-weight: var(--text-font-weight);
   font-style: var(--text-font-style);
   font-size: calc(var(--base-font-size)  - 1px);
   color: rgb(var(--text-color));
   background: rgb(var(--background));
-  line-height: 1.71429;
+  line-height: 1;
 }
 
 :lang(ar) * {

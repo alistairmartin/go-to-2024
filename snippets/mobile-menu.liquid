@@ -147,8 +147,20 @@
                 <span class="visually-hidden">{{ 'header.general.country' | t }}</span>
 
                 <button type="button" is="toggle-button" class="popover-button text--xsmall tap-area" aria-expanded="false" aria-controls="header-sidebar-localization-form-currency">
-                  {{- localization.country.name }} ({{ localization.country.currency.iso_code }} {% if localization.country.currency.symbol %}{{ localization.country.currency.symbol }}{%- endif -%})
-                  {%- render 'icon' with 'chevron', width: 9, height: 6, inline: true -%}
+                  {% comment %} {{- localization.country.name }} ({{ localization.country.currency.iso_code }} {% if localization.country.currency.symbol %}{{ localization.country.currency.symbol }}{%- endif -%})
+                  {%- render 'icon' with 'chevron', width: 9, height: 6, inline: true -%} {% endcomment %}
+
+                  {%- assign currentMarket = localization.market.handle | upcase -%}
+                  {% if currentMarket == "US" %}
+                    {% render "icon-flag-united-states" %}
+                  {% elsif currentMarket == "EU" %}
+                    {% render "icon-flag-europe" %}
+                  {% elsif currentMarket == "UK" %}
+                    {% render "icon-flag-united-kingdom" %}
+                  {% else %}
+                    {% render "icon-flag-australia" %}
+                  {% endif %}
+
                 </button>
 
                 <popover-content id="header-sidebar-localization-form-currency" class="popover popover--top popover--small">
@@ -164,13 +176,16 @@
 
                   <div class="popover__content">
                     <div class="popover__choice-list">
-                      {%- for country in localization.available_countries -%}
+                      {% comment %} {%- for country in localization.available_countries -%}
                         <button type="submit" name="country_code" value="{{ country.iso_code }}" class="popover__choice-item">
                           <span class="popover__choice-label" {% if country.iso_code == localization.country.iso_code %}aria-current="true"{% endif %}>
                             {{- country.name }} ({{ country.currency.iso_code }} {% if country.currency.symbol %}{{ country.currency.symbol }}{%- endif -%})
                           </span>
                         </button>
-                      {%- endfor -%}
+                      {%- endfor -%} {% endcomment %}
+
+                      {% render "header--store-selector" %}
+
                     </div>
                   </div>
                 </popover-content>

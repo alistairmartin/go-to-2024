@@ -120,7 +120,6 @@
                   {%- if product.featured_media -%}
                     {%- assign smallest_image_aspect_ratio = smallest_image_aspect_ratio | at_least: product.featured_media.aspect_ratio -%}
                   {%- endif -%}
-
                   {%- render 'product-item', product: product, collection: collection, show_cta: section.settings.show_cta, block: block, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition -%}
                 {%- else -%}
                   {%- assign smallest_image_aspect_ratio = 1 -%}

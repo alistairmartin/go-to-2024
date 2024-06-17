@@ -1,0 +1,276 @@
+{%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
+  {%- assign blends_with_background = false -%}
+{%- else -%}
+  {%- assign blends_with_background = true -%}
+{%- endif -%}
+
+
+<style>
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color = settings.heading_color -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_background == 'rgba(0,0,0,0)' -%}
+      {%- assign button_background = settings.primary_button_background -%}
+    {%- else -%}
+      {%- assign button_background = section.settings.button_background -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign button_text_color = settings.primary_button_text_color -%}
+    {%- else -%}
+      {%- assign button_text_color = section.settings.button_text_color -%}
+    {%- endif -%}
+
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --primary-button-background: {{ button_background.red }}, {{ button_background.green }}, {{ button_background.blue }};
+    --primary-button-text-color: {{ button_text_color.red }}, {{ button_text_color.green }}, {{ button_text_color.blue }};
+
+    --prev-next-button-background: {{ settings.background.red }}, {{ settings.background.green }}, {{ settings.background.blue }};
+    --prev-next-button-color: {{ settings.text_color.red }}, {{ settings.text_color.green }}, {{ settings.text_color.blue }};
+
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+    --section-logo-count: {{ section.blocks.size | default: 6 }}; 
+
+    --section-star-colour: {{ section.settings.stars_colour }};
+  }
+  #shopify-section-{{ section.id }} .logo-list__list {
+    --logos-gap: 5px;
+    grid-template-columns: repeat(min(var(--logos-per-row),var(--section-logo-count)),minmax(260px,400px));
+  }
+
+  #shopify-section-{{ section.id }} .link--primary {
+    text-decoration-color: {{ section.settings.link_underline }};
+    color: {{ button_text_color }};
+  }
+
+  #shopify-section-{{ section.id }} .link--primary svg path {
+    fill: {{ button_text_color }};
+  }
+</style>
+
+<section class="section {% unless blends_with_background or is_boxed %}section--flush{% endunless %}">
+  <div class="section__color-wrapper">
+    <div class="container {% unless blends_with_background %}vertical-breather{% endunless %}">
+      <header class="section__header text-container">
+        {%- if section.settings.subheading != blank -%}
+          <h2 class="heading heading--small">{{ section.settings.subheading | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.title != blank -%}
+          <h3 class="heading h2">{{ section.settings.title | escape }}</h3>
+        {%- endif -%}
+      </header>
+
+      {%- capture section_content -%}
+        <div class="logo-list__list">
+          {%- for block in section.blocks -%}
+            {%- capture logo_content -%}
+
+              {%- if block.settings.text != blank -%}
+                <div class="logo-list__stars">
+                {%- for i in (1..5) -%}
+                    {%- render 'icon' with "rating-star" -%}
+                {%- endfor -%}
+                </div>
+                <div class="logo-list__text text--large">{{ block.settings.text }}</div>
+                <div class="logo-list__reviewer text--large">{{ block.settings.reviewer }}</div>
+              {%- endif -%}
+            
+            {%- endcapture -%}
+
+            {%- if block.settings.link -%}
+              <a href="{{ block.settings.link }}" {% if section.settings.reveal_on_scroll %}reveal{% endif %} class="logo-list__item" {{ block.shopify_attributes }}>
+                {{- logo_content -}}
+              </a>
+            {%- else -%}
+              <div class="logo-list__item" {% if section.settings.reveal_on_scroll %}reveal{% endif %} {{ block.shopify_attributes }}>
+                {{- logo_content -}}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endcapture -%}
+
+      {%- if section.settings.stack_logos -%}
+        {% comment %} <logo-list {% if section.settings.reveal_on_scroll %}reveal-on-scroll{% endif %} class="logo-list logo-list--grid">
+          {{- section_content -}}
+        </logo-list> {% endcomment %}
+      {%- else -%}
+        <div class="scroller">
+          <div class="scroller__inner">
+            <logo-list {% if section.settings.reveal_on_scroll %}reveal-on-scroll{% endif %} class="logo-list logo-list--carousel">
+              {%- if section.blocks.size > 6 -%}
+                <prev-next-buttons class="logo-list__prev-next hidden-pocket">
+                  <button class="logo-list__arrow prev-next-button prev-next-button--prev" disabled>
+                    <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
+                    {%- include 'icon' with 'nav-arrow-left', block: true, direction_aware: true -%}
+                  </button>
+
+                  <button class="logo-list__arrow prev-next-button prev-next-button--next">
+                    <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
+                    {%- include 'icon' with 'nav-arrow-right', block: true, direction_aware: true -%}
+                  </button>
+                </prev-next-buttons>
+              {%- endif -%}
+
+              {{- section_content -}}
+            </logo-list>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.button_text != blank -%}
+        <div class="section__footer">
+       <a class="{% if section.settings.button_style contains "link" %}link--primary{% else %}button button--primary{% endif %}" href="{{ section.settings.button_link }}">{{ section.settings.button_text }} {% if section.settings.button_style == "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials V2",
+  "class": "shopify-section--testimonials-V2",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "reveal_on_scroll",
+      "label": "Reveal on scroll",
+      "info": "Show animation when section becomes visible.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Customer Testimonials"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "radio",
+      "id": "button_style",
+      "label": "Button Style",
+      "options": [
+        {
+          "value": "button",
+          "label": "Button"
+        },
+        {
+          "value": "link",
+          "label": "Link"
+        },
+        {
+          "value": "link-with-arrow",
+          "label": "Link (With Arrow)"
+        }
+      ],
+      "default": "button"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button / Label text",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "link_underline",
+      "label": "Link Underline",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "stars_colour",
+      "label": "Stars Colour",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Testimonial",
+      "type": "testimonal",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "reviewer",
+          "label": "Reviewer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials V2",
+      "blocks": [
+        {
+          "type": "testimonal"
+        },
+        {
+          "type": "testimonal"
+        },
+        {
+          "type": "testimonal"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

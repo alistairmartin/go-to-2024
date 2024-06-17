@@ -1,6 +1,10 @@
 @import "components/media-queries";
 @import "components/variables";
 
+#preview-bar-iframe {
+  display: none !important;
+}
+
 .link--primary {
   text-underline-offset: 2px;
   text-decoration: underline;
@@ -8,6 +12,16 @@
   text-decoration-thickness: 5px;
   text-transform: uppercase;
   font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    margin-left: 5px;
+    margin-top: -4px;
+  }
 
   &:after {
     background: transparent;
@@ -37,9 +51,18 @@
   }
 }
 
+.prev-next-button:not(.prev-next-button--small) {
+  opacity: 1 !important;
+  visibility: visible;
+  transform: scale(1);
+  border-radius: 100%;
+}
+
+
 .label--label-custom {
   background-color: $gotoPink;
   border-radius: 8px;
+  padding: 8px 12px 8px;
 }
 
 .hide, .hidden {
@@ -289,6 +312,7 @@
 
     img {
       width: 100% !important;
+      border-radius: calc(var(--image-border-radius) / 2);
     }
   }
 }
@@ -542,7 +566,7 @@ store-header.background-blur {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 100%;
+    width: 100%; 
     border-top: 1px solid #DCE0E4;
     padding: 10px;
 
@@ -589,8 +613,167 @@ store-header.background-blur {
   }
 }
 
-.section-logo-list--alt-style {
-  img {
-    border-radius: calc(var(--image-border-radius) / 2);
+.popover-button {
+  width: 30px;
+  height: 30px;
+
+  svg {
+    margin: 0;
   }
 }
+
+#header-localization-form, #header-sidebar-localization-form {
+  margin-inline-end: 20px;
+ 
+  .popover-button {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      margin: 0;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .popover-button[aria-expanded=true] svg {
+    transform: unset !important;
+  }
+}
+
+#header-localization-form-currency, #header-sidebar-localization-form {
+
+  .popover:after {
+    right: 29px;
+  }
+
+  .popover:before {
+    right: 28px;
+  }
+
+  .popover__choice-label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    margin: 0;
+    padding: 10px 60px 10px 10px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+    }
+
+    .localization-form-currency--title {
+     
+    }
+    
+    .localization-form-currency--currency {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translate(0%, -50%);
+      font-weight: bold;
+    }
+  }
+  .popover__choice-label[aria-current]:after {
+    display: none;
+  }
+}
+
+
+.lock-all {
+  #gorgias-chat-container {
+    display: none !important;
+  }
+}
+
+
+
+.shopify-section--testimonials-V2 {
+
+  .logo-list__item {
+    min-width: 240px;
+  }
+
+  .logo-list__reviewer {
+    text-align: left;
+    font-style: italic;
+    display: block;
+    width: 100%;
+  }
+
+  .logo-list__text {
+    margin-top: 20px;
+    text-align: left;
+  }
+
+  .logo-list__stars {
+    display: flex;
+    width: 100%;
+    gap: 2px;
+
+    svg {
+      width: 25px;
+      height: 25px;
+      color: var(--section-star-colour);
+    }
+  }
+}
+
+.product-item--BYO-ATC {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+
+  .link--primary {
+    width: auto !important;
+  }
+
+  .active {
+    .active--text {
+      display: block;
+    }
+
+    .in-active--text {
+      display: none;
+    }
+  }
+
+  .in-active {
+    .active--text {
+      display: none;
+    }
+
+    .in-active--text {
+      display: block;
+    }
+  }
+}
+
+.shopify-section--build-your-bundle--bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 22;
+
+  .container {
+    border-radius: var(--image-border-radius);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    background: rgba(249,198,186,0.5) !important;
+    backdrop-filter: saturate(180%) blur(20px) !important;
+
+    .button {
+      background: $gotoPink;
+    }
+  }
+}
+
+

@@ -1,0 +1,52 @@
+{%- assign currentMarket = localization.market.handle | upcase -%}
+{%- capture selectStoreUS -%}
+  <button type="submit" name="country_code" value="US" class="popover__choice-item">
+  <span class="popover__choice-label" {% if currentMarket == "US" %}aria-current="true"{% endif %}>{% render "icon-flag-united-states" %}<span class="localization-form-currency--title">United States</span> <span class="localization-form-currency--currency">USD $</span></span>
+  </button>
+{%- endcapture -%}
+
+{%- capture selectStoreEU -%}
+  <button type="submit" name="country_code" value="EU" class="popover__choice-item">
+  <span class="popover__choice-label" {% if currentMarket == "EU" %}aria-current="true"{% endif %}>{% render "icon-flag-europe" %}<span class="localization-form-currency--title">Europe</span> <span class="localization-form-currency--currency">EUR €</span></span>
+  </button>
+{%- endcapture -%}
+
+{%- capture selectStoreGB -%}
+  <button type="submit" name="country_code" value="GB" class="popover__choice-item">
+  <span class="popover__choice-label" {% if currentMarket == "GB" %}aria-current="true"{% endif %}>{% render "icon-flag-united-kingdom" %}<span class="localization-form-currency--title">United Kingdom</span> <span class="localization-form-currency--currency">GBP £</span></span>
+  </button>
+{%- endcapture -%}
+
+{%- capture selectStoreAU -%}
+  <button type="submit" name="country_code" value="AU" class="popover__choice-item">
+  <span class="popover__choice-label" {% if currentMarket == "AU" %}aria-current="true"{% endif %}>{% render "icon-flag-australia" %}<span class="localization-form-currency--title">Australia & International</span> <span class="localization-form-currency--currency">AUD $</span></span>
+  </button>
+{%- endcapture -%}
+
+{% if currentMarket == "US" %}
+  {{ selectStoreUS }}
+{% elsif currentMarket == "EU" %}
+  {{ selectStoreEU }}
+{% elsif currentMarket == "UK" %}
+  {{ selectStoreGB }}
+{% else %}
+  {{ selectStoreAU }}
+{% endif %}
+
+<hr>
+
+{% unless currentMarket == "AU" %}
+  {{ selectStoreAU }}
+{% endunless %}
+
+{% unless currentMarket == "EU" %}
+  {{ selectStoreEU }}
+{% endunless %}
+
+{% unless currentMarket == "GB" %}
+  {{ selectStoreGB }}
+{% endunless %}
+
+{% unless currentMarket == "US" %}
+  {{ selectStoreUS }}
+ {% endunless %}

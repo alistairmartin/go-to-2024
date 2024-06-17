@@ -1,0 +1,45 @@
+<section>
+<div class="container">
+    <button class="button button--primary">
+    ADD BUNDLE TO CART
+    </button>
+</div>
+</section>
+
+
+{% schema %}
+  {
+    "name": "Build Your Bundle (Bar)",
+    "class": "shopify-section--build-your-bundle--bar",
+    "settings": [
+      {
+        "type": "text",
+        "id": "main_text",
+        "label": "Navigation Title",
+        "info": "Optional"
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Link",
+        "type": "link",
+        "settings": [
+          {
+            "type": "url",
+            "id": "url",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text",
+            "label": "Text"
+          }
+        ]
+      }
+    ],
+    "presets": [
+    {
+      "name": "Build Your Bundle (Bar)"
+    }
+  ]
+  }
+{% endschema %}

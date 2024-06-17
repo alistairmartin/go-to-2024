@@ -1,0 +1,22 @@
+
+
+<div class="product-item--BYO-ATC">
+  {%- if product.variants.size == 1 -%}
+    <button class="link--animated link link--primary">
+
+    </button>
+  {% else %}
+    {%- for variant in product.variants-%}
+      <button class="link--animated link link--primary in-active">
+        <span class="active--text">
+        Remove {%- render 'icon', with "close" -%}
+        <small> {{ variant.title }}</small>
+        </span>
+
+        <span class="in-active--text">
+          {{ variant.title }} {%- render 'icon', with "plus" -%}
+        </span>
+      </button>
+    {%- endfor -%}
+  {% endif %}
+</div>

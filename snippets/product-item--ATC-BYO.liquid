@@ -1,22 +1,32 @@
-
-
-<div class="product-item--BYO-ATC">
-  {%- if product.variants.size == 1 -%}
-    <button class="link--animated link link--primary">
-
+{%- if product.available == true -%}
+  <div class="product-item--BYO-ATC__container">
+    {%- if product.variants.size == 1 -%}
+      <div class="product-item--BYO-ATC" data-id="{{ product.selected_or_first_available_variant.id }}" data-price="{{ product.selected_or_first_available_variant.price }}">
+        <button class="link--animated link link--primary" aria-pressed="false">
+          <span class="add">+ ADD TO BUNDLE</span>
+          <span class="remove">REMOVE</span>
+        </button>
+      </div>  
+    {%- else -%}
+      {%- for variant in product.variants -%}
+        {%- if variant.available -%}
+          <div class="product-item--BYO-ATC-variant" data-id="{{ variant.id }}" data-price="{{ variant.price }}">
+            <button class="link--animated link link--primary" aria-pressed="false">
+              <span class="add">+ {{ variant.title }}</span>
+              <span class="remove">REMOVE {{ variant.title }}</span>
+            </button>
+          </div>  
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+  {%- else -%}
+  <div class="product-item--BYO-ATC disabled" aria-disabled="true">
+    <button class="link--animated link link--primary" disabled>
+      Sold out
     </button>
-  {% else %}
-    {%- for variant in product.variants-%}
-      <button class="link--animated link link--primary in-active">
-        <span class="active--text">
-        Remove {%- render 'icon', with "close" -%}
-        <small> {{ variant.title }}</small>
-        </span>
-
-        <span class="in-active--text">
-          {{ variant.title }} {%- render 'icon', with "plus" -%}
-        </span>
-      </button>
-    {%- endfor -%}
-  {% endif %}
-</div>
+  </div>  
+  {%- endif -%}
+  
+  {% comment %} {%- render 'icon', icon: "close" -%} {% endcomment %}
+  

@@ -51,6 +51,24 @@
   }
 }
 
+.link--tierary {
+  text-underline-offset: 2px;
+  text-decoration: underline;
+  text-decoration-color: rgb(var(--text-color));
+  text-decoration-thickness: 5px;
+  text-transform: uppercase;
+  font-weight: normal;
+
+  &:after {
+    background: transparent;
+  }
+
+  &:hover {
+    text-decoration-color: rgb(var(--text-color));
+    color: rgb(var(--text-color));
+  }
+}
+
 .prev-next-button:not(.prev-next-button--small) {
   opacity: 1 !important;
   visibility: visible;
@@ -581,15 +599,23 @@ store-header.background-blur {
 
 .shopify-section--blog-posts-featured {
   .article-list {
-    max-height: 1000px;
     display: grid;
-    grid-template-columns: repeat(3,1fr) !important;
-    grid-template-rows: repeat(8,1fr) !important;
+    grid-template-columns: 1fr !important;
     gap: 20px;
+
+    @include media-query($medium-up) {
+      max-height: 1000px;
+      grid-template-columns: repeat(3,1fr) !important;
+      grid-template-rows: repeat(8,1fr) !important;
+    }
 
     .article-item {
       display: flex;
       flex-direction: column;
+
+      @include media-query($small) {
+        grid-area: unset !important;
+      }
     }
 
     .article-item__image-container {
@@ -612,6 +638,7 @@ store-header.background-blur {
     .article-6 { grid-area: 4 / 3 / 9 / 4; }
   }
 }
+
 
 .popover-button {
   width: 30px;
@@ -724,56 +751,4 @@ store-header.background-blur {
     }
   }
 }
-
-.product-item--BYO-ATC {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-
-  .link--primary {
-    width: auto !important;
-  }
-
-  .active {
-    .active--text {
-      display: block;
-    }
-
-    .in-active--text {
-      display: none;
-    }
-  }
-
-  .in-active {
-    .active--text {
-      display: none;
-    }
-
-    .in-active--text {
-      display: block;
-    }
-  }
-}
-
-.shopify-section--build-your-bundle--bar {
-  position: sticky;
-  bottom: 0;
-  z-index: 22;
-
-  .container {
-    border-radius: var(--image-border-radius);
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-    background: rgba(249,198,186,0.5) !important;
-    backdrop-filter: saturate(180%) blur(20px) !important;
-
-    .button {
-      background: $gotoPink;
-    }
-  }
-}
-
 

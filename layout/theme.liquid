@@ -74,7 +74,6 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     {% render 'microdata-schema' %}
     {% render 'hreflang' %}
 
-
     {%- if brand == "go-to" -%}
       {% render 'css-variables', direction: direction %}
     {%- elsif brand == "bro-to" -%}
@@ -84,10 +83,10 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     {%- endif -%}
     
     {% render 'js-variables', direction: direction %}
-
     <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
-    {%- include "fonts" -%}
-    <link rel="stylesheet" href="{{ 'global.css' | asset_url }}">
+    {%- render "fonts" -%}
+    {%- render "files-css" -%}
+
     {% comment %} <link rel="stylesheet" href="{{ 'fonts.css' | asset_url }}"> {% endcomment %}
 
     {%- if product -%}
@@ -102,14 +101,11 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
       <link rel="stylesheet" href="{{ 'glitter.css' | asset_url }}">
     {%- endif -%}
 
+
     <script src="{{ 'vendor.js' | asset_url }}" defer></script>
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
     <script src="{{ 'custom.js' | asset_url }}" defer></script>
-    <script src="{{ 'theme-custom.min.js' | asset_url }}" defer></script>
-
-    {%- if product -%}
-      <script src="https://player.vimeo.com/api/player.js" defer></script>
-    {%- endif -%}
+    {%- render 'files-js' -%}
 
     {{ content_for_header }}
 
@@ -152,6 +148,10 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
         {%- sections 'header-group--bro-to' -%}
       {%- elsif brand == "gro-to" -%}
         {%- sections 'header-group--gro-to' -%}
+      {%- endif -%}
+
+      {%- if blog or article -%}
+        {% section "blog-header" %}
       {%- endif -%}
    
       {%- unless settings.cart_type == 'page' or request.page_type == 'cart' -%}

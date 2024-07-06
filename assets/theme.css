@@ -494,7 +494,7 @@ p a:not(.button), .rte a:not(.button), .link {
   height: 1px;
   transition: transform .3s;
   position: absolute;
-  bottom: 2px;
+  bottom: -2px;
   left: 0;
   transform: scaleX(0);
 }
@@ -7904,7 +7904,7 @@ input:checked + .popover__choice-label:is(:lang(ae), :lang(ar), :lang(arc), :lan
 }
 
 .header__cart-count--floating:not(:lang(ae), :lang(ar), :lang(arc), :lang(bcc), :lang(bqi), :lang(ckb), :lang(dv), :lang(fa), :lang(glk), :lang(he), :lang(ku), :lang(mzn), :lang(nqo), :lang(pnb), :lang(ps), :lang(sd), :lang(ug), :lang(ur), :lang(yi)) {
-  right: -14px;
+  left: -14px;
 }
 
 .header__cart-count--floating:is(:lang(ae), :lang(ar), :lang(arc), :lang(bcc), :lang(bqi), :lang(ckb), :lang(dv), :lang(fa), :lang(glk), :lang(he), :lang(ku), :lang(mzn), :lang(nqo), :lang(pnb), :lang(ps), :lang(sd), :lang(ug), :lang(ur), :lang(yi)) {
@@ -8799,7 +8799,7 @@ input:checked + .popover__choice-label:is(:lang(ae), :lang(ar), :lang(arc), :lan
 
 .list-collections__item-list {
   align-items: center;
-  gap: 24px;
+  gap: 10px;
   display: grid;
 }
 

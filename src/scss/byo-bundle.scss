@@ -1,0 +1,151 @@
+@import "components/media-queries";
+@import "components/variables";
+
+.template-page--build-your-routine {
+    #chat-button {
+      display: none !important;
+    }
+  }
+  
+  
+  
+  .shopify-section--build-your-bundle--bar {
+    position: sticky;
+    bottom: 10px;
+    z-index: 22;
+    margin: 0 10px;
+  
+    .container {
+      border-radius: var(--image-border-radius);
+      padding-top: 10px;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      background: rgba(249,198,186,0.5) !important;
+      backdrop-filter: saturate(180%) blur(20px) !important;
+      display: flex;
+      justify-content: flex-end;
+  
+      .bundle-your-bundle--totals {
+        margin: 0 20px 0 10px;
+        text-align: center;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: column;
+  
+        p {
+          margin: 0;
+          font-size: 14px;
+          line-height: 1;
+        }
+  
+        .build-your-bundle--cost-container {
+          font-weight:  bold;
+        }
+      }
+  
+  
+      .loading-text, .before-text {
+        display: none;
+      }
+  
+      .add-bundle-to-cart {
+        background: $gotoPink;
+   
+  
+        @include media-query($small) {
+          width: 100%;
+        }
+  
+        &.under {
+          background: $gotoGrey;
+  
+          .text {
+            display: none;
+          }
+          .before-text {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+  
+        &.loading {
+          cursor: no-drop;
+  
+          .text {
+            opacity: 0;
+          }
+  
+          .loading-text {
+            display: block;
+          }
+        }
+      }
+  
+      .loader-button__loader {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+  
+  html.lock-all {
+    .shopify-section--build-your-bundle--bar {
+      display: none;
+    }
+  }
+  
+  
+  .product-item--BYO-ATC__container {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .product-item--BYO-ATC, .product-item--BYO-ATC-variant {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding-top: 5px;
+  
+    &.disabled {
+      .link--primary {
+        cursor: no-drop;
+        text-decoration-color: $gotoGrey;
+    }
+    }
+  
+    .link--primary {
+      width: auto !important;
+    }
+  
+    .add {
+      min-width: 60px;
+        display: block;
+    }
+  
+    .remove {
+      min-width: 60px;
+      display: none;
+    }
+    
+    &.active {
+        .add {
+            display: none;
+        }
+  
+        .remove {
+            display: block;
+        }
+  
+        .link--primary {
+            text-decoration-color: rgb(var(--text-color));
+        }
+    }
+  }
+  
+  

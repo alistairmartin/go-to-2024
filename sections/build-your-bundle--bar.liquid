@@ -1,10 +1,25 @@
-<section>
-<div class="container">
-    <button class="button button--primary">
-    ADD BUNDLE TO CART
+<section aria-labelledby="bundle-section">
+  <div class="container">
+    <div class="bundle-your-bundle--totals">
+      <p id="total-label">Total</p>
+      <p class="build-your-bundle--cost-container" aria-labelledby="total-label">{{ cart.currency.symbol }}<span class="build-your-bundle--cost">0.00</span></p>
+    </div>
+    <button class="button button--primary add-bundle-to-cart under" disabled aria-describedby="bundle-instructions">
+      <span class="before-text" data-tooltip="Add At Least 4 items to your bundle above." id="bundle-instructions">Add At Least 4 Items </span>
+      <span class="text">ADD BUNDLE TO CART</span>
+      <span class="loading-text" aria-live="polite">
+        <span class="loader-button__loader">
+          <div class="spinner">
+            <svg focusable="false" width="24" height="24" class="icon icon--spinner" viewBox="25 25 50 50" aria-hidden="true">
+              <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="5"></circle>
+            </svg>
+          </div>
+        </span>
+      </span>
     </button>
-</div>
+  </div>
 </section>
+
 
 
 {% schema %}

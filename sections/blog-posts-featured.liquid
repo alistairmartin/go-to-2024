@@ -1,3 +1,14 @@
+{%- assign showSection = true -%}
+
+{%- if canonical_url contains "?page=" -%}
+  {%- assign showSection = false -%}
+{%- endif -%}
+
+{%- if canonical_url contains "?page=1" -%}
+  {%- assign showSection = true -%}
+{%- endif -%}
+
+{%- if showSection == true -%}
 {%- assign blog = section.settings.blog -%}
 
 {%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
@@ -165,6 +176,7 @@
     </div>
   </div>
 </section>
+{%- endif -%}
 
 {% schema %}
 {

@@ -1,0 +1,13 @@
+{%- if product -%}
+    <script src="https://player.vimeo.com/api/player.js" defer></script>
+{%- endif -%}
+
+<script src="{{ 'theme-custom.min.js' | asset_url }}" defer></script>
+
+{%- if page.handle == "build-your-routine" -%}
+    <script src="{{ 'custom.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{%- if blog or article -%}
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11" defer></script>
+{%- endif -%}

@@ -1,0 +1,226 @@
+  
+  .shopify-section--brand-switcher {
+  .brand-switcher--brand {
+
+    svg {
+        transition: transform 0.2s ease-in-out;
+
+        path, polygon, rect {
+            transition: all 0.2s ease-in-out;
+            transform-origin: var(--origin-x) var(--origin-y);
+        }
+    }
+
+
+    &.go-to {
+        svg:hover {
+            transform: scale(1.1);
+
+            .letter-G {
+                animation: animateLogoGoToG $animationLogoGoToTime infinite;
+            }
+    
+            .letter-O1 {
+                animation: animateLogoGoToO1 $animationLogoGoToTime infinite;
+            }
+    
+            .letter-dash {
+                animation: animateLogoGoToDash $animationLogoGoToTime infinite;
+            }
+    
+            .letter-T {
+                animation: animateLogoGoToT $animationLogoGoToTime infinite;
+            }
+    
+            .letter-O2 {
+                animation: animateLogoGoToO2 $animationLogoGoToTime infinite;
+            }
+        }
+    }
+
+    &.gro-to {
+        svg:hover {
+            transform: scale(1.1);
+
+            .red {
+                animation: animateLogoGroToRed 1s infinite;
+            }
+    
+            .orange {
+                animation: animateLogoGroToOrange 1.5s infinite;
+            }
+    
+            .yellow {
+                animation: animateLogoGroToYellow 2s infinite;
+            }
+    
+            .green {
+                animation: animateLogoGroToGreen 1.75s infinite;
+            }
+    
+            .black-left {
+                animation: animateLogoGroToBlackLeft 2s infinite;
+            }
+    
+            .black-right {
+                animation: animateLogoGroToBlackRight 2s infinite;
+            }
+    
+            .blue {
+                animation: animateLogoGroToBlue 1.5s infinite;
+            }
+    
+            .purple {
+                animation: animateLogoGroToPurple 1s infinite;
+            }
+        }
+    }
+
+    &.bro-to {
+        svg:hover {
+            transform: scale(1.1);
+
+            .letter-B {
+                animation: animateLogoBroToB $animationLogoBroToTime infinite;
+            }
+    
+            .letter-R {
+                animation: animateLogoBroToR $animationLogoBroToTime infinite;
+            }
+    
+            .letter-O1 {
+                animation: animateLogoBroToO1 $animationLogoBroToTime infinite;
+            }
+    
+            .letter-dash {
+                animation: animateLogoBroToDash $animationLogoBroToTime infinite;
+            }
+    
+            .letter-T {
+                animation: animateLogoBroToT $animationLogoBroToTime infinite;
+            }
+    
+            .letter-O2 {
+                animation: animateLogoBroToO2 $animationLogoBroToTime infinite;
+            }
+        }
+    }
+  }
+}
+
+// GO-TO 
+@keyframes animateLogoGoToG {
+    0%, 100% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX(0)}
+    1% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX($animationLogoGoToMoveFirst) scale($animationLogoGoToScaleStart)} ;
+    10% { fill:$gotoPink; opacity: 1; transform:translateX($animationLogoGoToMoveSecond) scale($animationLogoGoToScaleMid);}
+    20% { fill:$gotoPink; opacity: 1; transform:translateX(0) scale($animationLogoGoToScaleEnd);}
+  }
+
+  @keyframes animateLogoGoToO1 {
+    0%, 100% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX(0)}
+    15% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX($animationLogoGoToMoveFirst) scale($animationLogoGoToScaleStart)};
+    25% { fill:$gotoPink; opacity: 1; transform:translateX($animationLogoGoToMoveSecond) scale($animationLogoGoToScaleMid);}
+    35% { fill:$gotoPink; opacity: 1; transform:translateX(0) scale($animationLogoGoToScaleEnd);}
+  }
+
+  @keyframes animateLogoGoToDash {
+    0%, 100% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX(0)}
+    30% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX($animationLogoGoToMoveFirst) scale($animationLogoGoToScaleStart)};
+    40% { fill:$gotoPink; opacity: 1; transform:translateX($animationLogoGoToMoveSecond) scale($animationLogoGoToScaleMid);}
+    50% { fill:$gotoPink; opacity: 1; transform:translateX(0) scale($animationLogoGoToScaleEnd);}
+  }
+
+  @keyframes animateLogoGoToT {
+    0%, 100% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX(0)}
+    45% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX($animationLogoGoToMoveFirst) scale($animationLogoGoToScaleStart)};
+    55% { fill:$gotoPink; opacity: 1; transform:translateX($animationLogoGoToMoveSecond) scale($animationLogoGoToScaleMid);}
+    65% { fill:$gotoPink; opacity: 1; transform:translateX(0) scale($animationLogoGoToScaleEnd);}
+  }
+
+  @keyframes animateLogoGoToO2 {
+    0%, 100% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX(0)}
+    65% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX($animationLogoGoToMoveFirst) scale($animationLogoGoToScaleStart)};
+    75% { fill:$gotoPink; opacity: 1; transform:translateX($animationLogoGoToMoveSecond) scale($animationLogoGoToScaleMid);}
+    85% { fill:$gotoPink; opacity: 1; transform:translateX(0) scale($animationLogoGoToScaleEnd);}
+  }
+
+
+// GRO-TO
+  @keyframes animateLogoGroToRed {
+    0%, 100% { fill: $grotoRed; opacity: 1;}
+    50% { fill:$grotoRed; opacity: 0.7;}
+  }
+
+  @keyframes animateLogoGroToOrange {
+    0%, 100% { fill: $grotoOrange; opacity: 1; }
+    50% { fill: $grotoOrange; opacity: 0.7; }
+  }
+
+  @keyframes animateLogoGroToYellow {
+    0%, 100% { fill: $grotoYellow; opacity: 1; }
+    50% { fill: $grotoYellow; opacity: 0.7; }
+  }
+
+  @keyframes animateLogoGroToBlackLeft {
+    0%, 100% { fill: #000; transform: translateX(0);}
+    50% { fill: #000; transform: translateX(-3%); }
+  }
+
+  @keyframes animateLogoGroToBlackRight {
+    0%, 100% { fill: #000; transform: translateX(0);}
+    50% { fill: #000; transform: translateX(-3%); }
+  }
+
+  @keyframes animateLogoGroToGreen {
+    0%, 100% { fill: $grotoGreen; opacity: 1; transform: scale(1);}
+    50% { fill: $grotoGreen; opacity: 0.7; transform: scale(1.4); }
+  }
+
+  @keyframes animateLogoGroToBlue {
+    0%, 100% { fill: $grotoBlue; opacity: 1;}
+    50% { fill: $grotoBlue; opacity: 0.5; }
+  }
+
+  @keyframes animateLogoGroToPurple {
+    0%, 100% { fill: $grotoPurple; opacity: 1;}
+    50% { fill: $grotoPurple; opacity: 0.7; }
+  }
+
+
+// BRO-TO 
+  @keyframes animateLogoBroToB {
+    0%, 100% { fill: $brotoRed; opacity: 1;transform:translateY(0%)}
+    10% { fill:$brotoBlueLight; opacity: 1; transform:translateY($animationLogoBroToJump);}
+    20% { fill:$brotoBlueLight; opacity: 1; transform:translateY(0%);}
+  }
+
+  @keyframes animateLogoBroToR {
+    0%, 100% { fill: $brotoRed; opacity: 1;transform:translateY(0%) }
+    20% { fill: $brotoBlueLight; opacity: 1;  transform:translateY($animationLogoBroToJump);}
+    30% { fill:$brotoBlueLight; opacity: 1; transform:translateY(0%);}
+  }
+
+  @keyframes animateLogoBroToO1 {
+    0%, 100% { fill: $brotoRed; opacity: 1;transform:translateY(0%) }
+    30% { fill: $brotoBlueLight; opacity: 1;  transform:translateY($animationLogoBroToJump);}
+    40% { fill:$brotoBlueLight; opacity: 1; transform:translateY(0%);}
+  }
+
+  @keyframes animateLogoBroToDash {
+    0%, 100% { fill: $brotoRed; opacity: 1;transform:translateY(0%)}
+    40% { fill: $brotoBlueLight; opacity: 1;  transform:translateY($animationLogoBroToJump);}
+    50% { fill:$brotoBlueLight; opacity: 1; transform:translateY(0%);}
+  }
+
+  @keyframes animateLogoBroToT {
+    0%, 100% { fill: $brotoRed; opacity: 1;transform:translateY(0%)}
+    50% { fill: $brotoBlueLight; opacity: 1; transform:translateY($animationLogoBroToJump); }
+    60% { fill:$brotoBlueLight; opacity: 1; transform:translateY(0%);}
+  }
+
+  @keyframes animateLogoBroToO2 {
+    0%, 100% { fill: $brotoRed; opacity: 1; transform:translateY(0%)}
+    60% { fill: $brotoBlueLight; opacity: 1;  transform:translateY($animationLogoBroToJump); }
+    70% { fill:$brotoBlueLight; opacity: 1; transform:translateY(0%);}
+  }
+

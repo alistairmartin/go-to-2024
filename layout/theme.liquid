@@ -84,10 +84,7 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     
     {% render 'js-variables', direction: direction %}
     <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
-    {%- render "fonts" -%}
     {%- render "files-css" -%}
-
-    {% comment %} <link rel="stylesheet" href="{{ 'fonts.css' | asset_url }}"> {% endcomment %}
 
     {%- if product -%}
       <link rel="stylesheet" href="{{ 'products.css' | asset_url }}">

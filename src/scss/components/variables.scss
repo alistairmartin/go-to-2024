@@ -20,6 +20,7 @@ $grotoNavy: #002DAC;
 $grotoYellow: #f9cf63;
 $grotoPurple: #b493c4;
 $grotoPink: #f06098;
+$grotoRed: #ff0001;
 $grotoGreen: #59C160;
 $grotoOrange: #F48120;
 $grotoGrey: #DCE0E4;
@@ -37,3 +38,22 @@ $brotoFontHeading: 'Moderno FB';
 $brotoFontBody: 'NeologyGrotesque';
 $grotoFontHeading: 'Proxima Nova';
 $grotoFontBody: 'Sofia Pro Soft';
+
+// Animations
+$animationLogoGoToTime: 1.5s;
+
+$animationLogoGoToMoveFirst: -0.5%;
+$animationLogoGoToMoveSecond: 1%;
+
+$animationLogoGoToScaleStart: 1;
+$animationLogoGoToScaleMid: 0.98;
+$animationLogoGoToScaleEnd: 1;
+
+$animationLogoGoToOpacity: 1;
+
+
+$animationLogoBroToTime: 1.5s;
+$animationLogoBroToJump: -18%;
+
+
+

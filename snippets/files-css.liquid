@@ -1,7 +1,13 @@
+{%- render "fonts" -%}
+
 <link rel="stylesheet" href="{{ 'global.css' | asset_url }}">
 
 {%- if blog or article -%}
-<link rel="stylesheet" href="{{ 'blog.css' | asset_url }}">
+<link rel="stylesheet" href="{{ 'blogs.css' | asset_url }}">
+{%- endif -%}
+
+{%- if article -%}
+<link rel="stylesheet" href="{{ 'articles.css' | asset_url }}">
 {%- endif -%}
 
 {% if template.suffix == "build-your-routine" %}

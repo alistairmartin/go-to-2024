@@ -1,0 +1,102 @@
+{%- comment -%}
+To use BBCodes, insert anywhere in the body of the article, ideally somewhere in the middle:
+
+Collections:
+  [collection]handle,layout_type,limit,offset[/collection]
+
+  - handle: handle of the collection
+  - layout_type: grid or carousel
+  - limit: items to layout, any number divisible by 12
+  - offset: where to start with the list of items (optional)
+
+  Eg: [collection]face-masks,grid,3[/collection]
+
+  To have more than one collection in an article, simply append the number on the opening and closing tags
+  Eg: 
+  [collection_2]face-masks,grid,3[/collection_2]
+  [collection_3]face-masks,grid,3,4[/collection_3]
+{%- endcomment -%}
+
+    
+    {%- liquid
+      capture splitter_string
+        if count == 0
+          echo "collection"
+        else
+          echo "collection_" | append: count
+        endif
+      endcapture
+      
+      assign open_tag = splitter_string | prepend: '[' | append: ']'
+      assign close_tag = splitter_string | prepend: '[/' | append: ']'
+      
+      assign split_string = content | split: open_tag
+      assign article_first_part = split_string[0]
+      assign split_string = split_string[1] | split: close_tag
+      
+      assign article_collection = split_string[0]
+      assign article_second_part = split_string[1]
+      
+      assign article_collection = article_collection | strip_html | split: ','
+      assign collection_handle = article_collection[0]
+      assign layout_type = article_collection[1]
+      assign limit = article_collection[2] | times: 1
+      assign offset = 0
+      assign counter = 0
+      
+      if article_collection[3] != blank
+        assign offset = article_collection[3] | times: 1
+      endif
+    
+      assign shop_now_text = 'blog.article.shop_now' | t | upcase
+    -%}
+    
+    {{- article_first_part -}}
+    
+    {%- assign article_collection = collections[collection_handle] -%}
+    
+    {%- unless article_collection == blank -%}
+      <div class="Article__CollectionContainer">
+        <div class="Article__Collection Article__Collection--{{ layout_type }}" data-limit="{{ limit }}" data-offset="{{ offset }}">
+          <div class="Article__CollectionWrapper" style="--items: {{ limit }}">
+            {%- case layout_type -%}
+              {%- when 'grid' -%}
+                <div class="Grid">
+                  {%- for product in collections[collection_handle].products -%}
+                    {%- liquid
+                      if forloop.index < offset
+                        continue
+                      elsif counter == limit
+                        break
+                      endif
+                      assign counter = counter | plus: 1
+                    -%}
+                    <div class="Grid__Cell Grid__Cell--span-4" data-product-order="{{ forloop.index }}" style="--items: {{ limit }}">
+                      {%- render 'product-item', product: product, show_product_url: true, product_url_text: shop_now_text, show_product_info: true, show_product_link: true, show_product_common_name: true -%}
+                    </div>
+                  {%- endfor -%}
+                </div>
+      
+              {%- when 'carousel' -%}
+                <div class="Carousel Carousel--fadeIn" data-flickity-config='{{ flickity_options }}' data-limit="{{ limit }}" data-offset="{{ offset }}">
+                  {%- for product in collections[collection_handle].products -%}
+                    {%- liquid
+                      if forloop.index < offset
+                        continue
+                      elsif counter == limit
+                        break
+                      endif
+                      assign counter = counter | plus: 1
+                    -%}
+                    <div class="Carousel__Cell {% if forloop.first %}is-selected{% endif %}" data-slide-index="{{ forloop.index0 }}">
+                      {%- render 'product-item', product: product, show_product_url: true, product_url_text: shop_now_text, show_product_info: true, show_product_link: true, show_product_common_name: true -%}
+                    </div>
+                  {%- endfor -%}
+                </div>
+            {%- endcase -%}
+          </div>
+        </div>
+      </div>
+    {%- endunless -%}
+    
+    {{- article_second_part -}}

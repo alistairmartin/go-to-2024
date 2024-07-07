@@ -1,7 +1,14 @@
-{%- if article.comments_enabled? -%}
+
   <div id="blog-post-{{ article.id }}-comments" class="article__comment-box vertical-breather vertical-breather--margin vertical-breather--tight anchor">
     <div class="container">
-      {%- if article.comments_count > 0 -%}
+
+    <header class="section__header text-container">
+        <h2 class="heading h3">Comments</h2>
+      </header>
+
+      {%- render 'main-article--comments' -%}
+
+      {% comment %} {%- if article.comments_count > 0 -%}
         <div class="article__comment-list">
           <h3 class="article__comment-list-heading heading h5">{{ 'article.comments.comments_count' | t: count: article.comments_count }}</h3>
 
@@ -91,10 +98,9 @@
         </div>
 
         <button type="submit" is="loader-button" class="form__submit button button--primary">{{ 'article.comments.submit' | t }}</button>
-      {%- endform -%}
+      {%- endform -%} {% endcomment %}
     </div>
   </div>
-{%- endif -%}
 
 {% schema %}
 {

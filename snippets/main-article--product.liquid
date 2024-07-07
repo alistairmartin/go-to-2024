@@ -1,0 +1,67 @@
+{%- comment -%}
+This snippet is based on product-item.liquid. Any update on that snippet must be reflected here.
+To use BBCodes, insert anywhere in the body of the article, ideally somewhere in the middle:
+
+Products:
+  [product]handle,image_position,limit[/product]
+
+  - handle: handle of the product
+  - image_position: left or right
+
+  Eg: [product]face-hero,left[/product]
+
+  To have more than one product in an article, simply append the number on the opening and closing tags
+  Eg: [product_2]face-hero,left[/product_2]
+{%- endcomment -%}
+
+{%- liquid
+  capture splitter_string
+    if count == 0
+      echo "product"
+    else
+      echo "product_" | append: count
+    endif
+  endcapture
+
+  assign open_tag = splitter_string | prepend: '[' | append: ']'
+  assign close_tag = splitter_string | prepend: '[/' | append: ']'
+  
+  assign split_string = content | split: open_tag
+  assign article_first_part = split_string[0]
+  assign split_string = split_string[1] | split: close_tag
+  
+  assign article_products = split_string[0]
+  assign article_second_part = split_string[1]
+  
+  assign article_products = article_products | strip_html | split: '|'
+  
+  echo article_first_part
+  
+  assign capture_products = ''
+  
+  for article_product in article_products
+    assign this_product = article_product | split: ','
+    assign product_handle = this_product[0]
+    assign product_position = this_product[1]
+  
+    assign product = all_products[product_handle]
+  
+    unless product == blank
+      capture capture_products
+        echo capture_products
+  
+        render 'main-article--product-body', product: product, section: section, product_position: product_position
+      endcapture
+    endunless
+  
+  endfor
+
+  unless capture_products == ''
+    echo '<div class="main-article--products">'
+    echo capture_products
+    echo '</div>'
+  endunless
+  
+  echo article_second_part
+-%}
+  

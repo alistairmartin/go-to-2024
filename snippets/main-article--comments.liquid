@@ -1,0 +1,14 @@
+<div id="disqus_thread"></div>
+{%- assign src = 'https://gotoskincare.disqus.com/embed.js' -%}
+<script>
+  var disqus_config = function () {
+    this.page.url = "{{ shop.url | append: article.url }}";
+    this.page.identifier = "{{ article.id }}";
+  };
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '{{ src }}';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>

@@ -1,0 +1,16 @@
+<div class="main-article--product {{ product_position }}">
+  
+    <div class="text-section">
+        <a href="{{ product.url }}" class="title"><h2>{{ product.title }}</h2></a>
+        {%- if product.metafields.custom.product_subtitle__description != blank -%}
+          <p class="subtitle">{{ product.metafields.custom.product_subtitle__description }}</p>
+        {%- endif -%}
+        {%- if product.metafields.global.description_tag != blank -%}
+          <p class="description">{{- product.metafields.global.description_tag -}}</p>
+        {%- endif -%}
+        {%- render 'product-item--ATC', product: product -%}
+    </div>
+    <div class="image-section">
+      {{ product | image_url: width: 400 | image_tag: class: 'class' }}
+    </div>
+</div>

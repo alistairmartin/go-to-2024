@@ -1,3 +1,17 @@
+{%- liquid
+  assign has_collection = false
+
+  if article.content contains '[collection]'
+    assign has_collection = true
+  endif
+
+  assign has_product = false
+
+  if article.content contains '[product]'
+    assign has_product = true
+  endif
+-%}
+
 <section>
   <div class="article">
     <div class="article__main-part">
@@ -38,20 +52,66 @@
         <div class="article__inner">
           {%- capture blog_post_info -%}
             <div class="article__meta">
-              {%- if section.settings.show_author -%}
-                <span class="article__meta-item article__author">{{ 'article.general.written_by' | t: author: article.author }}</span>
-              {%- endif -%}
+
+              {%- liquid
+              assign length = article.content | strip_html | split: ' '
+              assign time = length.size | divided_by: 200 | split: '.'
+              assign minutes = time[0] | divided_by: 1
+              assign unit = minutes | pluralize: 'minute', 'minutes'
+              assign readtime = minutes | append: ' ' | append: unit
+    
+              if minutes <= 3
+                assign readtime = 'Less than 3 minutes'
+              endif
+    
+              if article.metafields.gts_theme.readtime != blank
+                assign readtime = readtime | append: " " | append: article.metafields.gts_theme.readtime
+              endif
+            -%}
 
               {%- if section.settings.show_date -%}
-                <time class="article__meta-item article__date">{{ article.published_at | date: format: 'abbreviated_date' }}</time>
+                <time class="article__meta-item article__date">{{ readtime }} / {{ article.published_at | date: format: 'abbreviated_date' }}</time>
               {%- endif -%}
 
-              {%- if article.comments_enabled? -%}
+              {%- if section.settings.show_author -%}
+
+                {% assign authorHandle = article.author | handle %}
+
+                {%- for article in blogs["authors"].articles -%}
+                  {%- if article.handle contains authorHandle -%}
+                    {% assign authorArticle = article %}
+                    {% break %}
+                  {%- endif -%}
+                {%- endfor -%}
+
+                {%- if authorArticle -%}
+                  <div class="article-author">
+                    <a href="{{ authorArticle.url }}">
+                      <span class="article-author--author">{{ 'article.general.written_by' | t: author: article.author }}</span>
+                    </a>
+
+                    <div class="article-author--description">
+                      {{ authorArticle.content | strip_html }}
+                    </div>
+                    <a href="{{ authorArticle.url }}">
+                      <img src="{{ authorArticle.image | img_url: "100x100", crop: "center" }}" alt="{{ authorArticle.title }}">
+                    </a>
+                  </div>
+
+                {%- else -%}
+                  <span class="article__meta-item article__author">{{ 'article.general.written_by' | t: author: article.author }}</span>
+                {%- endif -%}
+
+              {%- endif -%}
+
+    
+
+              {% comment %} {%- if article.comments_enabled? -%}
                 <a href="#blog-post-{{ article.id }}-comments" data-smooth-scroll class="article__meta-item article__comments-count text--subdued link icon-text">
                   {%- render 'icon' with 'comment' -%}
                   {{- 'article.comments.comments_count' | t: count: article.comments_count -}}
                 </a>
-              {%- endif -%}
+              {%- endif -%} {% endcomment %}
             </div>
 
             {%- if article.tags.size > 0 -%}
@@ -107,7 +167,7 @@
               </popover-content>
 
               <div class="article__share hidden-phone">
-                <span class="article__share-label">{{ 'article.general.share' | t }}</span>
+                <span class="article__share-label heading heading--small">{{ 'article.general.share' | t }}</span>
 
                 <div class="article__share-button-list" role="list">
                   <a class="article__share-button-item article__share-button-item--facebook tap-area" href="https://www.facebook.com/sharer.php?u={{ share_url }}" target="_blank" rel="noopener" role="listitem" aria-label="{{ 'general.social.facebook_share' | t }}">
@@ -135,15 +195,70 @@
               {{- blog_post_info -}}
             </div>
           {%- endif -%}
-
+          
           <div class="article__content">
             <div class="rte" {{ block.shopify_attributes }}>
-              {{- article.content -}}
+
+
+  
+              {%- liquid
+              assign article_content = article.content
+
+              if article_content contains '[product'
+              assign split_article = article_content | split: '[product'
+    
+              for i in (0..split_article.size)
+                  capture article_content
+                    render 'main-article--product', content: article_content, count: i, settings: section.settings
+                  endcapture
+                endfor
+              endif
+
+              if article_content contains '[collection'
+              assign split_article = article_content | split: '[collection'
+
+              for i in (0..split_article.size)
+                  capture article_content
+                    render 'main-article--collections', content: article_content, count: i
+                  endcapture
+                endfor
+              endif
+              
+              if article_content contains '[instagram'
+                assign split_article = article_content | split: '[instagram'
+                for i in (0..split_article.size)
+                  capture article_content
+                    render 'main-article--instagram', content: article_content, count: i
+                  endcapture
+                endfor
+              endif
+              
+              echo article_content
+            -%} 
+
+
+            {% comment %} {%- if article_content contains '[instagram' -%}
+              {%- assign split_article = article_content | split: '[instagram' -%}
+              {%- for i in (0..split_article.size)-%}
+                {%- capture article_content-%}
+                {%- render 'main-article--instagram', content: article_content, count: i-%}
+                {%- endcapture -%}
+              {%- endfor -%}
+            {%- endif -%} {% endcomment %}
+
+            {{  }}
+
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+
   </div>
 </section>
 

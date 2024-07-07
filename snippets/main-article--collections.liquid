@@ -1,0 +1,140 @@
+{%- comment -%}
+To use BBCodes, insert anywhere in the body of the article, ideally somewhere in the middle:
+
+Collections:
+  [collection]handle,layout_type,limit,offset[/collection]
+
+  - handle: handle of the collection
+  - layout_type: grid or carousel
+  - limit: items to layout, any number divisible by 12
+  - offset: where to start with the list of items (optional)
+
+  Eg: [collection]face-masks,grid,3[/collection]
+
+  To have more than one collection in an article, simply append the number on the opening and closing tags
+  Eg: 
+  [collection_2]face-masks,grid,3[/collection_2]
+  [collection_3]face-masks,grid,3,4[/collection_3]
+{%- endcomment -%}
+
+    
+    {%- liquid
+      capture splitter_string
+        if count == 0
+          echo "collection"
+        else
+          echo "collection_" | append: count
+        endif
+      endcapture
+      
+      assign open_tag = splitter_string | prepend: '[' | append: ']'
+      assign close_tag = splitter_string | prepend: '[/' | append: ']'
+      
+      assign split_string = content | split: open_tag
+      assign article_first_part = split_string[0]
+      assign split_string = split_string[1] | split: close_tag
+      
+      assign article_collection = split_string[0]
+      assign article_second_part = split_string[1]
+      
+      assign article_collection = article_collection | strip_html | split: ','
+      assign collection_handle = article_collection[0]
+      assign layout_type = article_collection[1]
+      assign limit = article_collection[2] | times: 1
+      assign collection_limit = limit
+      assign offset = 0
+      assign counter = 0
+
+      assign products_per_row = 3
+      
+      if article_collection[3] != blank
+        assign offset = article_collection[3] | times: 1
+      endif
+    -%}
+
+
+   
+
+    <style>
+        #block-{{ collection_handle }} {
+                --section-products-per-row: 2;
+        }
+
+    @media screen and (min-width: 741px) {
+        #block-{{ collection_handle }} {
+        --section-products-per-row: {{ 3 | at_most: 3 }};
+        }
+    }
+
+    @media screen and (min-width: 1000px) {
+        #block-{{ collection_handle }} {
+        --section-products-per-row: {{ 3 | at_most: 4 }};
+        }
+    }
+
+    @media screen and (min-width: 1200px) {
+        #block-{{ collection_handle }} {
+        --section-products-per-row: 3;
+        }
+    }
+    </style>
+    
+    {{- article_first_part -}}
+    
+    {%- assign article_collection = collections[collection_handle] -%}
+    {%- unless article_collection == blank -%}
+
+<div class="main-article--collections">
+    {% comment %} 
+    <div class="container">
+        <header class="section__header text-container">
+            <h2 class="heading h3">Shop Now</h2>
+        </header>
+    </div> {% endcomment %}
+    <div class="featured-collections">
+    <product-list class="product-list product-list--center became-visible" id="block-{{ collection_handle }}">
+        <div class="scroller">
+        <div class="product-list__inner product-list__inner--scroller hide-scrollbar">
+            {%- assign number_of_products_minus_one = products_per_row| minus: 1 -%}
+            {%- assign gap_width = 24.0 | divided_by: products_per_row | times: number_of_products_minus_one -%}
+            {%- capture sizes_attribute -%}(max-width: 740px) 52vw, calc(min(100vw - 80px, 1520px) / {{products_per_row }} - {{ gap_width | ceil }}px){%- endcapture -%}
+
+            {%- for product in article_collection.products limit: collection_limit -%}
+            {%- if product.featured_media -%}
+                {%- assign smallest_image_aspect_ratio = smallest_image_aspect_ratio | at_least: product.featured_media.aspect_ratio -%}
+            {%- endif -%}
+            {%- render 'product-item', product: product, collection: article_collection, show_cta: false, sizes_attribute: sizes_attribute -%}
+            {%- endfor -%}
+        </div>
+        </div>
+
+        {%- if article_collection.products_count == 0 -%}
+            {%- assign products_shown = collection_limit -%}
+          {%- else -%}
+            {%- assign products_shown = article_collection.products_count | at_most: collection_limit -%}
+          {%- endif -%}
+
+          {%- if products_shown > products_per_row -%}
+            {%- if smallest_image_aspect_ratio == 0 -%}
+              {%- assign smallest_image_aspect_ratio = 1 -%}
+            {%- endif -%}
+
+        <prev-next-buttons class="product-list__prev-next hidden-pocket" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
+            <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled>
+            <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
+            {%- render 'icon' with 'nav-arrow-left', block: true, direction_aware: true -%}
+            </button>
+
+            <button class="product-list__arrow prev-next-button prev-next-button--next">
+            <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
+            {%- render 'icon' with 'nav-arrow-right', block: true, direction_aware: true -%}
+            </button>
+        </prev-next-buttons>
+        {%- endif -%}
+
+    </product-list>
+    </div>
+    </div>
+    {%- endunless -%}
+    
+    {{- article_second_part -}}

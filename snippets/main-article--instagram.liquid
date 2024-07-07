@@ -1,0 +1,42 @@
+{%- comment -%}
+This snippet is based on the Instagram embed HTML, but stripped off of unnecessary code. To update, simply copy the <blockquote></blockquote>. Everything inside that tag can be discarded.
+
+Products:
+  [product]embed_url[/product]
+
+  - embed_url: the Instagram post URL
+
+  To have more than one IG post in an article, simply append the number on the opening and closing tags
+  Eg: [instagram_2]embed_url[/instagram_2]
+{%- endcomment -%}
+
+
+{%- liquid
+  capture splitter_string
+    if count == 0
+      echo "instagram"
+    else
+      echo "instagram_" | append: count
+    endif
+  endcapture
+  
+  assign open_tag = splitter_string | prepend: '[' | append: ']'
+  assign close_tag = splitter_string | prepend: '[/' | append: ']'
+  
+  assign split_string = content | split: open_tag
+  assign article_first_part = split_string[0]
+  assign split_string = split_string[1] | split: close_tag
+  
+  assign embed_url = split_string[0]
+  assign article_second_part = split_string[1]
+-%}
+
+{{- article_first_part -}}
+
+{%- unless embed_url == blank -%}
+  <div class="main-article--instagram-embed">
+    <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="{{- embed_url | strip_html }}" data-instgrm-version="14"></blockquote>
+  </div>
+{%- endunless -%}
+
+{{- article_second_part -}}

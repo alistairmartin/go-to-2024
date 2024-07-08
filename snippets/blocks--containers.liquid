@@ -1,0 +1,33 @@
+
+
+{%- if block.type == "container-start" -%}
+    <style>
+    #block-{{ block.id }} {
+      background: {{ block.settings.background }};
+      --gridMobile: {{ block.settings.mobile_grid }};
+
+      --gridGapVerticalMobile: {{ block.settings.grid_gap_vertical_mobile }}px;
+      --gridGapHorizontalMobile: {{ block.settings.grid_gap_horizontal_mobile }}px;
+
+      --paddingVerticalMobile: {{ block.settings.padding_vertical_mobile }}px;
+      --paddingHorizontalMobile: {{ block.settings.padding_horizontal_mobile }}px;
+
+      --gridDesktop: {{ block.settings.desktop_grid }};
+      
+      --gridGapVerticalDesktop: {{ block.settings.grid_gap_vertical_desktop }}px;
+      --gridGapHorizontalDesktop: {{ block.settings.grid_gap_horizontal_desktop }}px;
+
+      --paddingVerticalDesktop: {{ block.settings.padding_vertical_desktop }}px;
+      --paddingHorizontalDesktop: {{ block.settings.padding_horizontal_desktop }}px;
+    }
+    </style>
+
+    <div class="container-custom container-custom--{{ block.settings.page_width }}" {{ blockId }}>
+{%- endif -%}
+
+
+
+
+{%- if block.type == "container-end" -%}
+  </div>
+{%- endif -%}

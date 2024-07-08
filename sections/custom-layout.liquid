@@ -1,35 +1,25 @@
 <style>
   #shopify-section-{{ section.id }} {
-    --section-background: {{ section.settings.background }}
+    --section-background: {{ section.settings.background }};
+
+    --paddingVerticalMobile: {{ section.settings.padding_vertical_mobile }}px;
+    --paddingHorizontalMobile: {{ section.settings.padding_horizontal_mobile }}px;
+
+    --paddingVerticalDesktop: {{ section.settings.padding_vertical_desktop }}px;
+    --paddingHorizontalDesktop: {{ section.settings.padding_horizontal_desktop }}px;
   }
 </style>
 
-<section reveal-on-scroll> 
+<section> 
 
-  {%- if section.settings.enable_container -%}
-    <div class="container">
-  {%- endif -%}
 
   {%- for block in section.blocks -%}
     {%- capture blockId -%}id="block-{{ block.id }}"{%- endcapture -%}
 
 
     {%- comment -%} CONTAINERS --- START  {%- endcomment -%}
-    {%- if block.type == "container-start" -%}
-        <style>
-        #block-{{ section.id }} {
-          background: {{ block.settings.background }}
-        }
-        </style>
-
-        <div class="page-content page-content--{{ block.settings.page_width }}" {{ blockId }}>
-    {%- endif -%}
-    {%- comment -%} ------  {%- endcomment -%}
-    {%- if block.type == "container-end" -%}
-      </div>
-    {%- endif -%}
+    {% include "blocks--containers" %}
     {%- comment -%} CONTAINERS --- END  {%- endcomment -%}
-
 
     {%- comment -%} IMAGES --- START  {%- endcomment -%}
     {% include "blocks--images" %}
@@ -40,85 +30,335 @@
 
 
 
-
-  {%- if section.settings.enable_container -%}
-    </div>
-  {%- endif -%}
-
 </section>
 
 
 {% schema %}
-  {
-    "name": "Custom Layout",
-    "class": "shopify-section--custom-layout",
-    "disabled_on": {
-      "groups": ["custom.overlay"]
+{
+  "name": "Custom Layout",
+  "class": "shopify-section--custom-layout",
+  "disabled_on": {
+    "groups": [
+      "custom.overlay"
+    ]
+  },
+  "settings": [
+    {
+        "type": "color",
+        "id": "background",
+        "label": "Background",
+        "default": "rgba(0,0,0,0)"
     },
-    "settings": [
-      {
-        "type": "checkbox",
-        "id": "enable_container",
-        "label": "Enable Container?"
-      }
-    ],
-    "blocks": [
-      {
-        "type": "note",
-        "name": "Block Note",
-        "settings": [
-          {
-            "type": "text",
-            "id": "title",
-            "label": "Block Note",
-            "info": "Only Admin Will See This.",
-            "default": "--- IMAGE ---"
-          }
-        ]
-      }, {
-        "type": "container-start",
-        "name": "Container - START",
-        "settings": [
-          {
-            "type": "select",
-            "id": "page_width",
-            "label": "Page width",
-            "options": [
-              {
-                "value": "small",
-                "label": "Small"
-              }, {
-                "value": "medium",
-                "label": "Medium"
-              }, {
-                "value": "large",
-                "label": "Large"
-              }
-            ],
-            "default": "medium"
-          }, {
-            "type": "color",
-            "id": "background",
-            "label": "Background",
-            "default": "rgba(0,0,0,0)"
-          }
-        ]
-      }, {
-        "type": "container-end",
-        "name": "Container - END",
-        "settings": []
-      },
-      {
+    {
+        "type": "header",
+        "content": "--- 📱 MOBILE SETTINGS 📱 ---"
+    },
+    {
+        "type": "header",
+        "content": "⏹️ Container Padding (Mobile)",
+        "info": "Space around the container"
+    },
+    {
+        "type": "range",
+        "id": "padding_vertical_mobile",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 0,
+        "label": "↕️ Top/Bottom"
+    },
+    {
+        "type": "range",
+        "id": "padding_horizontal_mobile",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 0,
+        "label": "↔️ Left/Right"
+    },
+    {
+        "type": "header",
+        "content": "--- 🖥️ DESKTOP SETTINGS 📱 ---"
+    },
+    {
+        "type": "header",
+        "content": "⏹️ Container Padding (Desktop)",
+        "info": "Space around the container"
+    },
+    {
+        "type": "range",
+        "id": "padding_vertical_desktop",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 0,
+        "label": "↕️ Top/Bottom"
+    },
+    {
+        "type": "range",
+        "id": "padding_horizontal_desktop",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 0,
+        "label": "↔️ Left/Right"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "note",
+      "name": "Block Note",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Note",
+          "info": "Only Admin Will See This.",
+          "default": "--- IMAGE ---"
+        }
+      ]
+    },
+    {
+      "type": "column-start",
+      "name": "📶 Column - START",
+      "settings": [
+    ]
+    },  
+    {
+      "type": "column-end",
+      "name": "📶 Column - END",
+      "settings": [
+    ]
+    },    
+    {
+      "type": "container-start",
+      "name": "⏹️ Container - START",
+      "settings": [
+        {
+          "type": "select",
+          "id": "page_width",
+          "label": "Page width",
+          "options": [
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            },
+            {
+              "value": "unset",
+              "label": "Unset"
+            }
+          ],
+          "default": "large"
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "Background",
+          "default": "rgba(0,0,0,0)"
+        },
+        {
+          "type": "header",
+          "content": "--- 📱 MOBILE SETTINGS 📱 ---"
+        },
+        {
+          "type": "header",
+          "content": "🈁 📱 Grid (Mobile)"
+        },
+        {
+          "type": "radio",
+          "id": "mobile_grid",
+          "label": "Grid",
+          "default": "1",
+          "options": [
+            {
+              "value": "1",
+              "label": "One"
+            },
+            {
+              "value": "2",
+              "label": "Two"
+            },
+            {
+              "value": "3",
+              "label": "Three"
+            },
+            {
+              "value": "4",
+              "label": "Four"
+            },
+            {
+              "value": "5",
+              "label": "Five"
+            },
+            {
+              "value": "6",
+              "label": "Six"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "⏹️ Container Padding (Mobile)",
+          "info": "Space around the container"
+        },
+        {
+          "type": "range",
+          "id": "padding_vertical_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↕️ Top/Bottom"
+        },
+        {
+          "type": "range",
+          "id": "padding_horizontal_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↔️ Left/Right"
+        },
+        {
+          "type": "header",
+          "content": "⏸️ Item Spacing (Mobile)",
+          "info": "Space between Items"
+        },
+        {
+          "type": "range",
+          "id": "grid_gap_vertical_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↕️ Top/Bottom"
+        },
+        {
+          "type": "range",
+          "id": "grid_gap_horizontal_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↔️ Left/Right"
+        },
+        {
+          "type": "header",
+          "content": "--- 🖥️ DESKTOP SETTINGS 📱 ---"
+        },
+        {
+          "type": "header",
+          "content": "🈁 🖥️ Grid (Desktop)"
+        },
+        {
+          "type": "radio",
+          "id": "desktop_grid",
+          "label": "Grid",
+          "default": "1",
+          "options": [
+            {
+              "value": "1",
+              "label": "One"
+            },
+            {
+              "value": "2",
+              "label": "Two"
+            },
+            {
+              "value": "3",
+              "label": "Three"
+            },
+            {
+              "value": "4",
+              "label": "Four"
+            },
+            {
+              "value": "5",
+              "label": "Five"
+            },
+            {
+              "value": "6",
+              "label": "Six"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "⏹️ Container Padding (Desktop)",
+          "info": "Space around the container"
+        },
+        {
+          "type": "range",
+          "id": "padding_vertical_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↕️ Top/Bottom"
+        },
+        {
+          "type": "range",
+          "id": "padding_horizontal_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↔️ Left/Right"
+        },
+        {
+          "type": "header",
+          "content": "⏸️ Item Spacing (Desktop)",
+          "info": "Space between Items"
+        },
+        {
+          "type": "range",
+          "id": "grid_gap_vertical_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↕️ Top/Bottom"
+        },
+        {
+          "type": "range",
+          "id": "grid_gap_horizontal_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↔️ Left/Right"
+        }
+      ]
+    },
+    {
+      "type": "container-end",
+      "name": "⏹️ Container - END",
+      "settings": []
+    },
+    {
       "type": "image",
       "name": "Image",
       "settings": [
-        {
-        "type": "checkbox",
-        "id": "reveal_on_scroll",
-        "label": "Reveal on scroll",
-        "info": "Show animation when section becomes visible.",
-        "default": true
-        },
         {
           "type": "checkbox",
           "id": "hide_mobile",
@@ -134,94 +374,45 @@
           "content": "Image"
         },
         {
-            "type": "image_picker",
-            "id": "image",
-            "label": "Image"
+          "type": "checkbox",
+          "id": "rounded_image_corners_desktop",
+          "label": "Rounded Image Corners? (Desktop)",
+          "default": true
         },
         {
-            "type": "image_picker",
-            "id": "mobile_image",
-            "label": "Mobile image"
+          "type": "checkbox",
+          "id": "rounded_image_corners_mobile",
+          "label": "Rounded Image Corners? (Mobile)",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image",
+          "info": "Optional"
         },
         {
           "type": "header",
-          "content": "Width"
-        },
-        {
-           "type": "radio",
-           "id": "width",
-           "label": "Width",
-           "default": "100",
-           "options": [
-              {
-                "value": "25",
-                "label": "25%"
-              },
-              {
-                "value": "33",
-                "label": "33%"
-              },
-              {
-                "value": "50",
-                "label": "50%"
-              },
-              {
-                "value": "66",
-                "label": "66%"
-              },
-              {
-                "value": "75",
-                "label": "75%"
-              },
-              {
-                "value": "100",
-                "label": "100%"
-              }
-           ]
-        },
-        {
-           "type": "radio",
-           "id": "width_mobile",
-           "label": "Width (Mobile)",
-           "options": [
-              {
-                "value": "25",
-                "label": "25%"
-              },
-              {
-                "value": "33",
-                "label": "33%"
-              },
-              {
-                "value": "50",
-                "label": "50%"
-              },
-              {
-                "value": "66",
-                "label": "66%"
-              },
-              {
-                "value": "75",
-                "label": "75%"
-              },
-              {
-                "value": "100",
-                "label": "100%"
-              }
-           ]
+          "content": "Link"
         },
         {
           "type": "url",
           "id": "link",
-          "label": "Link"
+          "label": "Link",
+          "info": "Optional"
         }
       ]
     }
-    ],
-    "presets": [
-      {
-        "name": "Custom Layout"
-      }
-    ]
-  }
+  ],
+  "presets": [
+    {
+      "name": "Custom Layout"
+    }
+  ]
+}
 {% endschema %}

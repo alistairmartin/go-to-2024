@@ -110,38 +110,42 @@
 
 // GO-TO 
 @keyframes animateLogoGoToG {
-    0%, 100% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX(0)}
-    1% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX($animationLogoGoToMoveFirst) scale($animationLogoGoToScaleStart)} ;
-    10% { fill:$gotoPink; opacity: 1; transform:translateX($animationLogoGoToMoveSecond) scale($animationLogoGoToScaleMid);}
-    20% { fill:$gotoPink; opacity: 1; transform:translateX(0) scale($animationLogoGoToScaleEnd);}
+    0%, 100% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateY(0) scale($animationLogoGoToScaleEnd)}
+    20% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateY($animationLogoGoToMoveFirst) scale($animationLogoGoToScaleStart)} ;
+    30% { fill:$gotoPink; opacity: 1; transform:translateY($animationLogoGoToMoveSecond) scale($animationLogoGoToScaleMid);}
+    35% { fill:$gotoPink; opacity: 1; transform:translateY(0) scale($animationLogoGoToScaleEnd);}
   }
 
   @keyframes animateLogoGoToO1 {
-    0%, 100% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX(0)}
-    15% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX($animationLogoGoToMoveFirst) scale($animationLogoGoToScaleStart)};
-    25% { fill:$gotoPink; opacity: 1; transform:translateX($animationLogoGoToMoveSecond) scale($animationLogoGoToScaleMid);}
-    35% { fill:$gotoPink; opacity: 1; transform:translateX(0) scale($animationLogoGoToScaleEnd);}
+    0%, 100% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateY(0) scale($animationLogoGoToScaleEnd);}
+    20% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateY($animationLogoGoToMoveFirst) scale($animationLogoGoToScaleStart)} ;
+    30% { fill:$gotoPink; opacity: 1; transform:translateY($animationLogoGoToMoveSecond) scale($animationLogoGoToScaleMid);}
+    35% { fill:$gotoPink; opacity: 1; transform:translateY(0) scale($animationLogoGoToScaleEnd);}
   }
 
+//   @keyframes animateLogoGoToDash {
+//     0%, 100% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX(0)}
+//     30% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX($animationLogoGoToMoveFirst) scale($animationLogoGoToScaleStart)};
+//     40% { fill:$gotoPink; opacity: 1; transform:translateX($animationLogoGoToMoveSecond) scale($animationLogoGoToScaleMid);}
+//     50% { fill:$gotoPink; opacity: 1; transform:translateX(0) scale($animationLogoGoToScaleEnd);}
+//   }
+
   @keyframes animateLogoGoToDash {
-    0%, 100% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX(0)}
-    30% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX($animationLogoGoToMoveFirst) scale($animationLogoGoToScaleStart)};
-    40% { fill:$gotoPink; opacity: 1; transform:translateX($animationLogoGoToMoveSecond) scale($animationLogoGoToScaleMid);}
-    50% { fill:$gotoPink; opacity: 1; transform:translateX(0) scale($animationLogoGoToScaleEnd);}
+    0%, 100% { fill: $gotoPink; opacity: 0.75;  transform: scale(1)}
   }
 
   @keyframes animateLogoGoToT {
-    0%, 100% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX(0)}
-    45% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX($animationLogoGoToMoveFirst) scale($animationLogoGoToScaleStart)};
-    55% { fill:$gotoPink; opacity: 1; transform:translateX($animationLogoGoToMoveSecond) scale($animationLogoGoToScaleMid);}
-    65% { fill:$gotoPink; opacity: 1; transform:translateX(0) scale($animationLogoGoToScaleEnd);}
+    0%, 100% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateY(0)}
+    45% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateY($animationLogoGoToMoveFirst) scale($animationLogoGoToScaleStart)};
+    55% { fill:$gotoPink; opacity: 1; transform:translateY($animationLogoGoToMoveSecond) scale($animationLogoGoToScaleMid);}
+    75% { fill:$gotoPink; opacity: 1; transform:translateY(0) scale($animationLogoGoToScaleEnd);}
   }
 
   @keyframes animateLogoGoToO2 {
-    0%, 100% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX(0)}
-    65% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateX($animationLogoGoToMoveFirst) scale($animationLogoGoToScaleStart)};
-    75% { fill:$gotoPink; opacity: 1; transform:translateX($animationLogoGoToMoveSecond) scale($animationLogoGoToScaleMid);}
-    85% { fill:$gotoPink; opacity: 1; transform:translateX(0) scale($animationLogoGoToScaleEnd);}
+    0%, 100% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateY(0)}
+    45% { fill: $gotoPink; opacity: $animationLogoGoToOpacity; transform:translateY($animationLogoGoToMoveFirst) scale($animationLogoGoToScaleStart)};
+    55% { fill:$gotoPink; opacity: 1; transform:translateY($animationLogoGoToMoveSecond) scale($animationLogoGoToScaleMid);}
+    75% { fill:$gotoPink; opacity: 1; transform:translateY(0) scale($animationLogoGoToScaleEnd);}
   }
 
 

@@ -1,0 +1,33 @@
+
+{%- if block.type == "text" -%}
+    {%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+    <style>
+    #block-{{ block.id }} {
+      --margin-top-desktop: {{ block.settings.margin_top_desktop }}px;
+      --margin-bottom-desktop: {{ block.settings.margin_bottom_desktop }}px;
+      --font-alignment-desktop: {{ block.settings.font_alignment_desktop }};
+      --font-style-desktop: {{ block.settings.font_style_desktop }};
+      --font-weight-desktop: {{ block.settings.font_weight_desktop }};
+      --font-size-desktop: {{ block.settings.font_size_desktop }}px;
+      --font-line-height-desktop: {{ block.settings.font_line_height_desktop }};
+      --font-letter-spacing-desktop: {{ block.settings.font_letter_spacing_desktop }};
+
+      {%- if brand == "go-to" -%}
+        {%- if block.settings.font_family_desktop == "primary" -%}
+            --font-family-desktop: "Moderno FB";
+        {%- elsif block.settings.font_family_desktop == "secondary" -%}
+            --font-family-desktop: "TTCommons";
+        {%- endif -%}
+      {%- elsif brand == "bro-to" -%}
+      {%- elsif brand == "gro-to" -%}
+        
+      {%- endif -%}
+     
+    }
+    </style>
+    
+    <div class="blocks--text {% if block.settings.hide_desktop %}hide-desktop{% endif %} {% if block.settings.hide_mobile %}hide-mobile{% endif %}" {{ blockId }}>
+        {{ block.settings.text }}
+    </div>
+    
+{%- endif -%}

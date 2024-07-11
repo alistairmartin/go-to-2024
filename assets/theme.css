@@ -147,6 +147,10 @@ td, th {
   padding: 0;
 }
 
+p {
+  line-height: 1.5;
+}
+
 .pswp {
   touch-action: none;
   z-index: 1500;

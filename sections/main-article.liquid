@@ -202,7 +202,7 @@
 
   
               {%- liquid
-              assign article_content = article.content
+              assign article_content = article.content | replace: "<a href=", "<a target='_blank' href=" 
 
               if article_content contains '[product'
               assign split_article = article_content | split: '[product'
@@ -246,7 +246,10 @@
               {%- endfor -%}
             {%- endif -%} {% endcomment %}
 
-            {{  }}
+
+              <div class="main-article--foot-notes">
+                {{ article.metafields.custom.foot_notes | metafield_tag }}
+              </div>
 
             </div>
           </div>

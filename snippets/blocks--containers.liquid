@@ -19,10 +19,59 @@
 
       --paddingVerticalDesktop: {{ block.settings.padding_vertical_desktop }}px;
       --paddingHorizontalDesktop: {{ block.settings.padding_horizontal_desktop }}px;
+
+      --flex-justify-content-mobile: {{ block.settings.flex_justify_content_mobile }};
+      --flex-justify-content-desktop: {{ block.settings.flex_justify_content_desktop }};
+
+      --flex-align-items-mobile: {{ block.settings.flex_justify_content_mobile }};
+      --flex-align-items-desktop: {{ block.settings.flex_align_items_desktop }};
     }
     </style>
 
-    <div class="container-custom container-custom--{{ block.settings.page_width }}" {{ blockId }}>
+    {%- assign classes = "" -%}
+
+    {%- unless block.settings.flex_justify_content_mobile == "unset" -%}
+        {%- assign classes = classes | append: " flex-content--mobile" -%}
+    {%- endunless -%}
+
+    {%- unless block.settings.flex_justify_content_desktop == "unset" -%}
+        {%- assign classes = classes | append: " flex-content--desktop" -%}
+    {%- endunless -%}
+
+    {%- unless block.settings.flex_align_items_mobile == "unset" -%}
+        {%- assign classes = classes | append: " flex-align--mobile" -%}
+    {%- endunless -%}
+
+    {%- unless block.settings.flex_align_items_desktop == "unset" -%}
+        {%- assign classes = classes | append: " flex-align--desktop" -%}
+    {%- endunless -%}
+
+    {%- if block.settings.desktop_grid == "flex-grid" -%}
+        {% assign classes = classes | append: " flex-grid--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.desktop_grid == "flex-grid-wrap" -%}
+        {% assign classes = classes | append: " flex-grid-wrap--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.desktop_grid == "flex-column" -%}
+        {% assign classes = classes | append: " flex-column--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.mobile_grid == "flex-grid" -%}
+        {% assign classes = classes | append: " flex-grid--mobile" %}
+    {%- endif -%}
+
+    {%- if block.settings.mobile_grid == "flex-grid-wrap" -%}
+        {% assign classes = classes | append: " flex-grid-wrap--mobile" %}
+    {%- endif -%}
+
+    {%- if block.settings.mobile_grid == "flex-column" -%}
+        {% assign classes = classes | append: " flex-column--mobile" %}
+    {%- endif -%}
+
+
+    <div class="container-custom container-custom--{{ block.settings.page_width }} {{ classes }}" {{ blockId }}>
 {%- endif -%}
 
 

@@ -23,7 +23,6 @@
   .article__content {
     .rte * {
         font-family: TTCommons;
-        font-size: 18px;
         line-height: 1.5;
     }
 
@@ -135,5 +134,19 @@
         }
 
       
+    }
+}
+
+.main-article--foot-notes {
+    font-size: 14px !important;
+    margin: 20px 0;
+    background: $gotoGreyLight;
+    padding: 15px;
+    font-style: italic;
+    font-weight: normal;
+
+    * {
+        font-size: 14px !important;
+        font-weight: normal !important;
     }
 }

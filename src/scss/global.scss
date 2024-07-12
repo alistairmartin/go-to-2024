@@ -997,6 +997,20 @@ store-header.background-blur {
 
 
 .shopify-section--timeline-vertical {
+  @include media-query($medium-up) {
+    position: relative;
+    &:after {
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: 100%;
+      background: $gotoPink;
+      left: 50%;
+      top: 0;
+    }
+  }
+
+
   .timeline-vertical {
     display: grid;
     grid-template-columns: 1fr;
@@ -1014,19 +1028,17 @@ store-header.background-blur {
       @include media-query($medium-up) {
         width: 50%;
       }
+
+      img {
+        padding: 16px;
+        border-radius: 8px;
+      }
     }
  
     &.image-left {
       flex-direction: column-reverse;
       @include media-query($medium-up) {
         flex-direction: row;
-      }
-
-      .timeline-vertical-item--text {
-    
-        @include media-query($medium-up) {
-          border-left: 2px solid #fce2dc;
-        }
       }
 
       .timeline-vertical-item--image {
@@ -1042,13 +1054,6 @@ store-header.background-blur {
       flex-direction: column-reverse;
       @include media-query($medium-up) {
         flex-direction: row-reverse;
-      }
-
-      .timeline-vertical-item--text {
-
-        @include media-query($medium-up) {
-          border-right: 2px solid #fce2dc;
-        }
       }
     }
 
@@ -1101,6 +1106,10 @@ store-header.background-blur {
         }
       }
 
+      h3 {
+        font-weight: 400;
+      }
+
       .text {
         padding-left: 0px;
         margin: 16px 0 0 0;
@@ -1109,7 +1118,8 @@ store-header.background-blur {
           padding-left: 40px;
         }
 
-        p {
+        * {
+          line-height: 1.5;
           margin: 0;
         }
       }

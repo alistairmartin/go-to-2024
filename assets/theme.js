@@ -4371,6 +4371,63 @@ var BlogPostNavigation = class extends HTMLElement {
 };
 window.customElements.define("blog-post-navigation", BlogPostNavigation);
 
+class TimelineVertical extends HTMLElement {
+  connectedCallback() {
+    if (this.hasAttribute("stagger-apparition")) {
+      this._setupVisibility();
+    }
+  }
+
+  async _setupVisibility() {
+    const itemsText = Array.from(this.querySelectorAll(".timeline-vertical-item--text"));
+    const itemsImage = Array.from(this.querySelectorAll(".timeline-vertical-item--image"));
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    
+    const observerText = new IntersectionObserver(entries => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          const animation = new CustomAnimation(new CustomKeyframeEffect(entry.target, {
+            opacity: [0, 1],
+            transform: [`translateY(${prefersReducedMotion ? 0 : window.innerWidth < 1000 ? 35 : 60}px)`, "translateY(0)"]
+          }, {
+            duration: 600,
+            delay: 1200,
+            easing: "ease"
+          }));
+          animation.play();
+          observerText.unobserve(entry.target); // Stop observing the current item once it has been animated
+        }
+      });
+    }, {
+      threshold: Math.min(50 / this.clientHeight, 1)
+    });
+
+    const observerImage = new IntersectionObserver(entries => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          const animation = new CustomAnimation(new CustomKeyframeEffect(entry.target, {
+            opacity: [0, 1],
+            transform: [`translateY(${prefersReducedMotion ? 0 : window.innerWidth < 1000 ? 35 : 60}px)`, "translateY(0)"]
+          }, {
+            duration: 800,
+            delay: 800,
+            easing: "ease"
+          }));
+          animation.play();
+          observerImage.unobserve(entry.target); // Stop observing the current item once it has been animated
+        }
+      });
+    }, {
+      threshold: Math.min(50 / this.clientHeight, 1)
+    });
+
+    itemsText.forEach(item => observerText.observe(item));
+    itemsImage.forEach(item => observerImage.observe(item));
+  }
+}
+
+window.customElements.define("timeline-vertical", TimelineVertical);
+
 // js/custom-element/section/multi-column/multi-column.js
 var MultiColumn = class extends CustomHTMLElement {
   connectedCallback() {

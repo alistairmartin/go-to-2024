@@ -48,10 +48,14 @@
 
   {% schema %}
   {
-    "name": "Timeline (Vertical)",
+    "name": "Ingredients",
     "class": "shopify-section--timeline-vertical",
     "settings": [
-     
+     {
+       "type": "product_list",
+       "id": "products",
+       "label": "Products"
+     },
     ],
     "blocks": [
       {
@@ -124,7 +128,7 @@
     ],
     "presets": [
     {
-      "name": "Timeline (Vertical)"
+      "name": "Ingredients"
     }
   ]
   }

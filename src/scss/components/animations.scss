@@ -231,3 +231,78 @@
     70% { fill:$brotoBlueLight; opacity: 1; transform:translateY(0%);}
   }
 
+  @keyframes headShake {
+    0% {
+      transform: translateX(0);
+    }
+  
+    6.5% {
+      transform: translateX(-6px) rotateY(-9deg);
+    }
+  
+    18.5% {
+      transform: translateX(5px) rotateY(7deg);
+    }
+  
+    31.5% {
+      transform: translateX(-3px) rotateY(-5deg);
+    }
+  
+    43.5% {
+      transform: translateX(2px) rotateY(3deg);
+    }
+  
+    50% {
+      transform: translateX(0);
+    }
+  }
+
+
+  $animateGoToGlobeJiggleXPostive: 3%;
+  $animateGoToGlobeJiggleXNegative: -3%;
+  @keyframes animateGoToGlobe {
+    0%, 100% { transform:scale(1) translateX($animateGoToGlobeJiggleXPostive);}
+    20% {transform: scale(1) translateX($animateGoToGlobeJiggleXNegative);}
+    40% {transform: scale(1) translateX($animateGoToGlobeJiggleXPostive);}
+    60% {transform: scale(1) translateX($animateGoToGlobeJiggleXNegative);}
+    80% {transform: scale(1) translateX($animateGoToGlobeJiggleXPostive);}
+  }
+
+  @keyframes animateGoToGlobeLand {
+    0%, 100% { transform:scale(1) translateX($animateGoToGlobeJiggleXPostive);}
+    20% {transform: scale(1) translateX($animateGoToGlobeJiggleXNegative);}
+    40% {transform: scale(1) translateX($animateGoToGlobeJiggleXPostive);}
+    60% {transform: scale(1) translateX($animateGoToGlobeJiggleXNegative);}
+    80% {transform: scale(1) translateX($animateGoToGlobeJiggleXPostive);}
+  }
+
+  @keyframes animateGoToGlobeLines {
+    0%, 100% {  transform:scale(1); stroke-width: 10px;}
+    50% { transform:scale(1); stroke-width: 5px;}
+  }
+
+  #earth {
+    display: block;
+    margin: 200px auto;
+    max-width: 200px;
+    height: 200px;
+    transition: transform 0.2s ease-in-out;
+
+    path, polygon, rect {
+        transition: all 0.2s ease-in-out;
+        transform-origin: var(--origin-x) var(--origin-y);
+    }
+
+    .land {
+      fill: $gotoPinkLight !important;
+      animation: headShake 1s infinite;
+    }
+
+    .globe {
+      animation: headShake 1s infinite;
+    }
+
+    .line {
+      animation: animateGoToGlobeLines 2s infinite;
+    }
+  }

@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         articleElement.innerHTML = `
                             <a class="article-link" href="${article.url}">
                                 <span class="tags">${createTagsHtml(article.tags)}</span>
-                                <h4 class="title"><span class="title-inner"><span>${article.title}</span></span><i>${formatDate(article.published_at)}</i></h4>
+                                <h4 class="title"><span class="title-inner"><span>${article.title}</span></span></h4>
                                 <p class="description">${stripHtml(article.body).substring(0, 100)}...</p>
                             </a>
 
@@ -66,13 +66,18 @@ document.addEventListener('DOMContentLoaded', function() {
         var doc = new DOMParser().parseFromString(html, 'text/html');
         return doc.body.textContent || "";
     }
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}.${month}.${year}`;
-    }
+
+    {%- comment -%}
+    //<i>${formatDate(article.published_at)}</i>
+    // function formatDate(dateString) {
+    //     const date = new Date(dateString);
+    //     const day = String(date.getDate()).padStart(2, '0');
+    //     const month = String(date.getMonth() + 1).padStart(2, '0');
+    //     const year = date.getFullYear();
+    //     return `${day}.${month}.${year}`;
+    // }
+    {%- endcomment -%}
+  
 
     function createTagsHtml(tags) {
         return tags.map(tag => `<span class="article-tag">${tag}</span>`).join(' ');

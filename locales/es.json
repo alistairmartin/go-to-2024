@@ -3,24 +3,20 @@
     "meta": {
       "page": "Página {{ page }}"
     },
-
     "label": {
       "color": "Color",
       "white": "Blanco",
       "size": "Tamaño"
     },
-
     "breadcrumb": {
       "title": "Breadcrumb",
       "home": "Inicio"
     },
-
     "pagination": {
       "previous_page": "Anterior",
       "next_page": "Siguiente",
       "go_to_page": "Navegar a la página {{page}}"
     },
-
     "accessibility": {
       "skip_to_content": "Saltar al contenido",
       "close": "Cerrar",
@@ -32,7 +28,6 @@
       "show_product": "Mostrar producto {{title}}",
       "star_reviews_info": "{{ rating_value }} de {{ rating_max }} estrellas"
     },
-
     "social": {
       "facebook_share": "Compartir en Facebook",
       "pinterest_pin": "Pin en Pinterest",
@@ -41,21 +36,17 @@
       "email_label": "E-mail",
       "follow_label": "Síguenos en {{ social_media }}"
     },
-
     "newsletter": {
       "email": "Su e-mail",
       "subscribe": "Suscribirse",
       "success": "Se ha suscrito a nuestro boletín de noticias"
     },
-
     "faq": {
       "categories": "Categorías"
     },
-
     "form": {
       "max_characters": "{{ max_chars }} caracteres máx."
     },
-
     "onboarding": {
       "blog_post_category": "Categoría",
       "blog_post_title": "Articulo",
@@ -65,7 +56,6 @@
       "collection_title": "Collección"
     }
   },
-
   "header": {
     "general": {
       "navigation": "Navigación",
@@ -74,29 +64,25 @@
       "account": "Cuenta",
       "cart": "Carrito",
       "language": "Idioma",
-      "country": "País/región"
+      "country": "País\/región"
     }
   },
-
   "footer": {
     "general": {
       "language": "Idioma",
-      "country": "País/región",
+      "country": "País\/región",
       "we_accept": "Acceptamos"
     },
-
     "newsletter": {
       "email": "Su e-mail",
       "submit": "Registrarse",
       "success": "Te has registrado en nuestro boletín de noticias."
     },
-
     "cookie_bar": {
       "accept": "Acceptar",
       "decline": "Declinar"
     }
   },
-
   "cart": {
     "general": {
       "title": "Carrito",
@@ -131,7 +117,6 @@
         "other": "{{ count }} artículos"
       }
     },
-
     "shipping_estimator": {
       "estimate_shipping": "Estimación de envío",
       "country": "País",
@@ -144,7 +129,6 @@
       "error": "Se ha producido uno o más errores al recuperar las tarifas de envío:"
     }
   },
-
   "collection": {
     "general": {
       "filters": "Filtros",
@@ -170,7 +154,6 @@
         "other": "{{ count }} productos"
       }
     },
-
     "product": {
       "sold_out": "Agotado",
       "discount_html": "Ahorra {{ savings }}",
@@ -184,7 +167,6 @@
       }
     }
   },
-
   "product": {
     "general": {
       "description": "Descripción",
@@ -206,7 +188,6 @@
         "other": "{{ count }} reseñas"
       }
     },
-
     "form": {
       "choose_options": "Elegir opciones",
       "quantity": "Cantidad",
@@ -225,7 +206,6 @@
       "contact_us": "Contacta con nosotros"
     }
   },
-
   "store_availability": {
     "general": {
       "view_store_info": "Ver información de la tienda",
@@ -236,7 +216,6 @@
       "pick_up_unavailable_at": "Retiro no disponible actualmente en {{ location_name }}"
     }
   },
-
   "list_collections": {
     "general": {
       "title": "Colecciones",
@@ -249,7 +228,6 @@
       }
     }
   },
-
   "blog": {
     "general": {
       "empty": "Este blog no tiene artículos",
@@ -258,7 +236,6 @@
       "all_posts": "Todos los articulos"
     }
   },
-
   "article": {
     "general": {
       "written_by": "Por {{ author }}",
@@ -273,7 +250,6 @@
         "other": "{{ count }} minutos"
       }
     },
-
     "comments": {
       "leave_comment": "Leave a comment",
       "moderated": "All comments are moderated before being published.",
@@ -290,12 +266,10 @@
       }
     }
   },
-
   "customer": {
     "general": {
       "title": "Mi cuenta"
     },
-
     "login": {
       "title": "Acceso",
       "instructions": "Por favor, introduzca su correo electrónico y contraseña:",
@@ -306,7 +280,6 @@
       "new_customer": "¿Nuevo cliente?",
       "create_account": "Crear una cuenta"
     },
-
     "recover_password": {
       "title": "Recuperar contraseña",
       "instructions": "Por favor, introduzca su correo electrónico:",
@@ -316,7 +289,6 @@
       "back_to_login": "Volver al inicio de sesión",
       "success": "Se ha enviado un correo electrónico a su dirección con instrucciones para recuperar su contraseña."
     },
-
     "activate_account": {
       "title": "Activar cuenta",
       "instructions": "Introduzca una contraseña para crear su cuenta:",
@@ -325,7 +297,6 @@
       "submit": "Activar",
       "cancel": "Cancelar"
     },
-
     "reset_password": {
       "title": "Restablecer contraseña",
       "instructions": "Introduzca una nueva contraseña para su cuenta:",
@@ -333,7 +304,6 @@
       "password_confirmation": "Confirmación de contraseña",
       "submit": "Reiniciar"
     },
-
     "register": {
       "title": "Registro",
       "instructions": "Por favor, rellene los siguientes campos:",
@@ -345,7 +315,6 @@
       "already_have_account": "¿Ya tienes una cuenta?",
       "login": "Inicio de sesión"
     },
-
     "orders": {
       "title": "Pedidos",
       "no_orders": "Todavía no has hecho ningún pedido.",
@@ -378,7 +347,6 @@
       "shipping_address": "Dirección de envío",
       "billing_address": "Dirección de facturación"
     },
-
     "addresses": {
       "title": "Direccióm",
       "no_address": "Todavía no ha guardado ninguna dirección.",
@@ -402,12 +370,10 @@
       "province": "Provincia",
       "set_default": "Establecer por defecto"
     },
-
     "logout": {
       "title": "Cierre de sesión"
     }
   },
-
   "search": {
     "general": {
       "title": "Búsqueda",
@@ -423,7 +389,6 @@
       "collections": "Collecciones"
     }
   },
-
   "contact": {
     "form": {
       "name": "Nombre",
@@ -433,7 +398,6 @@
       "successfully_sent": "Su e-mail ha sido enviado."
     }
   },
-
   "gift_card": {
     "issued": {
       "subtext": "¡Aquí tienes tu tarjeta regalo!",
@@ -448,7 +412,6 @@
       "add_to_apple_wallet": "Añadir a Apple Wallet",
       "go_to_store": "Ir a la tienda"
     },
-
     "recipient": {
       "checkbox": "Quiero enviar esto como un regalo.",
       "email_label": "Correo electrónico de la persona destinataria",
@@ -457,7 +420,6 @@
       "message_label": "Mensaje (opcional)"
     }
   },
-
   "password": {
     "general": {
       "store_owner": "¿Propietario de la tienda?",
@@ -465,20 +427,17 @@
       "powered_by": "Esta tienda será impulsada por",
       "enter_password": "Entrar usando la contraseña"
     },
-
     "password": {
       "label": "Por favor, introduzca la contraseña para acceder a la tienda",
       "input": "Contraseña",
       "submit": "Introducir"
     },
-
     "newsletter": {
       "success": "Se ha registrado en nuestro boletín de noticias",
       "email": "Su correo electrónico",
       "submit": "Notificarme"
     }
   },
-
   "404": {
     "general": {
       "title": "Página no encontrada",

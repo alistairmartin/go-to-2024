@@ -3,24 +3,20 @@
     "meta": {
       "page": "Sida {{ Page }}"
     },
-
     "label": {
       "color": "Färg",
       "white": "Vit",
       "size": "Storlek"
     },
-
     "breadcrumb": {
       "title": "Navigering",
       "home": "Hem"
     },
-
     "pagination": {
       "previous_page": "Föregående",
       "next_page": "Nästa",
       "go_to_page": "Navigera till sidan {{page}}"
     },
-
     "accessibility": {
       "skip_to_content": "Hoppa till innehållet",
       "close": "Stäng",
@@ -32,7 +28,6 @@
       "show_product": "Visa produkt {{title}}",
       "star_reviews_info": "{{ rating_value }} av {{ rating_max }} stjärnor"
     },
-
     "social": {
       "facebook_share": "Dela på Facebook",
       "pinterest_pin": "Fäst på Pinterest",
@@ -41,21 +36,17 @@
       "email_label": "E-post",
       "follow_label": "Följ oss på {{ social_media }}"
     },
-
     "newsletter": {
       "email": "Din e-post",
       "subscribe": "Prenumerera",
       "success": "Tack för att du börjat prenumerera på vårt nyhetsbrev"
     },
-
     "faq": {
       "categories": "Kategorier"
     },
-
     "form": {
       "max_characters": "Max. {{ max_chars }} tecken"
     },
-
     "onboarding": {
       "blog_post_category": "Kategori",
       "blog_post_title": "Artikel",
@@ -65,7 +56,6 @@
       "collection_title": "Samling"
     }
   },
-
   "header": {
     "general": {
       "navigation": "Navigering",
@@ -74,29 +64,25 @@
       "account": "Konto",
       "cart": "Varukorg",
       "language": "Språk",
-      "country": "Land/Region"
+      "country": "Land\/Region"
     }
   },
-
   "footer": {
     "general": {
       "language": "Språk",
-      "country": "Land/Region",
+      "country": "Land\/Region",
       "we_accept": "Säker betalning med"
     },
-
     "newsletter": {
       "email": "Din e-postadress",
       "submit": "Registrera",
       "success": "Tack för att du börjat prenumerera på vårt nyhetsbtev."
     },
-
     "cookie_bar": {
       "accept": "Godkänn",
       "decline": "Godkänn inte"
     }
   },
-
   "cart": {
     "general": {
       "title": "Varukorg",
@@ -130,7 +116,6 @@
         "other": "{{ count }} produkter"
       }
     },
-
     "shipping_estimator": {
       "estimate_shipping": "Uppskatta fraktkostnad",
       "country": "Land",
@@ -143,7 +128,6 @@
       "error": "Ett eller flera fel uppstod vid hämtning av fraktpriser:"
     }
   },
-
   "collection": {
     "general": {
       "filters": "Filter",
@@ -168,7 +152,6 @@
         "other": "{{ count }} produkter"
       }
     },
-
     "product": {
       "sold_out": "Slutsåld",
       "discount_html": "Spara {{ savings }}",
@@ -182,7 +165,6 @@
       }
     }
   },
-
   "product": {
     "general": {
       "description": "Beskrivning",
@@ -197,13 +179,12 @@
       "need_help": "Behöver du hjälp?",
       "view_details": "Visa detaljer",
       "include_taxes": "Inkl. moms.",
-      "shipping_policy_html": "<a href=\"{{ link }}\" class=\"link link--accented\">Frakt beräknas</a> i kassan",
+      "shipping_policy_html": "<a href=\"{{ link }}\" class=\"link link--accented\">Frakt beräknas<\/a> i kassan",
       "reviews_count": {
         "one": "{{ count }} omdöme",
         "other": "{{ count }} omdömen"
       }
     },
-
     "form": {
       "choose_options": "Välj alternativ",
       "quantity": "Antal",
@@ -222,7 +203,6 @@
       "contact_us": "Kontakta oss"
     }
   },
-
   "store_availability": {
     "general": {
       "view_store_info": "Visa butiksinformation",
@@ -233,7 +213,6 @@
       "pick_up_unavailable_at": "Upphämtning för närvarande inte tillgänglig på {{ location_name }}"
     }
   },
-
   "list_collections": {
     "general": {
       "title": "Samlingar",
@@ -245,7 +224,6 @@
       }
     }
   },
-
   "blog": {
     "general": {
       "empty": "Den här bloggen har inga artiklar",
@@ -254,7 +232,6 @@
       "all_posts": "Alla inlägg"
     }
   },
-
   "article": {
     "general": {
       "written_by": "Av {{ author }}",
@@ -268,7 +245,6 @@
         "other": "{{ count }} minuter"
       }
     },
-
     "comments": {
       "leave_comment": "Lämna en kommentar",
       "moderated": "Alla kommentarer modereras innan de publiceras.",
@@ -284,12 +260,10 @@
       }
     }
   },
-
   "customer": {
     "general": {
       "title": "Mitt konto"
     },
-
     "login": {
       "title": "Logga in",
       "instructions": "Vänligen ange din e-postadress och ditt lösenord:",
@@ -300,7 +274,6 @@
       "new_customer": "Ny kund?",
       "create_account": "Skapa ett konto"
     },
-
     "recover_password": {
       "title": "Återställ lösenord",
       "instructions": "Skriv in din e-postadress nedan:",
@@ -310,7 +283,6 @@
       "back_to_login": "Tillbaka till inloggningssidan",
       "success": "Ett e-postmeddelande har skickats till din e-postadress med instruktioner för att återställa ditt lösenord."
     },
-
     "activate_account": {
       "title": "Aktivera konto",
       "instructions": "Ange ett lösenord för att skapa ditt konto:",
@@ -319,7 +291,6 @@
       "submit": "Aktivera",
       "cancel": "Avbryt"
     },
-
     "reset_password": {
       "title": "Återställ lösenord",
       "instructions": "Ange ett nytt lösenord för ditt konto:",
@@ -327,7 +298,6 @@
       "password_confirmation": "Bekräfta lösenord",
       "submit": "Återställ"
     },
-
     "register": {
       "title": "Skapa konto",
       "instructions": "Vänligen fyll i fälten nedan:",
@@ -339,7 +309,6 @@
       "already_have_account": "Har du redan ett konto?",
       "login": "Logga in"
     },
-
     "orders": {
       "title": "Ordrar",
       "no_orders": "Du har inte gjort några köp ännu.",
@@ -352,12 +321,12 @@
       "fulfillment_status": "Status",
       "view_details": "Visa information om ordern",
       "cancelled_at": "Avbruten den: {{date}}. Orsak: {{reason}}",
-      "fulfillment_with_url_and_number_html": "Alla produkter har skickats den {{date}}. Spåra försändelsen med spårningsnummer {{tracking_number}} eller genom att <a href=\"{{tracking_url}}\" target=\"_blank\">klicka här</a>.",
-      "fulfillment_with_url_html": "Alla produkter har skickats den {{date}}. Spåra försändelsen genom att <a href=\"{{tracking_url}}\" target=\"_blank\">klicka här</a>.",
+      "fulfillment_with_url_and_number_html": "Alla produkter har skickats den {{date}}. Spåra försändelsen med spårningsnummer {{tracking_number}} eller genom att <a href=\"{{tracking_url}}\" target=\"_blank\">klicka här<\/a>.",
+      "fulfillment_with_url_html": "Alla produkter har skickats den {{date}}. Spåra försändelsen genom att <a href=\"{{tracking_url}}\" target=\"_blank\">klicka här<\/a>.",
       "fulfillment_with_number_html": "Alla produkter har skickats den {{date}}. Spåra försändelsen med spårningsnummer {{tracking_number}}.",
       "fulfillment_html": "Alla produkter har skickats den {{date}}.",
-      "line_fulfillment_with_url_and_number_html": "Denna produkt har skickats den {{date}}. Spåra försändelsen med spårningsnummer {{tracking_number}} eller genom att <a href=\"{{tracking_url}}\" target=\"_blank\">klicka här</a>.",
-      "line_fulfillment_with_url_html": "Denna produkt har skickats den {{date}}. Spåra försändelsen genom att <a href=\"{{tracking_url}}\" target=\"_blank\">klicka här</a>.",
+      "line_fulfillment_with_url_and_number_html": "Denna produkt har skickats den {{date}}. Spåra försändelsen med spårningsnummer {{tracking_number}} eller genom att <a href=\"{{tracking_url}}\" target=\"_blank\">klicka här<\/a>.",
+      "line_fulfillment_with_url_html": "Denna produkt har skickats den {{date}}. Spåra försändelsen genom att <a href=\"{{tracking_url}}\" target=\"_blank\">klicka här<\/a>.",
       "line_fulfillment_with_number_html": "Denna produkt har skickats den {{date}}. Spåra försändelsen med spårningsnummernummer {{tracking_number}}.",
       "line_fulfillment_html": "Denna produkt har skickats den {{date}}.",
       "total": "Totalt",
@@ -372,7 +341,6 @@
       "shipping_address": "Leveransadress",
       "billing_address": "Fakturaadress"
     },
-
     "addresses": {
       "title": "Adresser",
       "no_address": "Du har inte sparat några adresser än.",
@@ -396,12 +364,10 @@
       "province": "Län",
       "set_default": "Ange som standard"
     },
-
     "logout": {
       "title": "Logga ut"
     }
   },
-
   "search": {
     "general": {
       "title": "Sök",
@@ -417,7 +383,6 @@
       "collections": "Samlingar"
     }
   },
-
   "contact": {
     "form": {
       "name": "Namn",
@@ -427,7 +392,6 @@
       "successfully_sent": "Ditt email har skickats."
     }
   },
-
   "gift_card": {
     "issued": {
       "subtext": "Här är ditt presentkort!",
@@ -442,7 +406,6 @@
       "add_to_apple_wallet": "Lägg till i Apple Wallet",
       "go_to_store": "Gå till webbutiken"
     },
-
     "recipient": {
       "checkbox": "Jag vill skicka detta som en gåva",
       "email_label": "Mottagarens e-postadress",
@@ -451,7 +414,6 @@
       "message_label": "Meddelande (valfritt)"
     }
   },
-
   "password": {
     "general": {
       "store_owner": "Butiksägare?",
@@ -459,20 +421,17 @@
       "powered_by": "Denna butik kommer att drivas av",
       "enter_password": "Visa webbutiken med lösenord"
     },
-
     "password": {
       "label": "Vänligen ange lösenord för att komma visa webbutiken",
       "input": "Lösenord",
       "submit": "Visa webbutiken"
     },
-
     "newsletter": {
       "success": "Tack för att du börjat prenumerera på vårt nyhetsbrev",
       "email": "Din e-postadress",
       "submit": "Meddela mig"
     }
   },
-
   "404": {
     "general": {
       "title": "Sidan kan inte hittas",

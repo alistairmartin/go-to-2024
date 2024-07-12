@@ -88,12 +88,12 @@
         <prev-next-buttons class="gallery__prev-next-buttons prev-next-buttons">
           <button class="gallery__arrow prev-next-button prev-next-button--prev">
             <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
-            {%- include 'icon' with 'nav-arrow-left', direction_aware: true -%}
+            {%- render 'icon' with 'nav-arrow-left', direction_aware: true -%}
           </button>
 
           <button class="gallery__arrow prev-next-button prev-next-button--next">
             <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
-            {%- include 'icon' with 'nav-arrow-right', direction_aware: true -%}
+            {%- render 'icon' with 'nav-arrow-right', direction_aware: true -%}
           </button>
         </prev-next-buttons>
       {% endif %}

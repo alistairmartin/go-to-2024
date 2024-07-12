@@ -3,42 +3,15 @@
 
   - color_swatch_config: extracted from the theme settings
   - value: the actual color
-  - color: a single color drop (if passed, it overrides the config)
-  - colors: a list of colors drop (if passed, it overrides the config)
-  - image: an actual image drop (if passed, it overrides the config)
+  - swatch: a swatch object that can contains either an image or a color
 {%- endcomment -%}
 
 {%- liquid
-  if colors != blank
-    assign size_limit = colors.size | at_most: 4
-    assign rotation = '0deg'
-
-    if size_limit == 2
-      assign rotation = '45deg'
-    endif
-
-    assign angle_increment = 360 | divided_by: size_limit
-    assign angle = 0
-
-    capture conic_gradient
-      for color in colors limit: size_limit
-        echo color | append: ' ' | append: angle | append: 'deg '
-        assign angle = angle | plus: angle_increment
-        echo angle | append: 'deg'
-          
-        unless forloop.last
-          echo ', '
-        endunless
-      endfor
-    endcapture
-
-    assign color_swatch_style = 'background-image: conic-gradient(from ' | append: rotation | append: ', ' | append: conic_gradient | append: ')'
-  elsif color != blank
-    assign color_value_downcase = color | downcase
-    assign color_swatch_style = 'background-color: ' | append: color_value_downcase
-  elsif image != blank
-    assign color_swatch_image = image | image_url: width: 72
+  if swatch.image != blank
+    assign color_swatch_image = swatch.image | image_url: width: 72
     assign color_swatch_style = 'background-image: url(' | append: color_swatch_image | append: ')'
+  elsif swatch.color != blank
+    assign color_swatch_style = 'background-color: ' | append: swatch.color
   else
     assign color_value_downcase = value | downcase
     assign color_swatch_style = 'background-color: ' | append: color_value_downcase

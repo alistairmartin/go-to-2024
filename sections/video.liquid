@@ -92,7 +92,7 @@
 
       {%- if section.settings.video != blank -%}
         <native-video {% if section.settings.autoplay %}autoplay{% endif %} class="video-wrapper video-wrapper--native" style="--aspect-ratio: {{ section.settings.video.aspect_ratio }}">
-          {{- video_poster -}}
+          {{- video_poster -}} 
 
           <template>
             {{- section.settings.video | video_tag: controls: section.settings.show_video_controls, autoplay: section.settings.autoplay, muted: section.settings.autoplay, playsinline: section.settings.autoplay, loop: section.settings.autoplay -}}

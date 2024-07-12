@@ -45,9 +45,9 @@
       <div class="gift-card__wrapper">
         <h1 class="gift-card__logo">
           {%- if section.settings.logo != blank -%}
-            {%- capture logo_size -%}{{ section.settings.logo_max_width | times: 2 | append: 'x' }}{%- endcapture -%}
+            {%- assign logo_size = section.settings.logo_max_width | times: 2 -%}
             <span class="visually-hidden">{{ shop.name }}</span>
-            <img class="gift-card__logo-image" width="{{ section.settings.logo.width }}" height="{{ section.settings.logo.height }}" src="{{ section.settings.logo | img_url: logo_size }}" alt="{{ section.settings.logo.alt | escape }}">
+            <img class="gift-card__logo-image" width="{{ section.settings.logo.width }}" height="{{ section.settings.logo.height }}" src="{{ section.settings.logo | image_url: width: logo_size }}" alt="{{ section.settings.logo.alt | escape }}">
           {%- else -%}
             <span class="heading h5 text--center">{{ shop.name }}</span>
           {%- endif -%}

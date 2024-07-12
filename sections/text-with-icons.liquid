@@ -48,8 +48,8 @@
             <native-carousel-item {% unless forloop.first %}hidden{% endunless %} id="block-{{ section.id }}-{{ block.id }}" class="text-with-icons__item" {{ block.shopify_attributes }}>
               <div class="text-with-icons__icon-wrapper">
                 {%- if block.settings.custom_icon != blank -%}
-                  {% capture custom_icon_width %}{{ block.settings.custom_icon_width | times: 2 }}x{% endcapture %}
-                  <img class="text-with-icons__custom-icon" style="max-width: {{ block.settings.custom_icon_width }}px" width="{{ block.settings.custom_icon.width }}" height="{{ block.settings.custom_icon.height }}" src="{{ block.settings.custom_icon | img_url: custom_icon_width }}" alt="{{ block.settings.custom_icon.alt | escape }}">
+                  {% capture custom_icon_width %}{{ block.settings.custom_icon_width | times: 2 }}{% endcapture %}
+                  <img class="text-with-icons__custom-icon" style="max-width: {{ block.settings.custom_icon_width }}px" width="{{ block.settings.custom_icon.width }}" height="{{ block.settings.custom_icon.height }}" src="{{ block.settings.custom_icon | image_url: width: custom_icon_width }}" alt="{{ block.settings.custom_icon.alt | escape }}">
                 {%- else -%}
                   {%- render 'icon' with block.settings.icon -%}
                 {%- endif -%}

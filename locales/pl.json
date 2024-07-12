@@ -3,24 +3,20 @@
     "meta": {
       "page": "Strona {{ page }}"
     },
-
     "label": {
       "color": "Kolor",
       "white": "Biały",
       "size": "Rozmiar"
     },
-
     "breadcrumb": {
       "title": "Ścieżka",
       "home": "Strona główna"
     },
-
     "pagination": {
       "previous_page": "Poprzednia strona",
       "next_page": "Następna strona",
       "go_to_page": "Przejdź do strony {{page}}"
     },
-
     "accessibility": {
       "skip_to_content": "Przejdź do treści",
       "close": "Zamknij",
@@ -32,7 +28,6 @@
       "show_product": "Pokaż produkt {{title}}",
       "star_reviews_info": "{{ rating_value }} gwiazdek z {{ rating_max }}"
     },
-
     "social": {
       "facebook_share": "Udostępnij na Facebooku",
       "pinterest_pin": "Przypnij na Pinterest",
@@ -41,21 +36,17 @@
       "email_label": "E-mail",
       "follow_label": "Obserwuj nas na {{ social_media }}"
     },
-
     "newsletter": {
       "email": "Twój e-mail",
       "subscribe": "Subskrybuj",
       "success": "Zapisałeś się do naszego newslettera"
     },
-
     "faq": {
       "categories": "Kategorie"
     },
-
     "form": {
       "max_characters": "Maks. {{ max_chars }} znaki(-ów)"
     },
-
     "onboarding": {
       "blog_post_category": "Kategoria",
       "blog_post_title": "Artykuł",
@@ -65,7 +56,6 @@
       "collection_title": "Kolekcja"
     }
   },
-
   "header": {
     "general": {
       "navigation": "Nawigacja",
@@ -74,29 +64,25 @@
       "account": "Konto",
       "cart": "Koszyk",
       "language": "Język",
-      "country": "Kraj/region"
+      "country": "Kraj\/region"
     }
   },
-
   "footer": {
     "general": {
       "language": "Język",
-      "country": "Kraj/region",
+      "country": "Kraj\/region",
       "we_accept": "Akceptujemy"
     },
-
     "newsletter": {
       "email": "Twój e-mail",
       "submit": "Zapisz się",
       "success": "Zapisałeś się do naszego newslettera."
     },
-
     "cookie_bar": {
       "accept": "Akceptuj",
       "decline": "Odrzuć"
     }
   },
-
   "cart": {
     "general": {
       "title": "Koszyk",
@@ -131,7 +117,6 @@
         "other": "{{ count }} produkty"
       }
     },
-
     "shipping_estimator": {
       "estimate_shipping": "Oszacuj koszt dostawy",
       "country": "Kraj",
@@ -144,7 +129,6 @@
       "error": "Wystąpił co najmniej jeden błąd podczas pobierania metod dostawy:"
     }
   },
-
   "collection": {
     "general": {
       "filters": "Filtry",
@@ -171,7 +155,6 @@
         "other": "{{ count }} produktów"
       }
     },
-
     "product": {
       "sold_out": "Wyprzedane",
       "discount_html": "Oszczędź {{ savings }}",
@@ -187,7 +170,6 @@
       }
     }
   },
-
   "product": {
     "general": {
       "description": "Opis",
@@ -202,7 +184,7 @@
       "need_help": "Potrzebujesz pomocy?",
       "view_details": "Poznaj szczegóły",
       "include_taxes": "W tym VAT.",
-      "shipping_policy_html": "<a href=\"{{ link }}\" class=\"link link--accented\">Dostawa obliczana</a> przy kasie",
+      "shipping_policy_html": "<a href=\"{{ link }}\" class=\"link link--accented\">Dostawa obliczana<\/a> przy kasie",
       "reviews_count": {
         "zero": "Brak opinii",
         "one": "{{ count }} opinia",
@@ -210,7 +192,6 @@
         "many": "{{ count }} opinii"
       }
     },
-
     "form": {
       "choose_options": "Wybierz opcję",
       "quantity": "Ilość",
@@ -230,7 +211,6 @@
       "contact_us": "Skontaktuj się z nami"
     }
   },
-
   "store_availability": {
     "general": {
       "view_store_info": "Zobacz informację o sklepie",
@@ -241,7 +221,6 @@
       "pick_up_unavailable_at": "Odbiór niedostępny w: {{ location_name }}"
     }
   },
-
   "list_collections": {
     "general": {
       "title": "Kolekcje",
@@ -256,7 +235,6 @@
       }
     }
   },
-
   "blog": {
     "general": {
       "empty": "Ten blog nie zawiera artykułów",
@@ -265,7 +243,6 @@
       "all_posts": "Wszystkie artykuły"
     }
   },
-
   "article": {
     "general": {
       "written_by": "Autor: {{ author }}",
@@ -281,7 +258,6 @@
         "many": "{{ count }} minut"
       }
     },
-
     "comments": {
       "leave_comment": "Zostaw komentarz",
       "moderated": "Wszystkie komentarze są moderowane przed opublikowaniem.",
@@ -299,12 +275,10 @@
       }
     }
   },
-
   "customer": {
     "general": {
       "title": "Moje konto"
     },
-
     "login": {
       "title": "Zaloguj się",
       "instructions": "Podaj swój adres e-mail i hasło:",
@@ -315,7 +289,6 @@
       "new_customer": "Nowy klient?",
       "create_account": "Utwórz konto"
     },
-
     "recover_password": {
       "title": "Odzyskaj hasło",
       "instructions": "Podaj swój adres e-mail:",
@@ -325,7 +298,6 @@
       "back_to_login": "Powrót do logowania",
       "success": "Na Twój adres został wysłany e-mail z instrukcjami dotyczącymi odzyskania hasła."
     },
-
     "activate_account": {
       "title": "Aktywuj konto",
       "instructions": "Wprowadź hasło, aby utworzyć konto:",
@@ -334,7 +306,6 @@
       "submit": "Aktywuj",
       "cancel": "Anuluj"
     },
-
     "reset_password": {
       "title": "Zresetuj hasło",
       "instructions": "Wprowadź nowe hasło do swojego konta:",
@@ -342,7 +313,6 @@
       "password_confirmation": "Powtórz hasło",
       "submit": "Zresetuj"
     },
-
     "register": {
       "title": "Rejestracja",
       "instructions": "Uzupełnij poniższe pola:",
@@ -354,7 +324,6 @@
       "already_have_account": "Masz już konto?",
       "login": "Zaloguj się"
     },
-
     "orders": {
       "title": "Zamówienia",
       "no_orders": "Nie złożyłeś jeszcze zamówień.",
@@ -367,12 +336,12 @@
       "fulfillment_status": "Status realizacji",
       "view_details": "Zobacz szczegóły zamówienia",
       "cancelled_at": "Anulowano w dniu: {{date}}. Powód: {{reason}}",
-      "fulfillment_with_url_and_number_html": "Wszystkie produkty zostały wysłane w dniu {{date}}. Śledź przesyłkę za pomocą numeru {{tracking_number}} lub <a href=\"{{tracking_url}}\" target=\"_blank\">klikając tutaj</a>.",
-      "fulfillment_with_url_html": "Wszystkie produkty zostały wysłane w dniu {{date}}. Śledź przesyłkę <a href=\"{{tracking_url}}\" target=\"_blank\">klikając tutaj</a>.",
+      "fulfillment_with_url_and_number_html": "Wszystkie produkty zostały wysłane w dniu {{date}}. Śledź przesyłkę za pomocą numeru {{tracking_number}} lub <a href=\"{{tracking_url}}\" target=\"_blank\">klikając tutaj<\/a>.",
+      "fulfillment_with_url_html": "Wszystkie produkty zostały wysłane w dniu {{date}}. Śledź przesyłkę <a href=\"{{tracking_url}}\" target=\"_blank\">klikając tutaj<\/a>.",
       "fulfillment_with_number_html": "Wszystkie produkty zostały wysłane w dniu {{date}}. Śledź przesyłkę za pomocą numeru {{tracking_number}}.",
       "fulfillment_html": "Wszystkie produkty zostały wysłane w dniu {{date}}.",
-      "line_fulfillment_with_url_and_number_html": "Ten produkt został wysłany w dniu {{date}}. Śledź przesyłkę za pomocą numeru {{tracking_number}} lub <a href=\"{{tracking_url}}\" target=\"_blank\">clicking here</a>.",
-      "line_fulfillment_with_url_html": "Ten produkt został wysłany w dniu {{date}}. Śledź przesyłkę <a href=\"{{tracking_url}}\" target=\"_blank\">klikając tutaj</a>.",
+      "line_fulfillment_with_url_and_number_html": "Ten produkt został wysłany w dniu {{date}}. Śledź przesyłkę za pomocą numeru {{tracking_number}} lub <a href=\"{{tracking_url}}\" target=\"_blank\">clicking here<\/a>.",
+      "line_fulfillment_with_url_html": "Ten produkt został wysłany w dniu {{date}}. Śledź przesyłkę <a href=\"{{tracking_url}}\" target=\"_blank\">klikając tutaj<\/a>.",
       "line_fulfillment_with_number_html": "Ten produkt został wysłany w dniu {{date}}. Śledź przesyłkę za pomocą numeru {{tracking_number}}.",
       "line_fulfillment_html": "Ten produkt został wysłany w dniu {{date}}.",
       "total": "Łącznie",
@@ -387,7 +356,6 @@
       "shipping_address": "Adres dostawy",
       "billing_address": "Adres rozliczeniowy"
     },
-
     "addresses": {
       "title": "Adresy",
       "no_address": "Nie zapisałeś jeszcze żadnych adresów.",
@@ -411,12 +379,10 @@
       "province": "Prowincja",
       "set_default": "Ustaw jako domyślny"
     },
-
     "logout": {
       "title": "Wyloguj"
     }
   },
-
   "search": {
     "general": {
       "title": "Szukaj",
@@ -432,7 +398,6 @@
       "collections": "Kolekcje"
     }
   },
-
   "contact": {
     "form": {
       "name": "Imię i nazwisko",
@@ -442,7 +407,6 @@
       "successfully_sent": "Twoja wiadomość zosotała wysłana."
     }
   },
-
   "gift_card": {
     "issued": {
       "subtext": "Oto Twoja karta podarunkowa!",
@@ -457,7 +421,6 @@
       "add_to_apple_wallet": "Dodaj do Apple Wallet",
       "go_to_store": "Przejdź do sklepu"
     },
-
     "recipient": {
       "checkbox": "Chcę to wysłać jako prezent",
       "email_label": "E-mail odbiorcy",
@@ -466,7 +429,6 @@
       "message_label": "Wiadomość (opcjonalna)"
     }
   },
-
   "password": {
     "general": {
       "store_owner": "Jesteś właścicielem sklepu?",
@@ -474,20 +436,17 @@
       "powered_by": "Sklep będzie zasilany przez",
       "enter_password": "Wejdź, używając hasła"
     },
-
     "password": {
       "label": "Wprowadź hasło, aby uzyskać dostęp do sklepu",
       "input": "Hasło",
       "submit": "Wyślij"
     },
-
     "newsletter": {
       "success": "Zostałeś zapisany do naszego newslettera",
       "email": "Twój e-mail",
       "submit": "Powiadom mnie"
     }
   },
-
   "404": {
     "general": {
       "title": "Nie znaleziono strony",

@@ -67,11 +67,11 @@
         {%- if section.blocks.size > 1 -%}
           <prev-next-buttons class="timeline__prev-next-buttons prev-next-buttons hidden-pocket">
             <button class="timeline__arrow prev-next-button prev-next-button--prev" disabled="disabled" aria-label="{{ 'general.accessibility.previous' | t }}">
-              {%- include 'icon' with 'nav-arrow-left', direction_aware: true -%}
+              {%- render 'icon' with 'nav-arrow-left', direction_aware: true -%}
             </button>
 
             <button class="timeline__arrow prev-next-button prev-next-button--next" aria-label="{{ 'general.accessibility.next' | t }}">
-              {%- include 'icon' with 'nav-arrow-right', direction_aware: true -%}
+              {%- render 'icon' with 'nav-arrow-right', direction_aware: true -%}
             </button>
           </prev-next-buttons>
         {% endif %}

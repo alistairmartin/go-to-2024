@@ -3,24 +3,20 @@
     "meta": {
       "page": "ページ {{ page }}"
     },
-
     "label": {
       "color": "カラー",
       "white": "ホワイト",
       "size": "サイズ"
     },
-
     "breadcrumb": {
       "title": "パンくず",
       "home": "ホーム"
     },
-
     "pagination": {
       "previous_page": "前のページ",
       "next_page": "次のページ",
       "go_to_page": "ページに移動する {{page}}"
     },
-
     "accessibility": {
       "skip_to_content": "コンテンツへスキップ",
       "close": "閉じる",
@@ -32,7 +28,6 @@
       "show_product": "製品を表示する {{title}}",
       "star_reviews_info": "{{ rating_max }}つ星中{{ rating_value }}つ"
     },
-
     "social": {
       "facebook_share": "Facebookで共有する",
       "pinterest_pin": "Pinterestでピン留めする",
@@ -41,21 +36,17 @@
       "email_label": "Eメール",
       "follow_label": "フォローはこちら {{ social_media }}"
     },
-
     "newsletter": {
       "email": "あなたのメールアドレス",
       "subscribe": "サブスクライブする",
       "success": "あなたはメールマガジンにサブスクライブしました"
     },
-
     "faq": {
       "categories": "カテゴリー一覧"
     },
-
     "form": {
       "max_characters": "最大{{ max_chars }}文字"
     },
-
     "onboarding": {
       "blog_post_category": "カテゴリー",
       "blog_post_title": "記事",
@@ -65,7 +56,6 @@
       "collection_title": "コレクション"
     }
   },
-
   "header": {
     "general": {
       "navigation": "ナビゲーション",
@@ -74,29 +64,25 @@
       "account": "アカウント",
       "cart": "カート",
       "language": "言語",
-      "country": "国/地域"
+      "country": "国\/地域"
     }
   },
-
   "footer": {
     "general": {
       "language": "言語",
-      "country": "国/地域",
+      "country": "国\/地域",
       "we_accept": "受付可能"
     },
-
     "newsletter": {
       "email": "あなたのメールアドレス",
       "submit": "登録",
       "success": "メールマガジンへの登録が完了しました"
     },
-
     "cookie_bar": {
       "accept": "許可する",
       "decline": "拒否する"
     }
   },
-
   "cart": {
     "general": {
       "title": "カート",
@@ -131,7 +117,6 @@
         "other": "{{ count }} アイテム"
       }
     },
-
     "shipping_estimator": {
       "estimate_shipping": "送料のお見積もり",
       "country": "国",
@@ -144,7 +129,6 @@
       "error": "配送料金の取得中に1つ以上のエラーが発生しました:"
     }
   },
-
   "collection": {
     "general": {
       "filters": "フィルター",
@@ -170,7 +154,6 @@
         "other": "{{ count }} 製品"
       }
     },
-
     "product": {
       "sold_out": "売り切れ",
       "discount_html": "{{ savings }}節約する",
@@ -184,7 +167,6 @@
       }
     }
   },
-
   "product": {
     "general": {
       "description": "説明文",
@@ -206,7 +188,6 @@
         "other": "{{ count }}件"
       }
     },
-
     "form": {
       "choose_options": "オプションを選択",
       "quantity": "数量",
@@ -225,7 +206,6 @@
       "contact_us": "お問い合わせはこちら"
     }
   },
-
   "store_availability": {
     "general": {
       "view_store_info": "店舗情報を見る",
@@ -236,7 +216,6 @@
       "pick_up_unavailable_at": "現在{{ location_name }}でピックアップは利用できません"
     }
   },
-
   "list_collections": {
     "general": {
       "title": "コレクション",
@@ -249,7 +228,6 @@
       }
     }
   },
-
   "blog": {
     "general": {
       "empty": "このブログには記事がありません",
@@ -258,7 +236,6 @@
       "all_posts": "全ての記事"
     }
   },
-
   "article": {
     "general": {
       "written_by": "{{ author }}が執筆",
@@ -273,7 +250,6 @@
         "other": "{{ count }} 分"
       }
     },
-
     "comments": {
       "leave_comment": "コメントを書く",
       "moderated": "全てのコメントは、掲載前にモデレートされます",
@@ -290,12 +266,10 @@
       }
     }
   },
-
   "customer": {
     "general": {
       "title": "マイアカウント"
     },
-
     "login": {
       "title": "ログイン",
       "instructions": "メールアドレスとパスワードを入力してください:",
@@ -306,7 +280,6 @@
       "new_customer": "新規のお客様ですか？",
       "create_account": "アカウントを作成する"
     },
-
     "recover_password": {
       "title": "パスワードの復元",
       "instructions": "あなたのメールアドレスを入力してください:",
@@ -316,7 +289,6 @@
       "back_to_login": "ログイン画面に戻る",
       "success": "あなたのメールアドレスに、パスワードを復元するための手順を記載したメールを送信しました。"
     },
-
     "activate_account": {
       "title": "アカウントを有効にする",
       "instructions": "パスワードを入力してアカウントを作成してください:",
@@ -325,7 +297,6 @@
       "submit": "有効にする",
       "cancel": "キャンセル"
     },
-
     "reset_password": {
       "title": "パスワードをリセットする",
       "instructions": "お客様のアカウント用の新しいパスワードを入力してください:",
@@ -333,7 +304,6 @@
       "password_confirmation": "パスワードの確認",
       "submit": "リセット"
     },
-
     "register": {
       "title": "登録",
       "instructions": "以下の項目を入力してください:",
@@ -345,7 +315,6 @@
       "already_have_account": "既にアカウントをお持ちですか？",
       "login": "ログイン"
     },
-
     "orders": {
       "title": "注文内容",
       "no_orders": "あなたはまだ何も注文していません",
@@ -358,12 +327,12 @@
       "fulfillment_status": "ご注文商品の状況",
       "view_details": "注文内容の確認",
       "cancelled_at": "キャンセルした日付: {{date}}. 理由: {{reason}}",
-      "fulfillment_with_url_and_number_html": "全ての商品は {{date}}に発送されました。 ご注文商品の追跡は {{tracking_number}} または、<a href=\"{{tracking_url}}\" target=\"_blank\">clicking here</a>より追跡可能です",
-      "fulfillment_with_url_html": "全ての商品は {{date}}に発送されました。ご注文商品の追跡は <a href=\"{{tracking_url}}\" target=\"_blank\">clicking here</a>より可能です",
+      "fulfillment_with_url_and_number_html": "全ての商品は {{date}}に発送されました。 ご注文商品の追跡は {{tracking_number}} または、<a href=\"{{tracking_url}}\" target=\"_blank\">clicking here<\/a>より追跡可能です",
+      "fulfillment_with_url_html": "全ての商品は {{date}}に発送されました。ご注文商品の追跡は <a href=\"{{tracking_url}}\" target=\"_blank\">clicking here<\/a>より可能です",
       "fulfillment_with_number_html": "全ての商品は {{date}}に発送されました。 ご注文商品の追跡番号は {{tracking_number}}になります",
       "fulfillment_html": "全ての商品は {{date}}に発送されました。",
-      "line_fulfillment_with_url_and_number_html": "この製品は {{date}}に発送されました。 ご注文商品の追跡番号は {{tracking_number}} または、 <a href=\"{{tracking_url}}\" target=\"_blank\">clicking here</a>より追跡可能です",
-      "line_fulfillment_with_url_html": "この製品は {{date}}に発送されました。 ご注文商品の追跡は <a href=\"{{tracking_url}}\" target=\"_blank\">clicking here</a>より可能です",
+      "line_fulfillment_with_url_and_number_html": "この製品は {{date}}に発送されました。 ご注文商品の追跡番号は {{tracking_number}} または、 <a href=\"{{tracking_url}}\" target=\"_blank\">clicking here<\/a>より追跡可能です",
+      "line_fulfillment_with_url_html": "この製品は {{date}}に発送されました。 ご注文商品の追跡は <a href=\"{{tracking_url}}\" target=\"_blank\">clicking here<\/a>より可能です",
       "line_fulfillment_with_number_html": "この製品は {{date}}に発送されました。 ご注文商品の追跡番号は {{tracking_number}}になります",
       "line_fulfillment_html": "この製品は {{date}}に発送されました.",
       "total": "合計",
@@ -378,7 +347,6 @@
       "shipping_address": "配送先住所",
       "billing_address": "請求先住所"
     },
-
     "addresses": {
       "title": "住所一覧",
       "no_address": "あなたはまだ住所を保存していません",
@@ -402,12 +370,10 @@
       "province": "都道府県",
       "set_default": "デフォルトとして設定"
     },
-
     "logout": {
       "title": "ログアウト"
     }
   },
-
   "search": {
     "general": {
       "title": "検索",
@@ -423,7 +389,6 @@
       "collections": "コレクション一覧"
     }
   },
-
   "contact": {
     "form": {
       "name": "氏名",
@@ -433,7 +398,6 @@
       "successfully_sent": "あなたのメールは送信されました"
     }
   },
-
   "gift_card": {
     "issued": {
       "subtext": "あなたのギフトカードはこちらです!",
@@ -448,7 +412,6 @@
       "add_to_apple_wallet": "Apple Walletへの登録",
       "go_to_store": "ストアへ行く"
     },
-
     "recipient": {
       "checkbox": "ギフトとしてこれを送る",
       "email_label": "受信者のメール",
@@ -457,7 +420,6 @@
       "message_label": "メッセージ (任意)"
     }
   },
-
   "password": {
     "general": {
       "store_owner": "ストアオーナーですか？",
@@ -465,20 +427,17 @@
       "powered_by": "このストアが利用しているシステムは",
       "enter_password": "パスワードを入力する"
     },
-
     "password": {
       "label": "ストアにアクセスするにはパスワードを入力してください",
       "input": "パスワード",
       "submit": "入力"
     },
-
     "newsletter": {
       "success": "メールマガジンに登録されました",
       "email": "あなたのメールアドレス",
       "submit": "通知を受け取る"
     }
   },
-
   "404": {
     "general": {
       "title": "ページが見つかりませんでした",

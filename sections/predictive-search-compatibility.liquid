@@ -50,7 +50,7 @@ IMPORTANT NOTE: this section is not used for most stores. By default, when using
               <a href="{{ product.url }}" class="line-item__content-wrapper">
                 {%- if product.featured_media -%}
                   <span class="line-item__image-wrapper">
-                  <img class="line-item__image" alt="{{ product.featured_media.alt | escape }}" width="{{ product.featured_media.width }}" height="{{ product.featured_media.height }}" src="{{ product.featured_media | img_url: '210x' }}">
+                  <img class="line-item__image" alt="{{ product.featured_media.alt | escape }}" width="{{ product.featured_media.width }}" height="{{ product.featured_media.height }}" src="{{ product.featured_media | image_url: width: 210 }}">
                 </span>
                 {%- endif -%}
 
@@ -112,7 +112,7 @@ IMPORTANT NOTE: this section is not used for most stores. By default, when using
               <a class="article-item article-item--horizontal" href="{{ article.url }}">
                 {%- if article.image -%}
                   <span class="predictive-search__article-image-wrapper">
-              <img class="predictive-search__article-image" alt="{{ article.image.alt }}" width="{{ article.image.width }}" height="{{ article.image.height }}" src="{{ article.image | img_url: '280x' }}">
+              <img class="predictive-search__article-image" alt="{{ article.image.alt }}" width="{{ article.image.width }}" height="{{ article.image.height }}" src="{{ article.image | image_url: width: 280 }}">
               <span class="article-item__arrow prev-next-button prev-next-button--small prev-next-button--next">{% render 'icon' with 'nav-arrow-right', direction_aware: true, width: 15, height: 12 %}</span>
             </span>
                 {%- endif -%}

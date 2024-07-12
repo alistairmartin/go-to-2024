@@ -113,23 +113,14 @@ Code that create the faceted search for the collection and search pages. It curr
                       {%- if filter.presentation == 'swatch' -%}
                         <div class="color-swatch-list">
                           {%- for filter_value in filter.values -%}
-                            {%- if filter_value.display.type == 'colors' -%}
-                              {%- assign color_value_downcase = filter_value.label | downcase -%}
+                            {%- assign color_value_downcase = filter_value.label | downcase -%}
 
-                              <div class="color-swatch {% if color_white_label == color_value_downcase %}color-swatch--white{% endif %} {% if filter_value.count == 0 %}is-disabled{% endif %}" data-tooltip="{{ filter_value.label | escape }}">
-                                <input class="color-swatch__radio visually-hidden" type="checkbox" name="{{ filter_value.param_name }}" id="{{ filter_value.param_name | escape }}-{{ forloop.index }}" value="{{ filter_value.value | escape }}" title="{{ filter_value.label | escape }}" {% if filter_value.active %}checked="checked"{% endif %} {% if filter_value.count == 0 %}disabled{% endif %}>
-                                <label class="color-swatch__item" for="{{ filter_value.param_name | escape }}-{{ forloop.index }}" style="{% render 'color-swatch-style', colors: filter_value.display.value %}">
-                                  <span class="visually-hidden">{{ filter_value.label }}</span>
-                                </label>
-                              </div>
-                            {%- elsif filter_value.display.type == 'image' -%}
-                              <div class="color-swatch {% if filter_value.count == 0 %}is-disabled{% endif %}" data-tooltip="{{ filter_value.label | escape }}">
-                                <input class="color-swatch__radio visually-hidden" type="checkbox" name="{{ filter_value.param_name }}" id="{{ filter_value.param_name | escape }}-{{ forloop.index }}" value="{{ filter_value.value | escape }}" title="{{ filter_value.label | escape }}" {% if filter_value.active %}checked="checked"{% endif %} {% if filter_value.count == 0 %}disabled{% endif %}>
-                                <label class="color-swatch__item" for="{{ filter_value.param_name | escape }}-{{ forloop.index }}" style="{% render 'color-swatch-style', image: filter_value.display.value %}">
-                                  <span class="visually-hidden">{{ filter_value.label }}</span>
-                                </label>
-                              </div>
-                            {%- endif -%}
+                            <div class="color-swatch {% if color_white_label == color_value_downcase %}color-swatch--white{% endif %} {% if filter_value.count == 0 %}is-disabled{% endif %}" data-tooltip="{{ filter_value.label | escape }}">
+                              <input class="color-swatch__radio visually-hidden" type="checkbox" name="{{ filter_value.param_name }}" id="{{ filter_value.param_name | escape }}-{{ forloop.index }}" value="{{ filter_value.value | escape }}" title="{{ filter_value.label | escape }}" {% if filter_value.active %}checked="checked"{% endif %} {% if filter_value.count == 0 %}disabled{% endif %}>
+                              <label class="color-swatch__item" for="{{ filter_value.param_name | escape }}-{{ forloop.index }}" style="{% render 'color-swatch-style', swatch: filter_value.swatch %}">
+                                <span class="visually-hidden">{{ filter_value.label }}</span>
+                              </label>
+                            </div>
                           {%- endfor -%}
                         </div>
                       {%- elsif section.settings.show_color_swatch and color_label_list contains filter_label_downcase -%}

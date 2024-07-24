@@ -74,12 +74,24 @@
                         {%- assign image = value.variant.featured_media | default: value.variant.product.featured_media | default: product.featured_media -%}
 
                         <div class="variant-swatch {% unless value.available %}is-disabled{% endunless %}">
-                          <input class="variant-swatch__radio visually-hidden" type="radio" data-option-position="{{ option.position }}" name="option{{ option.position }}" form="{{ product_form_id }}" id="{{ option_id }}-{{ forloop.index }}" value="{{ value.id }}" {% if value == option.selected_value %}checked="checked"{% endif %} aria-label="{{ value | escape }}">
-                          <label class="variant-swatch__item" for="{{ option_id }}-{{ forloop.index }}">
-                            <span class="visually-hidden">{{ value }}</span>
+                          {%- if value.product_url != blank -%}
+                            {%- if value == option.selected_value -%}
+                              <input type="hidden" form="{{ product_form_id }}" data-option-position="{{ option.position }}" name="option{{ option.position }}" value="{{ value.id }}">
+                            {%- endif -%}
 
-                            {{- image | image_url: width: image.width | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 64px, 72px', sizes: '64,72,128,144,192,216', class: 'variant-swatch__image' -}}
-                          </label>
+                            <a href="{{ value.product_url }}" class="variant-swatch__item {% if value == option.selected_value %}is-selected{% endif %}">
+                              <span class="visually-hidden">{{ value }}</span>
+
+                              {{- image | image_url: width: image.width | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 64px, 72px', sizes: '64,72,128,144,192,216', class: 'variant-swatch__image' -}}
+                            </a>
+                          {%- else -%}
+                            <input class="variant-swatch__radio visually-hidden" type="radio" data-option-position="{{ option.position }}" name="option{{ option.position }}" form="{{ product_form_id }}" id="{{ option_id }}-{{ forloop.index }}" value="{{ value.id }}" {% if value == option.selected_value %}checked="checked"{% endif %} aria-label="{{ value | escape }}">
+                            <label class="variant-swatch__item" for="{{ option_id }}-{{ forloop.index }}">
+                              <span class="visually-hidden">{{ value }}</span>
+
+                              {{- image | image_url: width: image.width | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 64px, 72px', sizes: '64,72,128,144,192,216', class: 'variant-swatch__image' -}}
+                            </label>
+                          {%- endif -%}
                         </div>
                       {%- endfor -%}
                     </div>
@@ -92,10 +104,20 @@
                         {%- assign color_value_downcase = value | downcase -%}
 
                         <div class="color-swatch {% if color_white_label == color_value_downcase %}color-swatch--white{% endif %} {% unless value.available %}is-disabled{% endunless %}">
-                          <input class="color-swatch__radio visually-hidden" type="radio" data-option-position="{{ option.position }}" name="option{{ option.position }}" form="{{ product_form_id }}" id="{{ option_id }}-{{ forloop.index }}" value="{{ value.id }}" {% if value == option.selected_value %}checked="checked"{% endif %}>
-                          <label class="color-swatch__item" for="{{ option_id }}-{{ forloop.index }}" style="{% render 'color-swatch-style', swatch: value.swatch, color_swatch_config: color_swatch_config, value: value %}">
-                            <span class="visually-hidden">{{ value }}</span>
-                          </label>
+                          {%- if value.product_url != blank -%}
+                            {%- if value == option.selected_value -%}
+                              <input type="hidden" form="{{ product_form_id }}" data-option-position="{{ option.position }}" name="option{{ option.position }}" value="{{ value.id }}">
+                            {%- endif -%}
+
+                            <a href="{{ value.product_url }}" class="color-swatch__item {% if value == option.selected_value %}is-selected{% endif %}" style="{% render 'color-swatch-style', swatch: value.swatch, color_swatch_config: color_swatch_config, value: value %}">
+                              <span class="visually-hidden">{{ value }}</span>
+                            </a>
+                          {%- else -%}
+                            <input class="color-swatch__radio visually-hidden" type="radio" data-option-position="{{ option.position }}" name="option{{ option.position }}" form="{{ product_form_id }}" id="{{ option_id }}-{{ forloop.index }}" value="{{ value.id }}" {% if value == option.selected_value %}checked="checked"{% endif %}>
+                            <label class="color-swatch__item" for="{{ option_id }}-{{ forloop.index }}" style="{% render 'color-swatch-style', swatch: value.swatch, color_swatch_config: color_swatch_config, value: value %}">
+                              <span class="visually-hidden">{{ value }}</span>
+                            </label>
+                          {%- endif -%}
                         </div>
                       {%- endfor -%}
                     </div>
@@ -104,8 +126,18 @@
                     <div class="block-swatch-list">
                       {%- for value in option.values -%}
                         <div class="block-swatch {% unless value.available %}is-disabled{% endunless %}">
-                          <input class="block-swatch__radio visually-hidden" type="radio" data-option-position="{{ option.position }}" name="option{{ option.position }}" form="{{ product_form_id }}" id="{{ option_id }}-{{ forloop.index }}" value="{{ value.id }}" {% if value == option.selected_value %}checked="checked"{% endif %}>
-                          <label class="block-swatch__item" for="{{ option_id }}-{{ forloop.index }}">{{ value }}</label>
+                          {%- if value.product_url != blank -%}
+                            {%- if value == option.selected_value -%}
+                              <input type="hidden" form="{{ product_form_id }}" data-option-position="{{ option.position }}" name="option{{ option.position }}" value="{{ value.id }}">
+                            {%- endif -%}
+
+                            <a href="{{ value.product_url }}" class="block-swatch__item {% if value == option.selected_value %}is-selected{% endif %}">
+                              {{- value -}}
+                            </a>
+                          {%- else -%}
+                            <input class="block-swatch__radio visually-hidden" type="radio" data-option-position="{{ option.position }}" name="option{{ option.position }}" form="{{ product_form_id }}" id="{{ option_id }}-{{ forloop.index }}" value="{{ value.id }}" {% if value == option.selected_value %}checked="checked"{% endif %}>
+                            <label class="block-swatch__item" for="{{ option_id }}-{{ forloop.index }}">{{ value }}</label>
+                          {%- endif -%}
                         </div>
                       {%- endfor -%}
                     </div>
@@ -125,7 +157,17 @@
 
                         <div class="combo-box__option-list" role="listbox">
                           {%- for value in option.values -%}
-                            <button type="button" role="option" class="combo-box__option-item" value="{{ value.id }}" aria-selected="{% if value == option.selected_value %}true{% else %}false{% endif %}">{{ value }}</button>
+                            {%- if value.product_url != blank -%}
+                              {%- if value == option.selected_value -%}
+                                <input type="hidden" form="{{ product_form_id }}" data-option-position="{{ option.position }}" name="option{{ option.position }}" value="{{ value.id }}">
+                              {%- endif -%}
+
+                              <a href="{{ value.product_url }}" aria-selected="{% if value == option.selected_value %}true{% else %}false{% endif %}" class="combo-box__option-item">
+                                {{- value -}}
+                              </a>
+                            {%- else -%}
+                              <button type="button" role="option" class="combo-box__option-item" value="{{ value.id }}" aria-selected="{% if value == option.selected_value %}true{% else %}false{% endif %}">{{ value }}</button>
+                            {%- endif -%}
                           {%- endfor -%}
                         </div>
 
@@ -295,8 +337,7 @@
           </div>
         {%- endif -%}
 
-
-      {%- comment -%}
+          {%- comment -%}
       ----------------------------------------------------------------------------------------------------------------
       USP
       ----------------------------------------------------------------------------------------------------------------
@@ -326,7 +367,7 @@
             {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_usp__image_desktop, src_mobile: product.metafields.custom.product_usp__image_mobile %}
         </div>
         {%- endif -%}
-
+        
       {%- comment -%}
       ----------------------------------------------------------------------------------------------------------------
       INVENTORY

@@ -1,9 +1,14 @@
 var __defProp = Object.defineProperty;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField = (obj, key, value) => {
-  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-  return value;
+var __typeError = (msg) => {
+  throw TypeError(msg);
 };
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __accessCheck = (obj, member, msg) => member.has(obj) || __typeError("Cannot " + msg);
+var __privateGet = (obj, member, getter) => (__accessCheck(obj, member, "read from private field"), getter ? getter.call(obj) : member.get(obj));
+var __privateAdd = (obj, member, value) => member.has(obj) ? __typeError("Cannot add the same private member more than once") : member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
+var __privateSet = (obj, member, value, setter) => (__accessCheck(obj, member, "write to private field"), setter ? setter.call(obj, value) : member.set(obj, value), value);
+var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "access private method"), method);
 
 // node_modules/ftdomdelegate/main.js
 function Delegate(root) {
@@ -703,13 +708,11 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 function _toPrimitive(input, hint) {
-  if (typeof input !== "object" || input === null)
-    return input;
+  if (typeof input !== "object" || input === null) return input;
   var prim = input[Symbol.toPrimitive];
   if (prim !== void 0) {
     var res = prim.call(input, hint || "default");
-    if (typeof res !== "object")
-      return res;
+    if (typeof res !== "object") return res;
     throw new TypeError("@@toPrimitive must return a primitive value.");
   }
   return (hint === "string" ? String : Number)(input);
@@ -2825,6 +2828,19 @@ var FlickityCarousel = class extends CustomHTMLElement {
 window.customElements.define("flickity-carousel", FlickityCarousel);
 
 // js/helper/dom.js
+function deepQuerySelector(root, selector) {
+  let element = root.querySelector(selector);
+  if (element) {
+    return element;
+  }
+  for (const template2 of root.querySelectorAll("template")) {
+    element = deepQuerySelector(template2.content, selector);
+    if (element) {
+      return element;
+    }
+  }
+  return null;
+}
 function getSiblings(element, filter, includeSelf = false) {
   let siblings = [];
   let currentElement = element;
@@ -3102,8 +3118,8 @@ var ComboBox = class extends OpenableElement {
       }
     }
   }
-  get nativeSelect() {
-    return this.querySelector("select");
+  get nativeControl() {
+    return this.querySelector('input[type="hidden"]') || this.querySelector("select");
   }
   set selectedValue(value) {
     this.options.forEach((option) => {
@@ -3128,13 +3144,18 @@ var ComboBox = class extends OpenableElement {
   // Called when the option of the custom select is clicked
   _onValueClicked(event, target) {
     this.selectedValue = target.value;
-    this.nativeSelect.value = target.value;
-    this.nativeSelect.dispatchEvent(new Event("change", { bubbles: true }));
+    if (this.nativeControl.value !== target.value) {
+      this.nativeControl.value = target.value;
+      this.nativeControl.dispatchEvent(new Event("change", { bubbles: true }));
+    }
     this.open = false;
   }
   // Called when the option of the underlying native select is changed (for instance by external code)
   _onValueChanged(event, target) {
-    Array.from(this.nativeSelect.options).forEach((option) => option.toggleAttribute("selected", target.value === option.value));
+    const nativeControl = this.nativeControl;
+    if (nativeControl.tagName === "SELECT") {
+      Array.from(this.nativeControl.options).forEach((option) => option.toggleAttribute("selected", target.value === option.value));
+    }
     this.selectedValue = target.value;
   }
   // Improves accessibility with arrow up/down
@@ -3496,13 +3517,6 @@ function getSizedMediaUrl(media, size) {
     return null;
   }
 }
-function getMediaSrcset(media, sizeList) {
-  let srcset = [], supportedSizes = typeof media === "string" ? sizeList : getSupportedSizes(media, sizeList);
-  supportedSizes.forEach((supportedSize) => {
-    srcset.push(`${getSizedMediaUrl(media, supportedSize + "x")} ${supportedSize}w`);
-  });
-  return srcset.join(",");
-}
 function getSupportedSizes(media, desiredSizes) {
   let supportedSizes = [], mediaWidth = media["preview_image"]["width"];
   desiredSizes.forEach((width) => {
@@ -3792,9 +3806,11 @@ var Slideshow = class extends CustomHTMLElement {
     return MediaFeatures.prefersReducedMotion() ? "fade" : this.getAttribute("transition-type");
   }
   async _setupVisibility() {
-    await this.untilVisible();
-    await this.items[this.selectedIndex].transitionToEnter(this.transitionType).catch((error) => {
-    });
+    if (this.hasAttribute("reveal-on-scroll")) {
+      await this.untilVisible();
+      await this.items[this.selectedIndex].transitionToEnter(this.transitionType).catch((error) => {
+      });
+    }
     this.startPlayer();
   }
   previous() {
@@ -4371,63 +4387,6 @@ var BlogPostNavigation = class extends HTMLElement {
 };
 window.customElements.define("blog-post-navigation", BlogPostNavigation);
 
-class TimelineVertical extends HTMLElement {
-  connectedCallback() {
-    if (this.hasAttribute("stagger-apparition")) {
-      this._setupVisibility();
-    }
-  }
-
-  async _setupVisibility() {
-    const itemsText = Array.from(this.querySelectorAll(".timeline-vertical-item--text"));
-    const itemsImage = Array.from(this.querySelectorAll(".timeline-vertical-item--image"));
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    
-    const observerText = new IntersectionObserver(entries => {
-      entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-          const animation = new CustomAnimation(new CustomKeyframeEffect(entry.target, {
-            opacity: [0, 1],
-            transform: [`translateY(${prefersReducedMotion ? 0 : window.innerWidth < 1000 ? 35 : 60}px)`, "translateY(0)"]
-          }, {
-            duration: 600,
-            delay: 1200,
-            easing: "ease"
-          }));
-          animation.play();
-          observerText.unobserve(entry.target); // Stop observing the current item once it has been animated
-        }
-      });
-    }, {
-      threshold: Math.min(50 / this.clientHeight, 1)
-    });
-
-    const observerImage = new IntersectionObserver(entries => {
-      entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-          const animation = new CustomAnimation(new CustomKeyframeEffect(entry.target, {
-            opacity: [0, 1],
-            transform: [`translateY(${prefersReducedMotion ? 0 : window.innerWidth < 1000 ? 35 : 60}px)`, "translateY(0)"]
-          }, {
-            duration: 800,
-            delay: 800,
-            easing: "ease"
-          }));
-          animation.play();
-          observerImage.unobserve(entry.target); // Stop observing the current item once it has been animated
-        }
-      });
-    }, {
-      threshold: Math.min(50 / this.clientHeight, 1)
-    });
-
-    itemsText.forEach(item => observerText.observe(item));
-    itemsImage.forEach(item => observerImage.observe(item));
-  }
-}
-
-window.customElements.define("timeline-vertical", TimelineVertical);
-
 // js/custom-element/section/multi-column/multi-column.js
 var MultiColumn = class extends CustomHTMLElement {
   connectedCallback() {
@@ -4887,6 +4846,64 @@ var Timeline = class extends HTMLElement {
 };
 window.customElements.define("time-line", Timeline);
 
+
+class TimelineVertical extends HTMLElement {
+  connectedCallback() {
+    if (this.hasAttribute("stagger-apparition")) {
+      this._setupVisibility();
+    }
+  }
+
+  async _setupVisibility() {
+    const itemsText = Array.from(this.querySelectorAll(".timeline-vertical-item--text"));
+    const itemsImage = Array.from(this.querySelectorAll(".timeline-vertical-item--image"));
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    
+    const observerText = new IntersectionObserver(entries => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          const animation = new CustomAnimation(new CustomKeyframeEffect(entry.target, {
+            opacity: [0, 1],
+            transform: [`translateY(${prefersReducedMotion ? 0 : window.innerWidth < 1000 ? 35 : 60}px)`, "translateY(0)"]
+          }, {
+            duration: 600,
+            delay: 1200,
+            easing: "ease"
+          }));
+          animation.play();
+          observerText.unobserve(entry.target); // Stop observing the current item once it has been animated
+        }
+      });
+    }, {
+      threshold: Math.min(50 / this.clientHeight, 1)
+    });
+
+    const observerImage = new IntersectionObserver(entries => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          const animation = new CustomAnimation(new CustomKeyframeEffect(entry.target, {
+            opacity: [0, 1],
+            transform: [`translateY(${prefersReducedMotion ? 0 : window.innerWidth < 1000 ? 35 : 60}px)`, "translateY(0)"]
+          }, {
+            duration: 800,
+            delay: 800,
+            easing: "ease"
+          }));
+          animation.play();
+          observerImage.unobserve(entry.target); // Stop observing the current item once it has been animated
+        }
+      });
+    }, {
+      threshold: Math.min(50 / this.clientHeight, 1)
+    });
+
+    itemsText.forEach(item => observerText.observe(item));
+    itemsImage.forEach(item => observerImage.observe(item));
+  }
+}
+
+window.customElements.define("timeline-vertical", TimelineVertical);
+
 // js/custom-element/section/press/press-list.js
 var PressList = class extends CustomHTMLElement {
   connectedCallback() {
@@ -5220,6 +5237,61 @@ if (!window.customElements.get("gift-card-recipient")) {
   window.customElements.define("gift-card-recipient", GiftCardRecipient);
 }
 
+// js/custom-element/section/product/product-rerender.js
+var _abortController, _ProductRerender_instances, onRerender_fn;
+var ProductRerender = class extends HTMLElement {
+  constructor() {
+    super(...arguments);
+    __privateAdd(this, _ProductRerender_instances);
+    __privateAdd(this, _abortController);
+  }
+  connectedCallback() {
+    __privateSet(this, _abortController, new AbortController());
+    if (!this.id || !this.hasAttribute("observe-form")) {
+      console.warn('The <product-rerender> requires an ID to identify the element to re-render, and an "observe-form" attribute referencing to the form to monitor.');
+    }
+    document.forms[this.getAttribute("observe-form")].addEventListener("product:rerender", __privateMethod(this, _ProductRerender_instances, onRerender_fn).bind(this), { signal: __privateGet(this, _abortController).signal });
+  }
+  disconnectedCallback() {
+    __privateGet(this, _abortController).abort();
+  }
+};
+_abortController = new WeakMap();
+_ProductRerender_instances = new WeakSet();
+onRerender_fn = function(event) {
+  const matchingElement = deepQuerySelector(event.detail.htmlFragment, `#${this.id}`);
+  if (!matchingElement) {
+    return;
+  }
+  const focusedElement = document.activeElement;
+  if (!this.hasAttribute("allow-partial-rerender") || event.detail.productChange) {
+    this.replaceWith(matchingElement);
+  } else {
+    const blockTypes = ["meta", "payment-terms", "variant-picker", "inventory", "buy-buttons", "pickup-availability", "liquid"];
+    blockTypes.forEach((blockType) => {
+      this.querySelectorAll(`[data-block-type="${blockType}"]`).forEach((element) => {
+        const matchingBlock = matchingElement.querySelector(`[data-block-type="${blockType}"][data-block-id="${element.getAttribute("data-block-id")}"]`);
+        if (matchingBlock) {
+          if (blockType === "buy-buttons") {
+            element.querySelector("product-payment-container").replaceWith(matchingBlock.querySelector("product-payment-container"));
+          } else {
+            element.replaceWith(matchingBlock);
+          }
+        }
+      });
+    });
+  }
+  if (focusedElement.id) {
+    const element = document.getElementById(focusedElement.id);
+    if (this.contains(element)) {
+      element.focus();
+    }
+  }
+};
+if (!window.customElements.get("product-rerender")) {
+  window.customElements.define("product-rerender", ProductRerender);
+}
+
 // js/custom-element/section/product/image-zoom.js
 var PhotoSwipeUi = class {
   constructor(pswp) {
@@ -5380,94 +5452,6 @@ var ProductImageZoom = class extends OpenableElement {
 };
 window.customElements.define("product-image-zoom", ProductImageZoom);
 
-// js/custom-element/section/product/inventory.js
-var ProductInventory = class extends HTMLElement {
-  connectedCallback() {
-    const scriptTag = this.querySelector("script");
-    if (!scriptTag) {
-      return;
-    }
-    this.inventories = JSON.parse(scriptTag.innerHTML);
-    document.getElementById(this.getAttribute("form-id"))?.addEventListener("variant:changed", this._onVariantChanged.bind(this));
-  }
-  _onVariantChanged(event) {
-    this.querySelector("span")?.remove();
-    if (event.detail.variant && this.inventories[event.detail.variant["id"]] !== "") {
-      this.hidden = false;
-      this.insertAdjacentHTML("afterbegin", this.inventories[event.detail.variant["id"]]);
-    } else {
-      this.hidden = true;
-    }
-  }
-};
-window.customElements.define("product-inventory", ProductInventory);
-
-// js/custom-element/section/product/payment-container.js
-var PaymentContainer = class extends HTMLElement {
-  connectedCallback() {
-    document.getElementById(this.getAttribute("form-id"))?.addEventListener("variant:changed", this._onVariantChanged.bind(this));
-    if (Shopify.designMode && Shopify.PaymentButton) {
-      Shopify.PaymentButton.init();
-    }
-  }
-  _onVariantChanged(event) {
-    this._updateAddToCartButton(event.detail.variant);
-    this._updateDynamicCheckoutButton(event.detail.variant);
-  }
-  _updateAddToCartButton(variant) {
-    let addToCartButtonElement = this.querySelector("[data-product-add-to-cart-button]");
-    if (!addToCartButtonElement) {
-      return;
-    }
-    let addToCartButtonText = "";
-    addToCartButtonElement.classList.remove("button--primary", "button--secondary", "button--ternary");
-    if (!variant) {
-      addToCartButtonElement.setAttribute("disabled", "disabled");
-      addToCartButtonElement.classList.add("button--ternary");
-      addToCartButtonText = window.themeVariables.strings.productFormUnavailable;
-    } else {
-      if (variant["available"]) {
-        addToCartButtonElement.removeAttribute("disabled");
-        addToCartButtonElement.classList.add(addToCartButtonElement.hasAttribute("data-use-primary") ? "button--primary" : "button--secondary");
-        addToCartButtonText = addToCartButtonElement.getAttribute("data-button-content");
-      } else {
-        addToCartButtonElement.setAttribute("disabled", "disabled");
-        addToCartButtonElement.classList.add("button--ternary");
-        addToCartButtonText = window.themeVariables.strings.productFormSoldOut;
-      }
-    }
-    if (addToCartButtonElement.getAttribute("is") === "loader-button") {
-      addToCartButtonElement.firstElementChild.innerHTML = addToCartButtonText;
-    } else {
-      addToCartButtonElement.innerHTML = addToCartButtonText;
-    }
-  }
-  _updateDynamicCheckoutButton(variant) {
-    let paymentButtonElement = this.querySelector(".shopify-payment-button");
-    if (!paymentButtonElement) {
-      return;
-    }
-    paymentButtonElement.style.display = !variant || !variant["available"] ? "none" : "block";
-  }
-};
-window.customElements.define("product-payment-container", PaymentContainer);
-
-// js/custom-element/section/product/payment-terms.js
-var PaymentTerms = class extends CustomHTMLElement {
-  connectedCallback() {
-    document.getElementById(this.getAttribute("form-id"))?.addEventListener("variant:changed", this._onVariantChanged.bind(this));
-  }
-  _onVariantChanged(event) {
-    const variant = event.detail.variant;
-    if (variant) {
-      const idElement = this.querySelector('[name="id"]');
-      idElement.value = variant["id"];
-      idElement.dispatchEvent(new Event("change", { bubbles: true }));
-    }
-  }
-};
-window.customElements.define("product-payment-terms", PaymentTerms);
-
 // js/custom-element/section/product/product-form.js
 var ProductForm = class extends HTMLFormElement {
   connectedCallback() {
@@ -5557,7 +5541,8 @@ var ProductMedia = class extends CustomHTMLElement {
     this.viewInSpaceElement = this.querySelector("[data-shopify-model3d-id]");
     this.zoomButton = this.querySelector(".product__zoom-button");
     this.product = await ProductLoader.load(this.getAttribute("product-handle"));
-    document.getElementById(this.getAttribute("form-id"))?.addEventListener("variant:changed", this._onVariantChanged.bind(this));
+    const form = document.getElementById(this.getAttribute("form-id"));
+    form?.addEventListener("variant:change", this._onVariantChanged.bind(this));
     this.mainCarousel.addEventListener("model:played", () => this.mainCarousel.setDraggable(false));
     this.mainCarousel.addEventListener("model:paused", () => this.mainCarousel.setDraggable(true));
     this.mainCarousel.addEventListener("video:played", () => this.mainCarousel.setDraggable(false));
@@ -5664,181 +5649,25 @@ var ProductMedia = class extends CustomHTMLElement {
 };
 window.customElements.define("product-media", ProductMedia);
 
-// js/helper/currency.js
-function formatMoney(cents, format = "") {
-  if (typeof cents === "string") {
-    cents = cents.replace(".", "");
-  }
-  const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/, formatString = format || window.themeVariables.settings.moneyFormat;
-  function defaultTo(value2, defaultValue) {
-    return value2 == null || value2 !== value2 ? defaultValue : value2;
-  }
-  function formatWithDelimiters(number, precision, thousands, decimal) {
-    precision = defaultTo(precision, 2);
-    thousands = defaultTo(thousands, ",");
-    decimal = defaultTo(decimal, ".");
-    if (isNaN(number) || number == null) {
-      return 0;
-    }
-    number = (number / 100).toFixed(precision);
-    let parts = number.split("."), dollarsAmount = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1" + thousands), centsAmount = parts[1] ? decimal + parts[1] : "";
-    return dollarsAmount + centsAmount;
-  }
-  let value = "";
-  switch (formatString.match(placeholderRegex)[1]) {
-    case "amount":
-      value = formatWithDelimiters(cents, 2);
-      break;
-    case "amount_no_decimals":
-      value = formatWithDelimiters(cents, 0);
-      break;
-    case "amount_with_space_separator":
-      value = formatWithDelimiters(cents, 2, " ", ".");
-      break;
-    case "amount_with_comma_separator":
-      value = formatWithDelimiters(cents, 2, ".", ",");
-      break;
-    case "amount_with_apostrophe_separator":
-      value = formatWithDelimiters(cents, 2, "'", ".");
-      break;
-    case "amount_no_decimals_with_comma_separator":
-      value = formatWithDelimiters(cents, 0, ".", ",");
-      break;
-    case "amount_no_decimals_with_space_separator":
-      value = formatWithDelimiters(cents, 0, " ");
-      break;
-    case "amount_no_decimals_with_apostrophe_separator":
-      value = formatWithDelimiters(cents, 0, "'");
-      break;
-  }
-  if (formatString.indexOf("with_comma_separator") !== -1) {
-    return formatString.replace(placeholderRegex, value);
-  } else {
-    return formatString.replace(placeholderRegex, value);
-  }
-}
-
-// js/custom-element/section/product/product-meta.js
-var ProductMeta = class extends HTMLElement {
-  connectedCallback() {
-    document.getElementById(this.getAttribute("form-id"))?.addEventListener("variant:changed", this._onVariantChanged.bind(this));
-  }
-  get priceClass() {
-    return this.getAttribute("price-class") || "";
-  }
-  get unitPriceClass() {
-    return this.getAttribute("unit-price-class") || "";
-  }
-  _onVariantChanged(event) {
-    this._updateLabels(event.detail.variant);
-    this._updatePrices(event.detail.variant);
-    this._updateSku(event.detail.variant);
-  }
-  _updateLabels(variant) {
-    let productLabelList = this.querySelector("[data-product-label-list]");
-    if (!productLabelList) {
-      return;
-    }
-    if (!variant) {
-      productLabelList.innerHTML = "";
-    } else {
-      productLabelList.innerHTML = "";
-      if (!variant["available"]) {
-        productLabelList.innerHTML = `<span class="label label--subdued">${window.themeVariables.strings.collectionSoldOut}</span>`;
-      } else if (variant["compare_at_price"] > variant["price"]) {
-        let savings = "";
-        if (window.themeVariables.settings.discountMode === "percentage") {
-          savings = `${Math.round((variant["compare_at_price"] - variant["price"]) * 100 / variant["compare_at_price"])}%`;
-        } else {
-          savings = formatMoney(variant["compare_at_price"] - variant["price"]);
-        }
-        productLabelList.innerHTML = `<span class="label label--highlight">${window.themeVariables.strings.collectionDiscount.replace("@savings@", savings)}</span>`;
-      }
-    }
-  }
-  _updatePrices(variant) {
-    let productPrices = this.querySelector("[data-product-price-list]"), currencyFormat = window.themeVariables.settings.currencyCodeEnabled ? window.themeVariables.settings.moneyWithCurrencyFormat : window.themeVariables.settings.moneyFormat;
-    if (!productPrices) {
-      return;
-    }
-    if (!variant) {
-      productPrices.style.display = "none";
-    } else {
-      productPrices.innerHTML = "";
-      if (variant["compare_at_price"] > variant["price"]) {
-        productPrices.innerHTML += `<span class="price price--highlight ${this.priceClass}"><span class="visually-hidden">${window.themeVariables.strings.productSalePrice}</span>${formatMoney(variant["price"], currencyFormat)}</span>`;
-        productPrices.innerHTML += `<span class="price price--compare"><span class="visually-hidden">${window.themeVariables.strings.productRegularPrice}</span>${formatMoney(variant["compare_at_price"], currencyFormat)}</span>`;
-      } else {
-        productPrices.innerHTML += `<span class="price ${this.priceClass}"><span class="visually-hidden">${window.themeVariables.strings.productSalePrice}</span>${formatMoney(variant["price"], currencyFormat)}</span>`;
-      }
-      if (variant["unit_price_measurement"]) {
-        let referenceValue = "";
-        if (variant["unit_price_measurement"]["reference_value"] !== 1) {
-          referenceValue = `<span class="unit-price-measurement__reference-value">${variant["unit_price_measurement"]["reference_value"]}</span>`;
-        }
-        productPrices.innerHTML += `
-          <div class="price text--subdued ${this.unitPriceClass}">
-            <div class="unit-price-measurement">
-              <span class="unit-price-measurement__price">${formatMoney(variant["unit_price"])}</span>
-              <span class="unit-price-measurement__separator">/</span>
-              ${referenceValue}
-              <span class="unit-price-measurement__reference-unit">${variant["unit_price_measurement"]["reference_unit"]}</span>
-            </div>
-          </div>
-        `;
-      }
-      productPrices.style.display = "";
-    }
-  }
-  _updateSku(variant) {
-    let productSku = this.querySelector("[data-product-sku-container]");
-    if (!productSku) {
-      return;
-    }
-    let productSkuNumber = productSku.querySelector("[data-product-sku-number]");
-    if (!variant || !variant["sku"]) {
-      productSku.style.display = "none";
-    } else {
-      productSkuNumber.innerHTML = variant["sku"];
-      productSku.style.display = "";
-    }
-  }
-};
-window.customElements.define("product-meta", ProductMeta);
-
 // js/custom-element/section/product-list/quick-buy-drawer.js
 var QuickBuyDrawer = class extends DrawerContent {
   connectedCallback() {
     super.connectedCallback();
-    this.delegate.on("variant:changed", this._onVariantChanged.bind(this));
   }
   async _load() {
-    await super._load();
-    this.imageElement = this.querySelector(".quick-buy-product__image");
+    if (!this.requiresLoading) {
+      return;
+    }
+    triggerNonBubblingEvent(this, "openable-element:load:start");
+    const response = await fetch(this.getAttribute("href"));
+    const html = document.createRange().createContextualFragment(await response.text());
+    const drawer = html.querySelector("#quick-buy-content").content.querySelector("quick-buy-drawer");
+    this.replaceChildren(...drawer.children);
+    this.removeAttribute("href");
+    triggerNonBubblingEvent(this, "openable-element:load:end");
     if (window.Shopify && window.Shopify.PaymentButton) {
       window.Shopify.PaymentButton.init();
     }
-  }
-  _onVariantChanged(event) {
-    const variant = event.detail.variant;
-    if (variant) {
-      Array.from(this.querySelectorAll(`[href*="/products"]`)).forEach((link) => {
-        const url = new URL(link.href);
-        url.searchParams.set("variant", variant["id"]);
-        link.setAttribute("href", url.toString());
-      });
-    }
-    if (!this.imageElement || !variant || !variant["featured_media"]) {
-      return;
-    }
-    const featuredMedia = variant["featured_media"];
-    if (featuredMedia["alt"]) {
-      this.imageElement.setAttribute("alt", featuredMedia["alt"]);
-    }
-    this.imageElement.setAttribute("width", featuredMedia["preview_image"]["width"]);
-    this.imageElement.setAttribute("height", featuredMedia["preview_image"]["height"]);
-    this.imageElement.setAttribute("src", getSizedMediaUrl(featuredMedia, "342x"));
-    this.imageElement.setAttribute("srcset", getMediaSrcset(featuredMedia, [114, 228, 342]));
   }
 };
 window.customElements.define("quick-buy-drawer", QuickBuyDrawer);
@@ -5847,243 +5676,186 @@ window.customElements.define("quick-buy-drawer", QuickBuyDrawer);
 var QuickBuyPopover = class extends PopoverContent {
   connectedCallback() {
     super.connectedCallback();
-    this.delegate.on("variant:changed", this._onVariantChanged.bind(this));
     this.delegate.on("variant:added", () => this.open = false);
   }
   async _load() {
-    await super._load();
-    this.imageElement = this.querySelector(".quick-buy-product__image");
-  }
-  _onVariantChanged(event) {
-    const variant = event.detail.variant;
-    if (variant) {
-      Array.from(this.querySelectorAll(`[href*="/products"]`)).forEach((link) => {
-        const url = new URL(link.href);
-        url.searchParams.set("variant", variant["id"]);
-        link.setAttribute("href", url.toString());
-      });
-    }
-    if (!this.imageElement || !variant || !variant["featured_media"]) {
+    if (!this.requiresLoading) {
       return;
     }
-    const featuredMedia = variant["featured_media"];
-    if (featuredMedia["alt"]) {
-      this.imageElement.setAttribute("alt", featuredMedia["alt"]);
+    triggerNonBubblingEvent(this, "openable-element:load:start");
+    const response = await fetch(this.getAttribute("href"));
+    const html = document.createRange().createContextualFragment(await response.text());
+    const drawer = html.querySelector("#quick-buy-content").content.querySelector("quick-buy-popover");
+    this.replaceChildren(...drawer.children);
+    this.removeAttribute("href");
+    triggerNonBubblingEvent(this, "openable-element:load:end");
+    if (window.Shopify && window.Shopify.PaymentButton) {
+      window.Shopify.PaymentButton.init();
     }
-    this.imageElement.setAttribute("width", featuredMedia["preview_image"]["width"]);
-    this.imageElement.setAttribute("height", featuredMedia["preview_image"]["height"]);
-    this.imageElement.setAttribute("src", getSizedMediaUrl(featuredMedia, "195x"));
-    this.imageElement.setAttribute("srcset", getMediaSrcset(featuredMedia, [65, 130, 195]));
   }
 };
 window.customElements.define("quick-buy-popover", QuickBuyPopover);
 
-// js/custom-element/section/product/store-pickup.js
-var StorePickup = class extends HTMLElement {
-  connectedCallback() {
-    document.getElementById(this.getAttribute("form-id"))?.addEventListener("variant:changed", this._onVariantChanged.bind(this));
-  }
-  _onVariantChanged(event) {
-    if (!event.detail.variant) {
-      this.innerHTML = "";
-    } else {
-      this._renderForVariant(event.detail.variant["id"]);
-    }
-  }
-  async _renderForVariant(id) {
-    const response = await fetch(`${window.themeVariables.routes.rootUrlWithoutSlash}/variants/${id}?section_id=store-availability`), div = document.createElement("div");
-    div.innerHTML = await response.text();
-    this.innerHTML = div.firstElementChild.innerHTML.trim();
-  }
-};
-window.customElements.define("store-pickup", StorePickup);
-
 // js/custom-element/section/product/variants.js
-var ProductVariants = class extends CustomHTMLElement {
+var CACHE_EVICTION_TIME = 1e3 * 60 * 5;
+var _preloadedHtml, _delegate, _intersectionObserver, _form, _selectedVariant, _VariantPicker_instances, getActiveOptionValues_fn, getOptionValuesFromOption_fn, onOptionChanged_fn, onOptionPreload_fn, onIntersection_fn, renderForCombination_fn, createHashKeyForHtml_fn;
+var _VariantPicker = class _VariantPicker extends HTMLElement {
+  constructor() {
+    super(...arguments);
+    __privateAdd(this, _VariantPicker_instances);
+    __privateAdd(this, _delegate, new main_default(document.body));
+    __privateAdd(this, _intersectionObserver, new IntersectionObserver(__privateMethod(this, _VariantPicker_instances, onIntersection_fn).bind(this)));
+    __privateAdd(this, _form);
+    __privateAdd(this, _selectedVariant);
+  }
   async connectedCallback() {
-    this.masterSelector = document.getElementById(this.getAttribute("form-id")).id;
-    this.optionSelectors = Array.from(this.querySelectorAll("[data-selector-type]"));
-    if (!this.masterSelector) {
-      console.warn(`The variant selector for product with handle ${this.productHandle} is not linked to any product form.`);
-      return;
-    }
-    this.product = await ProductLoader.load(this.productHandle);
-    this.delegate.on("change", '[name^="option"]', this._onOptionChanged.bind(this));
-    this.masterSelector.addEventListener("change", this._onMasterSelectorChanged.bind(this));
-    this._updateDisableSelectors();
-    this.selectVariant(this.selectedVariant["id"]);
+    __privateSet(this, _selectedVariant, JSON.parse(this.querySelector("script[data-variant]")?.textContent || "{}"));
+    __privateSet(this, _form, document.forms[this.getAttribute("form-id")]);
+    __privateGet(this, _delegate).on("change", `input[data-option-position][form="${this.getAttribute("form-id")}"], select[data-option-position][form="${this.getAttribute("form-id")}"]`, __privateMethod(this, _VariantPicker_instances, onOptionChanged_fn).bind(this));
+    __privateGet(this, _delegate).on("pointerenter", `input[data-option-position][form="${this.getAttribute("form-id")}"]:not(:checked) + label`, __privateMethod(this, _VariantPicker_instances, onOptionPreload_fn).bind(this), true);
+    __privateGet(this, _delegate).on("touchstart", `input[data-option-position][form="${this.getAttribute("form-id")}"]:not(:checked) + label`, __privateMethod(this, _VariantPicker_instances, onOptionPreload_fn).bind(this), true);
+    __privateGet(this, _intersectionObserver).observe(this);
+  }
+  disconnectedCallback() {
+    __privateGet(this, _delegate).off();
+    __privateGet(this, _intersectionObserver).unobserve(this);
   }
   get selectedVariant() {
-    return this._getVariantById(parseInt(this.masterSelector.value));
+    return __privateGet(this, _selectedVariant);
   }
   get productHandle() {
     return this.getAttribute("handle");
-  }
-  get hideSoldOutVariants() {
-    return this.hasAttribute("hide-sold-out-variants");
   }
   get updateUrl() {
     return this.hasAttribute("update-url");
   }
   /**
-   * Select a new variant by its ID
+   * Select a variant using a list of option values. The list of option values might lead to no variant (for instance)
+   * in the case of a combination that does not exist
    */
-  selectVariant(id) {
-    if (!this._isVariantSelectable(this._getVariantById(id))) {
-      id = this._getFirstMatchingAvailableOrSelectableVariant()["id"];
-    }
-    if (this.selectedVariant?.id === id) {
-      return;
-    }
-    this.masterSelector.value = id;
-    this.masterSelector.dispatchEvent(new Event("change", { bubbles: true }));
-    if (this.updateUrl && history.replaceState) {
-      const newUrl = new URL(window.location.href);
-      if (id) {
-        newUrl.searchParams.set("variant", id);
-      } else {
-        newUrl.searchParams.delete("variant");
+  async selectCombination({ optionValues, productChange }) {
+    const previousVariant = this.selectedVariant;
+    const newContent = document.createRange().createContextualFragment(await __privateMethod(this, _VariantPicker_instances, renderForCombination_fn).call(this, optionValues));
+    if (!productChange) {
+      const newVariantPicker = deepQuerySelector(newContent, `${this.tagName}[form-id="${this.getAttribute("form-id")}"]`);
+      const newVariant = JSON.parse(newVariantPicker.querySelector("script[data-variant]")?.textContent || "{}");
+      __privateSet(this, _selectedVariant, newVariant);
+      __privateGet(this, _form).id.value = __privateGet(this, _selectedVariant)?.id;
+      __privateGet(this, _form).id.dispatchEvent(new Event("change", { bubbles: true }));
+      if (this.updateUrl && __privateGet(this, _selectedVariant)?.id) {
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.set("variant", __privateGet(this, _selectedVariant).id);
+        window.history.replaceState({ path: newUrl.toString() }, "", newUrl.toString());
       }
-      window.history.replaceState({ path: newUrl.toString() }, "", newUrl.toString());
-    }
-    this._updateDisableSelectors();
-    triggerEvent(this.masterSelector.form, "variant:changed", { variant: this.selectedVariant });
-  }
-  _onOptionChanged() {
-    this.selectVariant(this._getVariantFromOptions()?.id);
-  }
-  _onMasterSelectorChanged() {
-    const options = this.selectedVariant?.options || [];
-    options.forEach((value, index) => {
-      let input = this.querySelector(`input[name="option${index + 1}"][value="${CSS.escape(value)}"], select[name="option${index + 1}"]`), triggerChangeEvent = false;
-      if (input.tagName === "SELECT") {
-        triggerChangeEvent = input.value !== value;
-        input.value = value;
-      } else if (input.tagName === "INPUT") {
-        triggerChangeEvent = !input.checked && input.value === value;
-        input.checked = input.value === value;
-      }
-      if (triggerChangeEvent) {
-        input.dispatchEvent(new Event("change", { bubbles: true }));
-      }
-    });
-  }
-  /**
-   * Get the product variant by its ID
-   */
-  _getVariantById(id) {
-    return this.product["variants"].find((variant) => variant["id"] === id);
-  }
-  /**
-   * Get the variant based on the options
-   */
-  _getVariantFromOptions() {
-    const options = this._getSelectedOptionValues();
-    return this.product["variants"].find((variant) => {
-      return variant["options"].every((value, index) => value === options[index]);
-    });
-  }
-  /**
-   * Detect if a specific variant is selectable. This is used when the "hide sold out variant" option is enabled, to allow
-   * to return true only if the variant is actually available
-   */
-  _isVariantSelectable(variant) {
-    if (!variant) {
-      return false;
-    } else {
-      return variant["available"] || !this.hideSoldOutVariants && !variant["available"];
-    }
-  }
-  /**
-   * This method is used internally to select an available or selectable variant, when the current choice does not
-   * match the requirements. For instance, if sold out variants are configured to be hidden, but that the choices end
-   * up being a non-valid variant, the theme automatically changes the variant to match the requirements. In the case
-   * the customer end up on variant combinations that do not exist, it also switches to a valid combination.
-   *
-   * The algorithm is as follows: if we have for instance three options "Color", "Size" and "Material", we pop the last
-   * option (Material) and try to find the first available variant for the given Color and Size. If none is found we
-   * remove the second option (Size) and try to find the first available variant for the selected color. Finally, if none
-   * is found we return the first available variant independently of any choice.
-   */
-  _getFirstMatchingAvailableOrSelectableVariant() {
-    let options = this._getSelectedOptionValues(), matchedVariant = null, slicedCount = 0;
-    do {
-      options.pop();
-      slicedCount += 1;
-      matchedVariant = this.product["variants"].find((variant) => {
-        if (this.hideSoldOutVariants) {
-          return variant["available"] && variant["options"].slice(0, variant["options"].length - slicedCount).every((value, index) => value === options[index]);
-        } else {
-          return variant["options"].slice(0, variant["options"].length - slicedCount).every((value, index) => value === options[index]);
+      __privateGet(this, _form).dispatchEvent(new CustomEvent("variant:change", {
+        bubbles: true,
+        detail: {
+          formId: __privateGet(this, _form).id,
+          variant: __privateGet(this, _selectedVariant),
+          previousVariant
         }
-      });
-    } while (!matchedVariant && options.length > 0);
-    return matchedVariant;
-  }
-  _getSelectedOptionValues() {
-    const options = [];
-    Array.from(this.querySelectorAll('input[name^="option"]:checked, select[name^="option"]')).forEach((option) => options.push(option.value));
-    return options;
-  }
-  /**
-   * We add specific class to sold out variants based on the selectors
-   */
-  _updateDisableSelectors() {
-    const selectedVariant = this.selectedVariant;
-    if (!selectedVariant) {
-      return;
-    }
-    this._updateDisableSelectorsForOptionLevel(0, selectedVariant);
-  }
-  _updateDisableSelectorsForOptionLevel(level, selectedVariant) {
-    if (!this.optionSelectors[level]) {
-      return;
-    }
-    const applyClassToSelector = (selector, valueIndex, available, hasAtLeastOneCombination) => {
-      let selectorType = selector.getAttribute("data-selector-type"), cssSelector = "";
-      switch (selectorType) {
-        case "swatch":
-          cssSelector = `.color-swatch:nth-child(${valueIndex + 1})`;
-          break;
-        case "variant-image":
-          cssSelector = `.variant-swatch:nth-child(${valueIndex + 1})`;
-          break;
-        case "block":
-          cssSelector = `.block-swatch:nth-child(${valueIndex + 1})`;
-          break;
-        case "dropdown":
-          cssSelector = `.combo-box__option-item:nth-child(${valueIndex + 1})`;
-          break;
-      }
-      selector.querySelector(cssSelector).toggleAttribute("hidden", !hasAtLeastOneCombination);
-      if (this.hideSoldOutVariants) {
-        selector.querySelector(cssSelector).toggleAttribute("hidden", !available);
-      } else {
-        selector.querySelector(cssSelector).classList.toggle("is-disabled", !available);
-      }
-    };
-    const hasCombination = (variant, level2, value, selectedVariant2) => {
-      return Array.from({ length: level2 + 1 }, (_, i) => {
-        if (i === level2) {
-          return variant[`option${level2 + 1}`] === value;
-        } else {
-          return variant[`option${i + 1}`] === selectedVariant2[`option${i + 1}`];
+      }));
+      __privateGet(this, _form).dispatchEvent(new CustomEvent("variant:changed", {
+        bubbles: true,
+        detail: {
+          formId: __privateGet(this, _form).id,
+          variant: __privateGet(this, _selectedVariant),
+          previousVariant
         }
-      }).every((condition) => condition);
-    };
-    this.product["options"][level]["values"].forEach((value, valueIndex) => {
-      const hasAtLeastOneCombination = this.product["variants"].some(
-        (variant) => hasCombination(variant, level, value, selectedVariant) && variant
-      );
-      const hasAvailableVariant = this.product["variants"].some(
-        (variant) => hasCombination(variant, level, value, selectedVariant) && variant["available"]
-      );
-      applyClassToSelector(this.optionSelectors[level], valueIndex, hasAvailableVariant, hasAtLeastOneCombination);
-      this._updateDisableSelectorsForOptionLevel(level + 1, selectedVariant);
-    });
+      }));
+    }
+    __privateGet(this, _form).dispatchEvent(new CustomEvent("product:rerender", {
+      detail: {
+        htmlFragment: newContent,
+        productChange
+      }
+    }));
+    Shopify?.PaymentButton?.init();
   }
 };
-window.customElements.define("product-variants", ProductVariants);
+_preloadedHtml = new WeakMap();
+_delegate = new WeakMap();
+_intersectionObserver = new WeakMap();
+_form = new WeakMap();
+_selectedVariant = new WeakMap();
+_VariantPicker_instances = new WeakSet();
+/**
+ * Get the option values for the active combination
+ */
+getActiveOptionValues_fn = function() {
+  return Array.from(__privateGet(this, _form).elements).filter((item) => item.matches('input[data-option-position]:checked, input[data-option-position][type="hidden"]')).sort((a, b) => parseInt(a.getAttribute("data-option-position")) - parseInt(b.getAttribute("data-option-position"))).map((input) => input.value);
+};
+/**
+ * Get the option values for a given input
+ */
+getOptionValuesFromOption_fn = function(input) {
+  const optionValues = [input, ...Array.from(__privateGet(this, _form).elements).filter((item) => item.matches(`input[data-option-position]:not([name="${input.name}"]):checked, input[data-option-position]:not([name="${input.name}"])[type="hidden"]`))].sort((a, b) => parseInt(a.getAttribute("data-option-position")) - parseInt(b.getAttribute("data-option-position"))).map((input2) => input2.value);
+  return optionValues;
+};
+onOptionChanged_fn = async function(event) {
+  if (!event.target.name.includes("option")) {
+    return;
+  }
+  this.selectCombination({
+    optionValues: __privateMethod(this, _VariantPicker_instances, getActiveOptionValues_fn).call(this),
+    productChange: event.target.hasAttribute("data-product-url")
+  });
+};
+/**
+ * To improve the user experience, we preload a variant whenever the user hovers over a specific option
+ */
+onOptionPreload_fn = function(event, target) {
+  __privateMethod(this, _VariantPicker_instances, renderForCombination_fn).call(this, __privateMethod(this, _VariantPicker_instances, getOptionValuesFromOption_fn).call(this, target.control));
+};
+/**
+ * When the variant picker is intersecting the viewport, we preload the options to improve the user experience
+ * so that switching variants is nearly instant
+ */
+onIntersection_fn = function(entries) {
+  const prerenderOptions = () => {
+    Array.from(__privateGet(this, _form).elements).filter((item) => item.matches('input[data-option-position]:not(:checked), input[data-option-position][type="hidden"]')).forEach((input) => {
+      __privateMethod(this, _VariantPicker_instances, renderForCombination_fn).call(this, __privateMethod(this, _VariantPicker_instances, getOptionValuesFromOption_fn).call(this, input));
+    });
+  };
+  if (entries[0].isIntersecting) {
+    if (window.requestIdleCallback) {
+      window.requestIdleCallback(prerenderOptions, { timeout: 2e3 });
+    } else {
+      prerenderOptions();
+    }
+  }
+};
+renderForCombination_fn = async function(optionValues) {
+  const optionValuesAsString = optionValues.join(",");
+  const hashKey = __privateMethod(this, _VariantPicker_instances, createHashKeyForHtml_fn).call(this, optionValuesAsString);
+  let productUrl = `${Shopify.routes.root}products/${this.productHandle}`;
+  for (const optionValue of optionValues) {
+    const inputForOptionValue = Array.from(__privateGet(this, _form).elements).find((item) => item.matches(`input[value="${optionValue}"]`));
+    if (inputForOptionValue?.dataset.productUrl) {
+      productUrl = inputForOptionValue.dataset.productUrl;
+      break;
+    }
+  }
+  if (!__privateGet(_VariantPicker, _preloadedHtml).has(hashKey)) {
+    const sectionQueryParam = this.getAttribute("context") === "quick_buy" ? "" : `&section_id=${this.getAttribute("section-id")}`;
+    const promise = new Promise(async (resolve) => {
+      resolve(await (await fetch(`${productUrl}?option_values=${optionValuesAsString}${sectionQueryParam}`)).text());
+    });
+    __privateGet(_VariantPicker, _preloadedHtml).set(hashKey, { htmlPromise: promise, timestamp: Date.now() });
+    if (__privateGet(_VariantPicker, _preloadedHtml).size > 100) {
+      __privateGet(_VariantPicker, _preloadedHtml).delete(Array.from(__privateGet(_VariantPicker, _preloadedHtml).keys())[0]);
+    }
+  }
+  return __privateGet(_VariantPicker, _preloadedHtml).get(hashKey).htmlPromise;
+};
+createHashKeyForHtml_fn = function(optionValuesAsString) {
+  return `${optionValuesAsString}-${this.getAttribute("section-id")}`;
+};
+__privateAdd(_VariantPicker, _preloadedHtml, /* @__PURE__ */ new Map());
+var VariantPicker = _VariantPicker;
+if (!window.customElements.get("variant-picker")) {
+  window.customElements.define("variant-picker", VariantPicker);
+}
 
 // js/custom-element/section/product-list/product-item.js
 var ProductItem = class extends CustomHTMLElement {
@@ -6464,21 +6236,25 @@ var LineItemQuantity = class extends CustomHTMLElement {
         "Content-Type": "application/json"
       }
     });
-    const cartContent = await response.json();
-    this.dispatchEvent(new CustomEvent("line-item-quantity:change:end", { bubbles: true, detail: { cart: cartContent, newLineQuantity: quantity } }));
-    document.documentElement.dispatchEvent(new CustomEvent("cart:updated", {
-      bubbles: true,
-      detail: {
-        cart: cartContent
-      }
-    }));
-    document.documentElement.dispatchEvent(new CustomEvent("cart:refresh", {
-      bubbles: true,
-      detail: {
-        cart: cartContent,
-        replacementDelay: quantity === 0 ? 600 : 750
-      }
-    }));
+    if (response.ok) {
+      const cartContent = await response.json();
+      this.dispatchEvent(new CustomEvent("line-item-quantity:change:end", { bubbles: true, detail: { cart: cartContent, newLineQuantity: quantity } }));
+      document.documentElement.dispatchEvent(new CustomEvent("cart:updated", {
+        bubbles: true,
+        detail: {
+          cart: cartContent
+        }
+      }));
+      document.documentElement.dispatchEvent(new CustomEvent("cart:refresh", {
+        bubbles: true,
+        detail: {
+          cart: cartContent,
+          replacementDelay: quantity === 0 ? 600 : 750
+        }
+      }));
+    } else {
+      this.dispatchEvent(new CustomEvent("line-item-quantity:change:end", { bubbles: true }));
+    }
   }
 };
 window.customElements.define("line-item-quantity", LineItemQuantity);
@@ -6499,13 +6275,13 @@ var LineItem = class extends HTMLElement {
     this.lineItemLoader.lastElementChild.hidden = true;
   }
   async _onQuantityEnd(event) {
-    if (event.detail.cart["item_count"] === 0) {
+    if (event?.detail?.cart["item_count"] === 0) {
       return;
     }
     if (this.lineItemLoader) {
       await this.lineItemLoader.firstElementChild.animate({ opacity: [1, 0], transform: ["translateY(0)", "translateY(-10px)"] }, 75).finished;
       this.lineItemLoader.firstElementChild.hidden = true;
-      if (event.detail.newLineQuantity === 0) {
+      if (event?.detail?.newLineQuantity === 0) {
         await this.animate({ opacity: [1, 0], height: [`${this.clientHeight}px`, 0] }, { duration: 300, easing: "ease" }).finished;
         this.remove();
       } else {
@@ -6580,7 +6356,7 @@ var CartNotification = class extends CustomHTMLElement {
               <div class="cart-notification__text-wrapper">
                 <span class="cart-notification__heading heading hidden-phone">${window.themeVariables.strings.cartItemAdded}</span>
                 <span class="cart-notification__heading heading hidden-tablet-and-up">${window.themeVariables.strings.cartItemAddedShort}</span>
-                <a href="${window.themeVariables.routes.cartUrl}" class="cart-notification__view-cart link">${window.themeVariables.strings.cartViewCart}</a>
+                <a href="${window.themeVariables.routes.cartUrl}" class="cart-notification__view-cart link" data-no-instant>${window.themeVariables.strings.cartViewCart}</a>
               </div>
               
               ${closeButtonHtml}
@@ -6614,6 +6390,60 @@ var CartNotification = class extends CustomHTMLElement {
   }
 };
 window.customElements.define("cart-notification", CartNotification);
+
+// js/helper/currency.js
+function formatMoney(cents, format = "") {
+  if (typeof cents === "string") {
+    cents = cents.replace(".", "");
+  }
+  const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/, formatString = format || window.themeVariables.settings.moneyFormat;
+  function defaultTo(value2, defaultValue) {
+    return value2 == null || value2 !== value2 ? defaultValue : value2;
+  }
+  function formatWithDelimiters(number, precision, thousands, decimal) {
+    precision = defaultTo(precision, 2);
+    thousands = defaultTo(thousands, ",");
+    decimal = defaultTo(decimal, ".");
+    if (isNaN(number) || number == null) {
+      return 0;
+    }
+    number = (number / 100).toFixed(precision);
+    let parts = number.split("."), dollarsAmount = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1" + thousands), centsAmount = parts[1] ? decimal + parts[1] : "";
+    return dollarsAmount + centsAmount;
+  }
+  let value = "";
+  switch (formatString.match(placeholderRegex)[1]) {
+    case "amount":
+      value = formatWithDelimiters(cents, 2);
+      break;
+    case "amount_no_decimals":
+      value = formatWithDelimiters(cents, 0);
+      break;
+    case "amount_with_space_separator":
+      value = formatWithDelimiters(cents, 2, " ", ".");
+      break;
+    case "amount_with_comma_separator":
+      value = formatWithDelimiters(cents, 2, ".", ",");
+      break;
+    case "amount_with_apostrophe_separator":
+      value = formatWithDelimiters(cents, 2, "'", ".");
+      break;
+    case "amount_no_decimals_with_comma_separator":
+      value = formatWithDelimiters(cents, 0, ".", ",");
+      break;
+    case "amount_no_decimals_with_space_separator":
+      value = formatWithDelimiters(cents, 0, " ");
+      break;
+    case "amount_no_decimals_with_apostrophe_separator":
+      value = formatWithDelimiters(cents, 0, "'");
+      break;
+  }
+  if (formatString.indexOf("with_comma_separator") !== -1) {
+    return formatString.replace(placeholderRegex, value);
+  } else {
+    return formatString.replace(placeholderRegex, value);
+  }
+}
 
 // js/custom-element/section/cart/shipping-estimator.js
 var ShippingEstimator = class extends HTMLElement {
@@ -6699,12 +6529,10 @@ window.customElements.define("review-link", ReviewLink, { extends: "a" });
 
 // js/custom-element/section/product/sticky-form.js
 var ProductStickyForm = class extends HTMLElement {
+  _delegate = new main_default(this);
   connectedCallback() {
-    document.getElementById(this.getAttribute("form-id"))?.addEventListener("variant:changed", this._onVariantChanged.bind(this));
-    this.imageElement = this.querySelector(".product-sticky-form__image");
-    this.priceElement = this.querySelector(".product-sticky-form__price");
-    this.unitPriceElement = this.querySelector(".product-sticky-form__unit-price");
     this._setupVisibilityObservers();
+    this._delegate.on("change", "select[data-option-position]", this._syncMainForm.bind(this));
   }
   disconnectedCallback() {
     this.intersectionObserver.disconnect();
@@ -6717,45 +6545,18 @@ var ProductStickyForm = class extends HTMLElement {
       document.documentElement.style.setProperty("--cart-notification-offset", `${this.clientHeight}px`);
     }
   }
-  _onVariantChanged(event) {
-    const variant = event.detail.variant, currencyFormat = window.themeVariables.settings.currencyCodeEnabled ? window.themeVariables.settings.moneyWithCurrencyFormat : window.themeVariables.settings.moneyFormat;
-    if (!variant) {
-      return;
-    }
-    if (this.priceElement) {
-      this.priceElement.innerHTML = formatMoney(variant["price"], currencyFormat);
-    }
-    if (this.unitPriceElement) {
-      this.unitPriceElement.style.display = variant["unit_price_measurement"] ? "block" : "none";
-      if (variant["unit_price_measurement"]) {
-        let referenceValue = "";
-        if (variant["unit_price_measurement"]["reference_value"] !== 1) {
-          referenceValue = `<span class="unit-price-measurement__reference-value">${variant["unit_price_measurement"]["reference_value"]}</span>`;
+  _syncMainForm(event) {
+    const form = document.forms[this.getAttribute("form-id")];
+    for (const element of form.elements) {
+      if (element.name === event.target.name) {
+        if (element.tagName === "INPUT") {
+          element.checked = element.value = event.target.value;
         }
-        this.unitPriceElement.innerHTML = `
-          <div class="unit-price-measurement">
-            <span class="unit-price-measurement__price">${formatMoney(variant["unit_price"])}</span>
-            <span class="unit-price-measurement__separator">/</span>
-            ${referenceValue}
-            <span class="unit-price-measurement__reference-unit">${variant["unit_price_measurement"]["reference_unit"]}</span>
-          </div>
-        `;
       }
     }
-    if (!this.imageElement || !variant || !variant["featured_media"]) {
-      return;
-    }
-    const featuredMedia = variant["featured_media"];
-    if (featuredMedia["alt"]) {
-      this.imageElement.setAttribute("alt", featuredMedia["alt"]);
-    }
-    this.imageElement.setAttribute("width", featuredMedia["preview_image"]["width"]);
-    this.imageElement.setAttribute("height", featuredMedia["preview_image"]["height"]);
-    this.imageElement.setAttribute("src", getSizedMediaUrl(featuredMedia, "165x"));
-    this.imageElement.setAttribute("srcset", getMediaSrcset(featuredMedia, [55, 110, 165]));
   }
   _setupVisibilityObservers() {
-    const paymentContainerElement = document.getElementById("MainPaymentContainer"), footerElement = document.querySelector(".shopify-section--footer"), stickyHeaderOffset = getStickyHeaderOffset();
+    const paymentContainerElement = document.getElementById("MainPaymentContainer").closest("form"), footerElement = document.querySelector(".shopify-section--footer"), stickyHeaderOffset = getStickyHeaderOffset();
     this._isFooterVisible = this._isPaymentContainerPassed = false;
     this.intersectionObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {

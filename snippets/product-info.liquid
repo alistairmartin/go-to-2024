@@ -1,8 +1,6 @@
-{%- capture product_form_id -%}product-form-{{ section.id }}-{{ product.id }}{%- endcapture -%}
-
 <div class="product__info">
   <!-- PRODUCT META -->
-  <product-meta form-id="{{ product_form_id }}" price-class="price--large" class="product-meta">
+  <product-meta data-block-type="meta" data-block-id="{{ section.id }}" price-class="price--large" class="product-meta">
     {%- if section.settings.show_vendor -%}
       <h2 class="product-meta__vendor heading heading--small">
         {%- assign vendor_handle = product.vendor | handle -%}
@@ -126,7 +124,7 @@
       {%- endif -%}
     {%- endif -%}
 
-    <product-payment-terms form-id="{{ product_form_id }}">
+    <product-payment-terms data-block-type="payment-terms" data-block-id="{{ section.id }}">
       {%- assign product_installment_form_id = 'product-installment-form-' | append: section.id | append: '-' | append: product.id -%}
 
       {%- form 'product', product, id: product_installment_form_id -%}
@@ -152,7 +150,7 @@
     {%- endif -%}
   </product-meta>
 
-  {%- render 'product-form', product: product, update_url: update_url -%}
+  {%- render 'product-form', product: product, product_form_id: product_form_id, update_url: update_url -%}
 
   {%- assign help_page = section.settings.help_page -%}
 
@@ -163,7 +161,7 @@
           {%- assign share_url = shop.url | append: product.url -%}
           {%- assign twitter_text = product.title | url_param_escape -%}
           {%- assign pinterest_description = product.description | strip_html | truncatewords: 15 | url_param_escape -%}
-          {%- assign pinterest_image = product.featured_image | img_url: '800x' | prepend: 'https:' -%}
+          {%- assign pinterest_image = product.featured_image | image_url: width: 800 | prepend: 'https:' -%}
 
           <button is="share-toggle-button" share-url="{{ share_url | escape }}" share-title="{{ product.title | escape }}" class="product-meta__share-label link hidden-tablet-and-up" aria-controls="mobile-share-buttons-{{ section.id }}" aria-expanded="false">{{ 'product.general.share' | t }}</button>
           <div class="product-meta__share-label hidden-phone">{{ 'product.general.share' | t }}</div>

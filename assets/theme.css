@@ -12380,3 +12380,22 @@ shopify-payment-terms {
     scroll-snap-align: center;
   }
 }
+
+
+product-rerender {
+  display: contents;
+}
+
+.product-form__variants[hide-sold-out-variants] :where(.block-swatch.is-disabled, .color-swatch.is-disabled, .variant-swatch.is-disabled):not(:has(:checked)) {
+  display: none;
+}
+
+.timeline__list-wrapper {
+  scroll-snap-type: x mandatory;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.timeline__item {
+  scroll-snap-align: center;
+}

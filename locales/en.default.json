@@ -1,3 +1,12 @@
+/*
+* ------------------------------------------------------------
+* IMPORTANT: The contents of this file are auto-generated.
+*
+* This file may be updated by the Shopify admin language editor
+* or related systems. Please exercise caution as any changes
+* made to this file may be overwritten.
+* ------------------------------------------------------------
+*/
 {
   "general": {
     "meta": {
@@ -160,7 +169,7 @@
       "from_price_html": "From {{ price_min }}",
       "add_to_cart": "+ Add to cart",
       "add_to_cart_short": "+ Add to cart",
-      "quick_view": "Quick view",
+      "quick_view": "Select A Size",
       "available_colors_count": {
         "one": "{{ count }} color available",
         "other": "{{ count }} colors available"
@@ -168,7 +177,19 @@
     }
   },
   "product": {
+    "labels": {
+      "soldout": "Sold Out",
+      "sold_out": "Sold Out",
+      "out_of_stock": "Out of stock",
+      "waitlist": "Waitlist Me",
+      "coming_soon": "Coming Soon",
+      "pre_order": "Pre-Order Now",
+      "on_sale": "On sale"
+    },
     "general": {
+      "read_more": "Read more",
+      "show_less": "Show less",
+      "read_more_reviews": "Read more reviews",
       "description": "Description",
       "reviews": "Reviews ({{ rating_count }})",
       "sku": "SKU:",
@@ -187,6 +208,16 @@
         "one": "{{ count }} review",
         "other": "{{ count }} reviews"
       }
+    },
+    "content": {
+      "plays_nice_with": "PLAYS NICE WITH",
+      "good_to_know": "GOOD TO KNOW",
+      "what_is_it": "WHAT IS IT?",
+      "reviews": "REVIEWS",
+      "whats_in_it": "WHAT'S IN IT?",
+      "whats_included": "WHAT'S INCLUDED?",
+      "how_its_made": "HOW IT'S MADE",
+      "how_to_recycle": "HOW TO RECYCLE"
     },
     "form": {
       "choose_options": "Choose options",

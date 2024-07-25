@@ -237,7 +237,7 @@ store-header {
   
       @include media-query($medium-up) {
         grid-template-columns: repeat(3,1fr) !important;
-        grid-template-rows: repeat(64,1fr) !important;
+        grid-template-rows: repeat(var(--articleListGridDesktop),1fr) !important;
       }
   
       .article-item {

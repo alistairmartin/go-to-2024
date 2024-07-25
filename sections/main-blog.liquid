@@ -1,6 +1,18 @@
-<style>
+{%- paginate blog.articles by section.settings.articles_per_page -%}
 
-</style>
+  {%- if paginate.current_page == paginate.pages -%}
+    {%- assign currentPageArticles = paginate.items | minus: paginate.current_offset -%}
+  {% else %}
+    {%- assign currentPageArticles = paginate.page_size  -%}
+  {%- endif -%}
+  {%- assign desktopGridRows = currentPageArticles | divided_by: 6.0 | ceil | times: 8 -%}
+  <style>
+  #shopify-section-{{ section.id }} .article-list {
+    --articleListGridDesktop: {{ desktopGridRows }};
+  }
+  </style>
+
+{% endpaginate %}
 
 <section>
   {%- if blog.articles_count == 0 -%}
@@ -79,16 +91,9 @@
     <div class="vertical-breather vertical-breather--margin vertical-breather--extra-tight">
       <div class="container">
         {%- paginate blog.articles by section.settings.articles_per_page -%}
+
           <article-list {% if settings.stagger_blog_posts_apparition %}stagger-apparition{% endif %} class="article-list article-list--stacked">
             {%- for article in blog.articles -%}
-
-{% comment %} 
-    .article-1 { grid-area: 1 / 1 / 4 / 2; }
-    .article-2 { grid-area: 4 / 1 / 9 / 2; }
-    .article-3 { grid-area: 1 / 2 / 6 / 3; }
-    .article-4 { grid-area: 6 / 2 / 9 / 3; }
-    .article-5 { grid-area: 1 / 3 / 4 / 4; }
-    .article-6 { grid-area: 4 / 3 / 9 / 4; } {% endcomment %}
 
               {%- assign currentIndex = forloop.index0 -%}
               {%- assign sectionNumber = forloop.index0 |  divided_by: 6 | floor | times: 8 -%}

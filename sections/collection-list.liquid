@@ -1,3 +1,20 @@
+{%- assign showSection = true -%}
+
+{%- if blog -%}
+  {%- if canonical_url contains "?page=" or canonical_url contains "/tagged/" -%}
+    {%- assign showSection = false -%}
+  {%- endif -%}
+
+  {%- if canonical_url contains "?page=1" -%}
+    {%- assign showSection = true -%}
+  {%- endif -%}
+{%- endif -%}
+
+
+
+
+{%- if showSection == true -%}
+
 {%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
   {%- assign blends_with_background = false -%}
 {%- else -%}
@@ -212,6 +229,7 @@
     </div>
   </div>
 </section>
+{%- endif -%}
 
 {% schema %}
 {

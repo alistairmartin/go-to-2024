@@ -1,0 +1,52 @@
+
+{% if current_tags != blank %}
+    <link-bar class="link-bar">
+      <div class="container">
+        <div class="link-bar__wrapper">
+          {% comment %} <span class="link-bar__title heading heading--small text--subdued">Back To {{ blog.title }}</span> {% endcomment %}
+          <a href="{{ blog.url }}" class="link-bar__title heading heading--small text--subdued {% if current_tags == blank %}text--underlined{% endif %}">{{ blog.title }}</a>
+
+
+          <div class="link-bar__scroller hide-scrollbar">
+            <ul class="link-bar__linklist list--unstyled" role="list">
+              {% comment %} <li class="link-bar__link-item {% if current_tags == blank %}link-bar__link-item--selected{% endif %}">
+                <a href="{{ blog.url }}" class="link-bar__link link--animated {% if current_tags == blank %}text--underlined{% endif %}"><i>Back To {{ blog.title }}</i></a>
+              </li> {% endcomment %}
+
+              {%- assign array_of_article_tags = section.settings.array_of_article_tags | split: "," -%}
+              {%- for tag in array_of_article_tags -%}
+                <li class="link-bar__link-item {% if current_tags contains tag %}link-bar__link-item--selected{% endif %}">
+                  {%- capture link_to_tag_replacement -%}class="link-bar__link link--animated {% if current_tags contains tag %}text--underlined{% endif %}" title={%- endcapture -%}
+
+                  {%- if current_tags contains tag -%}
+                    {{ tag | link_to_remove_tag: tag | replace: 'title=', link_to_tag_replacement }}
+                  {%- else -%}
+                    {{- tag | link_to_tag: tag | replace: 'title=', link_to_tag_replacement -}}
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </link-bar>
+{% endif %}
+
+  {% schema %}
+    {
+      "name": "Article Tags (Navigation)",
+      "class": "shopify-section--blog-posts shopify-section--article-tags-nav",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "array_of_article_tags",
+          "label": "Array Of Article Tags"
+        }
+      ],
+      "presets": [
+        {
+        "name": "Article Tags (Navigation)"
+        }
+      ]
+    }
+    {% endschema %}

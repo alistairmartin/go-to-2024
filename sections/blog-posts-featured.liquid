@@ -1,6 +1,6 @@
 {%- assign showSection = true -%}
 
-{%- if canonical_url contains "?page=" -%}
+{%- if canonical_url contains "?page=" or canonical_url contains "/tagged/" -%}
   {%- assign showSection = false -%}
 {%- endif -%}
 

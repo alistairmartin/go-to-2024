@@ -1,0 +1,187 @@
+{%- for block in section.blocks -%}
+  {% assign collectionHandles = block.settings.collection_list %}
+
+  {%- for collectionHandle in collectionHandles -%}
+    {%- if collectionHandle.handle == collection.handle -%}
+      {%- assign main_text = block.settings.main_text -%}
+      {% assign collectionFound = true %}
+      {% break %}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+
+{%- if collectionFound == true -%}
+
+  <section>
+    <div class="container">
+      <div class="page-header">
+        <link-bar class="link-bar">
+          <div class="container">
+            <div class="link-bar__wrapper">
+
+              {%- if main_text != blank -%}
+                <span class="link-bar__title heading heading--small text--subdued">{{ main_text }}</span>
+              {%- endif -%}
+
+              <div class="link-bar__scroller hide-scrollbar">
+                <ul class="link-bar__linklist list--unstyled" role="list">
+                  {%- for block in section.blocks -%}
+
+                    {% assign collectionHandles = block.settings.collection_list %}
+
+                    {%- for collectionHandle in collectionHandles -%}
+                      {%- if collectionHandle.handle == collection.handle -%}
+
+                        {%- for i in (1..8) -%}
+                          {% capture textId %}text{{ i }}{% endcapture %}
+                          {% capture linkId %}url{{ i }}{% endcapture %}
+                          {%- assign textSetting = block.settings[textId] -%}
+                          {%- assign LinkSetting = block.settings[linkId] -%}
+
+                          <li class="link-bar__link-item {% if canonical_url contains LinkSetting %}link-bar__link-item--selected text--underlined{% endif %}">
+                            <a href="{{ LinkSetting }}">
+                              {{ textSetting }}
+                            </a>
+                          </li>
+
+                        {%- endfor -%}
+                        {% break %}
+                      {%- endif -%}
+                    {%- endfor -%}
+
+                  {%- endfor -%}
+
+                </ul>
+              </div>
+            </div>
+          </div>
+        </link-bar>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Collection Navigation",
+    "class": "shopify-section--custom-navigation",
+    "blocks": [
+      {
+        "name": "Collection",
+        "type": "collection",
+        "settings": [
+          {
+            "type": "textarea",
+            "id": "title",
+            "label": "Admin Title"
+          },
+          {
+            "type": "collection_list",
+            "id": "collection_list",
+            "label": "Collections"
+          },
+          {
+            "type": "text",
+            "id": "main_text",
+            "label": "Navigation Title",
+            "info": "Optional"
+          },
+          {
+            "type": "header",
+            "content": "Link #1"
+          }, {
+            "type": "url",
+            "id": "url1",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text1",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #2"
+          }, {
+            "type": "url",
+            "id": "url2",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text2",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #3"
+          }, {
+            "type": "url",
+            "id": "url3",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text3",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #4"
+          }, {
+            "type": "url",
+            "id": "url4",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text4",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #5"
+          }, {
+            "type": "url",
+            "id": "url5",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text5",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #6"
+          }, {
+            "type": "url",
+            "id": "url6",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text6",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #7"
+          }, {
+            "type": "url",
+            "id": "url7",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text7",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #8"
+          }, {
+            "type": "url",
+            "id": "url8",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text8",
+            "label": "Text"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Collection Navigation"
+      }
+    ]
+  }
+{% endschema %}

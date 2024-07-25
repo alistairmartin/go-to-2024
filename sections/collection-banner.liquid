@@ -3,6 +3,7 @@
     --heading-color: {{ section.settings.image_text_color.red }}, {{ section.settings.image_text_color.green }}, {{ section.settings.image_text_color.blue }};
     --text-color: {{ section.settings.image_text_color.red }}, {{ section.settings.image_text_color.green }}, {{ section.settings.image_text_color.blue }};
     --section-items-alignment: center;
+    --header-text-alignment: {{ section.settings.text_alignment }};
     --section-overlay-color: {{ section.settings.image_overlay_color.red }}, {{ section.settings.image_overlay_color.green }}, {{ section.settings.image_overlay_color.blue }};
     --section-overlay-opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
   }
@@ -75,7 +76,7 @@
       <div class="page-header">
         {{- breadcrumb -}}
 
-        <div class="page-header__text-wrapper text-container">
+        <div class="page-header__text-wrapper text-container text-align--{{ section.settings.text_alignment }}">
           {%- if section.settings.show_collection_title -%}
             <h1 class="heading h1">{{ collection.title }}</h1>
           {%- endif -%}
@@ -194,6 +195,26 @@
         }
       ],
       "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
     },
     {
       "type": "header",

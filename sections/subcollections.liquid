@@ -1,9 +1,22 @@
+{%- for block in section.blocks -%}
+  {% assign collectionHandles = block.settings.collection_list %}
+
+  {%- for collectionHandle in collectionHandles -%}
+    {%- if collectionHandle.handle == collection.handle -%}
+      {%- assign showItemsAmount = block.settings.show_items -%}
+      {% assign collectionFound = true %}
+      {% break %}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+
+{%- if collectionFound == true -%}
+  
 {%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
   {%- assign blends_with_background = false -%}
 {%- else -%}
   {%- assign blends_with_background = true -%}
 {%- endif -%}
-
 
 <style>
   #shopify-section-{{ section.id }} {
@@ -43,7 +56,7 @@
 
     --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
     --section-logo-background: {{ section.settings.logo_background.red }} {{ section.settings.logo_background.green }} {{ section.settings.logo_background.blue }} / {{ section.settings.logo_background.alpha }};
-    --section-logo-count: {{ section.blocks.size | default: 6 }}; 
+    --section-logo-count: {{ showItemsAmount }}; 
   }
   
   {% if section.settings.enable_alt_style %}
@@ -70,38 +83,45 @@
       {%- capture section_content -%}
         <div class="logo-list__list">
           {%- for block in section.blocks -%}
-            {%- capture logo_content -%}
-              {%- if block.settings.logo != blank -%}
-                {%- assign logo_max_size = block.settings.logo.width | divided_by: 2 | at_most: 200 -%}
-                {%- capture logo_widths -%}{{ logo_max_size }},{{ logo_max_size | times: 2 }}{%- endcapture -%}
-                {%- capture logo_sizes -%}{{ logo_max_size }}px{%- endcapture -%}
-                {%- capture logo_style -%}width: {{ logo_max_size }}px{%- endcapture -%}
 
-                {{ block.settings.logo | image_url: width: block.settings.logo.width | image_tag: loading: 'lazy', style: logo_style, sizes: logo_sizes, widths: logo_widths, class: 'logo-list__image' }}
-              {%- else -%}
-                {{- 'image' | placeholder_svg_tag: 'logo-list__image logo-list__image--placeholder' -}}
+            {% assign collectionHandles = block.settings.collection_list %}
+
+            {%- for collectionHandle in collectionHandles -%}
+              {%- if collectionHandle.handle == collection.handle -%}
+
+                  {%- for i in  (1..6) -%}
+                  {% capture imageId %}image{{ i }}{% endcapture %}
+                  {% capture textId %}text{{ i }}{% endcapture %}
+                  {% capture linkId %}link{{ i }}{% endcapture %}
+
+                    {%- assign ImageSetting = block.settings[imageId] -%}
+                    {%- assign textSetting = block.settings[textId] -%}
+                    {%- assign LinkSetting = block.settings[linkId] -%}
+
+                  {% if LinkSetting != blank %}
+                  <a href="{{ LinkSetting }}" {% if section.settings.reveal_on_scroll %}reveal{% endif %} class="logo-list__item" {{ block.shopify_attributes }}>
+
+                  {%- if ImageSetting != blank -%}
+                    {%- assign logo_max_size = ImageSetting.width | divided_by: 2 | at_most: 200 -%}
+                    {%- capture logo_widths -%}{{ logo_max_size }},{{ logo_max_size | times: 2 }}{%- endcapture -%}
+                    {%- capture logo_sizes -%}{{ logo_max_size }}px{%- endcapture -%}
+                    {%- capture logo_style -%}width: {{ logo_max_size }}px{%- endcapture -%}
+
+                    {{ ImageSetting | image_url: width: ImageSetting.width | image_tag: loading: 'lazy', style: logo_style, sizes: logo_sizes, widths: logo_widths, class: 'logo-list__image' }}
+                  {%- endif -%}
+
+                  {%- if textSetting != blank -%}
+                    <div class="logo-list__text">{{ textSetting }}</div>
+                  {%- endif -%}
+
+                  </a>
+                  {%- endif -%}
+                  {%- endfor -%}
+  
+                {% break %}
               {%- endif -%}
-
-              {%- if block.settings.text != blank -%}
-                <div class="logo-list__text">{{ block.settings.text }}</div>
-              {%- endif -%}
-            {%- endcapture -%}
-
-            {%- if block.settings.link -%}
-              <a href="{{ block.settings.link }}" {% if section.settings.reveal_on_scroll %}reveal{% endif %} class="logo-list__item" {{ block.shopify_attributes }}>
-                {{- logo_content -}}
-              </a>
-            {%- else -%}
-              <div class="logo-list__item" {% if section.settings.reveal_on_scroll %}reveal{% endif %} {{ block.shopify_attributes }}>
-                {{- logo_content -}}
-              </div>
-            {%- endif -%}
-          {%- else -%}
-            {%- for i in (1..6) -%}
-              <div class="logo-list__item" {% if section.settings.reveal_on_scroll %}reveal{% endif %}>
-                {{- 'image' | placeholder_svg_tag: 'logo-list__image logo-list__image--placeholder' -}}
-              </div>
             {%- endfor -%}
+
           {%- endfor -%}
         </div>
       {%- endcapture -%}
@@ -142,6 +162,7 @@
     </div>
   </div>
 </section>
+{%- endif -%}
 
 {% schema %}
 {
@@ -188,7 +209,7 @@
       "type": "checkbox",
       "id": "stack_logos",
       "label": "Stack Images",
-      "default": false,
+      "default": true,
       "info": "When stack, it is recommended to use a multiple of 6 Images."
     },
     {
@@ -232,9 +253,23 @@
       "type": "Collection",
       "settings": [
         {
+          "type": "textarea",
+          "id": "title",
+          "label": "Admin Title"
+        },
+        {
           "type": "collection_list",
           "id": "collection_list",
           "label": "Collections"
+        },
+        {
+          "type": "range",
+          "id": "show_items",
+          "min": 1,
+          "max": 6,
+          "step": 1,
+          "label": "Images To Show",
+          "default": 5 
         },
         {
           "type": "header",

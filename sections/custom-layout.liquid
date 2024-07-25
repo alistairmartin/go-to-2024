@@ -10,8 +10,7 @@
   }
 </style>
 
-<section> 
-
+<section class="{% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %}"> 
 
   {%- for block in section.blocks -%}
     {%- capture blockId -%}id="block-{{ block.id }}"{%- endcapture -%}
@@ -22,6 +21,7 @@
     {%- comment -%} CONTAINERS --- END  {%- endcomment -%}
 
     {% include "blocks--images" %}
+    {% include "blocks--image-text-overlay" %}
     {% include "blocks--text" %}
     {% include "blocks--product-ATC" %}
     {% include "blocks--button" %}
@@ -45,6 +45,16 @@
     ]
   },
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "hide_mobile",
+      "label": "Hide Mobile?"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_desktop",
+      "label": "Hide Desktop?"
+    },
     {
         "type": "color",
         "id": "background",
@@ -905,6 +915,146 @@
             "unit": "px",
             "default": 0,
             "label": "⬇ Margin Bottom"
+        }
+      ]
+    },
+    {
+      "type": "image-text-overlay",
+      "name": "Image (Text Overlay)",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "hide_mobile",
+          "label": "Hide Mobile?"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_desktop",
+          "label": "Hide Desktop?"
+        },
+        {
+          "type": "header",
+          "content": "Text"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "header",
+          "content": "Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "rounded_image_corners_desktop",
+          "label": "Rounded Image Corners? (Desktop)"
+        },
+        {
+          "type": "checkbox",
+          "id": "rounded_image_corners_mobile",
+          "label": "Rounded Image Corners? (Mobile)"
+        },
+        {
+          "type": "checkbox",
+          "id": "fill_image_desktop",
+          "label": "Fill Image Space? (Desktop)"
+        },
+        {
+          "type": "checkbox",
+          "id": "fill_image_mobile",
+          "label": "Fill Image Space? (Mobile)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image",
+          "info": "Optional"
+        },
+        {
+          "type": "header",
+          "content": "Link"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Optional"
+        },
+        {
+        "type": "header",
+        "content": "Width"
+        },
+        {
+       "type": "select",
+        "id": "width_desktop",
+        "label": "🖥️ Width (Desktop)",
+        "info": "Only Required If Using 'Flex Grid' in the 'Container'",
+        "default": "100",
+        "options": [
+            {
+            "value": "25",
+            "label": "25%"
+            },
+            {
+            "value": "33",
+            "label": "33%"
+            },
+            {
+            "value": "50",
+            "label": "50%"
+            },
+            {
+            "value": "66",
+            "label": "66%"
+            },
+            {
+            "value": "75",
+            "label": "75%"
+            },
+            {
+            "value": "100",
+            "label": "100%"
+            }
+        ]
+        },
+        {
+        "type": "select",
+        "id": "width_mobile",
+        "label": "📱 Width (Mobile)",
+        "info": "Only Required If Using 'Flex Grid' in the 'Container'",
+        "default": "100",
+        "options": [
+            {
+            "value": "25",
+            "label": "25%"
+            },
+            {
+            "value": "33",
+            "label": "33%"
+            },
+            {
+            "value": "50",
+            "label": "50%"
+            },
+            {
+            "value": "66",
+            "label": "66%"
+            },
+            {
+            "value": "75",
+            "label": "75%"
+            },
+            {
+            "value": "100",
+            "label": "100%"
+            }
+        ]
         }
       ]
     }

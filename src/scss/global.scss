@@ -956,6 +956,17 @@ store-header.background-blur {
     }
   }
 
+  .blocks--image-text-overlay {
+    position: relative;
+    .blocks--image-text-overlay-text {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 30px 30px 0;
+    }
+  }
+
   .blocks--text {
     width: 100%;
     @include media-query($medium-up) {

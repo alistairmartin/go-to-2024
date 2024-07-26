@@ -1,0 +1,55 @@
+
+<div class="container">
+  <div class="product-content-ingredients">      
+    <h3 class="heading h1 text--bold hide-desktop">{{ section.settings.title }}</h3>
+    <div class="product-content-ingredients--image">
+      {%- if product.metafields.custom.product_key_ingredients__vimeo != blank -%}
+        {% assign vimeoVideoId = product.metafields.custom.product_key_ingredients__vimeo %}
+      {%- endif -%}
+      
+      {%- if vimeoVideoId != blank -%}
+        {%- assign video_url_transform = 'https://player.vimeo.com/video/' | append: vimeoVideoId | append: '?autoplay=1&loop=1&background=1&muted=1&portrait=0&byline=0' -%}
+        <iframe src="{{ video_url_transform }}" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen>
+        </iframe>
+      {%- else -%}
+        {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_key_ingredients__image_desktop, src_mobile: product.metafields.custom.product_key_ingredients__image_mobile %}
+      {%- endif -%}
+    </div>
+    
+    <div class="product-content-ingredients--text">
+      <h3 class="heading h1 text--bold hide-mobile">{{ section.settings.title }}</h3>
+      <div class="hidden-phone hidden-tablet">
+        {%- for ingredient in ingredientsGlossary -%}
+          {% assign ingredientTitle = ingredient | split: '</h3>' | first %}
+          {% assign ingredientContent = ingredient | split: '</h3>' | last %}
+          {%- assign ingredientDowncased = ingredientTitle | downcase -%}
+
+          {%- if productIngredients contains ingredientDowncased -%}
+            <div class="product-content-ingredients--text-item">
+              <p class="heading h1 text--bold">{{ ingredientTitle }}</p>
+              <p>{{ ingredientContent | strip_html }}</p>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      
+      <div class="product-content-ingredients--text__mobile hide-desktop">
+        <div class="line"></div>
+        {%- assign ingredientCounter = 0 -%}
+        {%- for ingredient in ingredientsGlossary -%}
+          {% assign ingredientTitle = ingredient | split: '</h3>' | first %}
+          {% assign ingredientContent = ingredient | split: '</h3>' | last %}
+          {%- assign ingredientDowncased = ingredientTitle | downcase -%}
+          
+          {%- if productIngredients contains ingredientDowncased -%}
+            <div class="product-content-ingredients--text-item__mobile {% if ingredientCounter == 0 %}active{% endif %}" data-action="activate">
+              {%- assign ingredientCounter = 1 -%}
+              <p class="heading h1 text--bold">{{ ingredientTitle }}</p>
+              <p class="text">{{ ingredientContent | strip_html }}</p>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>

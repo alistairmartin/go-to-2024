@@ -12,11 +12,22 @@
       --font-line-height-desktop: {{ block.settings.font_line_height_desktop }};
       --font-letter-spacing-desktop: {{ block.settings.font_letter_spacing_desktop }};
 
+      --margin-top-mobile: {{ block.settings.margin_top_mobile }}px;
+      --margin-bottom-mobile: {{ block.settings.margin_bottom_mobile }}px;
+      --font-alignment-mobile: {{ block.settings.font_alignment_mobile }};
+      --font-style-mobile: {{ block.settings.font_style_mobile }};
+      --font-weight-mobile: {{ block.settings.font_weight_mobile }};
+      --font-size-mobile: {{ block.settings.font_size_mobile }}px;
+      --font-line-height-mobile: {{ block.settings.font_line_height_mobile }};
+      --font-letter-spacing-mobile: {{ block.settings.font_letter_spacing_mobile }};
+
       {%- if brand == "go-to" -%}
         {%- if block.settings.font_family_desktop == "primary" -%}
             --font-family-desktop: "Moderno FB";
+            --font-family-mobile: "Moderno FB";
         {%- elsif block.settings.font_family_desktop == "secondary" -%}
             --font-family-desktop: "TTCommons";
+            --font-family-mobile: "TTCommons";
         {%- endif -%}
       {%- elsif brand == "bro-to" -%}
       {%- elsif brand == "gro-to" -%}

@@ -969,6 +969,16 @@ store-header.background-blur {
 
   .blocks--text {
     width: 100%;
+    font-family: var(--font-family-mobile);
+    margin-top: var(--margin-top-mobile);
+    margin-bottom: var(--margin-bottom-mobile);
+    text-align: var(--font-alignment-mobile);
+    font-style: var(--font-style-mobile);
+    font-weight: var(--font-weight-mobile);
+    font-size: var(--font-size-mobile);
+    line-height: var(--font-line-height-mobile);
+    letter-spacing: var(--font-letter-spacing-mobile);
+
     @include media-query($medium-up) {
       font-family: var(--font-family-desktop);
       margin-top: var(--margin-top-desktop);
@@ -1152,5 +1162,124 @@ store-header.background-blur {
     margin-right: 0;
     text-align: right;
     max-width: unset;
+  }
+}
+
+
+.shopify-section--ingredients-glossary {
+  .faq__item .collapsible__content {
+    padding-right: 0;
+    padding-left: 0;
+  } 
+
+  .collapsible__content {
+    position: relative;
+  }
+
+  .collapsible-toggle {
+    top: 75px;
+    position: sticky;
+    z-index: 2;
+    background: #fff;
+    transition: all 0.5s;
+
+    &[aria-expanded="true"] {
+      background: $gotoPink;
+      box-shadow: 1px 1px 5px #e7e7e7d4;
+    }
+  }
+
+}
+
+.ingredients-glossary {
+  .ingredients-glossary--product {
+    background: $gotoPinkLight;
+    padding: 32px 16px;
+    display: flex;
+    gap: 20px;
+    margin-bottom: 32px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+
+    @include media-query($medium-up) {
+      flex-direction: row;
+    }
+
+    img {
+      margin: 0;
+    }
+
+    .ingredients-glossary--product-atc {
+      width: 100%;
+      @include media-query($medium-up) {
+        width: 40%;
+      }
+    }
+
+    .ingredients-glossary--product-description {
+      width: 100%;
+      @include media-query($medium-up) {
+        width: 60%;
+      }
+    }
+  }
+
+  .ingredients-glossary--INCI {
+    padding: 16px 8px 8px;
+    background-color: $gotoGreyLight;
+    margin-bottom: 32px;
+
+    @include media-query($medium-up) {
+      padding: 32px 16px;
+    }
+
+    p {
+      margin-top: 8px;
+
+      @include media-query($medium-up) {
+        margin-top: 16px;
+      }
+    }
+  }
+
+  .ingredients-glossary--description {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+
+    @include media-query($medium-up) {
+      gap: 16px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .ingredients-glossary--description-item {
+      margin-bottom: 12px;
+
+      @include media-query($medium-up) {
+        margin-bottom: 24px;
+      }
+  
+      strong {
+        background-color: $gotoGreyLight;
+        padding: 8px;
+        font-size: 16px;
+        display: block;
+        margin-bottom: 4px;
+
+        @include media-query($medium-up) {
+          margin-bottom: 8px;
+          font-size: 18px;
+        }
+      }
+
+      p {
+        padding: 0 0 0 8px;
+        font-size: 16px;
+        @include media-query($medium-up) {
+          font-size: 16px;
+        }
+      }
+    }
   }
 }

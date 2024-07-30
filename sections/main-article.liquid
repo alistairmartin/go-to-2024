@@ -119,10 +119,14 @@
                 <span class="article__tags-label heading heading--small">{{ 'article.general.tags' | t }}</span>
 
                 <ul class="article__tags-list list--unstyled" role="list">
+
+                  {%- assign acceptedTags = "The Zo Down,Extras,In Her Skin,Wellness,Routines,Skin School" -%}
                   {%- for tag in article.tags -%}
-                    <li class="article__tags-item" role="listitem">
-                      <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="text--subdued link">{{ tag }}</a>
-                    </li>
+                      {%- if acceptedTags contains tag -%}
+                        <li class="article__tags-item" role="listitem">
+                        <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="text--subdued link">{{ tag }}</a>
+                        </li>
+                      {%- endif -%}
                   {%- endfor -%}
                 </ul>
               </div>
@@ -246,11 +250,11 @@
               {%- endfor -%}
             {%- endif -%} {% endcomment %}
 
-
-              <div class="main-article--foot-notes">
-                {{ article.metafields.custom.foot_notes | metafield_tag }}
-              </div>
-
+              {%- if article.metafields.custom.foot_notes != blank -%}
+                <div class="main-article--foot-notes">
+                  {{ article.metafields.custom.foot_notes | metafield_tag }}
+                </div>
+              {%- endif -%}
             </div>
           </div>
         </div>

@@ -27,9 +27,9 @@
                   <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
 
                   {%- if settings.currency_code_enabled -%}
-                    {{- product.selected_or_first_available_variant.price | money_with_currency -}}
+                    {{- product.selected_or_first_available_variant.price | money_with_currency | remove: ".00" | remove: ",00" -}}
                   {%- else -%}
-                    {{- product.selected_or_first_available_variant.price | money -}}
+                    {{- product.selected_or_first_available_variant.price | money | remove: ".00" | remove: ",00" -}}
                   {%- endif -%}
                 </span>
 
@@ -37,9 +37,9 @@
                   <span class="visually-hidden">{{ 'product.general.regular_price' | t }}</span>
 
                   {%- if settings.currency_code_enabled -%}
-                    {{- product.selected_or_first_available_variant.compare_at_price | money_with_currency -}}
+                    {{- product.selected_or_first_available_variant.compare_at_price | money_with_currency | remove: ".00" | remove: ",00" -}}
                   {%- else -%}
-                    {{- product.selected_or_first_available_variant.compare_at_price | money -}}
+                    {{- product.selected_or_first_available_variant.compare_at_price | money | remove: ".00" | remove: ",00" -}}
                   {%- endif -%}
                 </span>
               {%- else -%}
@@ -47,9 +47,9 @@
                   <span class="visually-hidden">{{ 'product.general.sale_price' | t }}</span>
 
                   {%- if settings.currency_code_enabled -%}
-                    {{- product.selected_or_first_available_variant.price | money_with_currency -}}
+                    {{- product.selected_or_first_available_variant.price | money_with_currency | remove: ".00" | remove: ",00" -}}
                   {%- else -%}
-                    {{- product.selected_or_first_available_variant.price | money -}}
+                    {{- product.selected_or_first_available_variant.price | money | remove: ".00" | remove: ",00" -}}
                   {%- endif -%}
                 </span>
               {%- endif -%}
@@ -57,7 +57,7 @@
               {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
                 <div class="price text--subdued text--xsmall">
                   <div class="unit-price-measurement">
-                    <span class="unit-price-measurement__price">{{ product.selected_or_first_available_variant.unit_price | money }}</span>
+                    <span class="unit-price-measurement__price">{{ product.selected_or_first_available_variant.unit_price | money | remove: ".00" | remove: ",00" }}</span>
                     <span class="unit-price-measurement__separator">/</span>
 
                     {%- if product.selected_or_first_available_variant.unit_price_measurement.reference_value != 1 -%}

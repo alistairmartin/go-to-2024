@@ -592,9 +592,52 @@ SEARCH DRAWER
   ],
   "blocks": [
     {
+      "type": "mobile_menu",
+      "name": "Mobile Image",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Admin Title"
+        },
+        {
+          "type": "text",
+          "id": "menu_item",
+          "label": "Menu item",
+          "info": "Enter menu item to apply a menu dropdown. [Learn more](https://support.maestrooo.com/article/180-navigation-enabling-and-configuring-mega-navigation)."
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Image",
+          "info": "560 x 420px .jpg recommended"
+        }
+      ]
+    },
+    {
       "type": "mega_menu",
       "name": "Mega menu",
       "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Admin Title"
+        },
+        {
+          "type": "radio",
+          "id": "show_on",
+          "label": "Show On",
+          "options": [
+            {
+              "value": "mobile",
+              "label": "Mobile"
+            },
+            {
+              "value": "desktop",
+              "label": "Desktop"
+            } 
+          ]
+        },
         {
           "type": "text",
           "id": "menu_item",
@@ -767,6 +810,125 @@ SEARCH DRAWER
           "type": "url",
           "id": "image_6_link",
           "label": "Link"
+        }
+      ]
+    },
+    {
+        "name": "Mobile Links",
+        "type": "mobile_link",
+        "settings": [
+          {
+            "type": "textarea",
+            "id": "title",
+            "label": "Admin Title"
+          },
+          {
+            "type": "text",
+            "id": "main_text",
+            "label": "Navigation Title",
+            "info": "Optional"
+          },
+          {
+            "type": "header",
+            "content": "Link #1"
+          }, {
+            "type": "url",
+            "id": "url1",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text1",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #2"
+          }, {
+            "type": "url",
+            "id": "url2",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text2",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #3"
+          }, {
+            "type": "url",
+            "id": "url3",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text3",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #4"
+          }, {
+            "type": "url",
+            "id": "url4",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text4",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #5"
+          }, {
+            "type": "url",
+            "id": "url5",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text5",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #6"
+          }, {
+            "type": "url",
+            "id": "url6",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text6",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #7"
+          }, {
+            "type": "url",
+            "id": "url7",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text7",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #8"
+          }, {
+            "type": "url",
+            "id": "url8",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text8",
+            "label": "Text"
+          }
+        ]
+      },
+      {
+      "type": "note",
+      "name": "Block Note",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Note",
+          "info": "Only Admin Will See This.",
+          "default": "🟡 --- IMAGE ---"
         }
       ]
     }

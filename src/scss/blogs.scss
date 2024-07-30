@@ -267,3 +267,21 @@ store-header {
     }
   }
   
+.template-article {
+    .article__inner {
+        flex-direction: column-reverse;
+        justify-content: center;
+        display: flex;
+        position: relative;
+    }
+
+    .article__info {
+        position: relative;
+        gap: 14px;
+        width: 100%;
+        margin-block-start: 40px;
+        padding-block-start: 24px;
+        display: grid;
+    }
+}
+

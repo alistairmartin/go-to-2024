@@ -1,0 +1,24 @@
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+      document.getElementById('{{ buttonId }}').addEventListener('click', function(event) {
+      event.preventDefault(); 
+      document.getElementById('{{ modalId }}-modal').setAttribute('open', true);
+      });
+    });
+  </script>
+
+<modal-content section="{{ modalId }}" id="{{ modalId }}-modal" class="modal modal-custom">
+  <div class="modal__overlay"></div>
+
+  <div class="modal__content">
+    <button type="button" class="modal__close-button tap-area" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
+      {%- render 'icon' with 'close' -%}
+    </button>
+
+    <div class="modal__content-inner">
+        {{ content }}
+    </div>
+  </div>
+</modal-content>
+

@@ -25,9 +25,7 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="theme-color" content="{{ settings.header_background }}">
 
-    {%- if template.suffix == 'hidden' -%}
-    <meta name="robots" content="noindex, nofollow" />
-    {%- endif -%}
+    {% include "hide-pages-from-SEO" %}
 
     <title>{% if page_title == blank %}{{ shop.name }}{% else %}{{ page_title }}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% endif %}</title>
 
@@ -157,55 +155,11 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     {%- endif -%}
 
     <div id="main" role="main" class="anchor">
-
-
     {% comment %} {%- include "icon-go-to--earth" -%} {% endcomment %}
+      {%- render 'theme--special-effects--header' -%}
+      {%- include "theme--filter-search" -%}
 
-    
-      {%- comment -%}
-      IMPLEMENTATION NOTE: on collection and search page, the theme was designed to show on mobile the filter bar and/or sort
-        by at the very top of the page. However, due to the fact that sections are isolated, I had to move the code
-        here. Then, the collection section, based on the selected settings, will eventually hide those elements in CSS
-      {%- endcomment -%}
-
-      {%- render 'theme-special-effects--header' -%}
-
-      {%- if request.page_type == 'collection' or request.page_type == 'search' -%}
-        {%- assign active_filters_count = 0 -%}
-
-        {%- if request.page_type == 'collection' -%}
-          {%- assign filters = collection.filters -%}
-        {%- else -%}
-          {%- assign filters = search.filters -%}
-        {%- endif -%}
-
-        {%- for filter in filters -%}
-          {%- if filter.type == 'list' -%}
-            {%- assign active_filters_count = active_filters_count | plus: filter.active_values.size -%}
-          {%- elsif filter.type == 'price_range' and filter.min_value.value or filter.max_value.value -%}
-            {%- assign active_filters_count = active_filters_count | plus: 1 -%}
-          {%- endif -%}
-        {%- endfor -%}
-
-        {%- assign is_toolbar_collapsed = false -%}
-
-        {%- if request.page_type == 'search' and search.results.first.object_type != 'product' and search.results_count > 0 -%}
-          {%- assign is_toolbar_collapsed = true -%}
-        {%- endif -%}
-
-        <div id="mobile-facet-toolbar" class="mobile-toolbar {% if is_toolbar_collapsed %}is-collapsed{% endif %} hidden-lap-and-up">
-          <button is="toggle-button" class="mobile-toolbar__item mobile-toolbar__item--filters {% if active_filters_count > 0 %}has-filters{% endif %}" aria-expanded="false" aria-controls="facet-filters" style="display: none">
-            {%- render 'icon' with 'filters' -%}
-            <span class="mobile-toolbar__item-label">{{- 'collection.general.filters' | t -}}</span>
-          </button>
-
-          <button is="toggle-button" class="mobile-toolbar__item mobile-toolbar__item--sort" aria-expanded="false" aria-controls="sort-by-popover" style="display: none">
-            <span class="mobile-toolbar__item-label">{{- 'collection.general.sort_by' | t -}}</span>
-            {%- render 'icon' with 'chevron' -%}
-          </button>
-        </div>
-      {%- endif -%}
-
+      {%- sections 'aside-group' -%}
       {{ content_for_layout }}
     </div>
 
@@ -221,7 +175,7 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
       {%- endif -%}
     {%- endif -%}
 
-    {%- render 'theme-special-effects--footer' -%}
+    {%- render 'theme--special-effects--footer' -%}
 
   </body>
 </html>

@@ -26,10 +26,18 @@
     {% include "blocks--product-ATC" %}
     {% include "blocks--button" %}
 
-
-
   {%- endfor -%}
 
+
+  {%- comment -%} Button Modal --- START  {%- endcomment -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == "button" and block.settings.modal_content != blank -%}
+      {%- assign modalId = block.settings.button_text | handle -%}
+      {%- assign buttonId = block.id | prepend: "block-" -%}
+      {%- render 'modal', modalId: modalId, content: block.settings.modal_content, buttonId: buttonId -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- comment -%} Button Modals --- START  {%- endcomment -%}
 
 
 </section>
@@ -976,9 +984,21 @@
             "id": "button_style",
             "label": "Button Style",
             "options": [
+              {
+              "value": "button--primary",
+              "label": "Button"
+            },
             {
-                "value": "button",
-                "label": "Button"
+                "value": "button--secondary",
+                "label": "Button (Secondary)"
+            },
+            {
+                "value": "button--ternary",
+                "label": "Button (Ternary)"
+            },
+            {
+                "value": "button--outline",
+                "label": "Button (Outline)"
             },
             {
                 "value": "link",
@@ -989,7 +1009,16 @@
                 "label": "Link (With Arrow)"
             }
             ],
-            "default": "button"
+            "default": "button--primary"
+        },
+        {
+        "type": "header",
+        "content": "Modal"
+        },
+        {
+          "type": "liquid",
+          "id": "modal_content",
+          "label": "Modal Content"
         },
         {
         "type": "header",

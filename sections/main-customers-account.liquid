@@ -14,10 +14,16 @@
           <li class="link-bar__link-item">
             <a href="{{ routes.account_logout_url }}" class="link-bar__link link--animated text--subdued" data-no-instant>{{ 'customer.logout.title' | t }}</a>
           </li>
+
+          <li class="link-bar__link-item">
+            <a href="https://gotoskincare.com/tools/recurring/login" class="link-bar__link link--animated text--subdued" data-no-instant>Subscriptions</a>
+          </li>
         </ul>
       </div>
     </div>
   </div>
+
+  {%- render 'loyalty--account' -%}
 
   <div class="mobile-toolbar hidden-tablet-and-up">
     <button class="mobile-toolbar__item" is="toggle-button" aria-expanded="false" aria-controls="account-links-popover">{{- 'customer.orders.title' | t -}} {%- render 'icon' with 'chevron' -%}</button>

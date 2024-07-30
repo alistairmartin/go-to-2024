@@ -600,8 +600,8 @@ p a:not(.button), .rte a:not(.button), .link {
   font-style: var(--text-font-style);
   text-transform: uppercase;
   font-weight: var(--text-font-bold-weight);
-  letter-spacing: 1px;
-  line-height: 1.46636;
+  /* letter-spacing: 1px;
+  line-height: 1.46636; */
 }
 
 .heading--xxsmall {
@@ -619,43 +619,43 @@ p a:not(.button), .rte a:not(.button), .link {
 
 .heading--large, .rte .heading--large {
   font-size: var(--heading-large-font-size);
-  letter-spacing: -.9px;
-  line-height: 1.11111;
+  /* letter-spacing: -.9px;
+  line-height: 1.11111; */
 }
 
 .h1, .rte h1 {
   font-size: var(--heading-h1-font-size);
-  letter-spacing: -.9px;
-  line-height: 1.11111;
+  /* letter-spacing: -.9px; */
+  line-height: var(--heading-h1-line-height);
 }
 
 .h2, .rte h2 {
   font-size: var(--heading-h2-font-size);
-  letter-spacing: -.6px;
-  line-height: 1.13333;
+  /* letter-spacing: -.6px; */
+  line-height: var(--heading-h2-line-height);
 }
 
 .h3, .rte h3 {
   font-size: var(--heading-h3-font-size);
-  letter-spacing: -.4px;
-  line-height: 1.15385;
+  /* letter-spacing: -.4px; */
+  line-height: var(--heading-h3-line-height);
 }
 
 .h4, .rte h4 {
   font-size: var(--heading-h4-font-size);
-  letter-spacing: -.3px;
-  line-height: 1.16667;
+  /* letter-spacing: -.3px; */
+  line-height: var(--heading-h4-line-height);
 }
 
 .h5, .rte h5 {
   font-size: var(--heading-h5-font-size);
-  letter-spacing: -.3px;
-  line-height: 1.2;
+  /* letter-spacing: -.3px; */
+  line-height: var(--heading-h5-line-height);
 }
 
 .h6, .rte h6 {
   font-size: var(--heading-h6-font-size);
-  line-height: 1.25;
+  line-height: var(--heading-h6-line-height);
 }
 
 .blockquote, .rte blockquote {
@@ -810,7 +810,7 @@ p a:not(.button), .rte a:not(.button), .link {
     font-size: 12px;
   }
 
-  .heading--xsmall {
+  /* .heading--xsmall {
     line-height: 1.46667;
   }
 
@@ -849,7 +849,7 @@ p a:not(.button), .rte a:not(.button), .link {
 
   .h6, .rte h6 {
     line-height: 1.22222;
-  }
+  } */
 
   .blockquote, .rte blockquote {
     letter-spacing: -.6px;
@@ -913,7 +913,7 @@ p a:not(.button), .rte a:not(.button), .link {
 }
 
 @media screen and (min-width: 1200px) {
-  .heading--large, .rte .heading--large {
+  /* .heading--large, .rte .heading--large {
     line-height: 1;
   }
 
@@ -944,7 +944,7 @@ p a:not(.button), .rte a:not(.button), .link {
 
   .h6, .rte h6 {
     line-height: 1.22222;
-  }
+  } */
 
   .blockquote, .rte blockquote {
     letter-spacing: -.7px;
@@ -1995,6 +1995,7 @@ p a:not(.button), .rte a:not(.button), .link {
 }
 
 .price--highlight {
+  font-weight: bold;
   color: rgb(var(--product-on-sale-accent));
 }
 
@@ -2023,7 +2024,7 @@ p a:not(.button), .rte a:not(.button), .link {
   font-style: var(--text-font-style);
   font-weight: var(--text-font-bold-weight);
   text-transform: uppercase;
-  letter-spacing: .5px;
+  /* letter-spacing: .5px; */
   border-radius: min(var(--block-border-radius), 2px);
   padding: 0 5px;
   font-size: 10px;
@@ -3869,7 +3870,7 @@ split-lines {
   font-family: var(--text-font-family);
   font-weight: var(--text-font-bold-weight);
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  /* letter-spacing: 1.5px; */
 }
 
 .button--small, #shopify-product-reviews .spr-summary-actions-newreview {
@@ -3924,7 +3925,7 @@ split-lines {
   font-family: var(--text-font-family) !important;
   font-weight: var(--text-font-bold-weight) !important;
   text-transform: uppercase !important;
-  letter-spacing: 1.5px !important;
+  /* letter-spacing: 1.5px !important; */
   background-color: rgb(var(--button-background)) !important;
   color: rgb(var(--button-text-color)) !important;
   padding: 0 30px !important;
@@ -3940,7 +3941,7 @@ split-lines {
 @media screen and (min-width: 741px) {
   .button:not(.button--text), .shopify-challenge__button, #shopify-product-reviews .spr-summary-actions-newreview, #shopify-product-reviews .spr-button {
     font-size: calc(var(--base-font-size)  - 2px);
-    letter-spacing: 2px;
+    /* letter-spacing: 2px; */
     padding-inline-start: 35px;
     padding-inline-end: 35px;
   }
@@ -3953,7 +3954,7 @@ split-lines {
 
   .shopify-payment-button__button--unbranded {
     font-size: calc(var(--base-font-size)  - 2px) !important;
-    letter-spacing: 2px !important;
+    /* letter-spacing: 2px !important; */
     padding-inline-start: 35px !important;
     padding-inline-end: 35px !important;
   }
@@ -6611,7 +6612,7 @@ input:checked + .popover__choice-label:is(:lang(ae), :lang(ar), :lang(arc), :lan
   font-style: var(--text-font-style);
   font-weight: var(--text-font-bold-weight);
   text-transform: uppercase;
-  letter-spacing: .5px;
+  /* letter-spacing: .5px; */
   background: rgb(var(--heading-color));
   color: rgb(var(--background));
   align-items: center;
@@ -10149,7 +10150,7 @@ input:checked + .popover__choice-label:is(:lang(ae), :lang(ar), :lang(arc), :lan
 }
 
 .product-meta__sku {
-  letter-spacing: .45px;
+  /* letter-spacing: .45px; */
   position: relative;
   top: 1px;
 }
@@ -10925,6 +10926,14 @@ shopify-payment-terms {
     min-width: min-content;
   }
 }
+
+
+@media screen and (max-width: 999px) {
+  .featured-collections .product-list__inner--scroller {
+    grid-auto-columns: var(--section-products-per-row-mobile);
+  }
+}
+
 
 @media screen and (min-width: 741px) and (max-width: 999px) {
   .product-list__inner--scroller {

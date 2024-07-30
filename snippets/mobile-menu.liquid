@@ -14,19 +14,61 @@
   </div>
 
   <div class="drawer__content">
+    {%- for block in section.blocks -%}
+      {%- if block.type == "mobile_link" -%}
+
+        <link-bar class="link-bar">
+        <div class="container">
+          <div class="link-bar__wrapper">
+
+            {%- assign main_text = block.settings.main_text -%}
+            {%- if main_text != blank -%}
+              <span class="link-bar__title heading heading--small text--subdued">{{ main_text }}</span>
+            {%- endif -%}
+
+            <div class="link-bar__scroller hide-scrollbar">
+              <ul class="link-bar__linklist list--unstyled" role="list">
+ 
+                  {%- for i in (1..8) -%}
+                    {% capture textId %}text{{ i }}{% endcapture %}
+                    {% capture linkId %}url{{ i }}{% endcapture %}
+                    {%- assign textSetting = block.settings[textId] -%}
+                    {%- assign LinkSetting = block.settings[linkId] -%}
+                    
+                    {%- if LinkSetting != blank -%}
+                      <li class="link-bar__link-item">
+                        <a href="{{ LinkSetting }}">
+                          {{ textSetting }}
+                        </a>
+                      </li>
+                    {%- endif -%}
+                  
+              {%- endfor -%}
+
+              </ul>
+              </div>
+            </div>
+          </div>
+        </link-bar>
+      {%- endif -%} 
+    {%- endfor -%}
+
     <ul class="mobile-nav list--unstyled" role="list">
       {%- for link in menu.links -%}
         {%- assign link_title_downcase = link.title | strip | downcase -%}
         {%- assign mega_menu_block = '' -%}
         {%- assign mega_menu_images = '' -%}
 
+
         {%- for block in section.blocks -%}
+          {%- if block.settings.type == "mega_menu" and block.settings.show_on == "mobile" -%}
           {%- assign menu_item_downcase = block.settings.menu_item | strip | downcase -%}
 
           {%- if menu_item_downcase == link_title_downcase -%}
             {%- assign mega_menu_block = block -%}
             {%- break -%}
           {%- endif -%}
+        {%- endif -%}
         {%- endfor -%}
 
         {%- if mega_menu_block != '' -%}
@@ -73,7 +115,22 @@
         <li class="mobile-nav__item" data-level="1">
           {%- if link.links.size > 0 or mega_menu_images != blank -%}
             <button is="toggle-button" class="mobile-nav__link heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}" aria-controls="mobile-menu-{{ forloop.index }}" aria-expanded="false">
+
+            <div class="mobile-nav__image-container">
+              {%- for block in section.blocks -%}
+                {%- if block.type == "mobile_menu"  -%}
+                  {%- assign link_title_downcase = link.title | strip | downcase -%}
+                  {%- assign menu_item_downcase = block.settings.menu_item | strip | downcase -%}
+                  {%- if menu_item_downcase == link_title_downcase -%}
+                    {%- assign mobile_image = block.settings.mobile_image -%}
+                    {{- mobile_image | image_url: width: mobile_image.width | image_tag: loading: 'lazy', sizes: '270px', sizes: '270,540,810', class: 'mobile-nav__image-alt' -}}
+                  {%- endif -%}
+                {% endif %}
+              {% endfor %}
+
               {{- link.title -}}
+            </div>
+
               <span class="animated-plus"></span>
             </button>
 
@@ -114,7 +171,22 @@
               {%- endif -%}
             </collapsible-content>
           {%- else -%}
-            <a href="{{ link.url }}" class="mobile-nav__link heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}">{{ link.title }}</a>
+            <a href="{{ link.url }}" class="mobile-nav__link heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}">
+
+            <div class="mobile-nav__image-container">
+              {%- for block in section.blocks -%}
+                {%- if block.type == "mobile_menu"  -%}
+                  {%- assign link_title_downcase = link.title | strip | downcase -%}
+                  {%- assign menu_item_downcase = block.settings.menu_item | strip | downcase -%}
+                  {%- if menu_item_downcase == link_title_downcase -%}
+                    {%- assign mobile_image = block.settings.mobile_image -%}
+                    {{- mobile_image | image_url: width: mobile_image.width | image_tag: loading: 'lazy', sizes: '270px', sizes: '270,540,810', class: 'mobile-nav__image-alt' -}}
+                  {%- endif -%}
+                {% endif %}
+              {% endfor %}
+              {{ link.title }}
+              </div>
+              </a>
           {%- endif -%}
         </li>
       {%- endfor -%}

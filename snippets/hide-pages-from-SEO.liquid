@@ -1,0 +1,22 @@
+{%- if collection and product != true -%}
+  {% assign collectionHandles = settings.hide_seo_collections | split: "," %}
+  {% for handleItem in collectionHandles %}
+    {%- if handleItem == collection.handle -%}
+    <meta name="robots" content="noindex, nofollow" />
+    {%- endif -%}
+  {% endfor %}
+{%- endif -%}
+
+{%- if page -%}
+  {% assign pageHandles = settings.hide_seo_pages | split: "," %}
+  {% for handleItem in pageHandles %}
+    {%- if handleItem == page.handle -%}
+    <meta name="robots" content="noindex, nofollow" />
+    {%- endif -%}
+  {% endfor %}
+{%- endif -%}
+
+
+{%- if template.suffix contains 'hidden' -%}
+  <meta name="robots" content="noindex, nofollow" />
+{%- endif -%}

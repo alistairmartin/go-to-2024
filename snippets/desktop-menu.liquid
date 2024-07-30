@@ -6,12 +6,14 @@
       {%- assign mega_menu_images = '' -%}
 
       {%- for block in section.blocks -%}
+        {%- if block.type == "mega_menu" and block.settings.show_on == "desktop" -%}
         {%- assign menu_item_downcase = block.settings.menu_item | strip | downcase -%}
 
         {%- if menu_item_downcase == link_title_downcase -%}
           {%- assign mega_menu_block = block -%}
           {%- break -%}
         {%- endif -%}
+      {%- endif -%}
       {%- endfor -%}
 
       <li class="header__linklist-item {% if link.links.size > 0 or mega_menu_block != '' %}has-dropdown{% endif %}" data-item-title="{{ link.title | escape }}">

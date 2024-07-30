@@ -1321,5 +1321,22 @@
         "step": 1
       }
     ]
+  },
+  {
+    "name": "Hide Pages From SEO",
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "hide_seo_collections",
+        "label": "Array Of Collection Handles",
+        "info": "Comma Seperated e.g. new-lingerie,bras,stockings"
+      },
+      {
+        "type": "textarea",
+        "id": "hide_seo_pages",
+        "label": "Array Of Page Handles",
+        "info": "Comma Seperated e.g. new-campaign,warehouse-sale"
+      }
+    ]
   }
 ]

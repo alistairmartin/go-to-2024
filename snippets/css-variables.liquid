@@ -13,6 +13,18 @@
     --color-primary: #f9c6b9;
     --color-secondary: #f9c6b9;
 
+    --color-button-primary-text: #181818;
+    --color-button-primary-background: #FDE4DB;
+    --color-button-primary-shadow: #F5D3C4;
+
+    --color-button-secondary-text: #181818;
+    --color-button-secondary-background: #ffffff;
+    --color-button-secondary-shadow: #f9c6b9;
+
+    --color-button-ternary-text: #181818;
+    --color-button-ternary-background: #ffffff;
+    --color-button-ternary-shadow: #181818;
+
     --heading-color: {{ settings.heading_color.red }}, {{ settings.heading_color.green }}, {{ settings.heading_color.blue }};
     --text-color: {{ settings.text_color.red }}, {{ settings.text_color.green }}, {{ settings.text_color.blue }};
     --background: {{ settings.background.red }}, {{ settings.background.green }}, {{ settings.background.blue }};
@@ -57,16 +69,25 @@
     --text-font-bold-weight: bold;
 
     /* Typography (font size) */
-    --heading-xxsmall-font-size: {% if settings.heading_font_size == 'small' %}10px{% else %}11px{% endif %};
-    --heading-xsmall-font-size: {% if settings.heading_font_size == 'small' %}10px{% else %}11px{% endif %};
-    --heading-small-font-size: {% if settings.heading_font_size == 'small' %}11px{% elsif settings.heading_font_size == 'medium' %}12px{% else %}13px{% endif %};
-    --heading-large-font-size: {% if settings.heading_font_size == 'small' %}32px{% elsif settings.heading_font_size == 'medium' %}36px{% else %}40px{% endif %};
-    --heading-h1-font-size: {% if settings.heading_font_size == 'small' %}32px{% elsif settings.heading_font_size == 'medium' %}36px{% else %}40px{% endif %};
-    --heading-h2-font-size: {% if settings.heading_font_size == 'small' %}28px{% elsif settings.heading_font_size == 'medium' %}30px{% else %}32px{% endif %};
-    --heading-h3-font-size: {% if settings.heading_font_size == 'small' %}26px{% elsif settings.heading_font_size == 'medium' %}26px{% else %}28px{% endif %};
-    --heading-h4-font-size: {% if settings.heading_font_size == 'small' %}22px{% elsif settings.heading_font_size == 'medium' %}24px{% else %}26px{% endif %};
-    --heading-h5-font-size: {% if settings.heading_font_size == 'small' %}18px{% elsif settings.heading_font_size == 'medium' %}20px{% else %}22px{% endif %};
-    --heading-h6-font-size: {% if settings.heading_font_size == 'small' %}16px{% elsif settings.heading_font_size == 'medium' %}16px{% else %}18px{% endif %};
+
+    --heading-xxsmall-font-size: 12px;
+    --heading-xsmall-font-size: 16px;
+    --heading-small-font-size: 20px;
+    --heading-large-font-size: 48px;
+    --heading-h1-font-size: 48px;
+    --heading-h2-font-size: 36px;
+    --heading-h3-font-size: 24px;
+    --heading-h4-font-size: 20px;
+    --heading-h5-font-size: 16px;
+    --heading-h6-font-size: 12px;
+
+    --heading-h1-line-height: 56px;
+    --heading-h2-line-height: 40px;
+    --heading-h3-line-height: 32px;
+    --heading-h4-line-height: 24px;
+    --heading-h5-line-height: 18px;
+    --heading-h6-line-height: 14px;
+
 
     /* Control the look and feel of the theme by changing radius of various elements */
     --image-border-radius: 8px;
@@ -76,7 +97,7 @@
     --color-swatch-border-radius: {% if settings.round_color_swatches %}100%{% else %}0px{% endif %};
 
     /* Button size */
-    --button-height: 48px;
+    --button-height: 44px;
     --button-small-height: 40px;
 
     /* Form related */
@@ -111,14 +132,14 @@
                             to create some "breath" and minimum spacing
      */
     --container-max-width: 1440px;
-    --container-gutter: 10px;
+    --container-gutter: 8px;
     --container-max-width-minus-gutters: calc(var(--container-max-width) - (var(--container-gutter)) * 2);
     --container-outer-width: max(calc((100vw - var(--container-max-width-minus-gutters)) / 2), var(--container-gutter));
     --container-outer-margin: var(--container-outer-width);
     --container-inner-width: calc(100vw - var(--container-outer-width) * 2);
 
     --grid-column-count: 10;
-    --grid-gap: 10px;
+    --grid-gap: 8px;
     --grid-column-width: calc((100vw - var(--container-outer-width) * 2 - var(--grid-gap) * (var(--grid-column-count) - 1)) / var(--grid-column-count));
 
     --vertical-breather: {% if settings.vertical_spacing == 'small' %}28px{% elsif settings.vertical_spacing == 'medium' %}36px{% else %}48px{% endif %};
@@ -136,22 +157,30 @@
       --vertical-breather-tight: {% if settings.vertical_spacing == 'small' %}40px{% elsif settings.vertical_spacing == 'medium' %}48px{% else %}64px{% endif %};
 
       /* Typography (font size) */
-      --heading-xsmall-font-size: {% if settings.heading_font_size == 'small' %}11px{% elsif settings.heading_font_size == 'medium' %}12px{% else %}13px{% endif %};
-      --heading-small-font-size: {% if settings.heading_font_size == 'small' %}12px{% elsif settings.heading_font_size == 'medium' %}13px{% else %}14px{% endif %};
-      --heading-large-font-size: {% if settings.heading_font_size == 'small' %}48px{% elsif settings.heading_font_size == 'medium' %}52px{% else %}58px{% endif %};
-      --heading-h1-font-size: {% if settings.heading_font_size == 'small' %}48px{% elsif settings.heading_font_size == 'medium' %}48px{% else %}58px{% endif %};
-      --heading-h2-font-size: {% if settings.heading_font_size == 'small' %}36px{% elsif settings.heading_font_size == 'medium' %}38px{% else %}44px{% endif %};
-      --heading-h3-font-size: {% if settings.heading_font_size == 'small' %}30px{% elsif settings.heading_font_size == 'medium' %}32px{% else %}36px{% endif %};
-      --heading-h4-font-size: {% if settings.heading_font_size == 'small' %}22px{% elsif settings.heading_font_size == 'medium' %}24px{% else %}28px{% endif %};
-      --heading-h5-font-size: {% if settings.heading_font_size == 'small' %}18px{% elsif settings.heading_font_size == 'medium' %}20px{% else %}22px{% endif %};
-      --heading-h6-font-size: {% if settings.heading_font_size == 'small' %}16px{% elsif settings.heading_font_size == 'medium' %}18px{% else %}20px{% endif %};
+      --heading-xxsmall-font-size: 16px;
+      --heading-xsmall-font-size: 20px;
+      --heading-small-font-size: 24px;
+      --heading-large-font-size: 64px;
+      --heading-h1-font-size: 64px;
+      --heading-h2-font-size: 48px;
+      --heading-h3-font-size: 36px;
+      --heading-h4-font-size: 24px;
+      --heading-h5-font-size: 20px;
+      --heading-h6-font-size: 16px;
+
+      --heading-h1-line-height: 56px;
+      --heading-h2-line-height: 56px;
+      --heading-h3-line-height: 40px;
+      --heading-h4-line-height: 32px;
+      --heading-h5-line-height: 24px;
+      --heading-h6-line-height: 18px;
 
       /* Form related */
       --form-input-field-height: 52px;
       --form-submit-margin: 32px;
 
       /* Button size */
-      --button-height: 52px;
+      --button-height: 44px;
       --button-small-height: 44px;
     }
   }
@@ -163,13 +192,23 @@
       --product-list-block-spacing: 48px;
 
       /* Typography */
-      --heading-large-font-size: {% if settings.heading_font_size == 'small' %}58px{% elsif settings.heading_font_size == 'medium' %}64px{% else %}72px{% endif %};
-      --heading-h1-font-size: {% if settings.heading_font_size == 'small' %}50px{% elsif settings.heading_font_size == 'medium' %}56px{% else %}62px{% endif %};
-      --heading-h2-font-size: {% if settings.heading_font_size == 'small' %}44px{% elsif settings.heading_font_size == 'medium' %}48px{% else %}54px{% endif %};
-      --heading-h3-font-size: {% if settings.heading_font_size == 'small' %}32px{% elsif settings.heading_font_size == 'medium' %}36px{% else %}40px{% endif %};
-      --heading-h4-font-size: {% if settings.heading_font_size == 'small' %}26px{% elsif settings.heading_font_size == 'medium' %}30px{% else %}34px{% endif %};
-      --heading-h5-font-size: {% if settings.heading_font_size == 'small' %}22px{% elsif settings.heading_font_size == 'medium' %}24px{% else %}26px{% endif %};
-      --heading-h6-font-size: {% if settings.heading_font_size == 'small' %}16px{% elsif settings.heading_font_size == 'medium' %}18px{% else %}18px{% endif %};
+      --heading-xxsmall-font-size: 16px;
+      --heading-xsmall-font-size: 20px;
+      --heading-small-font-size: 24px;
+      --heading-large-font-size: 64px;
+      --heading-h1-font-size: 64px;
+      --heading-h2-font-size: 48px;
+      --heading-h3-font-size: 36px;
+      --heading-h4-font-size: 24px;
+      --heading-h5-font-size: 20px;
+      --heading-h6-font-size: 16px;
+
+      --heading-h1-line-height: 56px;
+      --heading-h2-line-height: 56px;
+      --heading-h3-line-height: 40px;
+      --heading-h4-line-height: 32px;
+      --heading-h5-line-height: 24px;
+      --heading-h6-line-height: 18px;
     }
   }
 

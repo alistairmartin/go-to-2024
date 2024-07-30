@@ -5,5 +5,10 @@
           --margin-bottom-desktop: {{ block.settings.margin_bottom_desktop }}px;
         }
     </style>
-    <a class="blocks--button {% if block.settings.button_style contains "link" %}link--primary{% else %}button button--primary{% endif %}" href="{{ block.settings.button_link }}" {{ blockId }}>{{ block.settings.button_text }} {% if block.settings.button_style == "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</a>
+
+    {%- if block.settings.modal_content != blank -%}
+      <button class="blocks--button {% if block.settings.button_style contains "link" %}link--primary{% else %}button {{ block.settings.button_style }}{% endif %}" {{ blockId }}>{{ block.settings.button_text }} {% if block.settings.button_style == "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</button>
+    {%- else -%}
+      <a class="blocks--button {% if block.settings.button_style contains "link" %}link--primary{% else %}button {{ block.settings.button_style }}{% endif %}" href="{{ block.settings.button_link }}" {{ blockId }}>{{ block.settings.button_text }} {% if block.settings.button_style == "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</a>
+    {%- endif -%}
 {%- endif -%}

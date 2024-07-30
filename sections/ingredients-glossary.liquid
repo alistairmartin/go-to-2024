@@ -73,7 +73,7 @@
 
                 {%- when 'product' -%}
                   {%- assign product = block.settings.product -%}
-                  <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                  <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" id="{{ product.handle }}">
                     <button is="toggle-button" class="collapsible-toggle text--strong" aria-controls="block-{{ section.id }}-{{ block.id }}" aria-expanded="false" itemprop="name">
                       {{- product.title -}}
                       <span class="animated-plus"></span>
@@ -82,17 +82,28 @@
                     <collapsible-content id="block-{{ section.id }}-{{ block.id }}" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" {{ block.shopify_attributes }}>
                       <div class="collapsible__content text-container" itemprop="text">
 
-
-                      {% comment %} <div class="ingredients-glossary--text-scroll"> {{- product.title -}}</div> {% endcomment %}
-
                       <div class="ingredients-glossary">
 
                       <div class="ingredients-glossary--product">
                         <div class="ingredients-glossary--product-atc">
-                          {%- render 'product-item', product: product, show_cta: true, block: block, sizes_attribute: sizes_attribute, reveal: false -%}
+                          {%- render 'product-item', product: product, show_cta: true,  reduced_content:true, block: block, sizes_attribute: sizes_attribute, reveal: false -%}
                         </div>
                         <div class="ingredients-glossary--product-description">
-                          {{ product.description |  truncate: 600 }}
+
+                          {%- if product.metafields.custom.product_subtitle__description != blank -%}
+                            <a href="{{ product.url }}" data-instant class="heading heading--small">{{ product.metafields.custom.product_subtitle__description }}</a>
+                          {%- endif -%}
+
+                          {%- assign productDescription = product.description | split: "</p>" -%}
+                          
+                          {%- for productParagraph in productDescription -%}
+
+                              {{ productParagraph |  strip_html |  prepend: '<p>'  | append: "</p>" }}                  
+                        
+                            {%- if forloop.index == 2 -%}
+                              {% break %}
+                            {%- endif -%}
+                          {%- endfor -%}
                         </div>
                       </div>
 
@@ -105,8 +116,18 @@
                         </div>
                       {%- endif -%}
 
+                      {%- if product.metafields.custom.natural_fragrance != blank -%}
+                        <div class="ingredients-glossary--INCI">
+                          <strong>Natural Fragrance</strong>
+                          <p>
+                            {{ product.metafields.custom.natural_fragrance }}
+                          </p>
+                        </div>
+                        {%- endif -%}
+
                       <div class="ingredients-glossary--description">
-                        {% for metaobject in product.metafields.custom.ingredients.value %}
+                        {%- assign glossaryMetaobjects = product.metafields.custom.ingredients.value | sort: "title" -%}
+                        {% for metaobject in glossaryMetaobjects %}
                           <div class="ingredients-glossary--description-item" data-title="{{ metaobject.title | strip_html }}">
                             <strong>{{ metaobject.title }}</strong>
                             <div>
@@ -115,8 +136,6 @@
                           </div>
                         {% endfor %}  
                       </div>
-
-                   
                       </div>
 
                       </div>
@@ -131,20 +150,6 @@
   </div>
 </section>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const glossary = document.querySelector('.ingredients-glossary--description');
-    const items = Array.from(glossary.getElementsByClassName('ingredients-glossary--description-item'));
-
-    items.sort((a, b) => {
-        const titleA = a.getAttribute('data-title').trim();
-        const titleB = b.getAttribute('data-title').trim();
-        return titleA.localeCompare(titleB);
-    });
-
-    items.forEach(item => glossary.appendChild(item));
-});
-</script>
 
 {% schema %}
 {

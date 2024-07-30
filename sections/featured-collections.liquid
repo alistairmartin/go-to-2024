@@ -42,6 +42,7 @@
 
     --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
     --section-products-per-row: 2;
+    --section-products-per-row-mobile: {{ section.settings.mobile_products_per_rows }}vw;
   }
 
   @media screen and (min-width: 741px) {
@@ -121,7 +122,7 @@
                     {%- assign smallest_image_aspect_ratio = smallest_image_aspect_ratio | at_least: product.featured_media.aspect_ratio -%}
                   {%- endif -%}
 
-                  {%- render 'product-item', product: product, collection: collection, show_cta: section.settings.show_cta, block: block, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition -%}
+                  {%- render 'product-item', product: product, collection: collection, reduced_content: true, show_cta: section.settings.show_cta, block: block, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, section_name: "featured-collections" -%}
                 {%- else -%}
                   {%- assign smallest_image_aspect_ratio = 1 -%}
 
@@ -239,6 +240,17 @@
     },
     {
       "type": "range",
+      "id": "mobile_products_per_rows",
+      "label": "Products per row (mobile)",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 52,
+      "unit": "%",
+      "info": "Percentage of the Window Width. Default 52%."
+    },
+    {
+      "type": "range",
       "id": "products_per_row",
       "label": "Products per row (desktop)",
       "min": 2,
@@ -257,7 +269,7 @@
       "id": "show_cta",
       "label": "Show add to cart below info",
       "info": "If enabled, we recommend using 4 products per row at maximum.",
-      "default": false
+      "default": true
     },
     {
       "type": "header",

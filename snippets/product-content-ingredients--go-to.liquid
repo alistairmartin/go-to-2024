@@ -1,7 +1,7 @@
 
 <div class="container">
   <div class="product-content-ingredients">      
-    <h3 class="heading h1 text--bold hide-desktop">{{ section.settings.title }}</h3>
+    <h3 class="heading h2 text--bold hide-desktop">{{ section.settings.title }}</h3>
     <div class="product-content-ingredients--image">
       {%- if product.metafields.custom.product_key_ingredients__vimeo != blank -%}
         {% assign vimeoVideoId = product.metafields.custom.product_key_ingredients__vimeo %}
@@ -17,39 +17,50 @@
     </div>
     
     <div class="product-content-ingredients--text">
-      <h3 class="heading h1 text--bold hide-mobile">{{ section.settings.title }}</h3>
+      <h3 class="heading h4 text--bold hide-mobile">{{ section.settings.title }}</h3>
       <div class="hidden-phone hidden-tablet">
-        {%- for ingredient in ingredientsGlossary -%}
-          {% assign ingredientTitle = ingredient | split: '</h3>' | first %}
-          {% assign ingredientContent = ingredient | split: '</h3>' | last %}
-          {%- assign ingredientDowncased = ingredientTitle | downcase -%}
-
-          {%- if productIngredients contains ingredientDowncased -%}
-            <div class="product-content-ingredients--text-item">
-              <p class="heading h1 text--bold">{{ ingredientTitle }}</p>
-              <p>{{ ingredientContent | strip_html }}</p>
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
+        {%- assign glossaryMetaobjects = product.metafields.custom.ingredients_featured.value | sort: "title" -%}
+        {% for metaobject in glossaryMetaobjects %}
+          <div class="product-content-ingredients--text-item">
+            <p class="heading h4 text--bold">{{ metaobject.title | strip_html }}</p>
+            {{ metaobject.description | metafield_tag }}
+          </div>
+        {% endfor %}  
       </div>
       
       <div class="product-content-ingredients--text__mobile hide-desktop">
         <div class="line"></div>
         {%- assign ingredientCounter = 0 -%}
-        {%- for ingredient in ingredientsGlossary -%}
-          {% assign ingredientTitle = ingredient | split: '</h3>' | first %}
-          {% assign ingredientContent = ingredient | split: '</h3>' | last %}
-          {%- assign ingredientDowncased = ingredientTitle | downcase -%}
-          
-          {%- if productIngredients contains ingredientDowncased -%}
+        {%- assign glossaryMetaobjects = product.metafields.custom.ingredients_featured.value | sort: "title" -%}
+        {% for metaobject in glossaryMetaobjects %}
             <div class="product-content-ingredients--text-item__mobile {% if ingredientCounter == 0 %}active{% endif %}" data-action="activate">
               {%- assign ingredientCounter = 1 -%}
-              <p class="heading h1 text--bold">{{ ingredientTitle }}</p>
-              <p class="text">{{ ingredientContent | strip_html }}</p>
+              <p class="heading h4 text--bold">{{ metaobject.title | strip_html }}</p>
+              <div class="text">{{ metaobject.description | metafield_tag }}</div>
             </div>
-          {%- endif -%}
-        {%- endfor -%}
+        {% endfor %} 
       </div>
+
+
+      {%- capture glossaryContent -%}
+        {%- assign glossaryMetaobjects = product.metafields.custom.ingredients.value | sort: "title" -%}
+        <div class="ingredients-glossary">
+        <div class="ingredients-glossary--description ">
+        {% for metaobject in glossaryMetaobjects %}
+          <div class="ingredients-glossary--description-item">
+            <strong>{{ metaobject.title }}</strong>
+            <div>
+              {{ metaobject.description | metafield_tag }}
+            </div>
+        </div>
+        {% endfor %}  
+        </div>
+        </div>
+      {%- endcapture -%}
+
+      {%- assign popoverTitle = "Ingredients For " | append: product.title -%}
+      {%- render 'popover', popoverId: "ingredients-glossary", popoverTitle: popoverTitle, popoverButton: "View All Ingredients", popoverContent: glossaryContent -%}
+
     </div>
   </div>
 </div>

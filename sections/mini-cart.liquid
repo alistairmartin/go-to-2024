@@ -101,7 +101,7 @@
             {%- if calculated_total_price >= threshold_in_cents -%}
               <span class="shipping-bar__text text--small">{{ 'cart.general.free_shipping' | t }}</span>
             {%- else -%}
-              {%- capture remaining_amount -%}{{ calculated_total_price | minus: threshold_in_cents | abs | money }}{%- endcapture -%}
+              {%- capture remaining_amount -%}{{ calculated_total_price | minus: threshold_in_cents | abs | money | remove: ".00" | remove: ",00" }}{%- endcapture -%}
               <span class="shipping-bar__text text--small">{{ 'cart.general.free_shipping_remaining_html' | t: remaining_amount: remaining_amount }}</span>
             {%- endif -%}
 
@@ -131,7 +131,7 @@
                 {%- if line_item.unit_price_measurement -%}
                   <div class="price text--subdued">
                     <div class="unit-price-measurement">
-                      <span class="unit-price-measurement__price">{{ line_item.unit_price | money }}</span>
+                      <span class="unit-price-measurement__price">{{ line_item.unit_price | money | remove: ".00" | remove: ",00" }}</span>
                       <span class="unit-price-measurement__separator">/</span>
 
                       {%- if line_item.unit_price_measurement.reference_value != 1 -%}
@@ -156,7 +156,7 @@
                   {%- if line_item.final_line_price == 0 -%}
                     {{- 'cart.general.free' | t -}}
                   {%- else -%}
-                    {{- line_item.final_line_price | money -}}
+                    {{- line_item.final_line_price | money | remove: ".00" | remove: ",00" -}}
                   {%- endif -%}
                 </span>
 
@@ -165,9 +165,9 @@
                     <span class="visually-hidden">{{ 'product.general.regular_price' | t }}</span>
 
                     {%- if line_item.original_line_price > line_item.final_line_price -%}
-                      {{- line_item.original_line_price | money -}}
+                      {{- line_item.original_line_price | money | remove: ".00" | remove: ",00" -}}
                     {%- else -%}
-                      {{- line_item.variant.compare_at_price | times: line_item.quantity | money -}}
+                      {{- line_item.variant.compare_at_price | times: line_item.quantity | money | remove: ".00" | remove: ",00" -}}
                     {%- endif -%}
                   </span>
                 {%- endif -%}
@@ -220,7 +220,7 @@
 
                   <div class="product-item-meta__price-list-container text--small">
                     <div class="price-list hidden-tablet-and-up">
-                      {{- line_price -}}
+                      {{-  -}}
                       {{- unit_price -}}
                     </div>
 
@@ -236,7 +236,7 @@
                   <ul class="line-item__discount-list list--unstyled" role="list">
                     {%- for discount_allocation in line_item.line_level_discount_allocations -%}
                       <li class="line-item__discount-badge discount-badge">
-                        {%- render 'icon' with 'discount-badge' -%}{{ discount_allocation.discount_application.title }} (-{{ discount_allocation.amount | money }})
+                        {%- render 'icon' with 'discount-badge' -%}{{ discount_allocation.discount_application.title }} (-{{ discount_allocation.amount | money | remove: ".00" | remove: ",00" }})
                       </li>
                     {%- endfor -%}
                   </ul>
@@ -317,7 +317,7 @@
                       {%- assign shown_products_count = 0 -%}
 
                       {%- for product in recommendations.products -%}
-                        {%- if shown_products_count >= 6 -%}
+                        {%- if shown_products_count >= 10 -%}
                           {%- break -%}
                         {%- endif -%}
 
@@ -325,7 +325,7 @@
 
                         {%- if matching_product.size == 0 -%}
                           {%- assign shown_products_count = shown_products_count | plus: 1 -%}
-                          {%- render 'product-item', product: product, reduced_content: true, reduced_font_size: true, hide_secondary_image: true, sizes_attribute: '(max-width: 740px) 65px, 92px' -%}
+                          {%- render 'product-item', product: product, reduced_content: true, reduced_font_size: true, hide_secondary_image: true, sizes_attribute: '(max-width: 740px) 65px, 92px', horizontal_layout: true -%}
                         {%- endif -%}
                       {%- endfor -%}
                     </div>
@@ -345,20 +345,20 @@
     </div>
 
     <footer class="mini-cart__drawer-footer drawer__footer drawer__footer--tight drawer__footer--bordered">
-      {%- capture shipping_tax_note -%}{{ 'cart.general.shipping_tax_note' | t }}{%- endcapture -%}
+      {% comment %} {%- capture shipping_tax_note -%}{{ 'cart.general.shipping_tax_note' | t }}{%- endcapture -%} {% endcomment %}
 
       {%- if cart.cart_level_discount_applications != blank -%}
         <ul class="mini-cart__discount-list list--unstyled" role="list">
           {%- for discount_application in cart.cart_level_discount_applications -%}
             <li class="mini-cart__discount">
               <span class="mini-cart__discount-badge discount-badge">{%- render 'icon' with 'discount-badge' -%}{{ discount_application.title }}</span>
-              <span class="mini-cart__discount-price text--xsmall text--subdued">-{{ discount_application.total_allocated_amount | money }}</span>
+              <span class="mini-cart__discount-price text--xsmall text--subdued">-{{ discount_application.total_allocated_amount | money | remove: ".00" | remove: ",00" }}</span>
             </li>
           {%- endfor -%}
         </ul>
       {%- endif -%}
 
-      {%- if section.settings.show_order_note or shipping_tax_note != '' -%}
+      {%- if section.settings.show_order_note -%}
         <div class="mini-cart__actions text--subdued text--xsmall">
           {%- if section.settings.show_order_note -%}
             <button type="button" is="toggle-button" id="order-note-toggle" class="link" data-action="toggle-order-note" aria-controls="mini-cart-note" aria-expanded="false">
@@ -370,19 +370,19 @@
             </button>
           {%- endif -%}
 
-          {%- if shipping_tax_note != '' -%}
+          {% comment %} {%- if shipping_tax_note != '' -%}
             <span>{{ shipping_tax_note }}</span>
-          {%- endif -%}
+          {%- endif -%} {% endcomment %}
         </div>
       {%- endif -%}
 
       {%- if section.settings.show_checkout_button -%}
         <button form="mini-cart-form" type="submit" class="checkout-button button button--primary button--full" name="checkout">
-          <span class="checkout-button__lock">{%- render 'icon' with 'lock' -%}</span>
+          {% comment %} <span class="checkout-button__lock">{%- render 'icon' with 'lock' -%}</span> {% endcomment %}
 
           {{- 'cart.general.checkout' | t -}}
           <span class="square-separator"></span>
-          {{- cart.total_price | money_with_currency -}}
+          {{- cart.total_price | money_with_currency | remove: ".00" | remove: ",00" -}}
         </button>
       {%- else -%}
         <a href="{{ routes.cart_url }}" class="button button--primary button--full" data-no-instant>{{ 'cart.general.go_to_cart' | t }}</a>

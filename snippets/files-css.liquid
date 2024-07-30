@@ -13,3 +13,11 @@
 {% if template.suffix == "build-your-routine" %}
 <link rel="stylesheet" href="{{ 'byo-bundle.css' | asset_url }}">
 {%- endif -%}
+
+{%- if template.suffix == "styleguide" -%}
+    <link rel="stylesheet" href="{{ 'styleguide.scss.css' | asset_url }}">
+{%- endif -%}
+
+{%- if template contains "customer" -%}
+<link rel="stylesheet" href="{{ 'loyalty.css' | asset_url }}">
+{%- endif -%}

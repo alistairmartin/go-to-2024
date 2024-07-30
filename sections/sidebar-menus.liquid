@@ -1,0 +1,70 @@
+{% liquid
+  assign foundAside = false
+
+  for block in section.blocks
+    assign sidebarMenuMetaobject = shop.metaobjects['sidebar'][block.settings.title]
+    
+    for pageObject in sidebarMenuMetaobject.pages.value
+      if pageObject.url == page.url
+        assign foundAside = true
+        break
+      endif
+    endfor
+
+    if foundAside == true
+      break
+    endif
+  endfor
+%}
+
+{% if foundAside %}
+  <aside class="faq">
+    <div class="faq-navigation hidden-pocket">
+        <scroll-spy class="scroll-spy">
+          <ul class="scroll-spy__list list--unstyled">
+
+              {%- assign pageObjectTitles = sidebarMenuMetaobject.pages_titles.value -%}
+              {%- for pageObject in sidebarMenuMetaobject.pages.value -%}
+      
+                <li class="scroll-spy__item {% if pageObject.url == page.url %}is-visible{% endif %}">
+                  <a href="{{ pageObject.url }}" class="scroll-spy__anchor heading heading--small">{{ pageObjectTitles[forloop.index0] }}</a>
+                </li>
+              {%- endfor -%}
+        </ul>
+        </scroll-spy>
+      </div>
+  </aside>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Sidebar Menus",
+  "class": "shopify-section--sidebar-menus",
+  "disabled_on": {
+    "groups": ["custom.overlay"]
+  },
+  "settings": [
+  ],
+  "blocks": [
+    {
+      "type": "sidebar_menu",
+      "name": "Sidebar Menu",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Sidebar Handle",
+          "info": "Add the metaobject handle for this 'Sidebar Menu'. You can find the Metaobject handle. e.g. ingredients-go-to. More Info: https://admin.shopify.com/store/go-to-skincare/content/metaobjects/entries/sidebar"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sidebar Menus"
+    }
+  ]
+}
+{% endschema %}
+
+

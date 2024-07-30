@@ -1,0 +1,126 @@
+$gotoPink: #f9c6b9;
+$gotoPinkLight: #FDE4DB;
+$gotoPinkLighter: #fff7f5;
+$gotoBlack: #181818;
+$gotoGrey:#DCE0E4;
+$gotoGreyLight: #F2F2F2;
+$gotoGreyDark: #484848;
+
+$brotoRed: #ef3534;
+$brotoBlue: #192a42;
+$brotoBlueLight: #0DA9C5;
+$brotoPink: #FFBEBE;
+$brotoYellow: #F9F9A3;
+$brotoMint: #99DBC9;
+$brotoBlack: #1c1b1b;
+$brotoGrey: #f0f0f5;
+$brotoGreyLight: #F9F9F9;
+
+$grotoBlue: #00bce7;
+$grotoNavy: #002DAC;
+$grotoYellow: #f9cf63;
+$grotoPurple: #b493c4;
+$grotoPink: #f06098;
+$grotoRed: #ff0001;
+$grotoGreen: #59C160;
+$grotoOrange: #F48120;
+$grotoGrey: #DCE0E4;
+$grotoGreyLight: #F2F2F2;
+$grotoGreyDark: #484848;
+$grotoGreyDarker: #282828;
+$grotoBlack: #181818;
+$grotoError: #B20000;
+$grotoFocus: #275DC5;
+
+$colorWhite: #fff;
+
+$gotoFontHeading: 'Moderno FB';
+$gotoFontBody: 'TTCommons';
+$brotoFontHeading: 'Moderno FB';
+$brotoFontBody: 'NeologyGrotesque';
+$grotoFontHeading: 'Proxima Nova';
+$grotoFontBody: 'Sofia Pro Soft';
+
+
+.style-guide {
+    min-height: 1000px;
+    margin: 50px 0;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 20px;
+}
+
+.style-guide-section {
+    margin: 0 0 100px;
+}
+
+.colours {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 40px;
+
+    p {
+        margin: 0;
+        text-transform: uppercase;
+    }
+
+    .colour-item {
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+       
+    }
+
+    .colour-item--swatch {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+    }
+
+    .color-primary--go-to {
+        background: $gotoPink;
+    }
+
+    .color-secondary--go-to {
+        background: $gotoPinkLight;
+    }
+
+    .color-ternary--go-to {
+        background: $gotoPinkLighter;
+    }
+
+    .color-black--go-to {
+        background: $gotoBlack;
+    }
+
+    .color-dark-grey--go-to {
+        background: $gotoGreyDark;
+    }
+
+    .color-grey--go-to {
+        background: $gotoGrey;
+    }
+
+    .color-light-grey--go-to {
+        background: $gotoGreyLight;
+    }
+
+}
+
+.typography {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .description {
+        color: #cacaca;
+
+        p {
+            margin-bottom: 5px;
+        }
+    }
+}

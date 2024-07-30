@@ -1,11 +1,12 @@
 <div class="{% if section.settings.include_horizontal_margins %}container{% endif %} {% if section.settings.include_vertical_margins %}vertical-breather{% endif %}">
-  <div class="page-header">
-    <div class="page-header__text-wrapper text-container">
-      {%- if section.settings.title != blank -%}
-        <h2 class="heading h2">{{ section.settings.title }}</h2>
-      {%- endif -%}
+
+  {%- if section.settings.title != blank -%}
+    <div class="page-header">
+      <div class="page-header__text-wrapper text-container">
+          <h2 class="heading h2">{{ section.settings.title }}</h2>
+      </div>
     </div>
-  </div>
+  {%- endif -%}
 
   {%- for block in section.blocks -%}
     {%- render block -%}

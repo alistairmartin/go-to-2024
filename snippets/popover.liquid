@@ -1,0 +1,42 @@
+
+<button type="button" is="toggle-button" class="link text--subdued hidden-phone" aria-controls="{{ popoverId }}-drawer" aria-expanded="false">{{ popoverButton }} {%- render 'icon' with "plus-big" -%}</button>
+<button type="button" is="toggle-button" class="link text--subdued hidden-tablet-and-up" aria-controls="{{ popoverId }}-popover" aria-expanded="false">{{ popoverButton }} {%- render 'icon' with "plus-big" -%}</button>
+
+
+
+<drawer-content id="{{ popoverId }}-drawer" class="drawer drawer--large hidden-phone">
+    <span class="drawer__overlay"></span>
+
+    <header class="drawer__header">
+      <p class="drawer__title heading h6">{{ popoverTitle }}</p>
+
+      <button type="button" class="drawer__close-button tap-area" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
+        {%- render 'icon' with 'close' -%}
+      </button>
+    </header>
+
+    <div class="drawer__content drawer__content--padded-start">
+      <div class="rte">
+        {{ popoverContent }}
+      </div>
+    </div>
+  </drawer-content>
+
+  {%- comment -%}Popover is for mobile{%- endcomment -%}
+  <popover-content id="{{ popoverId }}-popover" class="popover hidden-lap-and-up">
+    <span class="popover__overlay"></span>
+
+    <header class="popover__header">
+      <p class="popover__title heading h6">{{ popoverTitle }}</p>
+
+      <button type="button" class="popover__close-button tap-area tap-area--large" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
+        {%- render 'icon' with 'close' -%}
+      </button>
+    </header>
+
+    <div class="popover__content">
+      <div class="rte">
+        {{ popoverContent }}
+      </div>
+    </div>
+  </popover-content>

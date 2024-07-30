@@ -1,3 +1,5 @@
+
+
 <section>
   <div class="container">
     <div class="page-header">
@@ -13,8 +15,8 @@
         </ol>
       </nav>
 
-      <div class="page-header__text-wrapper text-container {% unless section.settings.show_title and page.content == blank %}hide{% endunless %}">
-        <h1 class="heading h2  {% if section.settings.show_title %}hide{% endif %}">{{ page.title }}</h1>
+      <div class="page-header__text-wrapper text-container {% unless section.settings.show_title %}hide{% endunless %}">
+        <h1 class="heading h2  {% unless section.settings.show_title %}hide{% endunless %}">{{ page.title }}</h1>
         {%- if template.suffix contains 'contact' or template.suffix contains 'faq' -%}
           {{- page.content -}}
         {%- endif -%}

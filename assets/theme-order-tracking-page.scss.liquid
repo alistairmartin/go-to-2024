@@ -1,0 +1,434 @@
+// This scss overrides the base styling from theme.css, including pre-built sections and components
+
+/**
+ * ----------------------------------------------------------------------------------------------
+ * #Media Queries
+ * ----------------------------------------------------------------------------------------------
+ */
+/*! Avalanche | MIT License | @colourgarden */
+
+$phone-xs:         "screen and (max-width: 320px)";
+$phone-sm:         "screen and (max-width: 375px)";
+$phone-md:         "screen and (max-width: 768px)";
+$phone-md-and-up:  "screen and (min-width: 769px)";
+$tablet-and-up:    "screen and (min-width: 641px)";
+$tablet-md:        "screen and (max-width: 860px)";
+$tablet-md-and-up: "screen and (min-width: 861px)";
+$pocket:           "screen and (max-width: 1007px)";
+$lap-and-up:       "screen and (min-width: 1008px)";
+$desk:             "screen and (min-width: 1140px)";
+$lap-and-down:     "screen and (max-width: 1239px)";
+$widescreen:       "screen and (min-width: 1500px)";
+$ultrawide:        "screen and (min-width: 1960px)";
+
+$phone:            "screen and (max-width: 640px)";
+$tablet:           "screen and (min-width: 641px) and (max-width: 1007px)";
+$lap:              "screen and (min-width: 1008px) and (max-width: 1139px)";
+$desk-md:          "screen and (min-width: 1024px) and (max-width: 1440px)";
+$desk-custom:      "screen and (min-width: 1441px)";
+
+@mixin av-mq($alias) {
+  @if $alias == "phone-xs" {
+    @media #{$phone-xs} {
+      @content;
+    }
+  } @else if $alias == "phone-sm" {
+    @media #{$phone-sm} {
+      @content;
+    }
+  } @else if $alias == "phone" {
+    @media #{$phone} {
+      @content;
+    }
+  } @else if $alias == "phone-md" {
+    @media #{$phone-md} {
+      @content;
+    }
+  } @else if $alias == "phone-md-and-up" {
+    @media #{$phone-md-and-up} {
+      @content;
+    }
+  } @else if $alias == "tablet" {
+    @media #{$tablet} {
+      @content;
+    }
+  } @else if $alias == "tablet-and-up" {
+    @media #{$tablet-and-up} {
+      @content;
+    }
+  } @else if $alias == "tablet-md" {
+    @media #{$tablet-md} {
+      @content;
+    }
+  } @else if $alias == "tablet-md-and-up" {
+    @media #{$tablet-md-and-up} {
+      @content;
+    }
+  } @else if $alias == "pocket" {
+    @media #{$pocket} {
+      @content;
+    }
+  } @else if $alias == "lap" {
+    @media #{$lap} {
+      @content;
+    }
+  } @else if $alias == "lap-and-up" {
+    @media #{$lap-and-up} {
+      @content;
+    }
+  } @else if $alias == "lap-and-down" {
+    @media #{$lap-and-down} {
+      @content;
+    }
+  } @else if $alias == "desk" {
+    @media #{$desk} {
+      @content;
+    }
+  } @else if $alias == "desk-md" {
+    @media #{$desk-md} {
+      @content;
+    }
+  } @else if $alias == "desk-custom" {
+    @media #{$desk-custom} {
+      @content;
+    }
+  } @else if $alias == "widescreen" {
+    @media #{$widescreen} {
+      @content;
+    }
+  } @else if $alias == "ultrawide" {
+    @media #{$ultrawide} {
+      @content;
+    }
+  }
+}
+
+.OrderTracking {
+  
+  .Heading {
+    line-height: 30px;
+    font-size: 25px;
+    text-transform: none;
+    letter-spacing: normal;
+    
+    @include av-mq('lap-and-up') {
+      font-size: 26px;
+    }
+  }
+  
+  .Form__Item {
+    margin-bottom: 25px;
+  }
+  
+  .Form__Label {
+    font-family: var(--text-font-family);
+    text-transform: none;
+    font-weight: 400;
+    font-size: 16px;
+    color: #000;
+    letter-spacing: normal;
+  }
+
+  .Form__Panel {
+    text-align: center;
+    max-width: 340px;
+    margin: 0 auto;
+
+    .Heading {
+      margin-bottom: 30px;
+    }
+  }
+}
+
+.OrderTracking__Form {
+  padding: 48px 0px;
+
+  .Form__Alert {
+    margin-top: 20px;
+  }
+
+  .Alert--error {
+    border: 1px solid #cb2b2b;
+    background: #ffe1e1
+  }
+}
+
+.OrderTracking__Results {
+  p {
+    margin-bottom: 0;
+  }
+  
+  .Button {
+    margin-top: 16px;
+    
+    @include av-mq('lap-and-up') {
+      margin-right: 32px;
+    }
+  }
+}
+
+.OrderTracking__UnavailableContainer {
+  padding-bottom: 40px;
+
+  .RoundedPanel {
+    max-width: 80%;
+    padding: 12px 20px;
+    padding-bottom: 20px;
+  }
+}
+
+.OrderTracking__ResultsTitle {
+  background: white;
+  margin-bottom: 18px;
+
+  .Heading {
+    margin: 0;
+    padding: 12px 0;
+
+    @include av-mq('lap-and-up') {
+      font-size: 32px;
+    }
+  }
+}
+
+.OrderDetails__Panel {
+  background: #fff;
+  margin-bottom: 15px;
+  color: #000;
+  padding: 28px 24px;
+  
+  @media only screen and (min-width: 1024px) {
+    margin-bottom: 26px;
+  }
+  
+  .Heading {
+    font-size: 22px;
+    line-height: 28px;
+    margin-bottom: 4px;
+  }
+}
+
+.OrderDetails__Container {
+  margin-top: 19px;
+  display: block;
+}
+  
+.OrderDetails__Row {
+  width: auto;
+  display: block;
+  margin-bottom: 30px;
+  
+  &:last-child {
+    margin: 0;
+    
+    .OrderDetails__Value {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.OrderDetails__Label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 8px;
+  margin-right: 7px;
+  line-height: 1;
+  display: block;
+  
+  @include av-mq('tablet-and-up') {
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+  
+  @media only screen and (min-width: 1024px) {
+    margin-bottom: 8px;
+  }
+}
+
+.OrderDetails__Value {
+  color: #333;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 12px;
+  
+  @media only screen and (min-width: 414px) {
+    margin-bottom: 0;
+  }
+  
+  @include av-mq('tablet-and-up') {
+    display: inline-block;
+    font-size: 16px;
+  }
+  
+  @media only screen and (min-width: 1024px) {
+    font-size: 16px;
+    margin-bottom: 20px;
+    display: block;
+  }
+}
+
+.Order__Events {
+  list-style: none;
+  margin: 0;
+  margin-top: 19px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+
+  &.Order__Events--us {
+    .OrderEvent {
+      width: 100%;
+      
+      &::after {
+        width: 5px;
+        height: calc(100% - 15px);
+        border-top: 0;
+        border-left: 4px dotted #d8d8d8;
+        margin-left: 10px;
+        top: -35px;
+      }
+    }
+    
+    .OrderEvent__Action, .OrderEvent__Date {
+      margin: 0;
+      margin-left: 30px;
+      transform: translateY(-32px);
+    }
+    
+    .OrderEvent__Action {
+      padding-bottom: 10px;
+    }
+  }
+}
+  
+.OrderEvent {
+  margin-top: 3px;
+  padding-bottom: 15px;
+  color: #777;
+  
+  @include av-mq('tablet-and-up') {
+    width: 25%;
+  }
+  
+  &::after {
+    content: ' ';
+    border-top: 4px dotted #d8d8d8;
+    width: calc(100% - 40px);
+    display: block;
+    margin-left: 30px;
+    position: relative;
+    top: -57px;
+    
+    @media screen and (max-width: 640px) {
+      width: 5px;
+      height: calc(100% - 15px);
+      border-top: 0;
+      border-left: 4px dotted #d8d8d8;
+      margin-left: 10px;
+      top: -35px;
+    }
+  }
+  
+  &::before {
+    font-family: 'Proxima Nova';
+    content: '✓';
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    -ms-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    background: #c8c8c8;
+    display: inline-block;
+    margin-left: 0;
+    
+    @media only screen and (min-width: 1024px) {
+      height: 25px;
+    }
+  }
+  
+  &.inactive {
+    &::before {
+      background: none;
+      border: 1px solid #c8c8c8;
+      content: ' ';
+    }
+    
+    @include av-mq('tablet-and-up') {
+      
+      &::after {
+        top: -63px;
+      }
+    }
+  }
+  
+  &.active {
+    color: #000;
+    
+    &::before {
+      background: #f9c6b9;
+      content: ' ';
+    }
+    
+    @include av-mq('tablet-and-up') {
+      
+      &::after {
+        top: -58px;
+      }
+    }
+    
+    .OrderEvent__Action {
+      @include av-mq('tablet-and-up') {
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+    
+  }
+  
+  &:last-child {
+    padding-bottom: 0;
+    
+    &::after {
+      content: none;
+    }
+
+    .OrderEvent__Date {
+      border: 0;
+      padding-bottom: 0;
+    }
+  }
+}
+
+.OrderEvent__Action {
+  margin-bottom: 9px;
+  margin-left: 50px;
+  margin-top: -27px;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 1;
+  
+  @include av-mq('tablet-and-up') {
+    font-weight: normal;
+    margin-bottom: 6px;
+    margin-top: 7px;
+    margin-left: 0;
+  }
+  
+  &::first-letter {
+    text-transform: capitalize;
+  }
+}
+
+.OrderEvent__Date {
+  line-height: 1;
+  font-size: 14px;
+  font-weight: normal;
+  
+  @include av-mq('tablet-and-up') {
+    padding-bottom: 0; 
+  }
+}

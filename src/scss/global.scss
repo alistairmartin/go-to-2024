@@ -138,6 +138,8 @@
   border-radius: 0;
   color: var(--color-button-ternary-text);
   background: transparent;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 .label--label-custom {
@@ -1212,7 +1214,10 @@ store-header.background-blur {
 
         * {
           line-height: 1.5;
-          margin: 0;
+        }
+
+        li {
+          margin: 0 0 16px;
         }
       }
 
@@ -1228,14 +1233,14 @@ store-header.background-blur {
   }
 }
 
-.shopify-section--collection-banner {
-  .text-align--left {
+.page-header__text-wrapper {
+  &.text-align--left {
     margin-left: 0;
     margin-right: 0;
     text-align: left;
   }
 
-  .text-align--right {
+  &.text-align--right {
     margin-left: 0;
     margin-right: 0;
     text-align: right;
@@ -1414,3 +1419,15 @@ store-header.background-blur {
 
   }
 }
+
+split-lines[reveal] {
+  * {
+    transition: 0.5s all;
+  }
+}
+
+// ul {
+//   li {
+//     margin-bottom: 16px;
+//   }
+// }

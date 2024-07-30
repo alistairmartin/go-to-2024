@@ -475,5 +475,16 @@
       "description": "Sorry, this page does not exist.",
       "back_to_home": "Back to home"
     }
+  },
+  "shipping": {
+    "unavailable": "Eager Beaver! Your tracking details are not available yet. It may take a few hours to process your order once you've placed it. Watch a few Seinfeld eps and try again soon. If it's still not working and Jerry refuses to help, send us an email at info@gotoskincare.com and we'll sort it out.",
+    "title": "Track My Order",
+    "form": {
+      "submit": "Get my order status",
+      "email": "Email address",
+      "email_placeholder": "cutehead@gotoskincare.com",
+      "order_number": "Order number",
+      "order_number_placeholder": "e.g. GT77777"
+    }
   }
 }

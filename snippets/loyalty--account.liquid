@@ -1,147 +1,135 @@
-{% assign account_loyalty_level_tag = 'swell_vip_mate' %}
-{% assign secret_level_tag = 'swell_vip_' | append: settings.last_level_name | downcase %}
-
 {% assign account_total_spend = 0 %}
+{%- assign customerLoyaltyLevel = null -%}
 
+{% comment %} --- Get Customer Total Spend {% endcomment %}
 {% for order in customer.orders %}
   {% if order.financial_status == 'paid' or order.financial_status == 'partially_refunded' %}
     {% assign account_total_spend = account_total_spend | plus: order.total_price | minus: order.total_refunded_amount %}
   {% endif %}
 {% endfor %}
 
+{% comment %} --- Get Customer Tag {% endcomment %}
 {% for tag in customer.tags %}
   {% if tag contains 'swell_vip_' %}
     {% assign account_loyalty_level_tag = tag %}
+    {% break %}
   {% endif %}
 {% endfor %}
 
-{% assign loyalty_levels = settings.loyalty_levels | newline_to_br | split: "<br />" %}
-{% assign loyalty_features = settings.loyalty_features | newline_to_br | split: "<br />" %}
+{% comment %} --- Get Customer Tier Level + Colour {% endcomment %}
+{%- for loyalty_tiers in shop.metaobjects['loyalty_tiers'].values -%}
+    {%- capture loyalty_level -%}{{ loyalty_tiers.loyalty_level.value }}{%- endcapture -%}
+    {%- assign loyalty_level = loyalty_level | remove: "Tier " | times: 1 -%}
+    {%- if account_loyalty_level_tag == loyalty_tiers.customer_tag.value -%}
+      {%- assign customerLoyaltyName = loyalty_tiers.tier_name.value -%}
+      {%- assign customerLoyaltyLevel = loyalty_level -%}
+      {%- assign customerLoyaltyColour = loyalty_tiers.tier_colour.value -%}
+      {% break %}
+    {%- endif -%}
+{%- endfor -%}
 
-{% assign look_for_level = account_loyalty_level_tag | remove_first: 'swell_vip_' | prepend: '|' | append: '|' %}
-{% assign compare_settings_loyalty_levels = settings.loyalty_levels | downcase %}
-
-{% assign current_level_index = blank %}
-{% assign next_level_index = blank %}
-{% assign next_level_cost_remaining = blank %}
-{% assign display_next_level_cost_remaining = blank %}
-
-{% assign current_loyalty_details = blank %}
-{% assign next_level_cost = blank %}
-
-{%- if compare_settings_loyalty_levels contains look_for_level -%}
-
-  {% for loyalty_level in loyalty_levels  %}
-
-    {% assign should_render = false %}
-
-    {% assign next_level_tag = blank %}
-
-    {% assign last_index = forloop.length %}
-
-
-    {% assign loyalty_level_details = loyalty_level | split: '|' %}
-    {% assign level_name = loyalty_level_details[1] %}
-    {% assign level_requirement_cost = loyalty_level_details[3] %}
-
-    {% assign current_level_tag = 'swell_vip_' | append: level_name | downcase %}
-
-    {% if current_level_tag ==  account_loyalty_level_tag %}
+{% comment %} --- Get The Next Tier Level + Colour + Cost {% endcomment %}
+{%- for loyalty_tiers in shop.metaobjects['loyalty_tiers'].values -%}
+  {%- capture loyalty_level_next -%}{{ loyalty_tiers.loyalty_level.value }}{%- endcapture -%}
+  {%- assign loyalty_level_next = loyalty_level_next | remove: "Tier " | times: 1 |  minus: 1 -%}
+  {%- if loyalty_level_next == customerLoyaltyLevel -%}
+    {%- assign customerLoyaltyLevelNext = loyalty_level_next -%}
+    {%- assign customerLoyaltyLevelNextCost = loyalty_tiers.level_requirement_spend_value.value -%}
+    {%- assign customerLoyaltyLevelNextColour = loyalty_tiers.tier_colour.value -%}
+    {% break %}
+  {%- endif -%}
+{%- endfor -%}
 
 
-      {% assign level = loyalty_level_details[0] %}
-      {% assign level_requirement = loyalty_level_details[2] %}
+<section class="customer-header">
+  <div class="container">
 
-      {% assign level_color = loyalty_level_details[4] %}
+    <a href="{{ routes.account_logout_url }}" class="link link--primary">Logout of Here!</a>
+    <h2 class="heading h1">Welcome to your account.</h2>
+    <p>Hey {{ customer.first_name }}! It's good to see you.</p>
+  </div>
+  </section>
 
-      {% assign current_level_index = forloop.index %}
+<section class="loyalty-account">
 
-      {% if current_level_index < last_index %}
+  <div class="container">
 
-        {% assign next_level_index = current_level_index | plus: 1 %}
-        {% assign next_loyalty_level = loyalty_levels[current_level_index] %}
-        {% assign next_loyalty_level_details = next_loyalty_level | split: '|' %}
-        {% assign next_level_requirement = next_loyalty_level_details[3] | times: 100 | minus: account_total_spend %}
 
-        {% assign next_level_cost_remaining = level_requirement_cost | times: 100 | minus: account_total_spend %}
-        {% assign display_next_level_cost_remaining = next_level_cost_remaining | money_without_currency | replace: ',', '' %}
-      {% endif %}
+      <div class="loyalty-line">
+        <div class="loyalty-line--line"></div>
 
-      {% assign current_loyalty_details = loyalty_level %}
-      {% assign next_level_cost = level_requirement_cost | times: 100 | plus: next_level_cost_remaining %}
+        <div class="loyalty-line--line-active" style="background:{{ customerLoyaltyColour }}; width: {{ customerLoyaltyLevel | times: 25 |  minus: 12.5 }}%"></div>
 
-      {% if account_loyalty_level_tag != secret_level_tag and forloop.last == false %}
-        {% assign should_render = true %}
-      {% elsif account_loyalty_level_tag == secret_level_tag and forloop.last == false %}
-        {% assign should_render = true %}
-      {% elsif account_loyalty_level_tag == secret_level_tag and forloop.last == true %}
-        {% assign should_render = true %}
-      {% endif %}
-
-    {% endif %}
-
-  {% endfor %}
-
-{%- endif -%}
-
-<div id="reactLoyalty" data-loyaltylevels='{{settings.loyalty_levels}}' data-currentlevel='{{current_loyalty_details}}' data-nextrequirement='{{next_level_requirement}}' data-showsecret='{{should_render}}' data-loyaltyfeatures='{{loyalty_features}}' data-loyaltycustommsg='{{ settings.loyalty_custom_message }}'></div>
-
-<section className="AccountLoyalty_Section">
-    <div className="AccountTimeline_Column"></div>
-      <div className="AccountClassification_Column">
-
-      { loyaltyLevels && loyaltyLevels.map((v) => (
-        <div className="AccountClassification">
-          <div className="MarkerContainer">
-            { v.level == currentLevel &&
-              <>
-                <div className="AccountStatus_CurrentMarker">
-                <svg width="27" height="35" viewBox="0 0 27 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M1.21957 8.34917C1.91969 6.60534 2.97721 5.02744 4.32405 3.71705C6.76542 1.50544 9.95108 0.295957 13.2451 0.330047C19.7191 0.330047 26.2691 4.95905 26.2751 13.842C26.2751 21.22 14.3021 33.453 13.7751 33.979C13.7165 34.0519 13.6419 34.1102 13.557 34.1494C13.4722 34.1886 13.3795 34.2076 13.2861 34.205C13.1876 34.2043 13.0903 34.184 12.9998 34.1452C12.9093 34.1064 12.8274 34.0499 12.7591 33.979C12.2281 33.453 0.259054 21.107 0.259054 13.842C0.192263 11.9641 0.519457 10.093 1.21957 8.34917ZM7.82505 12.6C7.82611 14.0473 8.40149 15.4349 9.42484 16.4583C10.4482 17.4816 11.8358 18.057 13.2831 18.058C13.9977 18.0619 14.706 17.9246 15.3675 17.654C16.0289 17.3834 16.6304 16.9849 17.1375 16.4814C17.6446 15.9778 18.0473 15.3791 18.3225 14.7196C18.5976 14.0601 18.7399 13.3527 18.7411 12.638C18.7403 11.1907 18.165 9.80294 17.1416 8.77954C16.1182 7.75613 14.7304 7.18084 13.2831 7.18005C12.5685 7.17636 11.8602 7.31376 11.1988 7.58437C10.5374 7.85497 9.93595 8.25347 9.42889 8.757C8.92183 9.26053 8.51915 9.85919 8.24393 10.5187C7.96871 11.1781 7.82636 11.8855 7.82505 12.6Z" fill={v.color}/>
-                </svg>
-                  <span className="label">You are here!</span>
-                </div>
-                <span className="DotMarker__Active" style={{backgroundColor: v.color }}></span>
-              </>
-            }
-
-            { currentLevel + 1 == v.level && v.level > 1 &&
-              <>
-                <div className="AccountStatus_Marker">
-                  <svg width="27" height="35" viewBox="0 0 27 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M1.21957 8.34917C1.91969 6.60534 2.97721 5.02744 4.32405 3.71705C6.76542 1.50544 9.95108 0.295957 13.2451 0.330047C19.7191 0.330047 26.2691 4.95905 26.2751 13.842C26.2751 21.22 14.3021 33.453 13.7751 33.979C13.7165 34.0519 13.6419 34.1102 13.557 34.1494C13.4722 34.1886 13.3795 34.2076 13.2861 34.205C13.1876 34.2043 13.0903 34.184 12.9998 34.1452C12.9093 34.1064 12.8274 34.0499 12.7591 33.979C12.2281 33.453 0.259054 21.107 0.259054 13.842C0.192263 11.9641 0.519457 10.093 1.21957 8.34917ZM7.82505 12.6C7.82611 14.0473 8.40149 15.4349 9.42484 16.4583C10.4482 17.4816 11.8358 18.057 13.2831 18.058C13.9977 18.0619 14.706 17.9246 15.3675 17.654C16.0289 17.3834 16.6304 16.9849 17.1375 16.4814C17.6446 15.9778 18.0473 15.3791 18.3225 14.7196C18.5976 14.0601 18.7399 13.3527 18.7411 12.638C18.7403 11.1907 18.165 9.80294 17.1416 8.77954C16.1182 7.75613 14.7304 7.18084 13.2831 7.18005C12.5685 7.17636 11.8602 7.31376 11.1988 7.58437C10.5374 7.85497 9.93595 8.25347 9.42889 8.757C8.92183 9.26053 8.51915 9.85919 8.24393 10.5187C7.96871 11.1781 7.82636 11.8855 7.82505 12.6Z" fill="#f9c6b9"/>
-                  </svg>
-                  <span className="label">${(nextLevelRequirement / 100).toFixed(2)} to go!</span>
-                </div>
-                <span className="DotMarker__Next"></span>
-              </>
-            }
-          </div>
-
-          <div className="LoyaltyClassificationData">
-            <span className="Level" style={{color: v.color}}>LEVEL {v.level}</span>
-            <span className="Name">{v.name}</span>
-            <span className="RequirementStatement">{v.desc}</span>
-          </div>
-
+        <div class="loyalty-line--here" style="left: {{ customerLoyaltyLevel | times: 25 |  minus: 12.5 }}%;">
+          <svg width="27" height="35" viewBox="0 0 27 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M1.21957 8.34917C1.91969 6.60534 2.97721 5.02744 4.32405 3.71705C6.76542 1.50544 9.95108 0.295957 13.2451 0.330047C19.7191 0.330047 26.2691 4.95905 26.2751 13.842C26.2751 21.22 14.3021 33.453 13.7751 33.979C13.7165 34.0519 13.6419 34.1102 13.557 34.1494C13.4722 34.1886 13.3795 34.2076 13.2861 34.205C13.1876 34.2043 13.0903 34.184 12.9998 34.1452C12.9093 34.1064 12.8274 34.0499 12.7591 33.979C12.2281 33.453 0.259054 21.107 0.259054 13.842C0.192263 11.9641 0.519457 10.093 1.21957 8.34917ZM7.82505 12.6C7.82611 14.0473 8.40149 15.4349 9.42484 16.4583C10.4482 17.4816 11.8358 18.057 13.2831 18.058C13.9977 18.0619 14.706 17.9246 15.3675 17.654C16.0289 17.3834 16.6304 16.9849 17.1375 16.4814C17.6446 15.9778 18.0473 15.3791 18.3225 14.7196C18.5976 14.0601 18.7399 13.3527 18.7411 12.638C18.7403 11.1907 18.165 9.80294 17.1416 8.77954C16.1182 7.75613 14.7304 7.18084 13.2831 7.18005C12.5685 7.17636 11.8602 7.31376 11.1988 7.58437C10.5374 7.85497 9.93595 8.25347 9.42889 8.757C8.92183 9.26053 8.51915 9.85919 8.24393 10.5187C7.96871 11.1781 7.82636 11.8855 7.82505 12.6Z" fill="{{ customerLoyaltyColour }}"/>
+          </svg>
+          <h4 class="heading heading--secondary">You are here!</h4>
+          <div class="dot" style="background:{{ customerLoyaltyColour }};"></div>
         </div>
-      ))}
 
-    </div>
-  </section>
+        {%- if customerLoyaltyLevel < 4 -%}
+          <div class="loyalty-line--next" style="left: {{ customerLoyaltyLevelNext | plus: 1 | times: 25 |  minus: 12.5 }}%;">
+            <svg width="27" height="35" viewBox="0 0 27 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M1.21957 8.34917C1.91969 6.60534 2.97721 5.02744 4.32405 3.71705C6.76542 1.50544 9.95108 0.295957 13.2451 0.330047C19.7191 0.330047 26.2691 4.95905 26.2751 13.842C26.2751 21.22 14.3021 33.453 13.7751 33.979C13.7165 34.0519 13.6419 34.1102 13.557 34.1494C13.4722 34.1886 13.3795 34.2076 13.2861 34.205C13.1876 34.2043 13.0903 34.184 12.9998 34.1452C12.9093 34.1064 12.8274 34.0499 12.7591 33.979C12.2281 33.453 0.259054 21.107 0.259054 13.842C0.192263 11.9641 0.519457 10.093 1.21957 8.34917ZM7.82505 12.6C7.82611 14.0473 8.40149 15.4349 9.42484 16.4583C10.4482 17.4816 11.8358 18.057 13.2831 18.058C13.9977 18.0619 14.706 17.9246 15.3675 17.654C16.0289 17.3834 16.6304 16.9849 17.1375 16.4814C17.6446 15.9778 18.0473 15.3791 18.3225 14.7196C18.5976 14.0601 18.7399 13.3527 18.7411 12.638C18.7403 11.1907 18.165 9.80294 17.1416 8.77954C16.1182 7.75613 14.7304 7.18084 13.2831 7.18005C12.5685 7.17636 11.8602 7.31376 11.1988 7.58437C10.5374 7.85497 9.93595 8.25347 9.42889 8.757C8.92183 9.26053 8.51915 9.85919 8.24393 10.5187C7.96871 11.1781 7.82636 11.8855 7.82505 12.6Z" fill="{{ customerLoyaltyLevelNextColour }}"/>
+            </svg>
+            <h4 class="heading heading--secondary">${{ customerLoyaltyLevelNextCost | minus: account_total_spend }} to go!</h4>
+            <div class="dot" style="background:{{ customerLoyaltyLevelNextColour }};"></div>
+          </div>
+        {%- endif -%}
+      </div>
 
-  <section className="AccountLoyaltyFeatures_Section" style={{backgroundColor: '#fce2dc'}}>
-    <div className="Container">
-      <h3 className="SectionHeading">{loyaltyLevels[currentLevel-1].name} (Level {loyaltyLevels[currentLevel-1].level}) Benefits</h3>
-      <ul className="LoyaltyFeatures_List">
-        { loyaltyLevels[currentLevel-1].features.map((feature) =>
-          <li className="LoyaltyFeature">
-            <svg width="16" height="12" viewBox="0 0 16 12" fill='none' xmlns="http://www.w3.org/2000/svg">
-            <path d="M5.83 7.305L2.406 4.141L0 6.488L5.83 12L15.547 2.346L13.14 0L5.83 7.305Z" fill={loyaltyLevels[currentLevel-1].color}></path>
-            </svg> {feature}
-          </li>
-        )}
-      </ul>
-      <div class="Loyalty__CustomMessage"><p>{ rootNode.dataset.loyaltycustommsg }</p></div>
-    </div>
-  </section>
+      <div class="loyalty-tiers">
+        {%- for loyalty_tiers in shop.metaobjects['loyalty_tiers'].values limit: 4 -%}
+
+          {%- capture loyalty_level_tier -%}{{ loyalty_tiers.loyalty_level.value }}{%- endcapture -%}
+          {%- assign loyalty_level_tier = loyalty_level_tier | remove: "Tier " | times: 1 -%}
+
+          <div class="loyalty-tier">
+            <span class="level heading heading--secondary" style="color: {{ loyalty_tiers.tier_colour.value }};">LEVEL {{ loyalty_level_tier | remove: "Tier " }}</span>
+            <span class="name heading h4">{{ loyalty_tiers.tier_name.value }}</span>
+            <span class="requirements">{{ loyalty_tiers.level_requirement_text.value }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div class="loyalty-benefits--container">
+
+      
+      
+
+        <div class="loyalty-benefits">
+          <h2 class="heading h3">{{ customerLoyaltyName }} (Level {{ customerLoyaltyLevel }}) Benefits</h2>
+  
+          {%- for loyalty_feature in shop.metaobjects['loyalty_features'].values -%}
+  
+            {%- for tier in loyalty_feature.available_for_tiers.value -%}
+              {%- capture tierValue -%}{{ tier }}{%- endcapture -%}
+              {%- assign tierValue = tierValue | remove: "Tier " | times: 1 -%}
+  
+                {%- if tierValue == customerLoyaltyLevel -%}
+                  <div class="loyalty-benefits--item">
+                    <svg class="icon" role="presentation" viewBox="0 0 24 24">
+                      <polygon fill="{{ customerLoyaltyColour }}" points="9,20 2,13 5,10 9,14 19,4 22,7 "></polygon>
+                    </svg>            
+                    {{ loyalty_feature.description | metafield_tag }}
+                  </div>
+                {%- endif -%}       
+  
+            {%- endfor -%}
+  
+          {%- endfor -%}
+        </div>
+
+        <div class="loyalty-birthday">
+          <div class="yotpo-widget-instance" data-yotpo-instance-id="51344"></div>
+        </div>
+
+      </div>
+
+  
+
+  </div>
+
+  
+</section>

@@ -3661,19 +3661,24 @@ var SlideshowItem = class extends HTMLElement {
       });
     }
   }
+
   get index() {
     return [...this.parentNode.children].indexOf(this);
   }
+
   get selected() {
     return !this.hasAttribute("hidden");
   }
+
   async transitionToLeave(transitionType, shouldAnimate = true) {
     if (transitionType !== "reveal") {
       this.setAttribute("hidden", "");
     }
     this._pendingAnimations.forEach((animation2) => animation2.cancel());
     this._pendingAnimations = [];
-    let animation = null, textElements = await resolveAsyncIterator(this.querySelectorAll("split-lines, .button-group, .button-wrapper")), imageElements = Array.from(this.querySelectorAll(".slideshow__image-wrapper"));
+    let animation = null,
+      textElements = await resolveAsyncIterator(this.querySelectorAll("split-lines, .button-group, .button-wrapper")),
+      imageElements = Array.from(this.querySelectorAll(".slideshow__image-wrapper"));
     switch (transitionType) {
       case "sweep":
         animation = new CustomAnimation(new SequenceEffect([
@@ -3706,10 +3711,13 @@ var SlideshowItem = class extends HTMLElement {
       this.setAttribute("hidden", "");
     }
   }
+
   async transitionToEnter(transitionType, shouldAnimate = true, reverseDirection = false) {
     this.removeAttribute("hidden");
     await this._untilReady();
-    let animation = null, textElements = await resolveAsyncIterator(this.querySelectorAll("split-lines, .button-group, .button-wrapper")), imageElements = Array.from(this.querySelectorAll(".slideshow__image-wrapper"));
+    let animation = null,
+      textElements = await resolveAsyncIterator(this.querySelectorAll("split-lines, .button-group, .button-wrapper")),
+      imageElements = Array.from(this.querySelectorAll(".slideshow__image-wrapper"));
     switch (transitionType) {
       case "sweep":
         animation = new CustomAnimation(new SequenceEffect([
@@ -3739,26 +3747,40 @@ var SlideshowItem = class extends HTMLElement {
     }
     return this._executeAnimation(animation, shouldAnimate);
   }
+
   async _executeAnimation(animation, shouldAnimate) {
     this._pendingAnimations.push(animation);
     shouldAnimate ? animation.play() : animation.finish();
+    await animation.finished;
+
+    // Update styles after animation
+    Array.from(this.querySelectorAll("[reveal]")).forEach(item => {
+      item.style.opacity = "1";
+      item.style.display = "block";
+    });
+
     return animation.finished;
   }
+
   async _untilReady() {
     return Promise.all(this._getVisibleImages().map((image) => imageLoaded(image)));
   }
+
   _preloadImages() {
     this._getVisibleImages().forEach((image) => {
       image.setAttribute("loading", "eager");
     });
   }
+
   _getVisibleImages() {
     return Array.from(this.querySelectorAll("img")).filter((image) => {
       return getComputedStyle(image.parentElement).display !== "none";
     });
   }
 };
+
 window.customElements.define("slide-show-item", SlideshowItem);
+
 
 // js/mixin/vertical-scroll-blocker.js
 var VerticalScrollBlockerMixin = {
@@ -4404,7 +4426,7 @@ var SubCollections = class extends CustomHTMLElement {
     this.logoListScrollable.scrollBy({ left: (this.logoListScrollable.clientWidth + 24) * directionFlip, behavior: "smooth" });
   }
 };
-window.customElements.define("subcollections", SubCollections);
+window.customElements.define("sub-collections", SubCollections);
 
 // js/custom-element/section/blog/blog-post-navigation.js
 var BlogPostNavigation = class extends HTMLElement {

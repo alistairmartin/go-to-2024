@@ -80,6 +80,10 @@
         {%- endif -%}
       </header>
 
+      
+
+     
+
       {%- capture section_content -%}
         <div class="logo-list__list">
           {%- for block in section.blocks -%}
@@ -126,9 +130,12 @@
         </div>
       {%- endcapture -%}
 
+      <sub-collections>
       {%- if section.settings.stack_logos -%}
         <logo-list {% if section.settings.reveal_on_scroll %}reveal-on-scroll{% endif %} class="logo-list logo-list--grid">
+        
           {{- section_content -}}
+    
         </logo-list>
       {%- else -%}
         <div class="scroller">
@@ -153,6 +160,7 @@
           </div>
         </div>
       {%- endif -%}
+      </sub-collections>
 
       {%- if section.settings.button_text != blank -%}
         <div class="section__footer">

@@ -81,6 +81,21 @@
     }
   };
 
+
+  window.languages = {
+    shipping: {
+      unavailable: ({{ 'shipping.unavailable' | t | json }}).replaceAll('&#39;', '\''),
+      title: {{ 'shipping.title' | t | json }},
+      form: {
+        email: {{ 'shipping.form.email' | t | json }},
+        emailPlaceholder: {{ 'shipping.form.email_placeholder' | t | json }},
+        orderNumber: {{ 'shipping.form.order_number' | t | json }},
+        orderNumberPlaceholder: {{ 'shipping.form.order_number_placeholder' | t | json }},
+        submit: {{ 'shipping.form.submit' | t | json }}
+      }
+    }
+  }
+
   window.addEventListener('pageshow', async () => {
     const cartContent = await (await fetch(`${window.themeVariables.routes.cartUrl}.js`, {cache: 'reload'})).json();
     document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {detail: {cart: cartContent}}));

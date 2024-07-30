@@ -1,282 +1,203 @@
 @import "components/media-queries";
 @import "components/variables";
 
-.AccountLoyalty_Section {
-    display: flex;
-    width: 264px;
-    margin: 0 auto 47px;
-    justify-content: flex-end;
-  
-    @include media-query($medium-up) {
-      display: block;
-      width: 100%;
-      padding-top: 50px;
-    }
-  
-    @include media-query($large-up) {
-      width: 100%;
-      margin: 0;
-    }
+
+[class*="shopify-section--main-customers"] {
+  .link-bar {
+    background: $gotoPinkLight;
   }
-  
-  .AccountTimeline_Column {
-    width: 6px;
-    min-height: 10px;
-    background: #fce2dc;
-    
-    &:before {
-      content: "";
-    }
-    
-    @include media-query($medium-up) {
-      width: 100%;
-      height: 6px;
-      min-height: 0;
-      order: 2;
-    }
-  }
-  
-  .AccountLoyalty_Section > .AccountClassification_Column {
-    padding: 10px 0 10px 21px;
-  
-    
-    @include media-query($medium-up) {
-      padding: 49px 0 0;
-      display: flex;
-      justify-content: space-between;
-    }
-  
-    @include media-query($large-up) {
-      padding: 49px 46px 0;
-    }
-  }
-  
-  .AccountClassification_Column > .AccountClassification {
-    margin-bottom: 20px;
-    position: relative;
-  }
-  
-  .AccountClassification_Column > .AccountClassification:last-child {
-    margin-bottom: 0;
-  }
-  
-  .LoyaltyClassificationData {
-    text-align: left;
-  
-    
-    @include media-query($medium-up) {
-      text-align: center;
-    }
-  }
-  
-  .LoyaltyClassificationData > .Level {
-    display:block;
-    color: #fe9b55;
-    font-family: var(--text-font-family);
-    font-size: 12px;
-    font-weight: bold;
+
+  .mobile-toolbar__item {
+    background: $gotoPinkLight;
     text-transform: uppercase;
-  
-    @include media-query($medium-up) {
-      font-size: 16px;
-      margin-bottom: 11px;
-      line-height: 1;
-    }
-  }
-  
-  .LoyaltyClassificationData > .Name {
-    display:block;
-    font-family: var(--heading-font-family);
-    font-size: 24px;
-    font-weight: bold;
-    color: #f9c6b9;
-    line-height: 29px;
-    
-    @include media-query($medium-up) {
-      color: #000000;
-    }
-  }
-  
-  .LoyaltyClassificationData > .RequirementStatement {
-    display:block;
-    font-family: var(--text-font-family);
-    font-size: 14px;
     font-weight: 500;
-    color: #000000;
   }
-  
-  .MarkerContainer > .AccountStatus_CurrentMarker,
-  .MarkerContainer > .AccountStatus_Marker {
-    position: absolute;
-    left: -162px;
-    top: -13px;
+}
+
+.customer-header {
+  text-align: left;
+  margin: 40px 0;
+
+  .container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    text-align: center;
-    min-width: 127px;
-    
-    @include media-query($medium-up) {
-      top: -137px;
-      left: 50%;
-      transform: translate(-50%, 0);
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    .heading {
+      margin-bottom: 0;
+
+      @include media-query($small) {
+        font-size: 30px;
+      }
+    }
+
+    p {
+      @include media-query($small) {
+        margin: 0;
+      }
     }
   }
-  
-  .AccountClassification > .MarkerContainer img {
-    display: block;
-    margin: 0 auto;
+}
+
+.loyalty-account {
+  padding: 70px 0 50px;
+
+  .yotpo-tile {
+    border-radius: 8px;
+    cursor: pointer;
   }
-  
-  .AccountStatus_CurrentMarker > .label {
-    font-family: var(--text-font-family);
-    font-size: 18px;
-    font-weight: bold;
-    color: black;
-    text-align: center;
-    display: block;
-    letter-spacing: normal;
-    width: 100%;
-  
-    @include media-query($medium-up) {
-      padding-top: 5px;
-    }
+
+  .yotpo-description-text {
+    font-size: 17px !important;
   }
-  
-  .AccountStatus_Marker > .label {
-    font-family: var(--text-font-family);
-    font-size: 18px;
-    font-weight: 500;
-    color: #6d7278;
-    text-align: center;
-    display: block;
-    letter-spacing: normal;
-    width: 100%;
-  
-    @include media-query($medium-up) {
-      padding-top: 5px;
-    }
-  }
-  
-  .MarkerContainer .DotMarker__Active {
-    width: 16px;
-    height: 16px;
-    background-color: #f9c6b9;
-    position: absolute;
-    border-radius: 50%;
-    left: -32px;
-    top: 50%;
-    margin-top: -8px;
-  
-    @include media-query($medium-up) {
-      left: 50%;
-      margin-left: -8px;
-      top: -60px;
-      margin-top: 0;
-    }
-  }
-  
-  /**
-  * ----------------------------------------------------------------------------------------------
-  * ## Loyalty Features
-  * ----------------------------------------------------------------------------------------------
-  */
-  .AccountLoyaltyFeatures_Section {
-    width: 100%;
-    margin: 0 auto 23px;
-    padding: 22px 42px 21px 24px;
-  
-    @include media-query($medium-up) {
-      display: block;
-      margin: 0 0 23px;
-    }
-  
-    @include media-query($large-up) {
-      width: 100%;
-    }
-  }
-  
-  .AccountLoyaltyFeatures_Section > .Container {
-    width: 100%;
-    max-width: 410px;
-    margin: 0 auto;
+
+}
+
+
+.loyalty-tiers {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+
+  .loyalty-tier {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
     padding: 0;
+
+    @include media-query($medium-up) {
+      padding: 16px;
+    }
+
+
+    .level {
+
+    }
+
+    .name {
+
+    }
+
+    .requirements {
+      font-weight: 500;
+      text-align: center;
+      font-size: 14px;
+    }
+  } 
+}
+
+.loyalty-line {
+  border-radius: 5px;
+  height: 10px;
+  background: $gotoPinkLight;
+  width: 100%;
+  display: block;
+  margin: 32px 0;
+  position: relative;
+}
+
+.loyalty-line--line-active {
+  border-radius: 5px;
+  height: 10px;
+  position: absolute;
+  bottom: -5px;
+  transform: translate(0, -50%);
+}
+
+
+.loyalty-line--here, .loyalty-line--next {
+  border-radius: 5px;
+  position: absolute;
+  bottom: -5px;
+  transform: translate(-50%,0%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .heading {
+    margin: 16px 0;
+
+    min-width: 95px;
   }
-  
-  .AccountLoyaltyFeatures_Section .SectionHeading {
-    margin: 0 0 26px 0;
-    font-family: var(--heading-font-family);
-    font-size: 24px;
-    font-weight: bold;
-    color: #000000;
+
+  .dot {
+    width: 20px;
+    height: 20px;
+    display: block;
+    border-radius: 20px;
+    border: 1px solid $gotoGreyDark;
+  }
+}
+
+.loyalty-line--next {
+  .heading {
+    opacity: 0.5;
+  }
+  svg {
+    opacity: 0.5;
+  }
+}
+
+
+.loyalty-benefits--container {
+  display: flex;
+  gap: 0;
+  align-items: center;
+  flex-direction: column;
+
+  @include media-query($medium-up) {
+    flex-direction: row;
+    gap: 32px;
+  }
+
+  .loyalty-birthday {
+    width: 100%;
+    background: $gotoPinkLight;
+    border-radius: 8px;
+
+    @include media-query($medium-up) {
+      width: 30%;
+    }
+  }
+
+  .loyalty-benefits {
+    border-radius: 8px;
+    margin: 32px 0;
+    background: $gotoPinkLight;
+    padding: 40px 16px 16px;
+    width: 100%;
+    display: block;
     text-align: center;
-  }
-  
-  .Loyalty__CustomMessage {
-    margin-top: 20px;
-  }
-  
-  .Loyalty__CustomMessage,
-  .LoyaltyFeatures_List {
-    list-style: none;
-    padding: 0;
-  
+
     @include media-query($medium-up) {
-      padding-left: 16px;
+      width: 70%;
+      padding: 40px 16px;
+    }
+  
+    .loyalty-benefits--item {
+      font-weight: 500;
+      display: flex;
+      justify-content: flex-start;
+      margin-bottom: 24px;
+      text-align: left;
+      align-items: flex-start;
+
+      @include media-query($medium-up) {
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        text-align: center;
+
+      }
+  
+      svg {
+        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+      }
     }
   }
-  
-  .Loyalty__CustomMessage > p,
-  .LoyaltyFeatures_List > .LoyaltyFeature {
-    margin: 0 0 12px 0;
-    font-family: var(--text-font-family);
-    font-size: 16px;
-    font-weight: 500;
-    color: #000000;
-  
-    padding-left: 23px;
-    position: relative;
-    line-height: 19px;
-    
-  }
-  
-  .LoyaltyFeature > svg {
-    position: absolute;
-    top: 3px;
-    left: 0;
-  }.MarkerContainer .DotMarker__Next {
-    width: 16px;
-    height: 16px;
-    background-color: #6d7278;
-    position: absolute;
-    border-radius: 50%;
-    left: -32px;
-    top: 50%;
-    margin-top: -8px;
-  
-    @include media-query($medium-up) {
-      left: 50%;
-      margin-left: -8px;
-      top: -60px;
-      margin-top: 0;
-    }
-  }
-  
-  .MarkerContainer .DotMarker__Next {
-    width: 16px;
-    height: 16px;
-    background-color: #f9c6b9;
-    position: absolute;
-    border-radius: 50%;
-    left: -32px;
-    top: 50%;
-    margin-top: -8px;
-  
-    @include media-query($medium-up) {
-      left: 50%;
-      margin-left: -8px;
-      top: -60px;
-      margin-top: 0;
-    }
-  }
-  
+}
+

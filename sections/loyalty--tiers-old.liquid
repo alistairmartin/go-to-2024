@@ -1,0 +1,158 @@
+
+
+
+<section class="Section LoyaltyTiers PlainText" data-section-id="{{ section.id }}" data-section-type="featured-collections" data-settings='{{ section_settings }}'  {% if section.settings.animate %}data-aos-offset="200" data-aos-duration="600" data-aos-once="{{ section.settings.animate_once }}" data-aos="{{ section.settings.title_animation_direction }}"{% endif %}>
+
+  <div class="ContentWidth">
+
+    {%- if section.settings.subheading != blank or section.settings.title != blank -%}
+        <header class="SectionHeader SectionHeader--center">
+          {%- if section.settings.subheading != blank -%}
+            <h3 class="SectionHeader__SubHeading u-h6">{{ section.settings.subheading | escape }}</h3>
+          {%- endif -%}
+
+          {%- if section.settings.title != blank -%}
+            <h2 class="SectionHeader__Heading Text--bold Heading u-h1">{{ section.settings.title | escape }}</h2>
+          {%- endif -%}
+        </header>
+      {%- endif -%}
+
+    <div class="LoyaltyTiers__Container">
+    <div class="ProductList ProductList--carousel Carousel NoScrollBar" data-flickity-config='{{ flickity_options }}'>
+      {% for block in section.blocks %}
+        <div class="Carousel__Cell">
+        <div class="LoyaltyTier {% if block.settings.secret_tier %}LoyaltyTier--Secret{% endif %}" id="block-{{ block.id }}">
+          <div class="LoyaltyTiers__TextWrapper">
+            <div class="LoyaltyTiers__TextContainer">
+              <div class="LoyaltyTiers__Heading">
+                <h2 class="Heading Text--heavy LoyaltyTiers__Title">{{ block.settings.title }}</h2>
+                <h4 class="Heading LoyaltyTiers__Subtitle">{{ block.settings.subtitle }}</h4>
+                <h5 class="Text--heavy LoyaltyTiers__Subtitle2">{{ block.settings.subtitle2 }}</h5>
+              </div>
+              <div class="LoyaltyTiers__TextContent">{{ block.settings.text_content }}</div>
+            </div>
+          </div>
+        </div>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+
+</section>
+
+{{ 'aos.min.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'aos.min.js' | asset_url }}" defer></script>
+<script type="text/javascript">
+  window.addEventListener('load', function (event) {
+    AOS.init();
+  });
+</script>
+{% schema %}
+{
+  "name": "Loyalty (Tiers)",
+    "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Sub-heading",
+      "default": "Sub-heading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Your Liquid"
+    },
+    {
+        "type": "header",
+        "content": "Animation"
+    },
+    {
+        "type": "checkbox",
+        "id": "animate",
+        "label": "Animated",
+        "default": true
+    },
+    {
+        "type": "checkbox",
+        "id": "animate_once",
+        "label": "Animate once",
+        "default": false,
+        "info": "Animation will apply only once on scroll"
+    },
+    {
+    "type": "select",
+    "id": "title_animation_direction",
+    "label": "Title animation direction",
+    "default": "fade-left",
+    "options": [
+        {
+            "label": "Slide left",
+            "value": "fade-left"
+        },
+        {
+            "label": "Slide right",
+            "value": "fade-right"
+        },
+        {
+            "label": "Slide up",
+            "value": "fade-up"
+        },
+        {
+            "label": "Slide down",
+            "value": "fade-down"
+        }
+    ]
+}
+  ],
+  "blocks": [
+    {
+      "name": "Block",
+      "type": "block",
+      "settings": [
+        {
+        "type": "checkbox",
+        "id": "secret_tier",
+        "label": "Secret Tier?"
+        },
+        {
+          "type": "header",
+          "content": "Text"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle"
+        },
+        {
+          "type": "text",
+          "id": "subtitle2",
+          "label": "Subtitle #2"
+        },
+        {
+            "type": "richtext",
+            "id": "text_content",
+            "label": "Content"
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "Background"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Loyalty (Tiers)",
+      "category": "Loyalty  "
+    }
+  ]
+}
+{% endschema %}

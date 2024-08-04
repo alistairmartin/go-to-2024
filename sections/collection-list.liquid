@@ -93,7 +93,7 @@
               {%- endif -%}
 
               {%- if block.settings.link_text != blank -%}
-                <span class="heading heading--small link" {% if section.settings.reveal_on_scroll %}reveal{% endif %}>{{ block.settings.link_text | escape }}</span>
+                <span class="button button--full {{ section.settings.button_style }}" {% if section.settings.reveal_on_scroll %}reveal{% endif %}>{{ block.settings.link_text | escape }}</span>
               {%- endif -%}
             {%- endcapture -%}
 
@@ -367,6 +367,38 @@
       "id": "text_color",
       "label": "Text color",
       "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "radio",
+      "id": "button_style",
+      "label": "Button Style",
+      "options": [
+        {
+            "value": "button--primary",
+            "label": "Button"
+        },
+        {
+            "value": "button--secondary",
+            "label": "Button (Secondary)"
+        },
+        {
+            "value": "button--ternary",
+            "label": "Button (Ternary)"
+        },
+        {
+            "value": "button--outline",
+            "label": "Button (Outline)"
+        },
+        {
+            "value": "link",
+            "label": "Link"
+        },
+        {
+            "value": "link-with-arrow",
+            "label": "Link (With Arrow)"
+        }
+      ],
+      "default": "button--primary"
     }
   ],
   "presets": [

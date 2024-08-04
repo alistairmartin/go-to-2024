@@ -21,3 +21,7 @@
 {%- if template contains "customer" -%}
 <link rel="stylesheet" href="{{ 'loyalty.css' | asset_url }}">
 {%- endif -%}
+
+{%- if page.handle contains "go-to-gang" -%}
+    <link rel="stylesheet" href="{{ 'loyalty-landing.css' | asset_url }}">
+    {%- endif -%}

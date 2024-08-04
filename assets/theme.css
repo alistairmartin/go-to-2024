@@ -598,7 +598,7 @@ p a:not(.button), .rte a:not(.button), .link {
 .heading--small, .heading--xsmall, .heading--xxsmall {
   font-family: var(--text-font-family);
   font-style: var(--text-font-style);
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   font-weight: var(--text-font-bold-weight);
   /* letter-spacing: 1px;
   line-height: 1.46636; */

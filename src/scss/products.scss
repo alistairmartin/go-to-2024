@@ -3,6 +3,10 @@
 
 .product-meta {
     text-align: center;
+
+    .product-meta__title {
+      margin-bottom: 16px;
+    }
 }
 
 .product-meta__price-list-container {
@@ -14,10 +18,11 @@
 }
 
 .product {
-    margin-top: 50px;
+  margin: 0;
 }
 
 .product__media {
+  padding: 0;
   @include media-query($medium-up) {
   position: sticky;
   top: 90px;
@@ -737,8 +742,6 @@
       -moz-border-radius: 8px;
       -o-border-radius: 8px;
       border-radius: 8px;
-      display: grid;
-      gap: 16px;
     }
       
     .rc-radio {
@@ -761,11 +764,14 @@
           border: 1px solid #585C60;
           content: ' ';
           position: absolute;
-          top: -12px;
           text-align: center;
           font-weight: bold;
           color: white;
+          background: #fff;
           padding-top: 2px;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
         }
       }
 

@@ -1,0 +1,74 @@
+@import "components/media-queries";
+@import "components/variables";
+
+.line-item {
+    margin-bottom: 32px;
+  
+    .product-item-meta__title {
+      font-weight: 600;
+    }
+  
+    .price  {
+      font-weight: 600;
+    }
+  
+    .property--byo-bundle {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+    
+    
+      .key {
+        font-weight: bold;
+        color: $gotoBlack;
+        background: $gotoPink;
+        padding: 2px 6px;
+        border-radius: 10px;
+        margin-bottom: 5px;
+        display: inline-block;
+        font-size: 11px;
+      }
+    
+      .value {
+        font-size: 10px;
+        display: block;
+        font-style: italic;
+      }
+    }
+  }
+  
+  .discount--build-your-routine {
+    display: none;
+  }
+  
+  .line-item__discount-badge.discount-badge {
+    background: $gotoPink;
+    color: $gotoBlack;
+    padding: 4px;
+    border-radius: 8px;
+  }
+  
+  .shipping-bar {
+    padding: 16px;
+    // background: $gotoPinkLight;
+    color: $gotoBlack;
+    margin-top: 0;
+
+    .shipping-bar__text{
+        font-style: italic;
+    }
+  }
+
+  #mini-cart-form {
+    padding: 20px;
+  }
+
+  cart-drawer {
+    .drawer__content {
+        padding-left: 0;
+        padding-right: 0;
+    }
+  }

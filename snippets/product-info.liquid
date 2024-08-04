@@ -15,9 +15,9 @@
     {%- endif -%}
 
     {% unless featured %}
-      <h1 class="product-meta__title heading h3">{{ product.title }}</h1>
+      <h1 class="product-meta__title heading h4 heading--secondary">{{ product.title }}</h1>
     {% else %}
-      <h2 class="product-meta__title heading h3">
+      <h2 class="product-meta__title heading h4 heading--secondary">
         <a href="{{ product.url }}">{{ product.title }}</a>
       </h2>
     {% endunless %}

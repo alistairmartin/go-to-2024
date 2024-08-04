@@ -1,0 +1,278 @@
+@import "components/media-queries";
+@import "components/variables";
+
+.shopify-section--timeline-vertical-loyalty {
+
+    .timeline-vertical {
+      padding: 68px 0 0;
+    }
+
+    .timeline-vertical-item--container {
+      margin-bottom: 40px;
+    }
+  
+    .h1 {
+      font-size: 107px;
+      color: $gotoPink;
+    }
+
+    .heading.h3 {
+      margin-top: 48px;
+      @include media-query($medium-up) {
+        margin-top: 48px;
+      }
+    }
+  
+    &:after {
+      display: none;
+    }
+  
+    .image-left {
+      img {
+        border-radius: 8px;
+        filter: drop-shadow(10px 10px 0px var(--border-color));
+        @include media-query($medium-up) {
+          filter: drop-shadow(-10px 10px 0px var(--border-color));
+        }
+      }
+
+      .timeline-vertical-item--text {
+        @include media-query($medium-up) {
+          margin-left: 48px;
+        }
+      }
+    }
+  
+    .image-right {
+      img {
+        border-radius: 8px;
+        filter: drop-shadow(10px 10px 0px var(--border-color));
+        @include media-query($medium-up) {
+          filter: drop-shadow(10px 10px 0px var(--border-color));
+        }
+      }
+  
+      .timeline-vertical-item--text {
+        @include media-query($medium-up) {
+          margin-right: 48px;
+        }
+      }
+    }
+
+    
+  
+    .timeline-vertical-item {
+      max-width: var(--container-max-width);
+      .timeline-vertical-item--text {
+        width: 100%;
+        text-align: left;
+        padding: 16px;
+        margin-top: 20px;
+
+        @include media-query($medium-up) {
+          max-width: 350px;
+          width: 40%;
+        }
+
+        &:after {
+          display: none;
+        }
+
+        .text {
+          text-align: left;
+          padding-left: 0;
+          font-size: 20px;
+          font-weight: normal;
+          margin-top: 24px;
+
+          @include media-query($medium-up) {
+            
+          }
+        }
+      }
+    
+      &.image-left, &.image-right {
+        .timeline-vertical-item--image {
+          width: 100%;
+    
+          @include media-query($medium-up) {
+            width: 60%;
+          }
+        }
+      } 
+    }
+  }
+
+
+  // START -- Yotpo Refer a Friend
+  .loyalty-refer-a-friend {
+    .yotpo-widget-referral-widget {
+
+        .yotpo-tile-box {
+            @include media-query($medium-up) {
+            width: 100% !important;
+          }
+        }
+      
+        .yotpo-action-button-widget {
+          margin-top: 6px !important;
+          button {
+            width: 100% !important;
+            border: 2px solid #000 !important;
+            filter: drop-shadow(5px 5px 0px #000);
+      
+            span {
+              font-weight: bold !important;
+            }
+          }
+        }
+      
+        .yotpo-input-container {
+            margin-bottom: 18px !important;
+      
+            input {
+              border-radius: 4px !important;
+               border: 1px solid #000 !important;
+            }
+        }
+      
+      
+      
+        #yotpoReferralTitleText {
+          text-transform: capitalize;
+          font-family: Moderno FB, Montserrat, sans-serif !important;
+        }
+      
+        .yotpo-right-align-background, .yotpo-tile {
+          background: #F9C6B9 !important;
+        }
+      
+        .yotpo-is-mobile {
+          .yotpo-header-text {
+            display: none !important;
+          }
+      
+          .yotpo-tile {
+            min-height: 470px !important;
+          }
+        }
+      }
+  }
+  // END -- Yotpo Refer a Friend
+
+
+.loyalty-header {
+  .heading {
+    text-transform: unset !important;
+  }
+  split-lines {
+    text-transform: unset !important;
+
+    * {
+      text-transform: unset !important;
+    }
+  }
+
+  .sign-in {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    a {
+      margin-left: 8px;
+    }
+  }
+
+  .loyalty-header-logo {
+    filter: drop-shadow(5px 5px 0px #5887d590);
+    @include media-query($small) {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+  }
+}
+
+
+
+.loyalty-tier-landing {
+  background: var(--loyalty-color);
+  filter: drop-shadow(10px 10px 0px var(--loyalty-color-shadow));
+  width: calc(100% - 5px);
+  overflow: hidden;
+  margin-bottom: 10px;
+
+  @include media-query($medium-up) {
+    width: calc(100% - 20px);
+  }
+
+  .loyalty-tier {
+    text-align: center;
+    color: #fff;
+    padding: 24px 12px;
+
+    @include media-query($medium-up) {
+      padding: 32px;
+    }
+
+    * {
+      color: #fff;
+    }
+
+    .name {
+      font-weight: normal;
+    }
+
+    .requirements {
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-top: 16px;
+      display: block;
+      text-underline-offset: 5px !important;
+      text-decoration: underline !important;
+      text-decoration-color: #fff;
+      text-decoration-thickness: 5px !important;
+    }
+  }
+
+  .loyalty-benefits {
+    background: $gotoPink;
+    height: 100%;
+    padding: 24px 12px;
+
+    @include media-query($medium-up) {
+      padding: 32px;
+    }
+  }
+
+  .loyalty-benefits--item {
+    font-weight: 500;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 24px;
+    text-align: left;
+    align-items: flex-start;
+
+
+    @include media-query($medium-up) {
+      align-items: flex-start;
+      justify-content: flex-start;
+      margin-bottom: 16px;
+    }
+
+    svg {
+      margin-right: 10px;
+      width: 20px;
+      height: 20px;
+    }
+
+    p {
+      line-height: 1;
+      text-align: left;
+    }
+  }
+
+  .secret {
+    filter: blur(5px);
+  }
+}
+

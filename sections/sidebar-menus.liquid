@@ -1,3 +1,6 @@
+
+
+
 {% liquid
   assign foundAside = false
 
@@ -18,25 +21,70 @@
 %}
 
 {% if foundAside %}
-  <aside class="faq">
-    <div class="faq-navigation hidden-pocket">
+  <div class="container">
+  
 
-        <p>{{ sidebarMenuMetaobject.menu_title }}</p>
-        <scroll-spy class="scroll-spy">
-          <ul class="scroll-spy__list list--unstyled">
+  <aside class="sidebar-desktop">
+    <div class="sidebar-desktop--container">
+
+        <p  class="sidebar-desktop--title">{{ sidebarMenuMetaobject.menu_title }}</p>
+
+          <ul class="sidebar-desktop--list list--unstyled">
 
               {%- assign pageObjectTitles = sidebarMenuMetaobject.pages_titles.value -%}
               {%- for pageObject in sidebarMenuMetaobject.pages.value -%}
       
-                <li class="scroll-spy__item {% if pageObject.url == page.url %}is-visible{% endif %}">
-                  <a href="{{ pageObject.url }}" class="scroll-spy__anchor heading heading--small">{{ pageObjectTitles[forloop.index0] }}</a>
+                <li class="sidebar-desktop--list-item">
+                  {% if pageObject.url == page.url %}
+                    <button class="sidebar-desktop--link heading heading--xsmall active">{{ pageObjectTitles[forloop.index0] }}</button>
+                  {% else %}
+                  <a href="{{ pageObject.url }}" class="sidebar-desktop--link heading heading--xsmall">{{ pageObjectTitles[forloop.index0] }}</a>
+                  {% endif %}
                 </li>
               {%- endfor -%}
         </ul>
-        </scroll-spy>
+
       </div>
   </aside>
+
+
+  <div class="sidebar-mobile">
+    <div class="select-wrapper">
+      <combo-box initial-focus-selector="[aria-selected='true']" id="{{ option_id }}-combo-box" class="combo-box">
+        <span class="combo-box__overlay"></span>
+    
+        <header class="combo-box__header">
+          <p class="combo-box__title heading heading--secondary h5">{{ sidebarMenuMetaobject.menu_title }}</p>
+    
+          <button type="button" class="combo-box__close-button tap-area" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
+            {%- render 'icon' with 'close' -%}
+          </button>
+        </header>
+    
+        <div class="combo-box__option-list" role="listbox">
+          {%- for pageObject in sidebarMenuMetaobject.pages.value -%}
+              <a href="{{ pageObject.url }}" aria-selected="{% if pageObject.url == page.url %}true{% else %}false{% endif %}" class="combo-box__option-item">
+                {{ pageObjectTitles[forloop.index0] }}
+    
+               {% if pageObject.url == page.url %}{%- assign currentPage = pageObjectTitles[forloop.index0] -%}{% endif %}
+              </a>
+          {%- endfor -%}
+        </div>
+      </combo-box>
+    
+      <button type="button" is="toggle-button" class="select" aria-expanded="false" aria-haspopup="listbox" aria-controls="{{ option_id }}-combo-box">
+        <span id="{{ option_id }}-value" class="select__selected-value heading heading--secondary h6">{{ sidebarMenuMetaobject.menu_title }}: &nbsp; <span><i>{{ currentPage }}</i></span></span>
+        {%- render 'icon' with 'chevron' -%}
+      </button>
+    </div>
+  </div>
+
+  </div>
 {% endif %}
+
+
+
+
 
 {% schema %}
 {

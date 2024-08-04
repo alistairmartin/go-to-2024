@@ -75,7 +75,14 @@
                   {%- assign product = block.settings.product -%}
                   <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" id="{{ product.handle }}">
                     <button is="toggle-button" class="collapsible-toggle text--strong heading" aria-controls="block-{{ section.id }}-{{ block.id }}" aria-expanded="false" itemprop="name">
-                      {{- product.title -}}
+                      <span class="image">
+                        {{ product.featured_image | image_url: width: 40 | image_tag }}
+
+                        <span class="title">
+                          {{- product.title -}}
+                          </span>
+                      </span>
+               
                       <span class="animated-plus"></span>
                     </button>
 
@@ -91,19 +98,25 @@
                         <div class="ingredients-glossary--product-description">
 
                           {%- if product.metafields.custom.product_subtitle__description != blank -%}
-                            <a href="{{ product.url }}" data-instant class="heading heading--small">{{ product.metafields.custom.product_subtitle__description }}</a>
+                            <a href="{{ product.url }}" data-instant class="heading heading--xsmall">{{ product.metafields.custom.product_subtitle__description }}</a>
                           {%- endif -%}
 
-                          {%- assign productDescription = product.description | split: "</p>" -%}
-                          
-                          {%- for productParagraph in productDescription -%}
+                          {%- if product.metafields.global.description_tag != blank -%}
+                            <p>{{ product.metafields.global.description_tag }}</p>
+                          {% else %}
 
-                              {{ productParagraph |  strip_html |  prepend: '<p>'  | append: "</p>" }}                  
-                        
-                            {%- if forloop.index == 2 -%}
-                              {% break %}
-                            {%- endif -%}
-                          {%- endfor -%}
+                            {%- assign productDescription = product.description | split: "</p>" -%}
+                            {%- for productParagraph in productDescription -%}
+
+                                {{ productParagraph |  strip_html |  prepend: '<p>'  | append: "</p>" }}                  
+                          
+                              {%- if forloop.index == 2 -%}
+                                {% break %}
+                              {%- endif -%}
+                            {%- endfor -%} 
+                          {%- endif -%}
+                   
+
                         </div>
                       </div>
 

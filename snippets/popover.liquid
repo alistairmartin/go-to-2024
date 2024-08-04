@@ -1,7 +1,8 @@
 
-<button type="button" is="toggle-button" class="link text--subdued hidden-phone" aria-controls="{{ popoverId }}-drawer" aria-expanded="false">{{ popoverButton }} {%- render 'icon' with "plus-big" -%}</button>
-<button type="button" is="toggle-button" class="link text--subdued hidden-tablet-and-up" aria-controls="{{ popoverId }}-popover" aria-expanded="false">{{ popoverButton }} {%- render 'icon' with "plus-big" -%}</button>
-
+<div class="popover-buttons">
+  <button type="button" is="toggle-button" class="link link--primary hidden-phone" aria-controls="{{ popoverId }}-drawer" aria-expanded="false">{{ popoverButton }} {%- render 'icon' with "plus" -%}</button>
+  <button type="button" is="toggle-button" class="link link--primary hidden-tablet-and-up" aria-controls="{{ popoverId }}-popover" aria-expanded="false">{{ popoverButton }} {%- render 'icon' with "plus" -%}</button>
+</div>
 
 
 <drawer-content id="{{ popoverId }}-drawer" class="drawer drawer--large hidden-phone">

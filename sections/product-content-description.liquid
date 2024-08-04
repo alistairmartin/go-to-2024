@@ -12,18 +12,18 @@
         <div class="tab-list">
           <div class="tab-list--outer">
             <div class="tab-list--inner" role="tablist">
-              <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-1" class="tab-list--tab is-active link--primary">{{ 'product.content.what_is_it' | t }}</button>
+              <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-1" class="tab-list--tab active">{{ 'product.content.what_is_it' | t }}</button>
 
               {%- if product.metafields.custom.product_main_information__review_title != blank -%}
-                <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-2" class="tab-list--tab link--secondary">{{ 'product.content.reviews' | t }}</button>
+                <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-2" class="tab-list--tab">{{ 'product.content.reviews' | t }}</button>
               {%- endif -%}
 
               {%- if product.metafields.accentuate.product_main_information__whats_in_it != blank -%}
-                <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-3" class="tab-list--tab link--secondary">{{ 'product.content.whats_in_it' | t }}</button>
+                <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-3" class="tab-list--tab">{{ 'product.content.whats_in_it' | t }}</button>
               {%- endif -%}
 
               {%- if product.metafields.custom.product_main_information__included_products != blank -%}
-                <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-4" class="tab-list--tab link--secondary">{{ 'product.content.whats_included' | t }}</button>
+                <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-4" class="tab-list--tab">{{ 'product.content.whats_included' | t }}</button>
               {%- endif -%}
             </div>
           </div>
@@ -123,9 +123,12 @@
             {% endfor %}
           </div>
 
-          <button class="Button--link Button--link-primary Button--withArrow Text--sizeTiny" data-action="scroll-to" data-offset="0" data-target="#customer-reviews">
+          {% comment %} <button class="link link--primary" data-action="scroll-to" data-offset="0" data-target="#customer-reviews">
             {{ 'product.general.read_more_reviews' | t }} {%- render 'icon', icon: 'arrow-link' -%}
-          </button>
+          </button> {% endcomment %}
+
+        <a href="#customer-reviews" class="blocks--button link--primary">{{ 'product.general.read_more_reviews' | t }} {%- render 'icon' with "brand-arrow-right" -%}</a>
+
         </div>
         {%- endif -%}
 
@@ -133,7 +136,19 @@
 
         {%- if product.metafields.accentuate.product_main_information__whats_in_it != blank -%}
         <div class="product-content-description--content-inner tab-panel whats-in-it" id="product-content-description--tab-3" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-3" aria-hidden="true">
+
+        <div class="text">
           {{ product.metafields.accentuate.product_main_information__whats_in_it }}
+        </div>
+     
+
+
+          <div class="popover-buttons">
+            <button type="button" is="toggle-button" class="link link--primary hidden-phone" aria-controls="ingredients-glossary-drawer" aria-expanded="false">View All Ingredients {%- render 'icon' with "plus" -%}</button>
+            <button type="button" is="toggle-button" class="link link--primary hidden-tablet-and-up" aria-controls="ingredients-glossary-popover" aria-expanded="false">View All Ingredients {%- render 'icon' with "plus" -%}</button>
+          </div>
+        
+
 
           {%- comment %}
           <div class="">
@@ -201,20 +216,6 @@
     </div>
   </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function(event) {
-      $(".product-content-description--teaser-open").on( "click", function() {
-        $(this).addClass("hidden");
-        $(".product-content-description--teaser-close").removeClass("hidden");
-        $(".product-content-description--teaser").attr('aria-revealed', 'true');
-      });
-      $(".product-content-description--teaser-close").on( "click", function() {
-        $(this).addClass("hidden");
-        $(".product-content-description--teaser-open").removeClass("hidden");
-        $(".product-content-description--teaser").attr('aria-revealed', 'false');
-      });
-    });
-  </script>
 </section>
 
 {% schema %}

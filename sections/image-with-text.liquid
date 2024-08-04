@@ -72,7 +72,7 @@
   {%- endif -%}
 </style>
 
-<section class="section {% if section.settings.background_overlap == 'both' and is_boxed == false %}section--flush{% endif %}">
+<section class="section {% if section.settings.background_overlap == 'both' and is_boxed == false %}section--flush{% endif %} {% if section.settings.remove_padding %}remove-padding{% endif %}">
   <div {% if is_boxed %}class="container"{% endif %}>
     {%- assign first_block = section.blocks.first -%}
 
@@ -182,6 +182,11 @@
       "label": "Reveal on scroll",
       "info": "Show animation when section becomes visible.",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_padding",
+      "label": "Remove Padding"
     },
     {
       "type": "select",

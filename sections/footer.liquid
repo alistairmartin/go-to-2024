@@ -13,7 +13,7 @@
 <footer class="footer {% if settings.footer_background == settings.background %}footer--bordered{% endif %}">
 
 
-  <button onclick="openAccessabilityWidget()" class="link--faded">OPEN ACCESSABILITY</button>
+ 
 
   <div class="container">
     <div class="footer__inner">
@@ -43,7 +43,11 @@
                 {%- assign menu = block.settings.menu -%}
 
                 {%- if menu != blank -%}
-                  <p class="footer__item-title heading heading--small">{{ menu.title }}</p>
+                  <p class="footer__item-title heading heading--small">
+                    
+                    <span class="hide-desktop">{{ block.settings.menu_title_mobile }}</span>
+                    <span class="hide-mobile">{{ block.settings.menu_title }}</span>
+                    </p>
 
                   <div class="footer__item-content">
                     <ul class="linklist list--unstyled" role="list">
@@ -67,13 +71,16 @@
                   {%- endif -%}
 
                   {%- if brand == "go-to" -%}
-                      {%- render 'social-media' -%}
+                      {%- render 'social-media-alt' -%}
                   {%- elsif brand == "bro-to" -%}
                     {%- render 'social-media--bro-to' -%}
                   {%- elsif brand == "gro-to" -%}
                     {%- render 'social-media--gro-to' -%}
                   {%- endif -%}
-             
+                  
+
+                  <button onclick="openAccessabilityWidget()" class="link link--secondary open-accessability"><strong>OPEN ACCESSABILITY</strong></button>
+
                 </div>
 
               {%- when 'newsletter' -%}
@@ -86,29 +93,9 @@
                     {{- block.settings.content -}}
                   {%- endif -%}
 
-                  {%- form 'customer', id: 'footer-newsletter', class: 'footer__newsletter-form form' -%}
-                    {%- if form.posted_successfully? -%}
-                      <div class="form__banner banner banner--success">
-                        <span class="banner__ribbon">{% render 'icon' with 'form-success' %}</span>
-                        <p class="banner__content">{{ 'footer.newsletter.success' | t }}</p>
-                      </div>
-                    {%- else -%}
-                      {%- if form.errors -%}
-                        <div class="form__banner banner banner--error">
-                          <span class="banner__ribbon">{% render 'icon' with 'form-error' %}</span>
-                          <p class="banner__content">{{ form.errors.translated_fields['email'] }} {{ form.errors.messages['email'] }}</p>
-                        </div>
-                      {%- endif -%}
+                  <div class="klaviyo-form-QTFTsM"></div>
 
-                      <input type="hidden" name="contact[tags]" value="newsletter">
-
-                      <div class="input">
-                        <input type="email" id="footer[contact][email]" name="contact[email]" class="input__field input__field--text">
-                        <label for="footer[contact][email]" class="input__label">{{ 'footer.newsletter.email' | t }}</label>
-                        <button type="submit" class="input__submit-icon tap-area" title="{{ 'footer.newsletter.submit' | t }}">{% render 'icon' with 'nav-arrow-right', direction_aware: true %}</button>
-                      </div>
-                    {%- endif -%}
-                  {%- endform -%}
+                  {% comment %} {%- render 'footer--newsletter' -%} {% endcomment %}
                 </div>
             {%- endcase -%}
           {%- endcapture -%}
@@ -206,7 +193,7 @@
           {%- endform -%}
         {%- endif -%}
 
-        <span class="footer__copyright text--xsmall text--subdued">{{ shop.name }}</span>
+        {% comment %} <span class="footer__copyright text--xsmall text--subdued">{{ shop.name }}</span> {% endcomment %}
 
         <div class="footer__follow-and-payment">
           {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
@@ -325,6 +312,30 @@
           "label": "Menu",
           "info": "This menu won't show dropdown items.",
           "default": "footer"
+        },
+        {
+          "type": "text",
+          "id": "menu_title",
+          "label": "Title (Desktop)",
+          "info": "Leave blank to use the menu title"
+        },
+        {
+          "type": "text",
+          "id": "menu_title_mobile",
+          "label": "Title (Mobile)",
+          "info": "Leave blank to use the menu title"
+        },
+        {
+          "type": "checkbox",
+          "id": "upcase_links",
+          "label": "Uppercase links (Desktop)",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "upcase_links_mobile",
+          "label": "Uppercase links (Mobile)",
+          "default": false
         }
       ]
     },

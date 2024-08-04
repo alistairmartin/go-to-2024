@@ -17,7 +17,7 @@
     </div>
     
     <div class="product-content-ingredients--text">
-      <h3 class="heading h4 text--bold hide-mobile">{{ section.settings.title }}</h3>
+      <h3 class="heading h2 text--bold hide-mobile">{{ section.settings.title }}</h3>
       <div class="hidden-phone hidden-tablet">
         {%- assign glossaryMetaobjects = product.metafields.custom.ingredients_featured.value | sort: "title" -%}
         {% for metaobject in glossaryMetaobjects %}

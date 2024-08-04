@@ -8,7 +8,7 @@
   {%- assign product_url_contains_query = false -%}
 {%- endif -%}
 
-<product-item class="product-item {% unless product.available %}product-item--sold-out{% endunless %} {% if horizontal_layout %}product-item--horizontal{% endif %}" {% if reveal %}reveal{% endif %}>
+<product-item class="product-item {% unless product.available %}product-item--sold-out{% endunless %} {% if horizontal %}product-item--horizontal{% endif %}" {% if reveal %}reveal{% endif %}>
   {%- capture product_labels -%}  
 
 

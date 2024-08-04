@@ -1,0 +1,43 @@
+<section class="footer-aside {% if settings.footer_background == settings.background %}footer--bordered{% endif %}">
+  <div class="container">
+
+  <span class="footer__copyright text--small text--subdued heading heading--secondary">&copy; {{ "now" | date: "%Y" }} {{ shop.name }} PTY LTD</span>
+
+
+  {% comment %} <div class="footer__follow-and-payment">
+    {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+      <div class="footer__payment-methods">
+        <span class="footer__payment-methods-label text--xsmall text--subdued">{{ 'footer.general.we_accept' | t }}</span>
+
+        <div class="payment-methods-list payment-methods-list--auto">
+          {% for type in shop.enabled_payment_types %}
+            {{ type | payment_type_svg_tag }}
+          {% endfor %}
+        </div>
+      </div>
+    {%- endif -%}
+  </div> {% endcomment %}
+
+  <img src="{{ "not_tested_on_animals.png" | asset_img_url: "200x" }}" width="200" height="auto" loading="lazy" alt="Not Tested On Animals">
+
+
+
+  {% comment %} <img data-src="//gotoskincare.com/cdn/shop/files/not_tested_on_animals.png?v=1644811577&amp;width=320" loading="lazy" width="auto" height="auto" alt="" class=" Image--lazyLoaded" src="//gotoskincare.com/cdn/shop/files/not_tested_on_animals.png?v=1644811577&amp;width=320"> {% endcomment %}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Footer (Aside)",
+  "class": "shopify-section--footer-aside",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

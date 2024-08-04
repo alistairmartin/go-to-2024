@@ -3,7 +3,7 @@
   <div class="container">
     <div class="product-content-doing-our-bit">
       <div class="ProductContentDescription--content">
-        <h3 class="SectionHeader__Heading Heading Text--bold u-h1">{{ section.settings.title }}</h3>
+        <h3 class="SectionHeader__Heading heading h2">{{ section.settings.title }}</h3>
         {% comment %} <div class="TabList" role="tablist" >
           <button role="tab" data-action="toggle-tab" aria-selected="true" aria-controls="product-content-doing-our-bit-panel-1" class="is-active">{{ 'product.content.how_its_made' | t }}</button>
           <button role="tab" data-action="toggle-tab" aria-selected="false" aria-controls="product-content-doing-our-bit-panel-2">{{ 'product.content.how_to_recycle' | t }}</button>
@@ -12,8 +12,8 @@
         <div class="tab-list">
           <div class="tab-list--outer">
             <div class="tab-list--inner" role="tablist">
-              <button role="tab" data-action="toggle-tab" aria-selected="true" aria-controls="product-content-doing-our-bit-panel-1" class="tab-list--tab is-active link--primary">{{ 'product.content.how_its_made' | t }}</button>
-              <button role="tab" data-action="toggle-tab" aria-selected="false" aria-controls="product-content-doing-our-bit-panel-2">{{ 'product.content.how_to_recycle' | t }}</button>
+              <button role="tab" data-action="toggle-tab" aria-selected="true" aria-controls="product-content-doing-our-bit-panel-1" class="tab-list--tab active">{{ 'product.content.how_its_made' | t }}</button>
+              <button role="tab" data-action="toggle-tab" aria-selected="false" aria-controls="product-content-doing-our-bit-panel-2"  class="tab-list--tab">{{ 'product.content.how_to_recycle' | t }}</button>
             </div>
           </div>
 
@@ -22,7 +22,7 @@
             {{ product.metafields.custom.product_doing_our_bit__how_its_made }}
           {%- endif -%}
         </div>
-        <div class="product-content-doing-our-bit--content-inner tab-panelTabPanel how-to-recycle" id="product-content-doing-our-bit-panel-2" role="tabpanel" aria-labelledby="tab-2--how-to-recycle" aria-hidden="true">
+        <div class="product-content-doing-our-bit--content-inner tab-panel how-to-recycle" id="product-content-doing-our-bit-panel-2" role="tabpanel" aria-labelledby="tab-2--how-to-recycle" aria-hidden="true">
           {%- if product.metafields.custom.product_doing_our_bit__how_to_recycle != blank -%}
             {{ product.metafields.custom.product_doing_our_bit__how_to_recycle }}
           {%- endif -%}

@@ -23,7 +23,7 @@
         <header class="section__header">
           <div class="text-container">
             {%- if section.settings.title != blank -%}
-              <h2 class="heading h4">
+              <h2 class="heading h2">
                 {% if product.metafields.custom.product_upsell__title != blank %}
                   {{ product.metafields.custom.product_upsell__title }}
                 {% else %}
@@ -56,7 +56,8 @@
                 {%- assign largest_image_aspect_ratio = largest_image_aspect_ratio | at_most: product.featured_media.aspect_ratio -%}
 
                 {%- capture sizes_attribute -%}(max-width: 740px) 75vw, min({{ 100.0 | divided_by: 3 | ceil }}vw, {{ 1520.0 | divided_by: 3 | ceil }}px){%- endcapture -%}
-                {%- render 'product-item', product: product, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, horizontal: true -%}
+                {%- render 'product-item', product: product, reduced_content: true, show_cta: true, sizes_attribute: sizes_attribute, reveal: true, horizontal: true -%}
+
 
             {%- endfor -%}
           </div>
@@ -69,7 +70,7 @@
 {% schema %}
 {
   "name": "Prod. Con: Bought With",
-  "class": "shopify-section--product-recommendations",
+  "class": "shopify-section--product-recommendations bought-with",
   "settings": [
     {
       "type": "paragraph",

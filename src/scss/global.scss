@@ -1431,3 +1431,76 @@ split-lines[reveal] {
 //     margin-bottom: 16px;
 //   }
 // }
+
+.shopify-section--collection-seo-description {
+
+  .rte {
+    margin-bottom: 32px;
+  }
+
+  .collapsible-toggle {
+    border-top: 1px solid $gotoGreyDark;
+    border-bottom: 1px solid $gotoGreyDark;
+  
+  }
+
+  .collapsible__content {
+    padding-top: 32px;
+  }
+}
+
+.shopify-section--timeline-vertical-loyalty {
+
+  .h1 {
+    font-size: 107px;
+    color: $gotoPink;
+  }
+
+
+
+  &:after {
+    display: none;
+  }
+
+  .image-left {
+    img {
+      filter: drop-shadow(-10px 10px 0px var(--border-color));
+    }
+
+    .timeline-vertical-item--text {
+
+
+    }
+  }
+
+  .image-right {
+    img {
+      filter: drop-shadow(10px 10px 0px var(--border-color));
+    }
+
+    .timeline-vertical-item--text {
+      text-align: left;
+    }
+  }
+
+  .timeline-vertical-item {
+    max-width: var(--container-max-width);
+    .timeline-vertical-item--text {
+      width: 40%;
+      max-width: 350px;
+      text-align: left;
+
+      .text {
+        text-align: left;
+        padding-left: 0;
+        font-size: 20px;
+        font-weight: normal;
+
+      }
+    }
+  
+    .timeline-vertical-item--image {
+      width: 60%;
+    }
+  }
+}

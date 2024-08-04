@@ -49,11 +49,13 @@
             </header>
           {%- endif -%}
   
-          {%- if section.settings.html != blank -%}
-            <div class="html">
+          {% comment %} GSH1603002 {% endcomment %}
+            <div class="html">              
+              <script src="{{ 'custom_shipping.js' | asset_url }}" type="text/javascript"></script>
+              <div id="main-shipping"></div>
               {{- section.settings.html -}}
             </div>
-          {%- endif -%}
+
         </div>
       </div>
     </div>

@@ -142,6 +142,8 @@ $desk-custom:      "screen and (min-width: 1441px)";
 
 .OrderTracking__Form {
   padding: 48px 0px;
+  max-width: 400px;
+  margin: 0 auto;
 
   .Form__Alert {
     margin-top: 20px;
@@ -174,12 +176,18 @@ $desk-custom:      "screen and (min-width: 1441px)";
     max-width: 80%;
     padding: 12px 20px;
     padding-bottom: 20px;
+    background: #f9c6b9;
   }
 }
 
 .OrderTracking__ResultsTitle {
   background: white;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
+
+  @include av-mq('lap-and-up') {
+    margin-bottom: 60px;
+  }
+
 
   .Heading {
     margin: 0;
@@ -192,10 +200,9 @@ $desk-custom:      "screen and (min-width: 1441px)";
 }
 
 .OrderDetails__Panel {
-  background: #fff;
   margin-bottom: 15px;
   color: #000;
-  padding: 28px 24px;
+  // padding: 28px 24px;
   
   @media only screen and (min-width: 1024px) {
     margin-bottom: 26px;
@@ -431,4 +438,22 @@ $desk-custom:      "screen and (min-width: 1441px)";
   @include av-mq('tablet-and-up') {
     padding-bottom: 0; 
   }
+}
+
+
+.Grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  @include av-mq('lap-and-up') {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.OrderTracking__ResultsButtons {
+  margin: 25px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
 }

@@ -62,9 +62,9 @@
               </h1>
             {%- endif -%}
 
-            {%- if section.settings.show_collection_description and collection.description != blank -%}
+            {%- if section.settings.show_collection_description and collection.metafields.custom.short_description != blank -%}
               <div class="image-overlay__text-container" reveal>
-                {{- collection.description -}}
+                {{- collection.metafields.custom.short_description -}}
               </div>
             {%- endif -%}
           </div>
@@ -81,9 +81,11 @@
             <h1 class="heading h1">{{ collection.title }}</h1>
           {%- endif -%}
 
-          {%- if section.settings.show_collection_description and collection.description != blank -%}
+          {%- if section.settings.show_collection_description and collection.metafields.custom.short_description != blank -%}
             <div>
-              {{- collection.description -}}
+              {% comment %} {{- collection.description -}} {% endcomment %}
+
+              {{ collection.metafields.custom.short_description }}
             </div>
           {%- endif -%}
         </div>

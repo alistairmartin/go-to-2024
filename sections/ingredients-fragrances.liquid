@@ -67,7 +67,7 @@
             {%- for block in section.blocks -%}
               {%- case block.type -%}
                 {%- when 'category' -%}
-                  <h2 id="category-{{ section.id }}-{{ block.id }}" class="faq__category heading h6 anchor" {{ block.shopify_attributes }}>
+                  <h2 id="category-{{ section.id }}-{{ block.id }}" class="faq__category heading h6 anchor heading--secondary" {{ block.shopify_attributes }}>
                     {{- block.settings.title |  escape -}}
                   </h2>
 

@@ -60,7 +60,7 @@
 
             {%- if collection.metafields.custom.short_description != blank -%}
               <div class="rte">
-                {{ collection.metafields.custom.short_description }}
+                {{ collection.metafields.custom.short_description | metafield_tag }}
               </div>
             {%- endif -%}
        

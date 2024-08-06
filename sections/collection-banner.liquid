@@ -62,11 +62,17 @@
               </h1>
             {%- endif -%}
 
-            {%- if section.settings.show_collection_description and collection.metafields.custom.short_description != blank -%}
-              <div class="image-overlay__text-container" reveal>
-                {{- collection.metafields.custom.short_description -}}
-              </div>
-            {%- endif -%}
+            {%- if collection.metafields.custom.short_description != blank or collection.description != blank -%}
+              {%- if section.settings.show_collection_description -%}
+                <div class="image-overlay__text-container">
+                  {%- if collection.metafields.custom.short_description != blank -%}
+                    {{ collection.metafields.custom.short_description |  metafield_tag }}
+                  {% elsif collection.description != blank %} 
+                    {{ collection.description }}
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+           {%- endif -%}
           </div>
         </div>
       </div>
@@ -81,13 +87,17 @@
             <h1 class="heading h1">{{ collection.title }}</h1>
           {%- endif -%}
 
-          {%- if section.settings.show_collection_description and collection.metafields.custom.short_description != blank -%}
-            <div>
-              {% comment %} {{- collection.description -}} {% endcomment %}
-
-              {{ collection.metafields.custom.short_description }}
-            </div>
-          {%- endif -%}
+          {%- if collection.metafields.custom.short_description != blank or collection.description != blank -%}
+            {%- if section.settings.show_collection_description -%}
+              <div class="image-overlay__text-container">
+                {%- if collection.metafields.custom.short_description != blank -%}
+                  {{ collection.metafields.custom.short_description |  metafield_tag }}
+                {% elsif collection.description != blank %} 
+                  {{ collection.description }}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+         {%- endif -%}
         </div>
       </div>
     </div>

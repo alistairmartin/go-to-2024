@@ -14,6 +14,8 @@
 
     {% comment %} --- START - Go-To Tags --- {% endcomment %}
 
+    <span class="label label--label-custom label--{{ product.type | handle }} label--product-type">{{ product.type }}</span>
+
     {%- if product.template_suffix == 'coming-soon' -%}
       <span class="label label--label-custom label--coming-soon">{{ 'product.labels.coming_soon' | t }}</span>
     {%-  elsif product.available == false -%}
@@ -37,13 +39,16 @@
       {%- for custom_badge in product.metafields.custom.badges.value -%}
         <span class="label {% if forloop.index == 1 %}label--custom{% else %}label--custom2{% endif %}">{{ custom_badge }}</span>
       {%- endfor -%}
-    {%- else -%}
-      {%- for tag in product.tags -%}
-        {%- if tag contains '__label' -%}
-          <span class="label label--custom{% if tag contains '__label2' %}2{% endif %}">{{ tag | split: ':' | last }}</span>
-        {%- endif -%}
-      {%- endfor -%}
     {%- endif -%}
+  
+    {%- for tag in product.tags -%}
+      {%- if tag contains '__label' -%}
+        <span class="label label--label-custom label--{{ tag | split: ':' | last | handle }}">{{ tag | split: ':' | last }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+
+
+
 
     {% comment %} {%- unless product.available -%}
       <span class="label label--subdued">{{ 'collection.product.sold_out' | t }}</span>
@@ -146,10 +151,36 @@
         {%- endunless -%}
       {%- endif -%}
 
-      <a href="{{ product.url }}" data-instant class="product-item-meta__title">{{ product.title }}</a>
+      <a href="{{ product.url }}" data-instant class="product-item-meta__title">
+
+        {%- unless product.handle == "weekly-essentials" -%}
+          <span class="variant-option">
+            {%- if product.variants.size > 1 -%}
+              {%- for variant in product.variants -%}
+                <span class="option {% if forloop.first %}active{% endif %}">{{ variant.title | remove: " AUD" | upcase }}</span>
+              {%- endfor -%}  
+            {%- endif -%}
+          </span>
+        {%- endunless -%}
+   
+
+        <span class="title">
+          {{ product.title }}
+        </span>
+      
+      </a>
 
       {%- if product.metafields.custom.product_subtitle__description != blank -%}
-        <a href="{{ product.url }}" data-instant class="product-item-meta__subtitle text--xsmall">{{ product.metafields.custom.product_subtitle__description }}</a>
+        <a href="{{ product.url }}" data-instant class="product-item-meta__subtitle text--xsmall">
+          {{ product.metafields.custom.product_subtitle__description }}
+        </a>
+      {%- endif -%}
+
+    
+      {%- if settings.show_product_rating -%}
+        <a class="product-item-meta__reviews-badge text--small" href="{{ product.url }}" data-instant>
+          {%- render 'product-rating', product: product -%}
+        </a>
       {%- endif -%}
       
       <div class="product-item-meta__price-list-container">
@@ -255,11 +286,7 @@
         </div>
       </div>
 
-      {%- if settings.show_product_rating and reduced_content != true -%}
-        <a class="product-item-meta__reviews-badge text--small" href="{{ product.url }}" data-instant>
-          {%- render 'product-rating', product: product -%}
-        </a>
-      {%- endif -%}
+    
 
       {%- if settings.product_color_display != 'hide' and reduced_content != true -%}
         {%- for color_label in color_label_list -%}

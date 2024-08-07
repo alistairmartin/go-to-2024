@@ -97,9 +97,7 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     {%- endif -%}
 
 
-    <script src="{{ 'vendor.js' | asset_url }}" defer></script>
-    <script src="{{ 'theme.js' | asset_url }}" defer></script>
-    <script src="{{ 'custom.js' | asset_url }}" defer></script>
+
     {%- render 'files-js' -%}
 
     {{ content_for_header }}
@@ -154,7 +152,7 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
       {%- endunless -%}
     {%- endif -%}
 
-    <div id="main" role="main" class="anchor">
+    <div id="main" role="main" class="anchor" data-template="{{ template | handle }}" data-suffix="{{ template.suffix | handle }}">
     {% comment %} {%- include "icon-go-to--earth" -%} {% endcomment %}
       {%- render 'theme--special-effects--header' -%}
       {%- include "theme--filter-search" -%}
@@ -177,6 +175,8 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
 
     {%- render 'theme--special-effects--footer' -%}
     {%- render 'script--klaviyo-back-in-stock' -%}
+    {%- render 'script--ab-tasty' -%}
+    {%- render 'script--covet-pics' -%}
 
   </body>
 </html>

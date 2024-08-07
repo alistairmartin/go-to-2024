@@ -1,12 +1,15 @@
+<script src="{{ 'vendor.js' | asset_url }}" defer></script>
+<script src="{{ 'theme.js' | asset_url }}" defer></script>
+<script src="{{ 'global.min.js' | asset_url }}" defer></script>
+
 {%- if product -%}
     <script src="https://player.vimeo.com/api/player.js" defer></script>
-    <script src="{{ 'product.js' | asset_url }}" defer></script>
+    <script src="{{ 'products.min.js' | asset_url }}" defer></script>
 {%- endif -%}
 
-<script src="{{ 'theme-custom.min.js' | asset_url }}" defer></script>
-
 {%- if page.handle == "build-your-routine" -%}
-    <script src="{{ 'custom.js' | asset_url }}" defer></script>
+    <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'byo-bundle.min.js' | asset_url }}" defer></script>
 {%- endif -%}
 
 {%- if blog or article -%}

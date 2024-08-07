@@ -1,4 +1,8 @@
 <style>
+#shopify-section-{{ section.id }} section {
+    --section-background: {{ section.settings.background }};
+  }
+
   #shopify-section-{{ section.id }} .image-overlay {
     --heading-color: {{ section.settings.image_text_color.red }}, {{ section.settings.image_text_color.green }}, {{ section.settings.image_text_color.blue }};
     --text-color: {{ section.settings.image_text_color.red }}, {{ section.settings.image_text_color.green }}, {{ section.settings.image_text_color.blue }};
@@ -264,6 +268,16 @@
       "id": "quick_links",
       "label": "Quick links",
       "info": "This menu won't show dropdown items."
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
     }
   ]
 }

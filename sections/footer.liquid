@@ -17,100 +17,9 @@
 
   <div class="container">
     <div class="footer__inner">
-      <div class="footer__item-list">
-        {%- for block in section.blocks -%}
-          {%- capture block_content -%}
-            {%- case block.type -%}
-              {%- when 'image' -%}
-                {%- if block.settings.image != blank -%}
-                  {%- capture sizes_attribute -%}{{ block.settings.image_width }}px{%- endcapture -%}
-                  {%- capture style_attribute -%}width: {{ block.settings.image_width }}px{%- endcapture -%}
-                  {{- block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: 'lazy', style: style_attribute, sizes: sizes_attribute, widths: '100,200,300,400,500,600', class: 'footer__image' -}}
-                {%- endif -%}
 
-              {%- when 'text' -%}
-                {%- if block.settings.title != blank -%}
-                  <p class="footer__item-title heading heading--small">{{ block.settings.title | escape }}</p>
-                {%- endif -%}
-
-                {%- if block.settings.content != blank -%}
-                  <div class="footer__item-content">
-                    {{- block.settings.content -}}
-                  </div>
-                {%- endif -%}
-
-              {%- when 'links' -%}
-                {%- assign menu = block.settings.menu -%}
-
-                {%- if menu != blank -%}
-                  <p class="footer__item-title heading heading--small">
-                    
-                    <span class="hide-desktop">{{ block.settings.menu_title_mobile }}</span>
-                    <span class="hide-mobile">{{ block.settings.menu_title }}</span>
-                    </p>
-
-                  <div class="footer__item-content">
-                    <ul class="linklist list--unstyled" role="list">
-                      {%- for link in menu.links -%}
-                        <li class="linklist__item">
-                          <a href="{{ link.url }}" class="link--faded">{{ link.title }}</a>
-                        </li>
-                      {%- endfor -%}
-                    </ul>
-                  </div>
-                {%- endif -%}
-
-              {%- when 'social_media' -%}
-
-                <div class="footer-logo">
-                  {%- render 'svg--logo-go-to' -%}
-                </div>
-                {%- if block.settings.title != blank -%}
-                  <p class="footer__item-title heading heading--small">{{ block.settings.title | escape }}</p>
-                {%- endif -%}
-
-                <div class="footer__item-content">
-                  {%- if block.settings.content != blank -%}
-                    {{- block.settings.content -}}
-                  {%- endif -%}
-
-                  {%- if brand == "go-to" -%}
-                      {%- render 'social-media-alt' -%}
-                  {%- elsif brand == "bro-to" -%}
-                    {%- render 'social-media--bro-to' -%}
-                  {%- elsif brand == "gro-to" -%}
-                    {%- render 'social-media--gro-to' -%}
-                  {%- endif -%}
-                  
-
-                  <button onclick="openAccessabilityWidget()" class="link link--secondary open-accessability"><strong>OPEN ACCESSABILITY</strong></button>
-
-                </div>
-
-              {%- when 'newsletter' -%}
-                {%- if block.settings.title != blank -%}
-                  <p class="footer__item-title heading heading--small">{{ block.settings.title | escape }}</p>
-                {%- endif -%}
-
-                <div class="footer__item-content">
-                  {%- if block.settings.content != blank -%}
-                    {{- block.settings.content -}}
-                  {%- endif -%}
-
-                  <div class="klaviyo-form-QTFTsM"></div>
-
-                  {% comment %} {%- render 'footer--newsletter' -%} {% endcomment %}
-                </div>
-            {%- endcase -%}
-          {%- endcapture -%}
-
-          {%- if block_content != blank -%}
-            <div class="footer__item footer__item--{{ block.type | replace: '_', '-' }} {% if forloop.first %}is-first{% endif %}" {{ block.shopify_attributes }}>
-              {{- block_content -}}
-            </div>
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
+      {%- render 'footer--desktop', brand: brand  -%}
+      {%- render 'footer--mobile', brand: brand  -%}
 
       <div class="footer__aside">
         {%- if section.settings.show_country_selector and localization.available_countries.size > 1 -%}
@@ -221,12 +130,13 @@
       </div>
     </div>
   </div>
+
 </footer>
 
 {% schema %}
 {
   "name": "Footer",
-  "class": "shopify-section--footer",
+  "class": "shopify-section--footer shopify-section--faq",
   "max_blocks": 5,
   "settings": [
     {

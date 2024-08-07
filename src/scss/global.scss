@@ -51,6 +51,11 @@ html {
     text-decoration-color: rgb(var(--text-color));
     color: rgb(var(--text-color));
   }
+
+  &:disabled {
+    color: $gotoGreyDark !important;
+    text-decoration-color: $gotoGreyDark !important;
+  }
 }
 
 .link--secondary {
@@ -608,28 +613,117 @@ store-header.background-blur {
 
 
 .product-item  {
+
+  .product-item__cta-wrapper {
+    @include media-query($medium-up) {
+      opacity: 0;
+      transition: 500ms all;
+    }
+  }
+
+  &:hover {
+    .product-item__cta-wrapper {
+      @include media-query($medium-up) {
+        opacity: 1;
+      }
+    }
+  }
+
+  .product-item-meta {
+    * {
+      font-size: 14px;
+      line-height: 1 !important;
+
+      @include media-query($medium-up) {
+        font-size: 14px;
+      }
+    }
+  }
+
   .product-item-meta__title {
     font-weight: 600;
+    position: relative;
+
+
+    .variant-option {
+      position: absolute;
+      left: 50%;
+      top: -15px;
+      transform: translate(-50%,-50%);
+      display: flex;
+      gap: 10px;
+
+      .option {
+        font-size: 10px;
+        color: $gotoGreyDark;
+      }
+
+      .active {
+        text-decoration: underline;
+        text-underline-offset: 3px !important;
+        text-decoration: underline !important;
+        text-decoration-color: var(--color-primary) !important;
+        text-decoration-thickness: 3px !important;
+      }
+    }
+
+  }
+
+  .label {
+    font-size: 10px;
+    padding: 6px 10px;
+    min-width: 80px;
+    text-align: center;
+    opacity: 0.9;
+    @include media-query($medium-up) {
+      font-size: 10px;
+      padding: 8px 12px;
+    }
+  }
+
+  .product-item-meta__subtitle {
+    color: $gotoGreyDark;
+    // font-style: italic;
+    font-size: 12px;
+    margin-bottom: 6px;
+    display: block;
+
+
+    @include media-query($medium-up) {
+      font-size: 13px;
+    }
+  }
+
+  .rating__caption {
+    font-size: 11px;
+    color: $gotoGreyDark;
   }
 
   .product-item__quick-form-alt {
     margin: 0 auto;
   }
 
-  .product-item-meta__subtitle {
-    color: $gotoGreyDark;
-  }
-
   .product-item-meta__price-list-container {
-    margin: 8px 0 16px;
+    margin: 8px 0 8px;
     font-weight: 600;
+
+    .price--compare {
+      font-weight: normal;
+    }
   }
 
   .back-in-stock {
     text-align: center;
     display: block;
-    margin: 0 auto;
+    margin: 6px auto 0;
   }
+
+  .link {
+    font-size: 14px;
+  }
+
+
+
 }
 
 .tab-list {
@@ -1775,5 +1869,102 @@ footer {
 #back-in-stock-modal {
   .modal__content {
     background: $gotoPinkLight;
+  }
+}
+
+
+
+@include media-query($medium-up) {
+  #main {
+    background-color: var(--section-background);
+  }
+
+  .shopify-section--collection-banner, .shopify-section--main-collection {
+    section {
+      background-color: var(--section-background);
+    }
+  
+  }  
+
+  .product-list__background {
+    .product-item {
+      background: #fff !important;
+      border-radius: 8px;
+      filter: drop-shadow(1px 1px 1px #9b9b9b49);
+
+      .product-item__info   {
+        padding-bottom: 20px;
+      }
+
+      img {
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+
+
+    .product-item__grid-image {
+      background: unset !important;
+      padding-bottom: 0;
+      filter: drop-shadow(1px 1px 1px #9b9b9b49);
+
+      img  {
+        border-radius: 8px;
+      }
+    }
+
+    .product-list__inner {
+      padding: 2px;
+    }
+  }
+}
+
+
+
+// .footer__item-list {
+//   @include media-query($small) {
+//     grid-template-columns: 1fr;
+//   }
+// }
+
+.footer-mobile {
+  .footer__item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .footer__item {
+      width: 100%;
+      max-width: unset;
+    }
+
+    .faq {
+      margin: 0;
+
+      ul {
+        margin-top: 16px !important;
+        margin-left: 16px;
+      }
+    }
+
+    .faq__item+.faq__item {
+      border-top:1px solid $gotoBlack;
+    }
+
+    .faq__item {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+  }
+}
+
+.label--product-type {
+  background: #fff;
+  border: 1px solid $gotoBlack;
+  display: none;
+
+  @include media-query($medium-up) {
+    display: block;
   }
 }

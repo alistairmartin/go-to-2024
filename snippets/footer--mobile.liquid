@@ -1,0 +1,101 @@
+
+<div class="hide-desktop footer-mobile">
+<div class="footer__item-list">
+
+<div class="footer__item footer__item--logo">
+    <div class="footer-logo">
+      {%- render 'svg--logo-go-to' -%}
+    </div>
+</div>
+
+{%- for block in section.blocks -%}
+    {%- case block.type -%}
+    {%- when 'newsletter' -%}
+    <div class="footer__item footer__item--{{ block.type | replace: '_', '-' }} {% if forloop.first %}is-first{% endif %}" {{ block.shopify_attributes }}>
+        {%- if block.settings.title != blank -%}
+        <p class="footer__item-title heading heading--xsmall">{{ block.settings.title | escape }}</p>
+        {%- endif -%}
+    
+        <div class="footer__item-content">
+        {%- if block.settings.content != blank -%}
+            {{- block.settings.content -}}
+        {%- endif -%}
+    
+        <div class="klaviyo-form-QTFTsM"></div>
+        </div>          
+    </div>
+    {% break %}
+    {%- endcase -%}
+{%- endfor -%}
+
+
+    <div class="faq">
+    <div class="faq__wrapper" itemscope itemtype="https://schema.org/FAQPage">
+    {%- for block in section.blocks -%}
+        {%- case block.type -%}
+        {%- when 'links' -%}
+            {%- assign menu = block.settings.menu -%}
+
+            {%- if menu != blank -%}
+        
+        
+                    <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <button is="toggle-button" class="collapsible-toggle text--strong heading heading--secondary heading--xsmall" aria-controls="block-{{ section.id }}-{{ block.id }}" aria-expanded="false" itemprop="name">
+                        {{- block.settings.menu_title -}}
+                        <span class="animated-plus"></span>
+                    </button>
+
+                    <collapsible-content id="block-{{ section.id }}-{{ block.id }}" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" {{ block.shopify_attributes }}>
+                        <div class="collapsible__content" itemprop="text">
+                        
+                        
+                        <ul class="linklist list--unstyled" role="list">
+                            {%- for link in menu.links -%}
+                            <li class="linklist__item">
+                                <a href="{{ link.url }}" class="link--faded">{{ link.title }}</a>
+                            </li>
+                            {%- endfor -%}
+                        </ul> 
+
+                        </div>
+                    </collapsible-content>
+                    </div>
+
+
+            {%- endif -%}
+        {%- endcase -%}
+    {%- endfor -%}
+    </div>
+    </div>
+
+    {%- for block in section.blocks -%}
+        {%- case block.type -%}
+        {%- when 'social_media' -%}
+
+    <div class="footer__item footer__item--{{ block.type | replace: '_', '-' }} {% if forloop.first %}is-first{% endif %}" {{ block.shopify_attributes }}>
+        <div class="footer__item-content">
+
+        {%- if block.settings.title != blank -%}
+            <p class="footer__item-title heading heading--xsmall">{{ block.settings.title | escape }}</p>
+          {%- endif -%}
+
+          {%- if block.settings.content != blank -%}
+            {{- block.settings.content -}}
+          {%- endif -%}
+
+          {%- if brand == "go-to" -%}
+              {%- render 'social-media-alt' -%}
+          {%- elsif brand == "bro-to" -%}
+            {%- render 'social-media--bro-to' -%}
+          {%- elsif brand == "gro-to" -%}
+            {%- render 'social-media--gro-to' -%}
+          {%- endif -%}
+          
+          <button onclick="openAccessabilityWidget()" class="link link--secondary open-accessability"><strong>OPEN ACCESSABILITY</strong></button>
+        </div>
+    </div>
+{%- endcase -%}
+{%- endfor -%}
+
+</div>
+</div>

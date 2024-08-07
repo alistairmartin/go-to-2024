@@ -16,7 +16,7 @@ html {
 }
 
 .heading--secondary {
-  font-family: var(--text-font-family);
+  font-family: var(--text-font-family) !important;
 }
 
 .link {
@@ -623,6 +623,12 @@ store-header.background-blur {
   .product-item-meta__price-list-container {
     margin: 8px 0 16px;
     font-weight: 600;
+  }
+
+  .back-in-stock {
+    text-align: center;
+    display: block;
+    margin: 0 auto;
   }
 }
 
@@ -1764,3 +1770,10 @@ footer {
     }
   }
 
+
+
+#back-in-stock-modal {
+  .modal__content {
+    background: $gotoPinkLight;
+  }
+}

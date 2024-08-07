@@ -1,0 +1,62 @@
+
+<script src="https://a.klaviyo.com/media/js/onsite/onsite.js"></script> 
+<script>
+    var klaviyo = klaviyo || [];
+    klaviyo.init({
+      account: "KZvmWH",
+      platform: "shopify"
+    });
+
+  function openBackInStock(productId,variantId){
+      window.themeVariables.backInStock.productId = productId;
+      window.themeVariables.backInStock.variantId = variantId;
+      document.getElementById('back-in-stock-modal').setAttribute('open', true);
+  }
+ 
+
+function subscribeToBackInStock(productId, variantId) {
+    var email = document.getElementById('bis-email').value;
+    $.ajax({
+    type: "POST",
+    url: "https://a.klaviyo.com/onsite/components/back-in-stock/subscribe",
+    data: {
+        a: "KZvmWH",
+        email: email, 
+        variant: window.themeVariables.backInStock.variantId,
+        product: window.themeVariables.backInStock.productId,
+        platform: "shopify",
+        subscribe_for_newsletter: false,
+    },
+    success: function(response) {
+        console.log(response); // Log the response in the console
+    },
+    error:function(error){
+            console.error(error);
+        } 
+    });
+
+}
+</script>
+
+
+
+<modal-content section="back-in-stock" id="back-in-stock-modal" class="modal modal-custom">
+  <div class="modal__overlay"></div>
+
+  <div class="modal__content">
+    <button type="button" class="modal__close-button tap-area" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
+      {%- render 'icon' with 'close' -%}
+    </button>
+
+    <div class="modal__content-inner">
+      <div id="back-in-stock-form">
+        <input type="email" id="bis-email" placeholder="Enter your email to be notified" required>
+        <button type="submit" onclick="subscribeToBackInStock()" class="link link--primary">WAITLIST ME</button>
+      </div>    
+    </div>
+  </div>
+</modal-content>
+
+
+
+

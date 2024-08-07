@@ -23,7 +23,9 @@
 {%- if block.settings.text != blank -%}
   
   <div class="blocks--image-text-overlay-text">
-    {{ block.settings.text }}
+
+    {{ block.settings.text | replace: "<h2>", "<h2 class='heading heading--primary'>" }}
+
   </div>
 {%- endif -%}
 

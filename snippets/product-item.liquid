@@ -15,13 +15,14 @@
     {% comment %} --- START - Go-To Tags --- {% endcomment %}
 
     {%- if product.template_suffix == 'coming-soon' -%}
-      <span class="label label--coming-soon">{{ 'product.labels.coming_soon' | t }}</span>
+      <span class="label label--label-custom label--coming-soon">{{ 'product.labels.coming_soon' | t }}</span>
     {%-  elsif product.available == false -%}
-      {%- if product.metafields.custom.waitlist == true -%}
-        <span class="label label--waitlist">{{ 'product.labels.waitlist' | t }}</span>
+      {% comment %} {%- if product.metafields.custom.waitlist == true -%}
+        <span class="label label--label-custom label--waitlist">{{ 'product.labels.waitlist' | t }}</span>
       {%- else -%}
-        <span class="label label--soldout">{{ 'product.labels.soldout' | t }}</span>
-      {%- endif -%}
+        <span class="label label--label-custom label--soldout">{{ 'product.labels.soldout' | t }}</span>
+      {%- endif -%} {% endcomment %}
+      <span class="label label--label-custom label--soldout">{{ 'product.labels.waitlist' | t }}</span>
     {%-  elsif product.metafields.gts_theme.label != blank -%}
       <span class="label label--label-custom label--{{ product.metafields.gts_theme.label | handle }}">{{ product.metafields.gts_theme.label }}</span>
     {%- endif  -%}
@@ -62,7 +63,7 @@
   {%- endcapture -%}
 
   <div class="product-item__image-wrapper {% if settings.show_secondary_image and product.media.size > 1 and hide_secondary_image != true %}product-item__image-wrapper--multiple{% endif %}">
-    {%- if product_labels != blank and reduced_content != true -%}
+    {%- if product_labels != blank -%}
       <div class="product-item__label-list label-list">
         {{- product_labels -}}
       </div>
@@ -320,12 +321,14 @@
       </div>
     {%- elsif reduced_content -%}
       <div class="product-item__cta-wrapper">
-        <span class="product-item__link text--subdued">{{ 'collection.product.sold_out' | t }}</span>
+        {% comment %} <span class="product-item__link text--subdued">{{ 'collection.product.sold_out' | t }}</span> {% endcomment %}
 
-        <br>
+        {% comment %} <br>
         <a href="#" class="BIS_trigger product-item__link text--subdued" data-product-data="{{ product | json | escape }}">
           Email when available
-        </a>
+        </a> {% endcomment %}
+
+        <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }})"  class="link link--primary back-in-stock">WAITLIST ME</button>
       </div>
     {%- endif -%}
   </div>

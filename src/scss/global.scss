@@ -837,7 +837,13 @@ store-header.background-blur {
 }
 
 
-
+.shopify-section--blog-posts {
+  .button-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
 
 .shopify-section--blog-posts-featured {
   .article-list {
@@ -1216,10 +1222,12 @@ store-header.background-blur {
   .blocks--button {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: var(--flex-justify-content-mobile);
     margin-top: var(--margin-top-mobile);
     margin-bottom: var(--margin-bottom-mobile);
     @include media-query($medium-up) {
+      align-items: center;
+      justify-content: var(--flex-justify-content-mobile);
       margin-top: var(--margin-top-desktop);
       margin-bottom: var(--margin-bottom-desktop);
     }

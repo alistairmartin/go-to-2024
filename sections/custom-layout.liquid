@@ -241,6 +241,68 @@
           ]
         },
         {
+          "type": "select",
+          "id": "flex_justify_content_mobile",
+          "label": "Justify Content",
+          "info": "Use 'Flex Grid' or 'Flex Column' to choose the block alignment inside this container.", 
+          "default": "unset",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "flex-start",
+              "label": "Start"
+            },
+            {
+              "value": "flex-end",
+              "label": "End"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "space-around",
+              "label": "Space Around"
+            },
+            {
+              "value": "space-between",
+              "label": "Space Between"
+            },
+            {
+              "value": "space-evenly",
+              "label": "Space evenly"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "flex_align_items_mobile",
+          "label": "Align Items",
+          "info": "Use 'Flex Grid' or 'Flex Column' to choose the block alignment inside this container.", 
+          "default": "unset",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "flex-start",
+              "label": "Start"
+            },
+            {
+              "value": "flex-end",
+              "label": "End"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ]
+        },
+        {
           "type": "header",
           "content": "⏹️ Container Padding (Mobile)",
           "info": "Space around the container"
@@ -629,142 +691,6 @@
           "label": "Hide Desktop?"
         },
         {
-          "type": "header",
-          "content": "--- 📱 MOBILE SETTINGS 📱 ---"
-        },
-        {
-        "type": "header",
-        "content": "Margins"
-        },
-        {
-        "type": "range",
-        "id": "margin_top_mobile",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "unit": "px",
-        "default": 0,
-        "label": "⬆ Margin Top"
-        },
-        {
-        "type": "range",
-        "id": "margin_bottom_mobile",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "unit": "px",
-        "default": 0,
-        "label": "⬇ Margin Bottom"
-        },
-        {
-        "type": "header",
-        "content": "Fonts",
-        },
-        {
-          "type": "select",
-          "id": "font_alignment_mobile",
-          "label": "Font Alignment",
-          "options": [
-            {
-              "value": "left",
-              "label": "Left"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "right",
-              "label": "Right"
-            }
-          ],
-          "default": "center"
-        },
-        {
-          "type": "select",
-          "id": "font_family_mobile",
-          "label": "Font Family",
-          "options": [
-            {
-              "value": "primary",
-              "label": "Primary"
-            },
-            {
-              "value": "secondary",
-              "label": "Secondary"
-            }
-          ],
-          "default": "primary"
-        },
-        {
-          "type": "select",
-          "id": "font_style_mobile",
-          "label": "Font Style",
-          "options": [
-            {
-              "value": "normal",
-              "label": "Normal"
-            },
-            {
-              "value": "italic",
-              "label": "Italic"
-            }
-          ],
-          "default": "normal"
-        },
-        {
-          "type": "select",
-          "id": "font_weight_mobile",
-          "label": "Font Weight",
-          "options": [
-            {
-              "value": "normal",
-              "label": "Normal (400)"
-            },
-            {
-              "value": "medium",
-              "label": "Medium (500)"
-            },
-            {
-              "value": "semi-bold",
-              "label": "Semi-Bold (600)"
-            },
-            {
-              "value": "bold",
-              "label": "Bold (700)"
-            }
-          ],
-          "default": "normal"
-        },
-        {
-        "type": "range",
-        "id": "font_size_mobile",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "unit": "px",
-        "default": 16,
-        "label": "Font Size"
-        },
-        {
-        "type": "range",
-        "id": "font_line_height_mobile",
-        "min": 0,
-        "max": 5,
-        "step": 0.1,
-        "default": 1,
-        "label": "Line Height"
-        },
-        {
-        "type": "range",
-        "id": "font_letter_spacing_mobile",
-        "min": 0,
-        "max": 5,
-        "step": 0.1,
-        "default": 1,
-        "label": "Letter Spacing"
-        },
-        {
         "type": "header",
         "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---",
         },
@@ -899,6 +825,142 @@
         "step": 0.1,
         "default": 1,
         "label": "Letter Spacing"
+        },
+        {
+          "type": "header",
+          "content": "--- 📱 MOBILE SETTINGS 📱 ---"
+        },
+        {
+        "type": "header",
+        "content": "Margins"
+        },
+        {
+        "type": "range",
+        "id": "margin_top_mobile",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 0,
+        "label": "⬆ Margin Top"
+        },
+        {
+        "type": "range",
+        "id": "margin_bottom_mobile",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 0,
+        "label": "⬇ Margin Bottom"
+        },
+        {
+        "type": "header",
+        "content": "Fonts",
+        },
+        {
+          "type": "select",
+          "id": "font_alignment_mobile",
+          "label": "Font Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "font_family_mobile",
+          "label": "Font Family",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primary"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary"
+            }
+          ],
+          "default": "primary"
+        },
+        {
+          "type": "select",
+          "id": "font_style_mobile",
+          "label": "Font Style",
+          "options": [
+            {
+              "value": "normal",
+              "label": "Normal"
+            },
+            {
+              "value": "italic",
+              "label": "Italic"
+            }
+          ],
+          "default": "normal"
+        },
+        {
+          "type": "select",
+          "id": "font_weight_mobile",
+          "label": "Font Weight",
+          "options": [
+            {
+              "value": "normal",
+              "label": "Normal (400)"
+            },
+            {
+              "value": "medium",
+              "label": "Medium (500)"
+            },
+            {
+              "value": "semi-bold",
+              "label": "Semi-Bold (600)"
+            },
+            {
+              "value": "bold",
+              "label": "Bold (700)"
+            }
+          ],
+          "default": "normal"
+        },
+        {
+        "type": "range",
+        "id": "font_size_mobile",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 16,
+        "label": "Font Size"
+        },
+        {
+        "type": "range",
+        "id": "font_line_height_mobile",
+        "min": 0,
+        "max": 5,
+        "step": 0.1,
+        "default": 1,
+        "label": "Line Height"
+        },
+        {
+        "type": "range",
+        "id": "font_letter_spacing_mobile",
+        "min": 0,
+        "max": 5,
+        "step": 0.1,
+        "default": 1,
+        "label": "Letter Spacing"
         }
       ]
     },
@@ -1026,7 +1088,7 @@
         },
         {
             "type": "header",
-            "content": "Margins",
+            "content": "Margins"
         },
         {
             "type": "range",
@@ -1047,6 +1109,31 @@
             "unit": "px",
             "default": 0,
             "label": "⬇ Margin Bottom"
+        },
+        {
+          "type": "select",
+          "id": "flex_justify_content_desktop",
+          "label": "Position",
+          "info": "Position the button (Left, Center, Right)",
+          "default": "unset",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "flex-start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "flex-end",
+              "label": "Right"
+            }
+          ]
         },
         {
             "type": "header",
@@ -1071,6 +1158,31 @@
             "unit": "px",
             "default": 0,
             "label": "⬇ Margin Bottom"
+        },
+        {
+          "type": "select",
+          "id": "flex_justify_content_mobile",
+          "label": "Button Position",
+          "info": "Position the button (Left, Center, Right)", 
+          "default": "unset",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "flex-start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "flex-end",
+              "label": "Right"
+            }
+          ]
         }
       ]
     },

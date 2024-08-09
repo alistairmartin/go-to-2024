@@ -3,12 +3,24 @@
         #block-{{ block.id }} {
           --margin-top-desktop: {{ block.settings.margin_top_desktop }}px;
           --margin-bottom-desktop: {{ block.settings.margin_bottom_desktop }}px;
+          --flex-justify-content-mobile: {{ block.settings.flex_justify_content_mobile }};
+          --flex-justify-content-desktop: {{ block.settings.flex_justify_content_desktop }};
         }
     </style>
 
+    {%- assign classes = "" -%}
+
+    {%- unless block.settings.flex_justify_content_mobile == "unset" -%}
+        {%- assign classes = classes | append: " flex-content--mobile" -%}
+    {%- endunless -%}
+
+    {%- unless block.settings.flex_justify_content_desktop == "unset" -%}
+        {%- assign classes = classes | append: " flex-content--desktop" -%}
+    {%- endunless -%}
+
     {%- if block.settings.modal_content != blank -%}
-      <button class="blocks--button {% if block.settings.button_style contains "link" %}link--primary{% else %}button {{ block.settings.button_style }}{% endif %}" {{ blockId }}>{{ block.settings.button_text }} {% if block.settings.button_style == "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</button>
+      <button class="blocks--button {{ classes }} {% if block.settings.button_style contains "link" %}link--primary{% else %}button {{ block.settings.button_style }}{% endif %}" {{ blockId }}>{{ block.settings.button_text }} {% if block.settings.button_style == "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</button>
     {%- else -%}
-      <a class="blocks--button {% if block.settings.button_style contains "link" %}link--primary{% else %}button {{ block.settings.button_style }}{% endif %}" href="{{ block.settings.button_link }}" {{ blockId }}>{{ block.settings.button_text }} {% if block.settings.button_style == "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</a>
+      <a class="blocks--button {{ classes }} {% if block.settings.button_style contains "link" %}link--primary{% else %}button {{ block.settings.button_style }}{% endif %}" href="{{ block.settings.button_link }}" {{ blockId }}>{{ block.settings.button_text }} {% if block.settings.button_style == "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</a>
     {%- endif -%}
 {%- endif -%}

@@ -115,7 +115,7 @@
       {%- if product.selected_or_first_available_variant != nil -%}
         <div class="product-meta__label-list label-list">
           {%- unless product.selected_or_first_available_variant.available -%}
-            <span class="label label--subdued">{{ 'collection.product.sold_out' | t }}</span>
+            <span class="label label--label-custom label--soldout">{{ 'collection.product.sold_out' | t }}</span>
           {%- elsif product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
             {%- if settings.discount_mode == 'percentage' -%}
               {%- assign savings = product.selected_or_first_available_variant.compare_at_price | minus: product.selected_or_first_available_variant.price | times: 100.0 | divided_by: product.selected_or_first_available_variant.compare_at_price | round | append: '%' -%}
@@ -123,7 +123,7 @@
               {%- capture savings -%}{{ product.selected_or_first_available_variant.compare_at_price | minus: product.selected_or_first_available_variant.price | money | remove: ".00" | remove: ",00" }}{%- endcapture -%}
             {%- endif -%}
 
-            <span class="label label--highlight">{{ 'collection.product.discount_html' | t: savings: savings }}</span>
+            <span class="label label--label-custom label--discount-{{ savings | handle }}">{{ 'collection.product.discount_html' | t: savings: savings }}</span>
           {%- endunless -%}
         </div>
       {%- endif -%}

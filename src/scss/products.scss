@@ -15,6 +15,9 @@
 
       .rating__caption {
         text-decoration: underline;
+        text-underline-offset: 3px !important;
+        text-decoration: underline !important;
+        text-decoration-thickness: 2px !important;
       }
      
     }

@@ -7,9 +7,11 @@
       platform: "shopify"
     });
 
-  function openBackInStock(productId,variantId){
+  function openBackInStock(productId,variantId,productTitle){
       window.themeVariables.backInStock.productId = productId;
       window.themeVariables.backInStock.variantId = variantId;
+      
+      document.getElementById('back-in-stock-modal-title').innerText = productTitle;
       document.getElementById('back-in-stock-modal').setAttribute('open', true);
   }
  
@@ -50,8 +52,18 @@ function subscribeToBackInStock(productId, variantId) {
 
     <div class="modal__content-inner">
       <div id="back-in-stock-form">
-        <input type="email" id="bis-email" placeholder="Enter your email to be notified" required>
-        <button type="submit" onclick="subscribeToBackInStock()" class="link link--primary">WAITLIST ME</button>
+        <div class="heading h1">Gah!</div>
+        <div class="heading heading--secondary h3"><span id="back-in-stock-modal-title" class="link link--secondary"></span> has completely sold out!</div>
+        <div class="text">
+          <p>You cheeky ratbags bloody cleaned us out.</p>
+          <p>Anyway, we'll drop you an email the nanosecond we have more in stock.</p>
+          <p>Pop your address in this box:</p>
+        </div>
+        <div class="form">
+          <input type="email" id="bis-email" placeholder="Enter your email to be notified" required class="input__field">
+          <button type="submit" onclick="subscribeToBackInStock()" class="button button--secondary button--full">ALERT ME</button>
+        </div>
+    
       </div>    
     </div>
   </div>

@@ -1869,12 +1869,43 @@ footer {
 #back-in-stock-modal {
   .modal__content {
     background: $gotoPinkLight;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    #back-in-stock-form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 30px;
+      max-width: 350px;
+
+      .link--secondary {
+        font-weight: bold;
+      }
+
+      .text {
+        gap: 5px;
+      }
+
+      .form {
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      input {
+        margin-bottom: 16px;
+        background-color: #fffaf8;
+      }
+    }
   }
 }
 
 
 
-@include media-query($medium-up) {
+
   #main {
     background-color: var(--section-background);
   }
@@ -1917,7 +1948,7 @@ footer {
       padding: 2px;
     }
   }
-}
+
 
 
 

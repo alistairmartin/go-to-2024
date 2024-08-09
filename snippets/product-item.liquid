@@ -14,7 +14,7 @@
 
     {% comment %} --- START - Go-To Tags --- {% endcomment %}
 
-    <span class="label label--label-custom label--{{ product.type | handle }} label--product-type">{{ product.type }}</span>
+    {% comment %} <span class="label label--label-custom label--{{ product.type | handle }} label--product-type">{{ product.type }}</span> {% endcomment %}
 
     {%- if product.template_suffix == 'coming-soon' -%}
       <span class="label label--label-custom label--coming-soon">{{ 'product.labels.coming_soon' | t }}</span>
@@ -355,7 +355,7 @@
           Email when available
         </a> {% endcomment %}
 
-        <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }})"  class="link link--primary back-in-stock">WAITLIST ME</button>
+        <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title }}')"  class="link link--primary back-in-stock">WAITLIST ME</button>
       </div>
     {%- endif -%}
   </div>

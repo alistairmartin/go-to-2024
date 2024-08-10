@@ -1,0 +1,65 @@
+<form id="myForm">
+  <div>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <span id="emailError" class="error-message"></span>
+  </div>
+  
+  <div>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <span id="nameError" class="error-message"></span>
+  </div>
+
+  <button type="submit" id="submitButton">Submit</button>
+</form>
+
+<div id="successMessage" class="success-message hide">Form submitted successfully!</div>
+
+
+<script>
+      document.addEventListener("DOMContentLoaded", function() {
+        $("#myForm").on('submit', function(e) {
+    e.preventDefault();
+    
+    // Clear any previous error messages
+    $(".error-message").text("");
+    
+    var email = $("#email").val();
+    var name = $("#name").val();
+    var hasError = false;
+
+    // Email validation
+    if (!validateEmail(email)) {
+      $("#emailError").text("Please enter a valid email.");
+      hasError = true;
+    }
+
+    // Name validation
+    if (name.trim() === "") {
+      $("#nameError").text("Name is required.");
+      hasError = true;
+    }
+
+    if (hasError) {
+      return; // Prevent form submission if there are errors
+    }
+
+    // Disable the submit button to prevent multiple submissions
+    $("#submitButton").attr('disabled', true).text('Submitting...');
+
+    // Simulate an AJAX request
+    setTimeout(function() {
+      $("#successMessage").removeClass("hide");
+      $("#myForm")[0].reset();
+      $("#submitButton").attr('disabled', false).text('Submit');
+    }, 2000);
+  });
+
+  // Email validation function
+  function validateEmail(email) {
+    var re = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    return re.test(email);
+  }
+        });
+</script>

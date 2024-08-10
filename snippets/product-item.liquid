@@ -139,7 +139,7 @@
   </div>
 
   <div class="product-item__info {% if show_cta %}{% unless reduced_content %}product-item__info--with-button{% endunless %}{% endif %} {% if reduced_font_size %}text--small{% endif %}">
-    <div class="product-item-meta">
+    <div class="product-item-meta outer">
       {%- if settings.show_vendor -%}
         {%- assign vendor_handle = product.vendor | handle -%}
         {%- assign collection_for_vendor = collections[vendor_handle] -%}
@@ -324,8 +324,6 @@
         {%- endfor -%}
       {%- endif -%}
     </div>
-
-    
 
     {%- if page.handle == "build-your-routine" and section_name == "featured-collections" -%}
       {% render "product-item--ATC-BYO", product: product %}

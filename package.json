@@ -7,7 +7,8 @@
     "scss": "sass src/scss:assets/ --style compressed --no-source-map",
     "js": "for file in src/js/*.js; do terser \"$file\" --compress --mangle --output \"assets/$(basename \"$file\" .js).min.js\"; done",
     "build": "npm run scss && npm run js",
-    "deploy": "npm run build && theme deploy",
+    "deploy": "npm run build && npm run prefix && theme deploy",
+    "prefix": "npx postcss assets/*.css --use autoprefixer --replace --no-map",
     "watch": "concurrently \"npm run watch:scss\" \"npm run watch:js\" \"theme watch\"",
     "watch-live": "concurrently \"npm run watch:scss\" \"npm run watch:js\" \"theme watch --allow-live\"",
     "watch:scss": "chokidar 'src/scss/**/*.scss' -c 'npm run scss'",
@@ -30,6 +31,12 @@
     "cssnano": "^6.0.3",
     "postcss": "^8.4.35",
     "sass": "^1.71.1",
-    "terser": "^5.27.2"
-  }
+    "terser": "^5.27.2",
+    "autoprefixer": "^10.4.13"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "not dead",
+    "Safari >= 10"
+  ]
 }

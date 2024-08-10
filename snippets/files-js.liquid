@@ -1,6 +1,7 @@
 <script src="{{ 'vendor.js' | asset_url }}" defer></script>
 <script src="{{ 'theme.js' | asset_url }}" defer></script>
 <script src="{{ 'global.min.js' | asset_url }}" defer></script>
+<script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
 
 {%- if product -%}
     <script src="https://player.vimeo.com/api/player.js" defer></script>
@@ -8,7 +9,6 @@
 {%- endif -%}
 
 {%- if page.handle == "build-your-routine" -%}
-    <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
     <script src="{{ 'byo-bundle.min.js' | asset_url }}" defer></script>
 {%- endif -%}
 

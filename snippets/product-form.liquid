@@ -3,6 +3,10 @@
 {%- assign size_label_list = 'general.label.size' | t | replace: ', ', ',' | downcase | split: ',' -%}
 
 <div class="product-form">
+
+
+
+
   {%- for block in section.blocks -%}
     {%- case block.type -%}
       {%- comment -%}
@@ -11,7 +15,10 @@
       ----------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
       {%- when '@app' -%}
-        {%- render block -%}
+
+        {% if context != 'quick-buy' %}
+          {%- render block -%}
+        {% endif %}
 
       {%- comment -%}
       ----------------------------------------------------------------------------------------------------------------
@@ -343,7 +350,7 @@
       ----------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
       {%- when 'product_usp_mobile' -%}
-        {%- if product.metafields.custom.product_usp__text != blank -%}
+        {%- if product.metafields.custom.product_usp__text != blank and context != 'quick-buy' -%}
           <section>
             <div class="product-USP hide-desktop">
               {% assign USPtextSize = product.metafields.custom.product_usp__text | size %}
@@ -358,7 +365,7 @@
 
 
       {%- when 'product_usp_desktop' -%}
-        {%- if product.metafields.custom.product_usp__text != blank -%}
+        {%- if product.metafields.custom.product_usp__text != blank and context != 'quick-buy' -%}
         <div class="product-USP hide-mobile">
 
             {% assign USPtextSize = product.metafields.custom.product_usp__text | size %}

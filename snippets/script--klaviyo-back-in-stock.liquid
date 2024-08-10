@@ -14,30 +14,48 @@
       document.getElementById('back-in-stock-modal-title').innerText = productTitle;
       document.getElementById('back-in-stock-modal').setAttribute('open', true);
   }
- 
 
-function subscribeToBackInStock(productId, variantId) {
-    var email = document.getElementById('bis-email').value;
-    $.ajax({
-    type: "POST",
-    url: "https://a.klaviyo.com/onsite/components/back-in-stock/subscribe",
-    data: {
-        a: "KZvmWH",
-        email: email, 
-        variant: window.themeVariables.backInStock.variantId,
-        product: window.themeVariables.backInStock.productId,
-        platform: "shopify",
-        subscribe_for_newsletter: false,
-    },
-    success: function(response) {
-        console.log(response); // Log the response in the console
-    },
-    error:function(error){
-            console.error(error);
-        } 
-    });
+  document.addEventListener("DOMContentLoaded", function() {
 
-}
+      $("#back-in-stock-form").on('submit', function(event) {
+        event.preventDefault();
+        let hasError = false;
+        $("#back-in-stock-error").addClass("hide");
+        $("#back-in-stock-submit").attr('aria-busy', true);
+
+        var email = $('#back-in-stock-email').val();
+
+        $.ajax({
+          type: "POST",
+          url: "https://a.klaviyo.com/onsite/components/back-in-stock/subscribe",
+          data: {
+            a: "KZvmWH",
+            email: email, 
+            variant: window.themeVariables.backInStock.variantId,
+            product: window.themeVariables.backInStock.productId,
+            platform: "shopify",
+            subscribe_for_newsletter: false
+          },
+          success: function(response) {
+            console.log(response);
+            $("#back-in-stock-form").addClass("hide");
+            $("#back-in-stock-form-container").addClass("hide");
+            $("#back-in-stock-success").removeClass("hide");
+          },
+          error: function(xhr) {
+            console.error("Error:", xhr.statusText);
+            $("#back-in-stock-error").removeClass("hide");
+            $("#back-in-stock-submit").attr('aria-busy', false);
+            hasError = true;
+          }
+        });
+
+        if (hasError) {
+        return; 
+        }
+      });
+});
+
 </script>
 
 
@@ -51,23 +69,49 @@ function subscribeToBackInStock(productId, variantId) {
     </button>
 
     <div class="modal__content-inner">
-      <div id="back-in-stock-form">
+      <div id="back-in-stock-form-container">
         <div class="heading h1">Gah!</div>
-        <div class="heading heading--secondary h3"><span id="back-in-stock-modal-title" class="link link--secondary"></span> has completely sold out!</div>
+        <div class="heading h3 heading--small heading--secondary"><span id="back-in-stock-modal-title"></span> has completely sold out!</div>
         <div class="text">
           <p>You cheeky ratbags bloody cleaned us out.</p>
           <p>Anyway, we'll drop you an email the nanosecond we have more in stock.</p>
           <p>Pop your address in this box:</p>
         </div>
-        <div class="form">
-          <input type="email" id="bis-email" placeholder="Enter your email to be notified" required class="input__field">
-          <button type="submit" onclick="subscribeToBackInStock()" class="button button--secondary button--full">ALERT ME</button>
-        </div>
-    
+
+
+        {% comment %} accept-charset="UTF-8" action="https://a.klaviyo.com/onsite/components/back-in-stock/subscribe" {% endcomment %}
+        <form id="back-in-stock-form" class="form back-in-stock">      
+            
+            <div id="back-in-stock-error" class="hide">
+              <div class="form__banner banner banner--error">
+                <span class="banner__ribbon">{% render 'icon' with 'form-error' %}</span>
+      
+                <div class="banner__content">
+                  Sorry something isn't correct - please try again
+                </div>
+              </div>
+            </div> 
+  
+            <div class="input">
+              <input id="back-in-stock-email" type="email" class="input__field {% if customer.email != blank %}is-filled{% endif %}" name="contact[email]" aria-label="{{ 'contact.form.email' | t }}" required {% if customer %}value="{{ customer.email }}"{% endif %}>
+              <label for="back-in-stock-email" class="input__label">Enter your email to be notified</label>
+            </div>
+  
+            <button id="back-in-stock-submit" type="submit" class="form__submit button button--ternary button--full">ALERT ME</button>
+          </form>
+
       </div>    
+
+      <div id="back-in-stock-success" class="hide">
+        <div class="heading h3 heading--secondary">Got It!</div>
+        <div class="heading h2">We'll let you know when it's back in stock.</div>      
+      </div>    
+
     </div>
   </div>
 </modal-content>
+
+
 
 
 

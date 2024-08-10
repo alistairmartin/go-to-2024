@@ -50,47 +50,69 @@
   </div>
   </section>
 
-<section class="loyalty-account">
+<section class="loyalty-account {% if customerLoyaltyLevel == 5 %}tier-5{% endif %}">
 
   <div class="container">
 
+      {%- if customerLoyaltyLevel == 5 -%}
+        {%- assign lineSegements = 100 | divided_by: 5 -%}
+        {%- assign lineIncremenets = lineSegements | divided_by: 2.00 -%}
+      {%- else -%}
+        {%- assign lineSegements = 100 | divided_by: 4 -%}
+        {%- assign lineIncremenets = lineSegements | divided_by: 2.00 -%}
+      {%- endif -%}
+  
 
-      <div class="loyalty-line">
-        <div class="loyalty-line--line"></div>
-
-        <div class="loyalty-line--line-active" style="background:{{ customerLoyaltyColour }}; width: {{ customerLoyaltyLevel | times: 25 |  minus: 12.5 }}%"></div>
-
-        <div class="loyalty-line--here" style="left: {{ customerLoyaltyLevel | times: 25 |  minus: 12.5 }}%;">
-          <svg width="27" height="35" viewBox="0 0 27 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M1.21957 8.34917C1.91969 6.60534 2.97721 5.02744 4.32405 3.71705C6.76542 1.50544 9.95108 0.295957 13.2451 0.330047C19.7191 0.330047 26.2691 4.95905 26.2751 13.842C26.2751 21.22 14.3021 33.453 13.7751 33.979C13.7165 34.0519 13.6419 34.1102 13.557 34.1494C13.4722 34.1886 13.3795 34.2076 13.2861 34.205C13.1876 34.2043 13.0903 34.184 12.9998 34.1452C12.9093 34.1064 12.8274 34.0499 12.7591 33.979C12.2281 33.453 0.259054 21.107 0.259054 13.842C0.192263 11.9641 0.519457 10.093 1.21957 8.34917ZM7.82505 12.6C7.82611 14.0473 8.40149 15.4349 9.42484 16.4583C10.4482 17.4816 11.8358 18.057 13.2831 18.058C13.9977 18.0619 14.706 17.9246 15.3675 17.654C16.0289 17.3834 16.6304 16.9849 17.1375 16.4814C17.6446 15.9778 18.0473 15.3791 18.3225 14.7196C18.5976 14.0601 18.7399 13.3527 18.7411 12.638C18.7403 11.1907 18.165 9.80294 17.1416 8.77954C16.1182 7.75613 14.7304 7.18084 13.2831 7.18005C12.5685 7.17636 11.8602 7.31376 11.1988 7.58437C10.5374 7.85497 9.93595 8.25347 9.42889 8.757C8.92183 9.26053 8.51915 9.85919 8.24393 10.5187C7.96871 11.1781 7.82636 11.8855 7.82505 12.6Z" fill="{{ customerLoyaltyColour }}"/>
-          </svg>
-          <h4 class="heading heading--secondary">You are here!</h4>
-          <div class="dot" style="background:{{ customerLoyaltyColour }};"></div>
-        </div>
-
-        {%- if customerLoyaltyLevel < 4 -%}
-          <div class="loyalty-line--next" style="left: {{ customerLoyaltyLevelNext | plus: 1 | times: 25 |  minus: 12.5 }}%;">
+      <div class="loyalty-line-container">
+        <div class="loyalty-line">
+          <div class="loyalty-line--line"></div>
+  
+          <div class="loyalty-line--line-active" style="background:{{ customerLoyaltyColour }}; width: {{ customerLoyaltyLevel | times: lineSegements |  minus: lineIncremenets }}%"></div>
+  
+          <div class="loyalty-line--here" style="left: {{ customerLoyaltyLevel | times: lineSegements |  minus: lineIncremenets }}%;">
             <svg width="27" height="35" viewBox="0 0 27 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M1.21957 8.34917C1.91969 6.60534 2.97721 5.02744 4.32405 3.71705C6.76542 1.50544 9.95108 0.295957 13.2451 0.330047C19.7191 0.330047 26.2691 4.95905 26.2751 13.842C26.2751 21.22 14.3021 33.453 13.7751 33.979C13.7165 34.0519 13.6419 34.1102 13.557 34.1494C13.4722 34.1886 13.3795 34.2076 13.2861 34.205C13.1876 34.2043 13.0903 34.184 12.9998 34.1452C12.9093 34.1064 12.8274 34.0499 12.7591 33.979C12.2281 33.453 0.259054 21.107 0.259054 13.842C0.192263 11.9641 0.519457 10.093 1.21957 8.34917ZM7.82505 12.6C7.82611 14.0473 8.40149 15.4349 9.42484 16.4583C10.4482 17.4816 11.8358 18.057 13.2831 18.058C13.9977 18.0619 14.706 17.9246 15.3675 17.654C16.0289 17.3834 16.6304 16.9849 17.1375 16.4814C17.6446 15.9778 18.0473 15.3791 18.3225 14.7196C18.5976 14.0601 18.7399 13.3527 18.7411 12.638C18.7403 11.1907 18.165 9.80294 17.1416 8.77954C16.1182 7.75613 14.7304 7.18084 13.2831 7.18005C12.5685 7.17636 11.8602 7.31376 11.1988 7.58437C10.5374 7.85497 9.93595 8.25347 9.42889 8.757C8.92183 9.26053 8.51915 9.85919 8.24393 10.5187C7.96871 11.1781 7.82636 11.8855 7.82505 12.6Z" fill="{{ customerLoyaltyLevelNextColour }}"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M1.21957 8.34917C1.91969 6.60534 2.97721 5.02744 4.32405 3.71705C6.76542 1.50544 9.95108 0.295957 13.2451 0.330047C19.7191 0.330047 26.2691 4.95905 26.2751 13.842C26.2751 21.22 14.3021 33.453 13.7751 33.979C13.7165 34.0519 13.6419 34.1102 13.557 34.1494C13.4722 34.1886 13.3795 34.2076 13.2861 34.205C13.1876 34.2043 13.0903 34.184 12.9998 34.1452C12.9093 34.1064 12.8274 34.0499 12.7591 33.979C12.2281 33.453 0.259054 21.107 0.259054 13.842C0.192263 11.9641 0.519457 10.093 1.21957 8.34917ZM7.82505 12.6C7.82611 14.0473 8.40149 15.4349 9.42484 16.4583C10.4482 17.4816 11.8358 18.057 13.2831 18.058C13.9977 18.0619 14.706 17.9246 15.3675 17.654C16.0289 17.3834 16.6304 16.9849 17.1375 16.4814C17.6446 15.9778 18.0473 15.3791 18.3225 14.7196C18.5976 14.0601 18.7399 13.3527 18.7411 12.638C18.7403 11.1907 18.165 9.80294 17.1416 8.77954C16.1182 7.75613 14.7304 7.18084 13.2831 7.18005C12.5685 7.17636 11.8602 7.31376 11.1988 7.58437C10.5374 7.85497 9.93595 8.25347 9.42889 8.757C8.92183 9.26053 8.51915 9.85919 8.24393 10.5187C7.96871 11.1781 7.82636 11.8855 7.82505 12.6Z" fill="{{ customerLoyaltyColour }}"/>
             </svg>
-            <h4 class="heading heading--secondary">${{ customerLoyaltyLevelNextCost | minus: account_total_spend }} to go!</h4>
-            <div class="dot" style="background:{{ customerLoyaltyLevelNextColour }};"></div>
+            <h4 class="heading heading--secondary">You are here!</h4>
+            <div class="dot" style="background:{{ customerLoyaltyColour }};"></div>
           </div>
-        {%- endif -%}
-      </div>
+  
+          {%- if customerLoyaltyLevel < 4 -%}
+            <div class="loyalty-line--next" style="left: {{ customerLoyaltyLevelNext | plus: 1 | times: lineSegements |  minus: lineIncremenets }}%;">
+              <svg width="27" height="35" viewBox="0 0 27 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M1.21957 8.34917C1.91969 6.60534 2.97721 5.02744 4.32405 3.71705C6.76542 1.50544 9.95108 0.295957 13.2451 0.330047C19.7191 0.330047 26.2691 4.95905 26.2751 13.842C26.2751 21.22 14.3021 33.453 13.7751 33.979C13.7165 34.0519 13.6419 34.1102 13.557 34.1494C13.4722 34.1886 13.3795 34.2076 13.2861 34.205C13.1876 34.2043 13.0903 34.184 12.9998 34.1452C12.9093 34.1064 12.8274 34.0499 12.7591 33.979C12.2281 33.453 0.259054 21.107 0.259054 13.842C0.192263 11.9641 0.519457 10.093 1.21957 8.34917ZM7.82505 12.6C7.82611 14.0473 8.40149 15.4349 9.42484 16.4583C10.4482 17.4816 11.8358 18.057 13.2831 18.058C13.9977 18.0619 14.706 17.9246 15.3675 17.654C16.0289 17.3834 16.6304 16.9849 17.1375 16.4814C17.6446 15.9778 18.0473 15.3791 18.3225 14.7196C18.5976 14.0601 18.7399 13.3527 18.7411 12.638C18.7403 11.1907 18.165 9.80294 17.1416 8.77954C16.1182 7.75613 14.7304 7.18084 13.2831 7.18005C12.5685 7.17636 11.8602 7.31376 11.1988 7.58437C10.5374 7.85497 9.93595 8.25347 9.42889 8.757C8.92183 9.26053 8.51915 9.85919 8.24393 10.5187C7.96871 11.1781 7.82636 11.8855 7.82505 12.6Z" fill="{{ customerLoyaltyLevelNextColour }}"/>
+              </svg>
+              <h4 class="heading heading--secondary">${{ customerLoyaltyLevelNextCost | minus: account_total_spend }} to go!</h4>
+              <div class="dot" style="background:{{ customerLoyaltyLevelNextColour }};"></div>
+            </div>
+          {%- endif -%}
+        </div>
+  
+        <div class="loyalty-tiers {% if customerLoyaltyLevel == 5 %}tier-5{% endif %}">
+  
+  
+          {%- for loyalty_tiers in shop.metaobjects['loyalty_tiers'].values limit: 5 -%}
+  
+            {%- capture loyalty_level_tier -%}{{ loyalty_tiers.loyalty_level.value }}{%- endcapture -%}
+            {%- assign loyalty_level_tier = loyalty_level_tier | remove: "Tier " | times: 1 -%}
+              {%- if forloop.index == 5 and customerLoyaltyLevel != 5 -%}
+                {% break %}
+              {%- endif -%}
+              
+              <div class="loyalty-tier">
+                <span class="level heading heading--secondary" style="color: {{ loyalty_tiers.tier_colour.value }};">LEVEL {{ loyalty_level_tier | remove: "Tier " }}</span>
 
-      <div class="loyalty-tiers">
-        {%- for loyalty_tiers in shop.metaobjects['loyalty_tiers'].values limit: 4 -%}
+                {%- if forloop.index == 5 and customerLoyaltyLevel == 5 -%}
+                  <span class="name heading h4 hide-mobile">{{ loyalty_tiers.tier_name.value }}</span>
+                  <span class="name heading h4 hide-desktop">{{ loyalty_tiers.tier_name.value | remove: 'Friend' }}</span>
 
-          {%- capture loyalty_level_tier -%}{{ loyalty_tiers.loyalty_level.value }}{%- endcapture -%}
-          {%- assign loyalty_level_tier = loyalty_level_tier | remove: "Tier " | times: 1 -%}
-
-          <div class="loyalty-tier">
-            <span class="level heading heading--secondary" style="color: {{ loyalty_tiers.tier_colour.value }};">LEVEL {{ loyalty_level_tier | remove: "Tier " }}</span>
-            <span class="name heading h4">{{ loyalty_tiers.tier_name.value }}</span>
-            <span class="requirements">{{ loyalty_tiers.level_requirement_text.value }}</span>
-          </div>
-        {%- endfor -%}
+                {%- else -%}
+                <span class="name heading h4">{{ loyalty_tiers.tier_name.value }}</span>
+                {%- endif -%}
+                <span class="requirements">{{ loyalty_tiers.level_requirement_text.value }}</span>
+              </div>
+          {%- endfor -%}
+        </div>
       </div>
 
       <div class="loyalty-benefits--container">

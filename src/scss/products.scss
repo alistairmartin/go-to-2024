@@ -55,57 +55,7 @@
 }
 
 
-.who-is-it-for, .perfect-for {
-    display: none;
-    margin-top: 42px;
 
-    h3 {
-      margin-bottom: 0;
-      line-height: 1;
-    }
-
-  
-
-    .who-is-it-for--container, .perfect-for--container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-
-      @include media-query($medium-up) {
-        display: flex;
-        flex-wrap: nowrap;
-      }
-    }
-
-    .who-is-it-for--icon, .perfect-for--icon {
-      padding: 10px;
-
-      @include media-query($medium-up) {
-        width: 33.3%;
-      }
-
-      img {
-        cursor: pointer;
-        transition: transform 0.2s ease-in-out;
-        width: 100%;
-        display: block;
-        width: 70px;
-        height: 70px;
-        margin: 0 auto;
-
-        &:hover {
-          transform: scale(1.2);
-        }
-      }
-
-      p {
-        margin-top: 5px;
-        text-align: center;
-        line-height: 1;
-        font-size: 16px;
-        font-weight: 600;
-      }
-    }
-  }
 
   // .product-content-description --- START
 

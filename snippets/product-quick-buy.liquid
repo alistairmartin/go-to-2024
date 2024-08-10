@@ -19,6 +19,34 @@
 
         <a href="{{ product.url }}" class="product-item-meta__title">{{ product.title }}</a>
 
+        <div class="product-meta__subtitle">
+        {%- comment %}START -- Metafield - Volume and Subtitle {% endcomment -%}
+        {%- if product.metafields.custom.product_subtitle__description != blank or product.metafields.custom.product_subtitle__measurement != blank -%}
+          <p>
+            {%- if product.metafields.custom.product_subtitle__description != blank -%}
+              {{- product.metafields.custom.product_subtitle__description -}}
+            {%- endif -%}
+      
+            {%- if product.metafields.custom.product_subtitle__description != blank and product.metafields.custom.product_subtitle__measurement != blank -%}
+              <span class="separator--dot">•</span>
+            {%- endif -%}
+      
+            {%- if product.metafields.custom.product_subtitle__measurement != blank -%}
+              {{- product.metafields.custom.product_subtitle__measurement -}}
+            {%- endif -%}
+      
+          </p>
+          {%- endif -%}
+          {%- comment %}END -- Metafield - Volume and Subtitle {% endcomment -%}
+        </div>
+
+        <div class="product-meta__reference">
+          {%- if section.settings.show_product_rating -%}
+            <a href="{% if featured %}{{ product.url }}{% endif %}#product-{{ product.id }}-reviews-pocket" is="review-link" data-smooth-scroll class="product-meta__reviews-badge hidden-lap-and-up">{%- render 'product-rating', product: product -%}</a>
+            <a href="{% if featured %}{{ product.url }}{% endif %}#product-{{ product.id }}-tabs" is="review-link" data-smooth-scroll class="product-meta__reviews-badge hidden-pocket">{%- render 'product-rating', product: product -%}</a>
+          {%- endif -%}
+        </div>
+
         <div class="product-item-meta__price-list-container" role="region" aria-live="polite">
           {%- if product.selected_or_first_available_variant != nil -%}
             <div class="price-list">
@@ -90,6 +118,47 @@
       </product-meta>
     </div>
   </div>
+
+  {%- if product.metafields.global.description_tag != blank -%}
+    <p class="hide-desktop description">{{ product.metafields.global.description_tag }}</p>
+  {%- endif -%}
+
+{%- endcapture -%}
+
+
+{%- capture quick_buy_product_info_below -%}
+  {%- if product.metafields.global.description_tag != blank -%}
+    <p>{{ product.metafields.global.description_tag }}</p>
+  {%- endif -%}
+
+
+    <div class="quick-buy-product--below-content">
+      <div class="perfect-for">
+        <h3 class="text--bold">{{ 'product.content.plays_nice_with' | t }}</h3>
+        <div class="perfect-for--container">
+          {%- for tag in product.tags -%}
+            {%- if tag contains "skintype_" -%}
+              {% assign skinTypeFound = true %}
+              {% assign icon = tag | remove: "skintype_" %}
+              {% render "product-content-icons--perfect-for", icon: icon %}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div class="who-is-it-for">
+        <h3 class="text--bold">{{ 'product.content.good_to_know' | t }}</h3>
+        <div class="who-is-it-for--container">
+          {%- for tag in product.tags -%}
+            {%- if tag contains "badge_" -%}
+              {% assign badgeFound = true %}
+              {% assign icon = tag | remove: "badge_" %}
+              {% render "product-content-icons--good-to-know", icon: icon %}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+  </div>
 {%- endcapture -%}
 
 {%- capture product_form_id -%}product-form-quick-buy-{{ template.suffix }}-{{ product.id }}-{{ section.id }}{%- endcapture -%}
@@ -112,7 +181,10 @@
       <div class="drawer__content">
         {{- quick_buy_product_info -}}
         {%- render 'product-form', product: product, product_form_id: product_form_id, context: 'quick-buy' -%}
+        {{- quick_buy_product_info_below -}}
       </div>
+
+
     </product-rerender>
   </quick-buy-drawer>
 
@@ -121,8 +193,9 @@
 
     <product-rerender id="quick-buy-popover-{{ product_form_id }}" observe-form="{{ product_form_id }}">
       <header class="popover__header">
-        {{- quick_buy_product_info -}}
-
+        <div>
+          {{- quick_buy_product_info -}}
+        </div>
         <button type="button" class="popover__close-button tap-area tap-area--large" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
           {%- render 'icon' with 'close' -%}
         </button>
@@ -131,6 +204,7 @@
       <div class="popover__content popover__content--no-padding">
         {%- render 'product-form', product: product, product_form_id: product_form_id, context: 'quick-buy' -%}
       </div>
+
     </product-rerender>
   </quick-buy-popover>
 </template>

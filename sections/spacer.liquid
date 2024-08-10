@@ -1,12 +1,13 @@
-<section class="spacer" id="{{ section.id }}" style="display: block"></section>
+<section class="spacer" id="{{ section.id }}"></section>
 <style>
   #shopify-section-{{ section.id }} {
+    background: {{ section.settings.color_mobile }};
     height: {{ section.settings.height_mobile }}px;
-    background: {{ section.settings.color }};
   }
 
   @media screen and (min-width: 1139px) {
     #shopify-section-{{ section.id }} {
+      background: {{ section.settings.color_desktop }};
       height: {{ section.settings.height_desktop }}px;
     }
   }
@@ -16,9 +17,18 @@
   "name": "Spacer",
   "settings": [
     {
+      "type": "header",
+      "content": "Colour"
+    },
+    {
       "type": "color",
-      "id": "color",
-      "label": "Color"
+      "id": "color_desktop",
+      "label": "Colour (Desktop)"
+    },
+    {
+      "type": "color",
+      "id": "color_mobile",
+      "label": "Colour (Mobile)"
     },
     {
       "type": "header",
@@ -26,7 +36,7 @@
     },
     {
       "type": "range",
-      "label": "Desktop",
+      "label": "Height (Desktop)",
       "id": "height_desktop",
       "min": 0,
       "max": 100,
@@ -35,7 +45,7 @@
     },
     {
       "type": "range",
-      "label": "Mobile",
+      "label": "Height (Mobile)",
       "id": "height_mobile",
       "min": 0,
       "max": 100,

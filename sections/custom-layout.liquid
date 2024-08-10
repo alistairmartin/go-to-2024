@@ -19,7 +19,6 @@
   {%- for block in section.blocks -%}
     {%- capture blockId -%}id="block-{{ block.id }}"{%- endcapture -%}
 
-
     {%- comment -%} CONTAINERS --- START  {%- endcomment -%}
     {%- include "blocks--containers" -%}
     {%- comment -%} CONTAINERS --- END  {%- endcomment -%}
@@ -29,6 +28,7 @@
     {%- include "blocks--text" -%}
     {%- include "blocks--product-ATC" -%}
     {%- include "blocks--button" -%}
+    {%- include "blocks--spacer" -%}
 
   {%- endfor -%}
 
@@ -1419,166 +1419,45 @@
         }
       ]
     },
-        {
-      "type": "button",
-      "name": "✅ Button",
+    {
+      "type": "spacer",
+      "name": "🪐 Spacer",
       "settings": [
         {
-            "type": "text",
-            "id": "button_text",
-            "label": "Button text"
+          "type": "header",
+          "content": "Colour"
         },
         {
-            "type": "url",
-            "id": "button_link",
-            "label": "Button link"
+          "type": "color",
+          "id": "color",
+          "label": "Colour (Desktop)"
         },
         {
-            "type": "radio",
-            "id": "button_style",
-            "label": "Button Style",
-            "options": [
-              {
-              "value": "button--primary",
-              "label": "Button"
-            },
-            {
-                "value": "button--secondary",
-                "label": "Button (Secondary)"
-            },
-            {
-                "value": "button--ternary",
-                "label": "Button (Ternary)"
-            },
-            {
-                "value": "button--ternary-white",
-                "label": "Button (Ternary - White)"
-            },
-            {
-                "value": "button--outline",
-                "label": "Button (Outline)"
-            },
-            {
-                "value": "link",
-                "label": "Link"
-            },
-            {
-                "value": "link-with-arrow",
-                "label": "Link (With Arrow)"
-            }
-            ],
-            "default": "button--primary"
+          "type": "color",
+          "id": "color_mobile",
+          "label": "Colour (Mobile)"
         },
         {
-        "type": "header",
-        "content": "🌫️ Modal"
+          "type": "header",
+          "content": "Height"
         },
         {
-          "type": "liquid",
-          "id": "modal_content",
-          "label": "Modal Content"
+          "type": "range",
+          "label": "Height (Desktop)",
+          "id": "height_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 36
         },
         {
-        "type": "header",
-        "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---",
-        },
-        {
-            "type": "header",
-            "content": "Margins"
-        },
-        {
-            "type": "range",
-            "id": "margin_top_desktop",
-            "min": 0,
-            "max": 100,
-            "step": 1,
-            "unit": "px",
-            "default": 0,
-            "label": "⬆ Margin Top"
-        },
-        {
-            "type": "range",
-            "id": "margin_bottom_desktop",
-            "min": 0,
-            "max": 100,
-            "step": 1,
-            "unit": "px",
-            "default": 0,
-            "label": "⬇ Margin Bottom"
-        },
-        {
-          "type": "select",
-          "id": "flex_justify_content_desktop",
-          "label": "Position",
-          "info": "Position the button (Left, Center, Right)",
-          "default": "unset",
-          "options": [
-            {
-              "value": "unset",
-              "label": "Unset"
-            },
-            {
-              "value": "flex-start",
-              "label": "Left"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "flex-end",
-              "label": "Right"
-            }
-          ]
-        },
-        {
-            "type": "header",
-            "content": "--- 📱 MOBILE SETTINGS 📱 ---"
-        },
-        {
-            "type": "range",
-            "id": "margin_top_mobile",
-            "min": 0,
-            "max": 100,
-            "step": 1,
-            "unit": "px",
-            "default": 0,
-            "label": "⬆ Margin Top"
-        },
-        {
-            "type": "range",
-            "id": "margin_bottom_mobile",
-            "min": 0,
-            "max": 100,
-            "step": 1,
-            "unit": "px",
-            "default": 0,
-            "label": "⬇ Margin Bottom"
-        },
-        {
-          "type": "select",
-          "id": "flex_justify_content_mobile",
-          "label": "Button Position",
-          "info": "Position the button (Left, Center, Right)", 
-          "default": "unset",
-          "options": [
-            {
-              "value": "unset",
-              "label": "Unset"
-            },
-            {
-              "value": "flex-start",
-              "label": "Left"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "flex-end",
-              "label": "Right"
-            }
-          ]
+          "type": "range",
+          "label": "Height (Mobile)",
+          "id": "height_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 24
         }
       ]
     },

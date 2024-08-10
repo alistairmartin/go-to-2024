@@ -71,13 +71,7 @@
     }
 
 
-    .level {
 
-    }
-
-    .name {
-
-    }
 
     .requirements {
       font-weight: 500;
@@ -85,6 +79,35 @@
       font-size: 14px;
     }
   } 
+
+
+  &.tier-5 {
+    grid-template-columns: repeat(5,1fr);
+
+    .level {
+      @include media-query($small) {
+        font-size: 15px;
+      }
+    }
+
+    .name {
+      @include media-query($small) {
+        line-height: 1;
+        font-size: 13px;
+        text-align: center;
+        line-height: 1;
+      }
+    }
+
+    .requirements {
+      @include media-query($small) {
+        line-height: 1;
+        font-size: 11px;
+        text-align: center;
+        line-height: 1;
+      }
+    }
+  }
 }
 
 .loyalty-line {
@@ -140,6 +163,14 @@
   }
 }
 
+.loyalty-account.tier-5 {
+  .loyalty-line--here .heading {
+    @include media-query($small) {
+      font-size: 12px;
+      text-align: center;
+    }
+  }
+}
 
 .loyalty-benefits--container {
   display: flex;

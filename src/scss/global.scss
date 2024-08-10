@@ -106,7 +106,7 @@ html {
 }
 
 .button--primary {
-  border-radius: 0;
+  border-radius: 8px;
   color: var(--color-button-primary-text);
   background: var(--color-button-primary-background);
   box-shadow: 4px 4px 0px 0px var(--color-button-primary-shadow);
@@ -119,7 +119,7 @@ html {
 
 .button--secondary {
   border: 2px solid var(--color-button-secondary-shadow);
-  border-radius: 0;
+  border-radius: 8px;
   color: var(--color-button-secondary-text);
   background: var(--color-button-secondary-background);
   box-shadow: 4px 4px 0px 0px var(--color-button-secondary-shadow);
@@ -132,7 +132,7 @@ html {
 
 .button--ternary {
   border: 2px solid var(--color-button-ternary-shadow);
-  border-radius: 0;
+  border-radius: 8px;
   color: var(--color-button-ternary-text);
   background: var(--color-button-ternary-background);
   box-shadow: 4px 4px 0px 0px var(--color-button-ternary-shadow);
@@ -143,9 +143,22 @@ html {
   }
 }
 
+.button--ternary-white {
+  border: 2px solid #fff;
+  border-radius: 8px;
+  color: #fff;
+  background: transparent;
+  box-shadow: 4px 4px 0px 0px #fff;
+
+  &:hover {
+    transform: translate(2px) translateY(2px);
+    box-shadow: 2px 0 0 #fff;
+  }
+}
+
 .button--outline {
   border: 2px solid var(--color-button-ternary-shadow);
-  border-radius: 0;
+  border-radius: 8px;
   color: var(--color-button-ternary-text);
   background: transparent;
   text-transform: uppercase;
@@ -1018,10 +1031,11 @@ store-header.background-blur {
 }
 
 .shopify-section--custom-layout {
-  background: var(--section-background);
+  background: var(--section-background-mobile);
   padding: var(--paddingVerticalMobile) var(--paddingHorizontalMobile);
 
   @include media-query($medium-up) {
+    background: var(--section-background-desktop);
     padding: var(--paddingVerticalDesktop) var(--paddingHorizontalDesktop) !important;
   }
 
@@ -1032,11 +1046,22 @@ store-header.background-blur {
     grid-template-columns: repeat(var(--gridMobile), 1fr);
     gap: var(--gridGapVerticalMobile) var(--gridGapHorizontalMobile);
     padding: var(--paddingVerticalMobile) var(--paddingHorizontalMobile);
+    max-width: var(--max-width-mobile);
+    background: var(--background-mobile);
 
     @include media-query($medium-up) {
       grid-template-columns: repeat(var(--gridDesktop), 1fr);
       gap: var(--gridGapVerticalDesktop) var(--gridGapHorizontalDesktop);
       padding: var(--paddingVerticalDesktop) var(--paddingHorizontalDesktop);
+      max-width: var(--max-width-desktop);
+      background: var(--background-desktop);
+    }
+
+    &.container-custom--large, &.container-custom--small, &.container-custom--large {
+      max-width: var(--max-width-mobile);
+      @include media-query($medium-up) {
+        max-width: var(--max-width-desktop);
+      }
     }
 
     &.flex-content--mobile {
@@ -1185,26 +1210,34 @@ store-header.background-blur {
 
   .blocks--text {
     width: 100%;
-    font-family: var(--font-family-mobile);
+
+    text-align: var(--font-alignment-mobile);
     margin-top: var(--margin-top-mobile);
     margin-bottom: var(--margin-bottom-mobile);
-    text-align: var(--font-alignment-mobile);
-    font-style: var(--font-style-mobile);
-    font-weight: var(--font-weight-mobile);
-    font-size: var(--font-size-mobile);
-    line-height: var(--font-line-height-mobile);
-    letter-spacing: var(--font-letter-spacing-mobile);
+    color: var(--font-color-mobile);
 
     @include media-query($medium-up) {
-      font-family: var(--font-family-desktop);
+      text-align: var(--font-alignment-desktop);
       margin-top: var(--margin-top-desktop);
       margin-bottom: var(--margin-bottom-desktop);
-      text-align: var(--font-alignment-desktop);
-      font-style: var(--font-style-desktop);
-      font-weight: var(--font-weight-desktop);
-      font-size: var(--font-size-desktop);
-      line-height: var(--font-line-height-desktop);
-      letter-spacing: var(--font-letter-spacing-desktop);
+      color: var(--font-color-desktop);
+    }
+
+    &.blocks--text-custom {
+      font-family: var(--font-family-mobile);
+      font-style: var(--font-style-mobile);
+      font-weight: var(--font-weight-mobile);
+      font-size: var(--font-size-mobile);
+      line-height: var(--font-line-height-mobile);
+      letter-spacing: var(--font-letter-spacing-mobile);
+      @include media-query($medium-up) {
+        font-family: var(--font-family-desktop);
+        font-style: var(--font-style-desktop);
+        font-weight: var(--font-weight-desktop);
+        font-size: var(--font-size-desktop);
+        line-height: var(--font-line-height-desktop);
+        letter-spacing: var(--font-letter-spacing-desktop);
+      }
     }
   }
 

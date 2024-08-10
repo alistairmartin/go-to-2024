@@ -1,6 +1,8 @@
+{%- capture styles -%}
 <style>
   #shopify-section-{{ section.id }} {
-    --section-background: {{ section.settings.background }};
+    --section-background-mobile: {{ section.settings.background_mobile }};
+    --section-background-desktop: {{ section.settings.background_desktop }};
 
     --paddingVerticalMobile: {{ section.settings.padding_vertical_mobile }}px;
     --paddingHorizontalMobile: {{ section.settings.padding_horizontal_mobile }}px;
@@ -9,6 +11,8 @@
     --paddingHorizontalDesktop: {{ section.settings.padding_horizontal_desktop }}px;
   }
 </style>
+{%- endcapture -%}
+{{- styles | strip_newlines | remove:" " | strip -}}
 
 <section class="{% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %}"> 
 
@@ -17,14 +21,14 @@
 
 
     {%- comment -%} CONTAINERS --- START  {%- endcomment -%}
-    {% include "blocks--containers" %}
+    {%- include "blocks--containers" -%}
     {%- comment -%} CONTAINERS --- END  {%- endcomment -%}
 
-    {% include "blocks--images" %}
-    {% include "blocks--image-text-overlay" %}
-    {% include "blocks--text" %}
-    {% include "blocks--product-ATC" %}
-    {% include "blocks--button" %}
+    {%- include "blocks--images" -%}
+    {%- include "blocks--image-text-overlay" -%}
+    {%- include "blocks--text" -%}
+    {%- include "blocks--product-ATC" -%}
+    {%- include "blocks--button" -%}
 
   {%- endfor -%}
 
@@ -64,48 +68,19 @@
       "label": "Hide Desktop?"
     },
     {
+        "type": "header",
+        "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---"
+    },
+    {
         "type": "color",
-        "id": "background",
+        "id": "background_desktop",
         "label": "Background",
         "default": "rgba(0,0,0,0)"
     },
     {
         "type": "header",
-        "content": "--- 📱 MOBILE SETTINGS 📱 ---"
-    },
-    {
-        "type": "header",
-        "content": "⏹️ Container Padding (Mobile)",
-        "info": "Space around the container"
-    },
-    {
-        "type": "range",
-        "id": "padding_vertical_mobile",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "unit": "px",
-        "default": 0,
-        "label": "↕️ Top/Bottom"
-    },
-    {
-        "type": "range",
-        "id": "padding_horizontal_mobile",
-        "min": 0,
-        "max": 100,
-        "step": 1,
-        "unit": "px",
-        "default": 0,
-        "label": "↔️ Left/Right"
-    },
-    {
-        "type": "header",
-        "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---"
-    },
-    {
-        "type": "header",
         "content": "⏹️ Container Padding (Desktop)",
-        "info": "Space around the container"
+        "info": "Space around the container. Use values that are multiples of 8. E.g. 8. 16, 32. Can use have half values. E.g. 4,12."
     },
     {
         "type": "range",
@@ -126,12 +101,47 @@
         "unit": "px",
         "default": 0,
         "label": "↔️ Left/Right"
+    },
+    {
+        "type": "header",
+        "content": "--- 📱 MOBILE SETTINGS 📱 ---"
+    },
+    {
+        "type": "color",
+        "id": "background_mobile",
+        "label": "Background",
+        "default": "rgba(0,0,0,0)"
+    },
+    {
+        "type": "header",
+        "content": "⏹️ Container Padding (Mobile)",
+        "info": "Space around the container. Use values that are multiples of 8. E.g. 8. 16, 32. Can use have half values. E.g. 4,12."
+    },
+    {
+        "type": "range",
+        "id": "padding_vertical_mobile",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 0,
+        "label": "↕️ Top/Bottom"
+    },
+    {
+        "type": "range",
+        "id": "padding_horizontal_mobile",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 0,
+        "label": "↔️ Left/Right"
     }
   ],
   "blocks": [
     {
       "type": "note",
-      "name": "Block Note",
+      "name": "📝 Block Note",
       "settings": [
         {
           "type": "text",
@@ -160,8 +170,13 @@
         {
           "type": "select",
           "id": "page_width",
-          "label": "Page width",
+          "label": "Container Width",
+          "info": "Will Overwrite the 'Container Width' settings below.",
           "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
             {
               "value": "small",
               "label": "Small"
@@ -173,188 +188,19 @@
             {
               "value": "large",
               "label": "Large"
-            },
-            {
-              "value": "unset",
-              "label": "Unset"
             }
           ],
-          "default": "large"
-        },
-        {
-          "type": "color",
-          "id": "background",
-          "label": "Background",
-          "default": "rgba(0,0,0,0)"
-        },
-        {
-          "type": "header",
-          "content": "--- 📱 MOBILE SETTINGS 📱 ---"
-        },
-        {
-          "type": "header",
-          "content": "🈁 📱 Grid (Mobile)"
-        },
-        {
-          "type": "select",
-          "id": "mobile_grid",
-          "label": "Grid",
-          "info": "Use 'Flex Grid' to choose custom widths for blocks inside this container.", 
-          "default": "1",
-          "options": [
-            {
-              "value": "1",
-              "label": "One"
-            },
-            {
-              "value": "2",
-              "label": "Two"
-            },
-            {
-              "value": "3",
-              "label": "Three"
-            },
-            {
-              "value": "4",
-              "label": "Four"
-            },
-            {
-              "value": "5",
-              "label": "Five"
-            },
-            {
-              "value": "6",
-              "label": "Six"
-            },
-            {
-              "value": "flex-grid",
-              "label": "Flex Grid (One Row)"
-            },
-            {
-              "value": "flex-grid-wrap",
-              "label": "Flex Grid (Multi Row)"
-            },
-            {
-              "value": "flex-column",
-              "label": "Flex Column"
-            }
-          ]
-        },
-        {
-          "type": "select",
-          "id": "flex_justify_content_mobile",
-          "label": "Justify Content",
-          "info": "Use 'Flex Grid' or 'Flex Column' to choose the block alignment inside this container.", 
-          "default": "unset",
-          "options": [
-            {
-              "value": "unset",
-              "label": "Unset"
-            },
-            {
-              "value": "flex-start",
-              "label": "Start"
-            },
-            {
-              "value": "flex-end",
-              "label": "End"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            },
-            {
-              "value": "space-around",
-              "label": "Space Around"
-            },
-            {
-              "value": "space-between",
-              "label": "Space Between"
-            },
-            {
-              "value": "space-evenly",
-              "label": "Space evenly"
-            }
-          ]
-        },
-        {
-          "type": "select",
-          "id": "flex_align_items_mobile",
-          "label": "Align Items",
-          "info": "Use 'Flex Grid' or 'Flex Column' to choose the block alignment inside this container.", 
-          "default": "unset",
-          "options": [
-            {
-              "value": "unset",
-              "label": "Unset"
-            },
-            {
-              "value": "flex-start",
-              "label": "Start"
-            },
-            {
-              "value": "flex-end",
-              "label": "End"
-            },
-            {
-              "value": "center",
-              "label": "Center"
-            }
-          ]
-        },
-        {
-          "type": "header",
-          "content": "⏹️ Container Padding (Mobile)",
-          "info": "Space around the container"
-        },
-        {
-          "type": "range",
-          "id": "padding_vertical_mobile",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "unit": "px",
-          "default": 0,
-          "label": "↕️ Top/Bottom"
-        },
-        {
-          "type": "range",
-          "id": "padding_horizontal_mobile",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "unit": "px",
-          "default": 0,
-          "label": "↔️ Left/Right"
-        },
-        {
-          "type": "header",
-          "content": "⏸️ Item Spacing (Mobile)",
-          "info": "Space between Items"
-        },
-        {
-          "type": "range",
-          "id": "grid_gap_vertical_mobile",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "unit": "px",
-          "default": 0,
-          "label": "↕️ Top/Bottom"
-        },
-        {
-          "type": "range",
-          "id": "grid_gap_horizontal_mobile",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "unit": "px",
-          "default": 0,
-          "label": "↔️ Left/Right"
+          "default": "unset"
         },
         {
           "type": "header",
           "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---"
+        },
+        {
+        "type": "color",
+        "id": "background_desktop",
+        "label": "Background",
+        "default": "rgba(0,0,0,0)"
         },
         {
           "type": "header",
@@ -470,7 +316,7 @@
         {
           "type": "header",
           "content": "⏹️ Container Padding (Desktop)",
-          "info": "Space around the container"
+          "info": "Space around the container. Use values that are multiples of 8. E.g. 8. 16, 32. Can use have half values. E.g. 4,12."
         },
         {
           "type": "range",
@@ -516,6 +362,237 @@
           "unit": "px",
           "default": 0,
           "label": "↔️ Left/Right"
+        },
+        {
+          "type": "header",
+          "content": "📏 Max Width (Desktop)"
+        },
+        {
+          "type": "select",
+          "id": "max_width_enabled_desktop",
+          "label": "Enable Max Width?",
+          "default": "disabled",
+          "options": [
+            {
+              "value": "disabled",
+              "label": "Disabled"
+            },
+            {
+              "value": "enabled",
+              "label": "Custom Width"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "max_width_value_desktop",
+          "min": 100,
+          "max": 2000,
+          "step": 20,
+          "unit": "px",
+          "default": 400,
+          "label": "Max Width (Pixels)"
+        },
+        {
+          "type": "header",
+          "content": "--- 📱 MOBILE SETTINGS 📱 ---"
+        },
+        {
+        "type": "color",
+        "id": "background_mobile",
+        "label": "Background",
+        "default": "rgba(0,0,0,0)"
+        },
+        {
+          "type": "header",
+          "content": "🈁 📱 Grid (Mobile)"
+        },
+        {
+          "type": "select",
+          "id": "mobile_grid",
+          "label": "Grid",
+          "info": "Use 'Flex Grid' to choose custom widths for blocks inside this container.", 
+          "default": "1",
+          "options": [
+            {
+              "value": "1",
+              "label": "One"
+            },
+            {
+              "value": "2",
+              "label": "Two"
+            },
+            {
+              "value": "3",
+              "label": "Three"
+            },
+            {
+              "value": "4",
+              "label": "Four"
+            },
+            {
+              "value": "5",
+              "label": "Five"
+            },
+            {
+              "value": "6",
+              "label": "Six"
+            },
+            {
+              "value": "flex-grid",
+              "label": "Flex Grid (One Row)"
+            },
+            {
+              "value": "flex-grid-wrap",
+              "label": "Flex Grid (Multi Row)"
+            },
+            {
+              "value": "flex-column",
+              "label": "Flex Column"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "flex_justify_content_mobile",
+          "label": "Justify Content",
+          "info": "Use 'Flex Grid' or 'Flex Column' to choose the block alignment inside this container.", 
+          "default": "unset",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "flex-start",
+              "label": "Start"
+            },
+            {
+              "value": "flex-end",
+              "label": "End"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "space-around",
+              "label": "Space Around"
+            },
+            {
+              "value": "space-between",
+              "label": "Space Between"
+            },
+            {
+              "value": "space-evenly",
+              "label": "Space evenly"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "flex_align_items_mobile",
+          "label": "Align Items",
+          "info": "Use 'Flex Grid' or 'Flex Column' to choose the block alignment inside this container.", 
+          "default": "unset",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "flex-start",
+              "label": "Start"
+            },
+            {
+              "value": "flex-end",
+              "label": "End"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "⏹️ Container Padding (Mobile)",
+          "info": "Space around the container. Use values that are multiples of 8. E.g. 8. 16, 32. Can use have half values. E.g. 4,12."
+        },
+        {
+          "type": "range",
+          "id": "padding_vertical_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↕️ Top/Bottom"
+        },
+        {
+          "type": "range",
+          "id": "padding_horizontal_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↔️ Left/Right"
+        },
+        {
+          "type": "header",
+          "content": "⏸️ Item Spacing (Mobile)",
+          "info": "Space between Items"
+        },
+        {
+          "type": "range",
+          "id": "grid_gap_vertical_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↕️ Top/Bottom"
+        },
+        {
+          "type": "range",
+          "id": "grid_gap_horizontal_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↔️ Left/Right"
+        },
+        {
+          "type": "header",
+          "content": "📏 Max Width (Mobile)"
+        },
+        {
+          "type": "select",
+          "id": "max_width_enabled_mobile",
+          "label": "Enable Max Width?",
+          "default": "disabled",
+          "options": [
+            {
+              "value": "disabled",
+              "label": "Disabled"
+            },
+            {
+              "value": "enabled",
+              "label": "Custom Width"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "max_width_value_mobile",
+          "min": 0,
+          "max": 500,
+          "step": 10,
+          "unit": "px",
+          "default": 100,
+          "label": "Max Width (Pixels)"
         }
       ]
     },
@@ -538,7 +615,7 @@
     },
     {
       "type": "image",
-      "name": "Image",
+      "name": "🌠 Image",
       "settings": [
         {
           "type": "checkbox",
@@ -669,7 +746,7 @@
     },
     {
       "type": "text",
-      "name": "Text",
+      "name": "💬 Text",
       "settings": [
         {
           "type": "paragraph",
@@ -692,11 +769,137 @@
         },
         {
         "type": "header",
-        "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---",
+        "content": "Heading"
+        },
+        {
+          "type": "select",
+          "id": "heading_html",
+          "label": "Heading Type",
+          "info": "Important for SEO. (H1's should only be used if it's the page title)",
+          "options": [
+            {
+              "value": "p",
+              "label": "Paragraph (Default)"
+            },
+            {
+              "value": "h1",
+              "label": "H1"
+            },
+            {
+              "value": "h2",
+              "label": "H2"
+            },
+            {
+              "value": "h3",
+              "label": "H3"
+            },
+            {
+              "value": "h4",
+              "label": "H4"
+            },
+            {
+              "value": "h5",
+              "label": "H5"
+            },
+            {
+              "value": "h6",
+              "label": "H6"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "preset_heading_styles",
+          "label": "Preset Heading Styles",
+          "info": "Use 'Unset' to customize the font style below. 'Font Family' & 'Font Alignment' can be used with any option.",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "heading h1",
+              "label": "H1"
+            },
+            {
+              "value": "heading h2",
+              "label": "H2"
+            },
+            {
+              "value": "heading h3",
+              "label": "H3"
+            },
+            {
+              "value": "heading h4",
+              "label": "H4"
+            },
+            {
+              "value": "heading h5",
+              "label": "H5"
+            },
+            {
+              "value": "heading h6",
+              "label": "H6"
+            },
+            {
+              "value": "heading heading--xsmall",
+              "label": "Heading (Extra Small)"
+            },
+            {
+              "value": "heading heading--small",
+              "label": "Heading (Small)"
+            },
+            {
+              "value": "heading heading--large",
+              "label": "Heading (Large)"
+            },
+            {
+              "value": "text text--xsmall",
+              "label": "Text (Extra Small)"
+            },
+            {
+              "value": "text text--small",
+              "label": "Text (Small)"
+            },
+            {
+              "value": "text text--large",
+              "label": "Text (Large)"
+            }
+          ]
         },
         {
         "type": "header",
-        "content": "Margins"
+        "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---"
+        },
+        {
+        "type": "header",
+        "content": "🖥️ Colour (Desktop)"
+        },
+        {
+          "type": "paragraph",
+          "content": "🟪 Go-To | Pink: #f9c6b9; Light Pink: #FDE4DB; Black: #181818; Grey: #DCE0E4; Light Grey: #F2F2F2; Learn More - View the Style Guide Template in the theme editor."
+        },
+        {
+          "type": "paragraph",
+          "content": "🟥 Bro-To | Red: #ef3534; Dark Blue: #192a42; Light Blue: #0DA9C5; Grey: #f0f0f5; Light Grey: #F9F9F9; Learn More - View the Style Guide Template in the theme editor."
+        },
+        {
+          "type": "paragraph",
+          "content": "🟩 Gro-To | Blue: #00bce7; Navy: #002DAC; Light Blue: #0DA9C5; Yellow: #f9cf63; Purple: #b493c4; Pink: #f06098; Red: #ff0001; Green: #59C160; Orange: #F48120;"
+        },
+        {
+          "type": "paragraph",
+          "content": "❔View Full Style Guide - Go to the template 'styleguide' in the theme editor."
+        },
+        {
+          "type": "color",
+          "id": "font_color_desktop",
+          "label": "Colour",
+          "default": "#181818"
+        },
+        {
+        "type": "header",
+        "content": "🖥️ Margins (Desktop)"
         },
         {
         "type": "range",
@@ -720,7 +923,7 @@
         },
         {
         "type": "header",
-        "content": "Fonts",
+        "content": "🖥️ Fonts (Desktop)"
         },
         {
           "type": "select",
@@ -832,7 +1035,33 @@
         },
         {
         "type": "header",
-        "content": "Margins"
+        "content": "📱 Colour (Mobile)"
+        },
+        {
+          "type": "paragraph",
+          "content": "🟪 Go-To | Pink: #f9c6b9; Light Pink: #FDE4DB; Black: #181818; Grey: #DCE0E4; Light Grey: #F2F2F2; Learn More - View the Style Guide Template in the theme editor."
+        },
+        {
+          "type": "paragraph",
+          "content": "🟥 Bro-To | Red: #ef3534; Dark Blue: #192a42; Light Blue: #0DA9C5; Grey: #f0f0f5; Light Grey: #F9F9F9; Learn More - View the Style Guide Template in the theme editor."
+        },
+        {
+          "type": "paragraph",
+          "content": "🟩 Gro-To | Blue: #00bce7; Navy: #002DAC; Light Blue: #0DA9C5; Yellow: #f9cf63; Purple: #b493c4; Pink: #f06098; Red: #ff0001; Green: #59C160; Orange: #F48120;"
+        },
+        {
+          "type": "paragraph",
+          "content": "❔View Full Style Guide - Go to the template 'styleguide' in the theme editor."
+        },
+        {
+          "type": "color",
+          "id": "font_color_mobile",
+          "label": "Colour",
+          "default": "#181818"
+        },
+        {
+        "type": "header",
+        "content": "📱 Margins (Mobile)"
         },
         {
         "type": "range",
@@ -856,7 +1085,7 @@
         },
         {
         "type": "header",
-        "content": "Fonts",
+        "content": "📱 Fonts (Mobile)"
         },
         {
           "type": "select",
@@ -966,7 +1195,7 @@
     },
     {
       "type": "product-ATC",
-      "name": "Product (Add To Cart)",
+      "name": "🛍️ Product (Add To Cart)",
       "settings": [
         {
           "type": "product",
@@ -1029,7 +1258,7 @@
     },
     {
       "type": "button",
-      "name": "Button",
+      "name": "✅ Button",
       "settings": [
         {
             "type": "text",
@@ -1059,6 +1288,10 @@
                 "label": "Button (Ternary)"
             },
             {
+                "value": "button--ternary-white",
+                "label": "Button (Ternary - White)"
+            },
+            {
                 "value": "button--outline",
                 "label": "Button (Outline)"
             },
@@ -1075,7 +1308,170 @@
         },
         {
         "type": "header",
-        "content": "Modal"
+        "content": "🌫️ Modal"
+        },
+        {
+          "type": "liquid",
+          "id": "modal_content",
+          "label": "Modal Content"
+        },
+        {
+        "type": "header",
+        "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---",
+        },
+        {
+            "type": "header",
+            "content": "Margins"
+        },
+        {
+            "type": "range",
+            "id": "margin_top_desktop",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 0,
+            "label": "⬆ Margin Top"
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom_desktop",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 0,
+            "label": "⬇ Margin Bottom"
+        },
+        {
+          "type": "select",
+          "id": "flex_justify_content_desktop",
+          "label": "Position",
+          "info": "Position the button (Left, Center, Right)",
+          "default": "unset",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "flex-start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "flex-end",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+            "type": "header",
+            "content": "--- 📱 MOBILE SETTINGS 📱 ---"
+        },
+        {
+            "type": "range",
+            "id": "margin_top_mobile",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 0,
+            "label": "⬆ Margin Top"
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom_mobile",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 0,
+            "label": "⬇ Margin Bottom"
+        },
+        {
+          "type": "select",
+          "id": "flex_justify_content_mobile",
+          "label": "Button Position",
+          "info": "Position the button (Left, Center, Right)", 
+          "default": "unset",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "flex-start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "flex-end",
+              "label": "Right"
+            }
+          ]
+        }
+      ]
+    },
+        {
+      "type": "button",
+      "name": "✅ Button",
+      "settings": [
+        {
+            "type": "text",
+            "id": "button_text",
+            "label": "Button text"
+        },
+        {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button link"
+        },
+        {
+            "type": "radio",
+            "id": "button_style",
+            "label": "Button Style",
+            "options": [
+              {
+              "value": "button--primary",
+              "label": "Button"
+            },
+            {
+                "value": "button--secondary",
+                "label": "Button (Secondary)"
+            },
+            {
+                "value": "button--ternary",
+                "label": "Button (Ternary)"
+            },
+            {
+                "value": "button--ternary-white",
+                "label": "Button (Ternary - White)"
+            },
+            {
+                "value": "button--outline",
+                "label": "Button (Outline)"
+            },
+            {
+                "value": "link",
+                "label": "Link"
+            },
+            {
+                "value": "link-with-arrow",
+                "label": "Link (With Arrow)"
+            }
+            ],
+            "default": "button--primary"
+        },
+        {
+        "type": "header",
+        "content": "🌫️ Modal"
         },
         {
           "type": "liquid",
@@ -1188,7 +1584,7 @@
     },
     {
       "type": "image-text-overlay",
-      "name": "Image (Text Overlay)",
+      "name": "🌆 Image (Text Overlay)",
       "settings": [
         {
           "type": "checkbox",
@@ -1345,10 +1741,46 @@
   ],
   "presets": [
     {
-      "name": "Custom Layout",
+      "name": "🧩 Custom Layout",
       "blocks": [
         {
           "type": "container-start"
+        },
+        {
+          "type": "note",
+          "settings": {
+            "title": "🟡 --- LEFT SIDE ---"
+          }
+        },
+        {
+          "type": "container-start",
+          "settings": {
+            "title": "📶 Column - START"
+          }
+        },
+        {
+          "type": "container-end",
+          "settings": {
+            "title": "📶 Column - END"
+          }
+        },
+        {
+          "type": "note",
+          "settings": {
+            "title": "🟡 --- RIGHT SIDE ---"
+          }
+        },
+        {
+          "type": "container-start",
+          "settings": {
+            "title": "📶 Column - START"
+          }
+        },
+        {
+          "type": "container-end",
+          "settings": {
+            "title": "📶 Column - END"
+          }
         },
         {
           "type": "container-end"

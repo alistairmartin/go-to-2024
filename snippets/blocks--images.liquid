@@ -1,6 +1,6 @@
 
 {%- if block.type == "image" -%}
-
+{%- capture styles -%}
 <style>
 #block-{{ block.id }} img {
   --rounded-image-corners-mobile: {% if block.settings.rounded_image_corners_mobile %}8px{% else %}0px{% endif %};
@@ -13,6 +13,8 @@
   --fill-image-cover-desktop: {% if block.settings.fill_image_desktop %}cover{% else %}unset{% endif %};
 }
 </style>
+{%- endcapture -%}
+{{- styles | strip_newlines | remove:" " | strip -}}
 
 {%- if block.settings.link != blank -%}
 <a href="{{ block.settings.link }}" class="blocks--image width-desktop-{{ block.settings.width_desktop }} width-mobile-{{ block.settings.width_mobile }} {% if block.settings.hide_desktop %}hide-desktop{% endif %} {% if block.settings.hide_mobile %}hide-mobile{% endif %}" {{ blockId }}>

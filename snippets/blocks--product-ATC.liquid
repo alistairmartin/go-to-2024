@@ -1,10 +1,14 @@
 {%- if block.type == "product-ATC" -%}
+{%- capture styles -%}
 <style>
     #block-{{ block.id }} {
       --margin-top-desktop: {{ block.settings.margin_top_desktop }}px;
       --margin-bottom-desktop: {{ block.settings.margin_bottom_desktop }}px;
     }
 </style>
+{%- endcapture -%}
+{{- styles | strip_newlines | remove:" " | strip -}}
+
 {%- assign product = all_products[block.settings.product] -%}
 
 <div class="blocks--product-ATC" {{ blockId }}>

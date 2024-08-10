@@ -1,9 +1,12 @@
 
 
 {%- if block.type == "container-start" -%}
+    {%- capture styles -%}
     <style>
     #block-{{ block.id }} {
-      background: {{ block.settings.background }};
+      --background-mobile: {{ block.settings.background_mobile }};
+      --background-desktop: {{ block.settings.background_desktop }};
+
       --gridMobile: {{ block.settings.mobile_grid }};
 
       --gridGapVerticalMobile: {{ block.settings.grid_gap_vertical_mobile }}px;
@@ -25,8 +28,29 @@
 
       --flex-align-items-mobile: {{ block.settings.flex_justify_content_mobile }};
       --flex-align-items-desktop: {{ block.settings.flex_align_items_desktop }};
+
+      {%- if block.settings.max_width_enabled_mobile == "enabled" -%}
+        --max-width-mobile: {{ block.settings.max_width_value_mobile }}px;
+      {% else %}
+        --max-width-mobile: unset;
+      {%- endif -%}
+
+
+      {%- if block.settings.max_width_enabled_desktop == "enabled" -%}
+        --max-width-desktop: {{ block.settings.max_width_value_desktop }}px;
+      {% elsif block.settings.page_width == "large"  %}
+        --max-width-desktop: 1360px;
+      {% elsif block.settings.page_width == "medium" %}
+            --max-width-desktop: 670px;
+      {% elsif block.settings.page_width == "small" %}
+        --max-width-desktop: 670px;
+        {% else %}
+        --max-width-desktop: unset;
+      {%- endif -%}
     }
     </style>
+    {%- endcapture -%}
+    {{- styles | strip_newlines | remove:" " | strip -}}
 
     {%- assign classes = "" -%}
 

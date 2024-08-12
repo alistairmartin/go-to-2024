@@ -13,18 +13,6 @@
     --color-primary: #ef3534;
     --color-secondary: #192a42;
 
-    --color-button-primary-text: #181818;
-    --color-button-primary-background: #FDE4DB;
-    --color-button-primary-shadow: #F5D3C4;
-
-    --color-button-secondary-text: #181818;
-    --color-button-secondary-background: #ffffff;
-    --color-button-secondary-shadow: #f9c6b9;
-
-    --color-button-ternary-text: #181818;
-    --color-button-ternary-background: #ffffff;
-    --color-button-ternary-shadow: #181818;
-
     --heading-color: {{ settings.broto_heading_color.red }}, {{ settings.broto_heading_color.green }}, {{ settings.broto_heading_color.blue }};
     --text-color: {{ settings.broto_text_color.red }}, {{ settings.broto_text_color.green }}, {{ settings.broto_text_color.blue }};
     --background: {{ settings.broto_background.red }}, {{ settings.broto_background.green }}, {{ settings.broto_background.blue }};
@@ -59,33 +47,26 @@
     --root-primary-button-text-color: {{ settings.broto_primary_button_text_color.red }}, {{ settings.broto_primary_button_text_color.green }}, {{ settings.broto_primary_button_text_color.blue }};
 
     --base-font-size: {{ settings.broto_text_font_size }}px;
-    --heading-font-family: "{{ fontHeading }}";
+    --heading-font-family: {{ fontHeading }};
     --heading-font-weight: bold;
     --heading-font-style: "normal";
-    --heading-text-transform: "{{ settings.broto_heading_text_transform }}";
+    --heading-text-transform: {{ settings.broto_heading_text_transform }};
     --text-font-family: "{{ fontBody }}";
     --text-font-weight: 400;
     --text-font-style: "normal";
     --text-font-bold-weight: bold;
 
     /* Typography (font size) */
-    --heading-xxsmall-font-size: 12px;
-    --heading-xsmall-font-size: 16px;
-    --heading-small-font-size: 20px;
-    --heading-large-font-size: 48px;
-    --heading-h1-font-size: 48px;
-    --heading-h2-font-size: 36px;
-    --heading-h3-font-size: 24px;
-    --heading-h4-font-size: 20px;
-    --heading-h5-font-size: 16px;
-    --heading-h6-font-size: 12px;
-
-    --heading-h1-line-height: 56px;
-    --heading-h2-line-height: 40px;
-    --heading-h3-line-height: 32px;
-    --heading-h4-line-height: 24px;
-    --heading-h5-line-height: 18px;
-    --heading-h6-line-height: 14px;
+    --heading-xxsmall-font-size: {% if settings.broto_heading_font_size == 'small' %}10px{% else %}11px{% endif %};
+    --heading-xsmall-font-size: {% if settings.broto_heading_font_size == 'small' %}10px{% else %}11px{% endif %};
+    --heading-small-font-size: {% if settings.broto_heading_font_size == 'small' %}11px{% elsif settings.broto_heading_font_size == 'medium' %}12px{% else %}13px{% endif %};
+    --heading-large-font-size: {% if settings.broto_heading_font_size == 'small' %}32px{% elsif settings.broto_heading_font_size == 'medium' %}36px{% else %}40px{% endif %};
+    --heading-h1-font-size: {% if settings.broto_heading_font_size == 'small' %}32px{% elsif settings.broto_heading_font_size == 'medium' %}36px{% else %}40px{% endif %};
+    --heading-h2-font-size: {% if settings.broto_heading_font_size == 'small' %}28px{% elsif settings.broto_heading_font_size == 'medium' %}30px{% else %}32px{% endif %};
+    --heading-h3-font-size: {% if settings.broto_heading_font_size == 'small' %}26px{% elsif settings.broto_heading_font_size == 'medium' %}26px{% else %}28px{% endif %};
+    --heading-h4-font-size: {% if settings.broto_heading_font_size == 'small' %}22px{% elsif settings.broto_heading_font_size == 'medium' %}24px{% else %}26px{% endif %};
+    --heading-h5-font-size: {% if settings.broto_heading_font_size == 'small' %}18px{% elsif settings.broto_heading_font_size == 'medium' %}20px{% else %}22px{% endif %};
+    --heading-h6-font-size: {% if settings.broto_heading_font_size == 'small' %}16px{% elsif settings.broto_heading_font_size == 'medium' %}16px{% else %}18px{% endif %};
 
     /* Control the look and feel of the theme by changing radius of various elements */
     --image-border-radius: 0;
@@ -155,30 +136,22 @@
       --vertical-breather-tight: {% if settings.broto_vertical_spacing == 'small' %}40px{% elsif settings.broto_vertical_spacing == 'medium' %}48px{% else %}64px{% endif %};
 
       /* Typography (font size) */
-      --heading-xxsmall-font-size: 16px;
-      --heading-xsmall-font-size: 20px;
-      --heading-small-font-size: 24px;
-      --heading-large-font-size: 64px;
-      --heading-h1-font-size: 64px;
-      --heading-h2-font-size: 48px;
-      --heading-h3-font-size: 36px;
-      --heading-h4-font-size: 24px;
-      --heading-h5-font-size: 20px;
-      --heading-h6-font-size: 16px;
-
-      --heading-h1-line-height: 56px;
-      --heading-h2-line-height: 56px;
-      --heading-h3-line-height: 40px;
-      --heading-h4-line-height: 32px;
-      --heading-h5-line-height: 24px;
-      --heading-h6-line-height: 18px;
+      --heading-xsmall-font-size: {% if settings.broto_heading_font_size == 'small' %}11px{% elsif settings.broto_heading_font_size == 'medium' %}12px{% else %}13px{% endif %};
+      --heading-small-font-size: {% if settings.broto_heading_font_size == 'small' %}12px{% elsif settings.broto_heading_font_size == 'medium' %}13px{% else %}14px{% endif %};
+      --heading-large-font-size: {% if settings.broto_heading_font_size == 'small' %}48px{% elsif settings.broto_heading_font_size == 'medium' %}52px{% else %}58px{% endif %};
+      --heading-h1-font-size: {% if settings.broto_heading_font_size == 'small' %}48px{% elsif settings.broto_heading_font_size == 'medium' %}48px{% else %}58px{% endif %};
+      --heading-h2-font-size: {% if settings.broto_heading_font_size == 'small' %}36px{% elsif settings.broto_heading_font_size == 'medium' %}38px{% else %}44px{% endif %};
+      --heading-h3-font-size: {% if settings.broto_heading_font_size == 'small' %}30px{% elsif settings.broto_heading_font_size == 'medium' %}32px{% else %}36px{% endif %};
+      --heading-h4-font-size: {% if settings.broto_heading_font_size == 'small' %}22px{% elsif settings.broto_heading_font_size == 'medium' %}24px{% else %}28px{% endif %};
+      --heading-h5-font-size: {% if settings.broto_heading_font_size == 'small' %}18px{% elsif settings.broto_heading_font_size == 'medium' %}20px{% else %}22px{% endif %};
+      --heading-h6-font-size: {% if settings.broto_heading_font_size == 'small' %}16px{% elsif settings.broto_heading_font_size == 'medium' %}18px{% else %}20px{% endif %};
 
       /* Form related */
       --form-input-field-height: 52px;
       --form-submit-margin: 32px;
 
       /* Button size */
-      --button-height: 44px;
+      --button-height: 52px;
       --button-small-height: 44px;
     }
   }
@@ -190,23 +163,13 @@
       --product-list-block-spacing: 48px;
 
       /* Typography */
-      --heading-xxsmall-font-size: 16px;
-      --heading-xsmall-font-size: 18px;
-      --heading-small-font-size: 20px;
-      --heading-large-font-size: 64px;
-      --heading-h1-font-size: 64px;
-      --heading-h2-font-size: 48px;
-      --heading-h3-font-size: 36px;
-      --heading-h4-font-size: 24px;
-      --heading-h5-font-size: 20px;
-      --heading-h6-font-size: 16px;
-
-      --heading-h1-line-height: 56px;
-      --heading-h2-line-height: 56px;
-      --heading-h3-line-height: 40px;
-      --heading-h4-line-height: 32px;
-      --heading-h5-line-height: 24px;
-      --heading-h6-line-height: 18px;
+      --heading-large-font-size: {% if settings.broto_heading_font_size == 'small' %}58px{% elsif settings.broto_heading_font_size == 'medium' %}64px{% else %}72px{% endif %};
+      --heading-h1-font-size: {% if settings.broto_heading_font_size == 'small' %}50px{% elsif settings.broto_heading_font_size == 'medium' %}56px{% else %}62px{% endif %};
+      --heading-h2-font-size: {% if settings.broto_heading_font_size == 'small' %}44px{% elsif settings.broto_heading_font_size == 'medium' %}48px{% else %}54px{% endif %};
+      --heading-h3-font-size: {% if settings.broto_heading_font_size == 'small' %}32px{% elsif settings.broto_heading_font_size == 'medium' %}36px{% else %}40px{% endif %};
+      --heading-h4-font-size: {% if settings.broto_heading_font_size == 'small' %}26px{% elsif settings.broto_heading_font_size == 'medium' %}30px{% else %}34px{% endif %};
+      --heading-h5-font-size: {% if settings.broto_heading_font_size == 'small' %}22px{% elsif settings.broto_heading_font_size == 'medium' %}24px{% else %}26px{% endif %};
+      --heading-h6-font-size: {% if settings.broto_heading_font_size == 'small' %}16px{% elsif settings.broto_heading_font_size == 'medium' %}18px{% else %}18px{% endif %};
     }
   }
 

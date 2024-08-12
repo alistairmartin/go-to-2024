@@ -53,8 +53,8 @@ html {
   }
 
   &:disabled {
-    color: $gotoGreyDark !important;
-    text-decoration-color: $gotoGreyDark !important;
+    color: var(--color-grey-dark) !important;
+    text-decoration-color: var(--color-grey-dark) !important;
   }
 }
 
@@ -170,7 +170,7 @@ html {
 }
 
 .label--label-custom {
-  background-color: $gotoPink;
+  background-color: var(--color-primary);
   border-radius: 8px;
   padding: 8px 12px 8px;
 }
@@ -224,7 +224,7 @@ html {
   transition: .2s color;
 
   &:hover {
-    color: $gotoPink;
+    color: var(--color-primary);
   }
 }
 
@@ -296,10 +296,10 @@ html {
     svg {
       width: 60px;
       height: 25px;
-      fill: $gotoGrey;
+      fill: var(--color-grey);
 
       path {
-        fill: $gotoGrey;
+        fill: var(--color-grey);
       }
     }
 
@@ -314,7 +314,7 @@ html {
     }
 
     &.go-to.active {
-      background: $gotoPink;
+      background: var(--color-primary);
 
       svg,
       svg>* {
@@ -608,7 +608,7 @@ store-header.background-blur {
       }
 
       store-header {
-        background: $gotoPink !important;
+        background: var(--color-primary) !important;
         backdrop-filter: none !important;
       }
     }
@@ -656,7 +656,7 @@ store-header.background-blur {
 
       .option {
         font-size: 10px;
-        color: $gotoGreyDark;
+        color: var(--color-grey-dark);
       }
 
       .active {
@@ -683,7 +683,7 @@ store-header.background-blur {
   }
 
   .product-item-meta__subtitle {
-    color: $gotoGreyDark;
+    color: var(--color-grey-dark);
     // font-style: italic;
     font-size: 12px;
     margin-bottom: 6px;
@@ -697,7 +697,7 @@ store-header.background-blur {
 
   .rating__caption {
     font-size: 11px;
-    color: $gotoGreyDark;
+    color: var(--color-grey-dark);
   }
 
   .product-item__quick-form-alt {
@@ -766,17 +766,17 @@ store-header.background-blur {
       }
 
       &:hover {
-        text-decoration-color: $gotoPink !important;
+        text-decoration-color: var(--color-primary) !important;
       }
 
       &.active {
         font-weight: bold;
         &:hover {
-          text-decoration-color: $gotoPink !important;
+          text-decoration-color: var(--color-primary) !important;
         }
 
         &:after {
-          background: $gotoPink;
+          background: var(--color-primary);
         }
       }
 
@@ -1263,7 +1263,7 @@ store-header.background-blur {
       position: absolute;
       width: 2px;
       height: 100%;
-      background: $gotoPink;
+      background: var(--color-primary);
       left: 50%;
       top: 0;
     }
@@ -1337,7 +1337,7 @@ store-header.background-blur {
           content: "";
           height: 75px;
           width: 2px;
-          background: $gotoPink;
+          background: var(--color-primary);
           position: absolute;
           left: 50%;
           top: -50px;
@@ -1447,7 +1447,7 @@ store-header.background-blur {
     }
 
     &[aria-expanded="true"] {
-      background: $gotoPink;
+      background: var(--color-primary);
       box-shadow: 1px 1px 5px #e7e7e7d4;
     }
 
@@ -1474,7 +1474,7 @@ store-header.background-blur {
 
 .ingredients-glossary {
   .ingredients-glossary--product {
-    background: $gotoPinkLight;
+    background: var(--color-secondary);
     padding: 32px 16px;
     display: flex;
     gap: 20px;
@@ -1522,7 +1522,7 @@ store-header.background-blur {
 
   .ingredients-glossary--INCI {
     padding: 16px 8px 8px;
-    background-color: $gotoGreyLight;
+    background-color: var(--color-grey-light);
     margin-bottom: 32px;
 
     @include media-query($medium-up) {
@@ -1556,7 +1556,7 @@ store-header.background-blur {
       }
   
       strong {
-        background-color: $gotoGreyLight;
+        background-color: var(--color-grey-light);
         padding: 8px;
         font-size: 16px;
         display: block;
@@ -1649,8 +1649,8 @@ split-lines[reveal] {
   }
 
   .collapsible-toggle {
-    border-top: 1px solid $gotoGreyDark;
-    border-bottom: 1px solid $gotoGreyDark;
+    border-top: 1px solid var(--color-grey-dark);
+    border-bottom: 1px solid var(--color-grey-dark);
   
   }
 
@@ -1683,7 +1683,7 @@ split-lines[reveal] {
       display: none;
     }
     .select {
-      background-color: $gotoPinkLight;
+      background-color: var(--color-secondary);
     }
 
   
@@ -1704,7 +1704,7 @@ split-lines[reveal] {
     }
   
     .combo-box__header {
-      background-color: $gotoPinkLight;
+      background-color: var(--color-secondary);
     }
   }
 
@@ -1734,11 +1734,11 @@ split-lines[reveal] {
     }
 
     .sidebar-desktop--title {
-      color: $gotoGreyDark;
+      color: var(--color-grey-dark);
     }
 
     .sidebar-desktop--list {
-      border-left: 1px solid $gotoPink;
+      border-left: 1px solid var(--color-primary);
       padding-left: 16px;
     }
 
@@ -1751,15 +1751,15 @@ split-lines[reveal] {
 
       &:hover {
         padding: 16px;
-        background-color: $gotoGreyLight;
+        background-color: var(--color-grey-light);
       }
 
       &.active {
         padding: 16px;
-        background-color: $gotoPinkLight;
+        background-color: var(--color-secondary);
 
         &:hover {
-          background-color: $gotoPink;
+          background-color: var(--color-primary);
         }
       }
 
@@ -1807,7 +1807,7 @@ footer {
 }
 
 .footer-aside {
-  background: $gotoPinkLight;
+  background: var(--color-secondary);
   padding-bottom: 60px;
 
   .footer__copyright {
@@ -1895,7 +1895,7 @@ footer {
 
 #back-in-stock-modal {
   .modal__content {
-    background: $gotoPinkLight;
+    background: var(--color-secondary);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -2031,7 +2031,7 @@ footer {
     }
 
     .faq__item+.faq__item {
-      border-top:1px solid $gotoBlack;
+      border-top:1px solid var(--color-black);
     }
 
     .faq__item {
@@ -2044,7 +2044,7 @@ footer {
 
 .label--product-type {
   background: #fff;
-  border: 1px solid $gotoBlack;
+  border: 1px solid var(--color-black);
   display: none;
 
   @include media-query($medium-up) {
@@ -2130,7 +2130,7 @@ product-rerender {
   // .popover__header, .popover__content, .product-form__buy-buttons, .drawer__content, .drawer__header {
 
   //   @include media-query($small) {
-  //     background: $gotoPinkLight !important;
+  //     background: var(--color-secondary) !important;
   //   }
   // }
 

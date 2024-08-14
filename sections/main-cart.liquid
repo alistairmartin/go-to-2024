@@ -3,7 +3,7 @@
     {%- if cart.item_count > 0 -%}
       <div class="page-header">
         <div class="page-header__text-wrapper text-container">
-          <h1 class="heading h2">{{ 'cart.general.title' | t }}</h1>
+          <h1 class="heading h3">{{ 'cart.general.title' | t }}</h1>
 
           {%- if settings.cart_show_free_shipping_threshold and settings.cart_free_shipping_threshold != '' and cart.requires_shipping -%}
             {%- assign free_shipping_thresholds = settings.cart_free_shipping_threshold | remove: ' ' | split: ',' -%}

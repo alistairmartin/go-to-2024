@@ -20,7 +20,7 @@
       <div class="page-header">
         <div class="page-header__text-wrapper text-container">
           <img src="{{ 'loyalty--go-to-gang.svg' | asset_url }}" alt="Go-To Gang" class="go-to-gang-logo">
-          <h1 class="heading h2 visually-hidden">{{ 'customer.login.title' | t }}</h1>
+          <h1 class="heading h3 visually-hidden">{{ 'customer.login.title' | t }}</h1>
           <p class="customer-login--instructions page-content--small">{{ 'customer.login.instructions' | t }}</p>
      
         </div>
@@ -82,7 +82,7 @@
     <div id="recover-form-container" style="display: none">
       <div class="page-header">
         <div class="page-header__text-wrapper text-container">
-          <h1 class="heading h2">{{ 'customer.recover_password.title' | t }}</h1>
+          <h1 class="heading h3">{{ 'customer.recover_password.title' | t }}</h1>
 
           {%- unless is_recover_posted_successfully -%}
             <p>{{ 'customer.recover_password.instructions' | t }}</p>

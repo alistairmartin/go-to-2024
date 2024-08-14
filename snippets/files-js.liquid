@@ -2,9 +2,9 @@
 <script src="{{ 'theme.js' | asset_url }}" defer></script>
 <script src="{{ 'global.min.js' | asset_url }}" defer></script>
 <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
+<script src="https://player.vimeo.com/api/player.js" defer></script>
 
 {%- if product -%}
-    <script src="https://player.vimeo.com/api/player.js" defer></script>
     <script src="{{ 'products.min.js' | asset_url }}" defer></script>
 {%- endif -%}
 

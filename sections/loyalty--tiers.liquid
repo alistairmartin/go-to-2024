@@ -76,7 +76,7 @@
               {%- endif -%}
 
               {%- if section.settings.title != blank -%}
-                <h3 class="heading h2">{{ section.settings.title }}</h3>
+                <h3 class="heading h3">{{ section.settings.title }}</h3>
               {%- endif -%}
 
               {%- if section.settings.content != blank -%}
@@ -113,7 +113,7 @@
                     {%- assign loyalty_level_tier = loyalty_level_tier | remove: "Tier " | times: 1 -%}
           
                     <div class="loyalty-tier">
-                      <span class="level heading h2">Level {{ loyalty_level_tier | remove: "Tier " }}</span>
+                      <span class="level heading h3">Level {{ loyalty_level_tier | remove: "Tier " }}</span>
                       <span class="name heading h4">{{ loyalty_tiers.tier_name.value }}</span>
                       <span class="requirements">{{ loyalty_tiers.level_requirement_text.value }}</span>
                     </div>

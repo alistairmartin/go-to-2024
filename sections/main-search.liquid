@@ -81,7 +81,7 @@
 
     <div class="page-header {% if search.results_count == 0 %}page-header--clear{% endif %} page-header--secondary">
       <div class="page-header__text-wrapper container">
-        <h1 class="heading h2">{{ 'search.general.terms' | t: terms: search.terms }}</h1>
+        <h1 class="heading h3">{{ 'search.general.terms' | t: terms: search.terms }}</h1>
 
         <form class="main-search__form" action="{{ routes.search_url }}" method="get">
           <input type="hidden" name="type" value="{{ search.results.first.object_type | default: 'product' }}">
@@ -284,7 +284,7 @@
   {%- else -%}
     <div class="container">
       <div class="empty-state">
-        <h1 class="heading h2">{{ 'search.general.title' | t }}</h1>
+        <h1 class="heading h3">{{ 'search.general.title' | t }}</h1>
 
         <form class="main-search__form" action="{{ routes.search_url }}" method="get">
           <button class="main-search__submit tap-area" type="submit">{%- render 'icon' with 'header-search' -%}</button>

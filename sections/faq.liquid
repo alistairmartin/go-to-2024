@@ -39,7 +39,7 @@
         {%- if section.settings.title != blank or section.settings.content != blank -%}
           <header class="section__header {% if section.settings.content != blank %}section__header--tight{% endif %} text-container">
             {%- if section.settings.title != blank -%}
-              <h1 class="heading h2">{{ section.settings.title | escape }}</h1>
+              <h1 class="heading h3">{{ section.settings.title | escape }}</h1>
             {%- endif -%}
 
             {%- if section.settings.content -%}
@@ -73,7 +73,7 @@
 
                 {%- when 'question' -%}
                   <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-                    <button is="toggle-button" class="collapsible-toggle text--strong heading" aria-controls="block-{{ section.id }}-{{ block.id }}" aria-expanded="false" itemprop="name">
+                    <button is="toggle-button" class="collapsible-toggle text--strong heading heading--{{ section.settings.font_family }}" aria-controls="block-{{ section.id }}-{{ block.id }}" aria-expanded="false" itemprop="name">
                       {{- block.settings.title -}}
                       <span class="animated-plus"></span>
                     </button>
@@ -134,6 +134,23 @@
       "id": "text_color",
       "label": "Text color",
       "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "select",
+      "id": "font_family",
+      "label": "Font Family",
+      "info": "For Questions",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary"
     }
   ],
   "blocks": [

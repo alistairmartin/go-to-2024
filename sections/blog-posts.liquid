@@ -46,13 +46,13 @@
     <div class="{% unless blends_with_background %}vertical-breather{% endunless %}">
       <div class="container">
         {%- if section.settings.subheading != blank or section.settings.title != blank -%}
-          <header class="section__header text-container">
+          <header class="section__header text-container text-align--{{ section.settings.text_alignment }}">
             {%- if section.settings.subheading != blank -%}
               <h2 class="heading heading--small">{{ section.settings.subheading | escape }}</h2>
             {%- endif -%}
 
             {%- if section.settings.title != blank -%}
-              <h3 class="heading h2">{{ section.settings.title | escape }}</h3>
+              <h3 class="heading h3">{{ section.settings.title | escape }}</h3>
             {%- endif -%}
           </header>
         {%- endif -%}
@@ -165,10 +165,13 @@
       </div>
       
       {%- if section.settings.show_read_more -%}
-      <div class="text-container blog-posts--button">
-        <div class="button-wrapper">
-          <a href="{{ blog.url }}" class="button button--primary">Read More</a>
-        </div>
+      <div class="container">
+        <div class="text-container blog-posts--button">
+            <div class="button-wrapper">
+              {% comment %} <a href="{{ blog.url }}" class="link link">Read More</a> {% endcomment %}
+              <a class="blocks--button link--primary" href="{{ blog.url  }}">VISIT THE {{ blog.title }} {%- render 'icon' with "brand-arrow-right" -%}</a>
+            </div>
+          </div>
       </div>
     {%- endif -%}
 
@@ -202,6 +205,26 @@
       "id": "title",
       "label": "Heading",
       "default": "Blog posts"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Title alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
     },
     {
       "type": "range",

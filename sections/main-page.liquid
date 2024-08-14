@@ -16,7 +16,7 @@
       </nav>
 
       <div class="page-header__text-wrapper text-container {% unless section.settings.show_title %}hide{% endunless %}">
-        <h1 class="heading h2  {% unless section.settings.show_title %}hide{% endunless %}">{{ page.title }}</h1>
+        <h1 class="heading h3  {% unless section.settings.show_title %}hide{% endunless %}">{{ page.title }}</h1>
         {%- if template.suffix contains 'contact' or template.suffix contains 'faq' -%}
           {{- page.content -}}
         {%- endif -%}

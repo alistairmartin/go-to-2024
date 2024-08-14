@@ -277,12 +277,12 @@
                   
                   {% comment %} {%- if productTypeOuter == "" -%}
                     {%- assign productTypeOuter = product.type -%}
-                    <h2 style="grid-column: span 4;" class="heading h2">{{ productTypeOuter }}</h2>
+                    <h2 style="grid-column: span 4;" class="heading h3">{{ productTypeOuter }}</h2>
                   {%- else -%}
                     {%- if product.type == productTypeOuter -%}
                     {% else %}
                     {%- assign productTypeOuter = product.type -%}
-                      <h2 style="grid-column: span 4;" class="heading h2">{{ product.type }}</h2>
+                      <h2 style="grid-column: span 4;" class="heading h3">{{ product.type }}</h2>
                     {%- endif -%}
                   {%- endif -%} {% endcomment %}
 

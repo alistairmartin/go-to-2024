@@ -24,6 +24,7 @@
     {%- comment -%} CONTAINERS --- END  {%- endcomment -%}
 
     {%- include "blocks--images" -%}
+    {%- include "blocks--video" -%}
     {%- include "blocks--image-text-overlay" -%}
     {%- include "blocks--text" -%}
     {%- include "blocks--product-ATC" -%}
@@ -255,6 +256,10 @@
             {
               "value": "flex-column",
               "label": "Flex Column"
+            },
+            {
+              "value": "flex-column-reverse",
+              "label": "Flex Column (Reverse)"
             }
           ]
         },
@@ -456,6 +461,10 @@
             {
               "value": "flex-column",
               "label": "Flex Column"
+            },
+            {
+              "value": "flex-column-reverse",
+              "label": "Flex Column (Reverse)"
             }
           ]
         },
@@ -677,6 +686,202 @@
           "type": "url",
           "id": "link",
           "label": "Link",
+          "info": "Optional"
+        },
+        {
+        "type": "header",
+        "content": "Width"
+        },
+        {
+       "type": "select",
+        "id": "width_desktop",
+        "label": "🖥️ Width (Desktop)",
+        "info": "Only Required If Using 'Flex Grid' in the 'Container'",
+        "default": "100",
+        "options": [
+            {
+            "value": "25",
+            "label": "25%"
+            },
+            {
+            "value": "33",
+            "label": "33%"
+            },
+            {
+            "value": "50",
+            "label": "50%"
+            },
+            {
+            "value": "66",
+            "label": "66%"
+            },
+            {
+            "value": "75",
+            "label": "75%"
+            },
+            {
+            "value": "100",
+            "label": "100%"
+            }
+        ]
+        },
+        {
+        "type": "select",
+        "id": "width_mobile",
+        "label": "📱 Width (Mobile)",
+        "info": "Only Required If Using 'Flex Grid' in the 'Container'",
+        "default": "100",
+        "options": [
+            {
+            "value": "25",
+            "label": "25%"
+            },
+            {
+            "value": "33",
+            "label": "33%"
+            },
+            {
+            "value": "50",
+            "label": "50%"
+            },
+            {
+            "value": "66",
+            "label": "66%"
+            },
+            {
+            "value": "75",
+            "label": "75%"
+            },
+            {
+            "value": "100",
+            "label": "100%"
+            }
+        ]
+        }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "🎥 Video",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "hide_mobile",
+          "label": "Hide Mobile?"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_desktop",
+          "label": "Hide Desktop?"
+        },
+        {
+          "type": "header",
+          "content": "Video (Settings)"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_play_button",
+          "label": "Enable Play Button?"
+        },
+        {
+          "type": "select",
+          "id": "video_aspect_ratio_desktop",
+          "label": "Video aspect ratio (Desktop)",
+          "options": [
+            {
+              "value": "1",
+              "label": "Square (1:1)"
+            },
+            {
+              "value": "1.3333333",
+              "label": "Normal (4:3)"
+            },
+            {
+              "value": "1.7777778",
+              "label": "Cinematic (16:9)"
+            },
+            {
+              "value": "2.3333333",
+              "label": "Wide (21:9)"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "video_aspect_ratio_mobile",
+          "label": "Video aspect ratio (Mobile)",
+          "options": [
+            {
+              "value": "1",
+              "label": "Square (1:1)"
+            },
+            {
+              "value": "1.3333333",
+              "label": "Normal (4:3)"
+            },
+            {
+              "value": "1.7777778",
+              "label": "Cinematic (16:9)"
+            },
+            {
+              "value": "2.3333333",
+              "label": "Wide (21:9)"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Video (URL)"
+        },
+        {
+          "type": "video_url",
+          "id": "video_url_desktop",
+          "label": "Video (Desktop)",
+          "accept": [
+            "vimeo"
+          ]
+        },
+        {
+          "type": "video_url",
+          "id": "video_url_mobile",
+          "label": "Video (Mobile)",
+          "accept": [
+            "vimeo"
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Image (Poster)"
+        },
+        {
+          "type": "checkbox",
+          "id": "rounded_image_corners_desktop",
+          "label": "Rounded Image Corners? (Desktop)"
+        },
+        {
+          "type": "checkbox",
+          "id": "rounded_image_corners_mobile",
+          "label": "Rounded Image Corners? (Mobile)"
+        },
+        {
+          "type": "checkbox",
+          "id": "fill_image_desktop",
+          "label": "Fill Image Space? (Desktop)"
+        },
+        {
+          "type": "checkbox",
+          "id": "fill_image_mobile",
+          "label": "Fill Image Space? (Mobile)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image",
           "info": "Optional"
         },
         {
@@ -990,23 +1195,27 @@
           "label": "Font Weight",
           "options": [
             {
-              "value": "normal",
+              "value": "300",
+              "label": "Light (300)"
+            },
+            {
+              "value": "400",
               "label": "Normal (400)"
             },
             {
-              "value": "medium",
+              "value": "500",
               "label": "Medium (500)"
             },
             {
-              "value": "semi-bold",
+              "value": "600",
               "label": "Semi-Bold (600)"
             },
             {
-              "value": "bold",
+              "value": "700",
               "label": "Bold (700)"
             }
           ],
-          "default": "normal"
+          "default": "400"
         },
         {
         "type": "range",
@@ -1152,23 +1361,27 @@
           "label": "Font Weight",
           "options": [
             {
-              "value": "normal",
+              "value": "300",
+              "label": "Light (300)"
+            },
+            {
+              "value": "400",
               "label": "Normal (400)"
             },
             {
-              "value": "medium",
+              "value": "500",
               "label": "Medium (500)"
             },
             {
-              "value": "semi-bold",
+              "value": "600",
               "label": "Semi-Bold (600)"
             },
             {
-              "value": "bold",
+              "value": "700",
               "label": "Bold (700)"
             }
           ],
-          "default": "normal"
+          "default": "400"
         },
         {
         "type": "range",
@@ -1309,6 +1522,10 @@
             {
                 "value": "link-with-arrow",
                 "label": "Link (With Arrow)"
+            },
+            {
+            "value": "link-with-arrow-white",
+            "label": "White Link (With Arrow)"
             }
             ],
             "default": "button--primary"
@@ -1634,6 +1851,9 @@
           "label": "Liquid"
         }
       ]
+    },
+    {
+      "type": "@app"
     }
   ],
   "presets": [

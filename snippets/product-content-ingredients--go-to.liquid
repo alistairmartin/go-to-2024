@@ -1,7 +1,7 @@
 
 <div class="container">
   <div class="product-content-ingredients">      
-    <h3 class="heading h2 text--bold hide-desktop">{{ section.settings.title }}</h3>
+    <h3 class="heading h3 text--bold hide-desktop">{{ section.settings.title }}</h3>
     <div class="product-content-ingredients--image">
       {%- if product.metafields.custom.product_key_ingredients__vimeo != blank -%}
         {% assign vimeoVideoId = product.metafields.custom.product_key_ingredients__vimeo %}
@@ -17,7 +17,7 @@
     </div>
     
     <div class="product-content-ingredients--text">
-      <h3 class="heading h2 text--bold hide-mobile">{{ section.settings.title }}</h3>
+      <h3 class="heading h3 text--bold hide-mobile">{{ section.settings.title }}</h3>
       <div class="hidden-phone hidden-tablet">
         {%- assign glossaryMetaobjects = product.metafields.custom.ingredients_featured.value | sort: "title" -%}
         {% for metaobject in glossaryMetaobjects %}

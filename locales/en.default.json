@@ -344,7 +344,9 @@
       "password": "Password",
       "submit": "Create account",
       "already_have_account": "Already have an account?",
-      "login": "Login"
+      "login": "Login",
+      "marketing_checkbox": "Oh, yes. I want to receive emails about skincare stuff, new products, and cute goat pics.",
+      "marketing_disclaimer": "By joining the Go-To Gang, you consent to receiving emails about your account."
     },
     "orders": {
       "title": "Orders",

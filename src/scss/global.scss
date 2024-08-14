@@ -2189,3 +2189,17 @@ product-rerender {
 }
 
 
+
+
+#register-customer {
+  .submit-button:disabled {
+    cursor: no-drop;
+    background: var(--color-grey) !important;
+    color: var(--color-black) !important;
+  }
+  
+  .checkbox-error {
+    color: red !important;
+    margin-bottom: 0;
+  }
+}

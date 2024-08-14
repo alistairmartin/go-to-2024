@@ -59,7 +59,17 @@
                     <label for="customer[password]" class="input__label">{{ 'customer.register.password' | t }}</label>
                   </div>
 
-                  <button type="submit" is="loader-button" class="form__submit button button--primary button--full">{{ 'customer.register.submit' | t }}</button>
+                  <div class="input">
+                    <div class="checkbox-container input">
+                      <input type="checkbox" name="customer[accepts_marketing]" checked="checked" value="true" id="marketing" class="checkbox"/>
+                      <label for="marketing">Subscribe To Email Marketing</label>
+                    </div>
+                  </div>
+
+                  <p class="checkbox-error hide">You must subscribe to Marketing to register an account</p>
+
+
+                  <button type="submit" is="loader-button" class="submit-button form__submit button button--primary button--full">{{ 'customer.register.submit' | t }}</button>
 
                   <span class="form__secondary-action text--subdued">
                     {{- 'customer.register.already_have_account' | t -}}
@@ -73,6 +83,27 @@
     </div>
   </div>
 </section>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const marketingCheckbox = document.getElementById('marketing');
+    const submitButton = document.querySelector('.submit-button');
+    const checkboxError = document.querySelector('.checkbox-error');
+
+    function toggleSubmitButton() {
+      if (marketingCheckbox.checked) {
+        submitButton.disabled = false;
+        checkboxError.classList.add('hide');
+      } else {
+        submitButton.disabled = true;
+        checkboxError.classList.remove('hide');
+      }
+    }
+
+    marketingCheckbox.addEventListener('change', toggleSubmitButton);
+    toggleSubmitButton();
+  });
+</script>
 
 {% schema %}
 {

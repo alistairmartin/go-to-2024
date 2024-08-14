@@ -1,3 +1,4 @@
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
 <div class="perfect-for--icon">
   {%- case icon -%}
     {%- when 'teen' -%}
@@ -26,3 +27,5 @@
       <p>Acne Prone</p>
   {% endcase %}
 </div>
+{%- endif -%}
+

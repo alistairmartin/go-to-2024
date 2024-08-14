@@ -1,7 +1,5 @@
 
 
-console.log('uyes')
-
 let byoBundleCounterItems = 0;
 let byoBundleCounterPrice = 0;
 

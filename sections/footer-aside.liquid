@@ -1,7 +1,24 @@
-<section class="footer-aside {% if settings.footer_background == settings.background %}footer--bordered{% endif %}">
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+<style>
+  #shopify-section-{{ section.id }} .footer-aside { 
+    --background: {{ section.settings.background }};
+    --text-color: {{ section.settings.text_color }};
+  }
+</style>
+
+<section class="footer-aside">
   <div class="container">
 
-  <span class="footer__copyright text--small text--subdued heading heading--secondary">&copy; {{ "now" | date: "%Y" }} {{ shop.name }} PTY LTD</span>
+  <div class="footer__copyright-container">
+    <span class="footer__copyright text--small text--subdued heading heading--secondary">&copy; {{ "now" | date: "%Y" }} Go-To Skincare PTY LTD</span>
+    {%- if brand == 'bro-to' %}
+      <span class="footer__copyright text--small text--subdued heading heading--secondary">&copy; {{ "now" | date: "%Y" }} Bro-To Skincare PTY LTD</span>
+    {%- elsif brand == 'gro-to' %}
+      <span class="footer__copyright text--small text--subdued heading heading--secondary">&copy; {{ "now" | date: "%Y" }} Gro-To Skincare PTY LTD</span>
+    {%- endif -%}
+  
+  </div>
+
 
 
   {% comment %} <div class="footer__follow-and-payment">
@@ -37,6 +54,18 @@
       "id": "show_payment_icons",
       "label": "Show payment icons",
       "default": true
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#181818"
     }
   ]
 }

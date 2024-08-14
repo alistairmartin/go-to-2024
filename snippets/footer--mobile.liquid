@@ -3,9 +3,14 @@
 <div class="footer__item-list">
 
 <div class="footer__item footer__item--logo">
-    <div class="footer-logo">
-      {%- render 'svg--logo-go-to' -%}
-    </div>
+    <div class="footer-logo {{ brand }}">
+        {%- if brand == "go-to" -%}
+          {%- render 'svg--logo-go-to' -%}
+      {%- elsif brand == "bro-to" -%}
+        {%- render 'svg--logo-bro-to' -%}
+      {%- elsif brand == "gro-to" -%}
+        {%- render 'svg--logo-gro-to' -%}
+      {%- endif -%}
 </div>
 
 {%- for block in section.blocks -%}

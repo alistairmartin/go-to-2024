@@ -1,12 +1,29 @@
 {%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
 <style>
-  #shopify-section-{{ section.id }} .footer {
+  #shopify-section-{{ section.id }} .footer { 
+
+    {%- if brand == "go-to" -%}
     {%- assign border_color = settings.footer_background | color_mix: settings.footer_text_color, 85 -%}
 
     --background: {{ settings.footer_background.red }}, {{ settings.footer_background.green }}, {{ settings.footer_background.blue }};
     --heading-color: {{ settings.footer_text_color.red }}, {{ settings.footer_text_color.green }}, {{ settings.footer_text_color.blue }};
     --text-color: {{ settings.footer_text_color.red }}, {{ settings.footer_text_color.green }}, {{ settings.footer_text_color.blue }};
     --border-color: {{ border_color.red }}, {{ border_color.green }}, {{ border_color.blue }};
+    {%- elsif brand == "bro-to" -%}
+      {%- assign border_color = settings.broto_footer_background | color_mix: settings.broto_footer_text_color, 85 -%}
+      --background: {{ settings.broto_footer_background.red }}, {{ settings.broto_footer_background.green }}, {{ settings.broto_footer_background.blue }};
+      --heading-color: {{ settings.broto_footer_text_color.red }}, {{ settings.broto_footer_text_color.green }}, {{ settings.broto_footer_text_color.blue }};
+      --text-color: {{ settings.broto_footer_text_color.red }}, {{ settings.broto_footer_text_color.green }}, {{ settings.broto_footer_text_color.blue }};
+      --border-color: {{ border_color.red }}, {{ border_color.green }}, {{ border_color.blue }};
+    {%- elsif brand == "gro-to" -%}
+    {%- assign border_color = settings.groto_footer_background | color_mix: settings.groto_footer_text_color, 85 -%}
+
+    --background: {{ settings.groto_footer_background.red }}, {{ settings.groto_footer_background.green }}, {{ settings.groto_footer_background.blue }};
+    --heading-color: {{ settings.groto_footer_text_color.red }}, {{ settings.groto_footer_text_color.green }}, {{ settings.groto_footer_text_color.blue }};
+    --text-color: {{ settings.groto_footer_text_color.red }}, {{ settings.groto_footer_text_color.green }}, {{ settings.groto_footer_text_color.blue }};
+    --border-color: {{ border_color.red }}, {{ border_color.green }}, {{ border_color.blue }};
+    {% else  %}
+    {% endif %}
   }
 </style>
 

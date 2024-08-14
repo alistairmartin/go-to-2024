@@ -24,4 +24,17 @@
 
 {%- if page.handle contains "go-to-gang" -%}
     <link rel="stylesheet" href="{{ 'loyalty-landing.css' | asset_url }}">
-    {%- endif -%}
+{%- endif -%}
+
+
+
+{%- if brand == "bro-to" -%}
+    <link rel="stylesheet" href="{{ 'brand--bro-to.css' | asset_url }}">
+{%- elsif brand == "gro-to" -%}
+    <link rel="stylesheet" href="{{ 'brand--gro-to.css' | asset_url }}">
+{%- endif -%}
+
+
+{%- if product -%}
+    {%- render 'okendo-reviews-css', brand: brand -%}
+{%- endif -%}

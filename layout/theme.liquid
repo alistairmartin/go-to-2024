@@ -82,7 +82,7 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     
     {% render 'js-variables', direction: direction %}
     <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
-    {%- render "files-css" -%}
+    {%- render "files-css", brand: brand -%}
 
     {%- if product -%}
       <link rel="stylesheet" href="{{ 'products.css' | asset_url }}">
@@ -118,7 +118,7 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
   {% capture template_classes %} template-{{ template.name }} template-{{ template.name }}--{{ template.suffix }} {{ template.name }}--{{ page_title | handle }}{% endcapture %}
   {%- assign feature_classes = feature_classes | append: template_classes -%}
 
-  <body class="no-focus-outline {{ feature_classes }}" data-instant-allow-query-string>
+  <body class="{{ brand }} no-focus-outline {{ feature_classes }}" data-instant-allow-query-string>
     {%- comment -%}Common SVG definitions that we are re-using in several places{%- endcomment -%}
     <svg class="visually-hidden">
       <linearGradient id="rating-star-gradient-half">
@@ -162,10 +162,9 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     </div>
 
     {%- if request.page_type != 'gift_card' and request.page_type != 'password' -%}
-      {%- sections 'footer-group' -%}
 
       {%- if brand == "go-to" -%}
-        {%- sections 'footer-group--go-to' -%}
+        {%- sections 'footer-group' -%}
       {%- elsif brand == "bro-to" -%}
         {%- sections 'footer-group--bro-to' -%}
       {%- elsif brand == "gro-to" -%}

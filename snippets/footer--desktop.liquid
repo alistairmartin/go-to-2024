@@ -44,8 +44,15 @@
 
         {%- when 'social_media' -%}
 
-          <div class="footer-logo">
-            {%- render 'svg--logo-go-to' -%}
+          <div class="footer-logo {{ brand }}">
+            {%- if brand == "go-to" -%}
+              {%- render 'svg--logo-go-to' -%}
+          {%- elsif brand == "bro-to" -%}
+            {%- render 'svg--logo-bro-to' -%}
+          {%- elsif brand == "gro-to" -%}
+            {%- render 'svg--logo-gro-to' -%}
+          {%- endif -%}
+           
           </div>
           {%- if block.settings.title != blank -%}
             <p class="footer__item-title heading heading--small">{{ block.settings.title | escape }}</p>

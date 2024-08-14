@@ -27,12 +27,14 @@
   }
 
   #shopify-section-{{ section.id }} .product-list__inner {
-    --product-list-block-spacing: 60px;
+    --product-list-block-spacing: 8px;
+    --product-list-column-gap: 8px;
   }
 
   @media screen and (min-width: 741px) {
     #shopify-section-{{ section.id }} .product-list__inner {
     --product-list-block-spacing: 8px;
+    --product-list-column-gap: 8px;
   }
   }
   {%- endif -%}

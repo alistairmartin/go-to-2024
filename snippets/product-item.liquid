@@ -2,6 +2,7 @@
 {%- assign color_white_label = 'general.label.white' | t | downcase -%}
 {%- assign quick_buy_icon_name = 'quick-buy-' | append: settings.cart_icon | replace: '_', '-' -%}
 
+
 {%- if product.url contains '?' -%}
   {%- assign product_url_contains_query = true -%}
 {%- else -%}
@@ -165,7 +166,7 @@
    
 
         <span class="title">
-          {{ product.title }}
+          {{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}
         </span>
       
       </a>
@@ -324,8 +325,7 @@
         {%- endfor -%}
       {%- endif -%}
     </div>
-
-    {%- if page.handle == "build-your-routine" and section_name == "featured-collections" -%}
+    {%- if outerCollectionHandle == "build-your-routine" and section_name == "featured-collections" -%}
       {% render "product-item--ATC-BYO", product: product %}
     {%- elsif product.available and reduced_content or show_cta -%}
       <div class="product-item__cta-wrapper">
@@ -346,14 +346,7 @@
       </div>
     {%- elsif reduced_content -%}
       <div class="product-item__cta-wrapper">
-        {% comment %} <span class="product-item__link text--subdued">{{ 'collection.product.sold_out' | t }}</span> {% endcomment %}
-
-        {% comment %} <br>
-        <a href="#" class="BIS_trigger product-item__link text--subdued" data-product-data="{{ product | json | escape }}">
-          Email when available
-        </a> {% endcomment %}
-
-        <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title }}')"  class="link link--primary back-in-stock">WAITLIST ME</button>
+        <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')"  class="link link--primary back-in-stock">WAITLIST ME</button>
       </div>
     {%- endif -%}
   </div>

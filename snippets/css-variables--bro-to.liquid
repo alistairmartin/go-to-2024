@@ -10,18 +10,18 @@
     {%- assign product_custom_label_brightness = settings.broto_product_custom_label_background | color_brightness -%}
     {%- assign product_custom_label_2_brightness = settings.broto_product_custom_label_2_background | color_brightness -%}
 
-    --color-primary: #ef3534;
-    --color-secondary: #192a42;
+    --color-primary: #192a42;
+    --color-secondary: #f0f0f5;
     --color-ternary: #f9c6b9;
-    
-    --color-black: #181818;
-    --color-grey-dark: #484848;
-    --color-grey: #DCE0E4;
-    --color-grey-light: #F2F2F2;
 
-    --color-button-primary-text: #181818;
-    --color-button-primary-background: #FDE4DB;
-    --color-button-primary-shadow: #F5D3C4;
+    --color-black: #1c1b1b;
+    --color-grey-dark: #192a42;
+    --color-grey: #f0f0f5;
+    --color-grey-light: #F9F9F9;
+
+    --color-button-primary-text: #fff;
+    --color-button-primary-background: #0DA9C5;
+    --color-button-primary-shadow: #192a42;
 
     --color-button-secondary-text: #181818;
     --color-button-secondary-background: #ffffff;
@@ -95,9 +95,9 @@
 
     /* Control the look and feel of the theme by changing radius of various elements */
     --image-border-radius: 0;
-    --button-border-radius: {{ settings.broto_button_border_radius }}px;
+    --button-border-radius: 0px;
     --block-border-radius: {% if settings.broto_block_border_radius == 'none' %}0{% elsif settings.broto_block_border_radius == 'small' %}8{% elsif settings.broto_block_border_radius == 'medium' %}16{% else %}32{% endif %}px;
-    --block-border-radius-reduced: {% if settings.broto_block_border_radius == 'none' %}0{% elsif settings.broto_block_border_radius == 'small' %}4{% elsif settings.broto_block_border_radius == 'medium' %}8{% else %}16{% endif %}px;
+    --block-border-radius-reduced: 0;
     --color-swatch-border-radius: {% if settings.broto_round_color_swatches %}100%{% else %}0px{% endif %};
 
     /* Button size */

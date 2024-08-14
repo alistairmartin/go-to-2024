@@ -1,6 +1,6 @@
 <style>
   {% for block in section.blocks %}
-      .label--{{ block.settings.title | handle }} {
+      body.{{ block.settings.brand }} .label--{{ block.settings.title | handle }} {
         background: {{ block.settings.color_background }} !important;
         color: {{ block.settings.color_text }} !important;
         {% if block.settings.hide_label %}
@@ -18,6 +18,25 @@
         "type": "label-item",
         "name": "Label Item",
         "settings": [
+          {
+          "type": "radio",
+          "id": "brand",
+          "label": "Brand",
+          "options": [
+            {
+              "value": "go-to",
+              "label": "🟪 Go-To"
+            },
+            {
+              "value": "bro-to",
+              "label": "🟥 Bro-To"
+            },
+            {
+              "value": "gro-to",
+              "label": "🟩 Gro-To"
+            }
+          ]
+        },
           {
             "type": "checkbox",
             "id": "hide_label",
@@ -42,7 +61,20 @@
             "default": "#000000"
           }
         ]
-      }
+      },
+      {
+      "type": "note",
+      "name": "📝 Block Note",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Note",
+          "info": "Only Admin Will See This.",
+          "default": "🟪 --- Go-To ---"
+        }
+      ]
+    }
     ]
   }
 {% endschema %}

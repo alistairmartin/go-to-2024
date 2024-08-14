@@ -74,12 +74,11 @@
 
                 <div class="line-item__info">
                   <div class="product-item-meta">
-                    {%- if settings.show_vendor -%}
-                      <span class="product-item-meta__vendor heading heading--xxsmall">{{ product.vendor }}</span>
-                    {%- endif -%}
 
-                    <span class="product-item-meta__title text--small">{{ product.title }}</span>
-
+                 
+                    <span class="product-item-meta__title text--small"><strong>{{ product.title | remove: "Bro-To " | remove: "Gro-To" }}</strong></span>
+                    <span class="product-item-meta__vendor text text--xxsmall">{{ product.vendor | remove: " Skincare" }}</span>
+                    
                     <div class="product-item-meta__price-list-container text--small">
                       <div class="price-list">
                         {%- if product.compare_at_price_min > product.price_min -%}

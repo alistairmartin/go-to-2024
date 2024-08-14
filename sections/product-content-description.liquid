@@ -118,7 +118,7 @@
                   </svg>
                 </div>
                 <p class="product-reviews--item-title">{{ review_title }}</p>
-                <p class="product-reviews--item-review">{{ product.metafields.custom.product_main_information__review_description[forloop.index0] | strip_html }}</p>
+                <p class="product-reviews--item-review text--small">{{ product.metafields.custom.product_main_information__review_description[forloop.index0] | strip_html }}</p>
               </div>
             {% endfor %}
           </div>
@@ -137,18 +137,19 @@
         {%- if product.metafields.accentuate.product_main_information__whats_in_it != blank -%}
         <div class="product-content-description--content-inner tab-panel whats-in-it" id="product-content-description--tab-3" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-3" aria-hidden="true">
 
-        <div class="text">
-          {{ product.metafields.accentuate.product_main_information__whats_in_it }}
-        </div>
+        <p class="text text--small">
+          {{ product.metafields.accentuate.product_main_information__whats_in_it |  strip_html }}
+        </p>
      
 
-
+        {%- if product.metafields.custom.ingredients != blank -%}
           <div class="popover-buttons">
             <button type="button" is="toggle-button" class="link link--primary hidden-phone" aria-controls="ingredients-glossary-drawer" aria-expanded="false">View All Ingredients {%- render 'icon' with "plus" -%}</button>
             <button type="button" is="toggle-button" class="link link--primary hidden-tablet-and-up" aria-controls="ingredients-glossary-popover" aria-expanded="false">View All Ingredients {%- render 'icon' with "plus" -%}</button>
           </div>
-        
+        {%- endif -%}
 
+   
 
           {%- comment %}
           <div class="">

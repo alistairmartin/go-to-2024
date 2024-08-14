@@ -111,9 +111,9 @@
             {%- endif -%}
           </h3>
 
-          <div class="product-content-routine--text__morning-text">
-            {{ product.metafields.custom.product_routine__steps-morning }}
-          </div>
+          <p class="product-content-routine--text__morning-text">
+            {{ product.metafields.custom.product_routine__steps-morning | strip_html }}
+          </p>
         </div>
 
         <div class="product-content-routine--text__evening">
@@ -124,9 +124,9 @@
               {{ section.settings.title_evening }}
             {%- endif -%}
           </h3>
-          <div class="product-content-routine--text__evening-text">
-            {{ product.metafields.custom.product_routine__steps-evening }}
-          </div>
+          <p class="product-content-routine--text__evening-text">
+            {{ product.metafields.custom.product_routine__steps-evening | strip_html }}
+          </p>
         </div>
 
       </div>

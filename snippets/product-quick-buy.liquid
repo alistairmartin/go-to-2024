@@ -131,33 +131,54 @@
     <p>{{ product.metafields.global.description_tag }}</p>
   {%- endif -%}
 
+  {%- for tag in product.tags -%}
+    {%- if tag contains "skintype_" -%}
+      {% assign skinTypeFound = true %}
+      {% break %}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- for tag in product.tags -%}
+    {%- if tag contains "badge_" -%}
+      {% assign badgeFound = true %}
+      {% break %}
+    {%- endif -%}
+  {%- endfor -%}
+
 
     <div class="quick-buy-product--below-content">
-      <div class="perfect-for">
-        <h3 class="text--bold">{{ 'product.content.plays_nice_with' | t }}</h3>
-        <div class="perfect-for--container">
-          {%- for tag in product.tags -%}
-            {%- if tag contains "skintype_" -%}
-              {% assign skinTypeFound = true %}
-              {% assign icon = tag | remove: "skintype_" %}
-              {% render "product-content-icons--perfect-for", icon: icon %}
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-      </div>
 
-      <div class="who-is-it-for">
-        <h3 class="text--bold">{{ 'product.content.good_to_know' | t }}</h3>
-        <div class="who-is-it-for--container">
-          {%- for tag in product.tags -%}
-            {%- if tag contains "badge_" -%}
-              {% assign badgeFound = true %}
-              {% assign icon = tag | remove: "badge_" %}
-              {% render "product-content-icons--good-to-know", icon: icon %}
-            {%- endif -%}
-          {%- endfor -%}
+      {%- if skinTypeFound -%}
+        <div class="perfect-for">
+          <h3 class="text--bold">{{ 'product.content.plays_nice_with' | t }}</h3>
+          <div class="perfect-for--container">
+            {%- for tag in product.tags -%}
+              {%- if tag contains "skintype_" -%}
+                {% assign skinTypeFound = true %}
+                {% assign icon = tag | remove: "skintype_" %}
+                {% render "product-content-icons--perfect-for", icon: icon %}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div> 
+      {%- endif -%}
+    
+
+      {%- if badgeFound -%}
+        <div class="who-is-it-for">
+          <h3 class="text--bold">{{ 'product.content.good_to_know' | t }}</h3>
+          <div class="who-is-it-for--container">
+            {%- for tag in product.tags -%}
+              {%- if tag contains "badge_" -%}
+                {% assign badgeFound = true %}
+                {% assign icon = tag | remove: "badge_" %}
+                {% render "product-content-icons--good-to-know", icon: icon %}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
         </div>
-      </div>
+      {%- endif -%}
+
   </div>
 {%- endcapture -%}
 

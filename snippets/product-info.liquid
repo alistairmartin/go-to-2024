@@ -15,7 +15,7 @@
     {%- endif -%}
 
     {% unless featured %}
-      <h1 class="product-meta__title heading h4 heading--secondary">{{ product.title }}</h1>
+      <h1 class="product-meta__title heading h4 heading--secondary">{{ product.title | remove: "Bro-To " | remove: "Gro-To " }}</h1>
     {% else %}
       <h2 class="product-meta__title heading h4 heading--secondary">
         <a href="{{ product.url }}">{{ product.title }}</a>
@@ -48,8 +48,8 @@
     {%- if section.settings.show_product_rating or section.settings.show_sku -%}
       <div class="product-meta__reference">
         {%- if section.settings.show_product_rating -%}
-          <a href="{% if featured %}{{ product.url }}{% endif %}#product-{{ product.id }}-reviews-pocket" is="review-link" data-smooth-scroll class="product-meta__reviews-badge hidden-lap-and-up">{%- render 'product-rating', product: product -%}</a>
-          <a href="{% if featured %}{{ product.url }}{% endif %}#product-{{ product.id }}-tabs" is="review-link" data-smooth-scroll class="product-meta__reviews-badge hidden-pocket">{%- render 'product-rating', product: product -%}</a>
+          <a href="#customer-reviews" is="review-link" data-smooth-scroll class="product-meta__reviews-badge hidden-lap-and-up">{%- render 'product-rating', product: product -%}</a>
+          <a href="#customer-reviews" is="review-link" data-smooth-scroll class="product-meta__reviews-badge hidden-pocket">{%- render 'product-rating', product: product -%}</a>
         {%- endif -%}
 
         {%- if section.settings.show_sku -%}

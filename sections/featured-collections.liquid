@@ -1,3 +1,7 @@
+{%- if collection -%}
+  {%- assign outerCollectionHandle = collection.handle -%}
+{%- endif -%}
+
 {%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
   {%- assign blends_with_background = false -%}
 {%- else -%}
@@ -122,7 +126,7 @@
                     {%- assign smallest_image_aspect_ratio = smallest_image_aspect_ratio | at_least: product.featured_media.aspect_ratio -%}
                   {%- endif -%}
 
-                  {%- render 'product-item', product: product, collection: collection, reduced_content: true, show_cta: section.settings.show_cta, block: block, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, section_name: "featured-collections" -%}
+                  {%- render 'product-item', product: product, collection: collection, reduced_content: true, show_cta: section.settings.show_cta, block: block, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, section_name: "featured-collections", outerCollectionHandle: outerCollectionHandle -%}
                 {%- else -%}
                   {%- assign smallest_image_aspect_ratio = 1 -%}
 

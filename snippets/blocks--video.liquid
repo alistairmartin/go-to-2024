@@ -1,0 +1,23 @@
+
+{%- if block.type == "video" -%}
+{% comment %} {%- capture styles -%}
+<style>
+#block-{{ block.id }} img {
+  --rounded-image-corners-mobile: {% if block.settings.rounded_image_corners_mobile %}8px{% else %}0px{% endif %};
+  --rounded-image-corners-desktop: {% if block.settings.rounded_image_corners_desktop %}8px{% else %}0px{% endif %};
+
+  --fill-image-height-mobile: {% if block.settings.fill_image_mobile %}100%{% else %}auto{% endif %};
+  --fill-image-cover-mobile: {% if block.settings.fill_image_mobile %}cover{% else %}unset{% endif %};
+
+  --fill-image-height-desktop: {% if block.settings.fill_image_desktop %}100%{% else %}auto{% endif %};
+  --fill-image-cover-desktop: {% if block.settings.fill_image_desktop %}cover{% else %}unset{% endif %};
+}
+</style>
+{%- endcapture -%}
+{{- styles | strip_newlines | remove:" " | strip -}} {% endcomment %}
+
+<div class="blocks--video width-desktop-{{ block.settings.width_desktop }} width-mobile-{{ block.settings.width_mobile }} {% if block.settings.hide_desktop %}hide-desktop{% endif %} {% if block.settings.hide_mobile %}hide-mobile{% endif %}" {{ blockId }}>
+  <div id="video-{{ block.id | remove: '-' }}">
+  </div>
+</div>
+{% endif %}

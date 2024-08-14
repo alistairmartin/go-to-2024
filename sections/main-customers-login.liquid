@@ -19,8 +19,10 @@
     <div id="login-form-container">
       <div class="page-header">
         <div class="page-header__text-wrapper text-container">
-          <h1 class="heading h2">{{ 'customer.login.title' | t }}</h1>
-          <p>{{ 'customer.login.instructions' | t }}</p>
+          <img src="{{ 'loyalty--go-to-gang.svg' | asset_url }}" alt="Go-To Gang" class="go-to-gang-logo">
+          <h1 class="heading h2 visually-hidden">{{ 'customer.login.title' | t }}</h1>
+          <p class="customer-login--instructions page-content--small">{{ 'customer.login.instructions' | t }}</p>
+     
         </div>
       </div>
 
@@ -36,6 +38,7 @@
                   {{- block.settings.liquid -}}
 
                 {%- when 'login' -%}
+          
                   {%- form 'customer_login', name: 'login', class: 'form' -%}
                     {%- if form.errors -%}
                       <div class="banner banner--error form__banner" id="login-form-error">

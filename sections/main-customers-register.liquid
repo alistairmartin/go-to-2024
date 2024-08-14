@@ -2,8 +2,9 @@
   <div class="container">
     <div class="page-header">
       <div class="page-header__text-wrapper text-container">
-        <h1 class="heading h2">{{ 'customer.register.title' | t }}</h1>
-        <p>{{ 'customer.register.instructions' | t }}</p>
+        <img src="{{ 'loyalty--go-to-gang.svg' | asset_url }}" alt="Go-To Gang" class="go-to-gang-logo">
+        <h1 class="heading h2 visually-hidden">{{ 'customer.register.title' | t }}</h1>
+        <p class="customer-register--instructions page-content--small">{{ 'customer.register.instructions' | t }}</p>
       </div>
     </div>
 
@@ -19,6 +20,9 @@
                 {{- block.settings.liquid -}}
 
               {%- when 'register' -%}
+
+   
+
                 {%- form 'create_customer', name: 'create', class: 'form', id: 'register-customer' -%}
                   {%- if form.errors -%}
                     <div class="banner banner--error form__banner" id="login-form-error">
@@ -50,6 +54,11 @@
                   {%- endif -%}
 
                   <div class="input">
+                    <input type="text" id="customer[note][birthday]" class="input__field" name="customer[note][birthday]" aria-label="Birthday (dd-mm-yyyy)" required="required">
+                    <label for="customer[note][birthday]" class="input__label">Birthday (dd-mm-yyyy)</label>
+                  </div>
+
+                  <div class="input">
                     <input type="email" id="customer[email]" class="input__field" name="customer[email]" required="required" autocomplete="email" {% if form.errors contains 'email' %}aria-invalid="true" aria-describedby="register-form-error"{% endif %}>
                     <label for="customer[email]" class="input__label">{{ 'customer.register.email' | t }}</label>
                   </div>
@@ -62,12 +71,13 @@
                   <div class="input">
                     <div class="checkbox-container input">
                       <input type="checkbox" name="customer[accepts_marketing]" checked="checked" value="true" id="marketing" class="checkbox"/>
-                      <label for="marketing">Subscribe To Email Marketing</label>
+                      <label for="marketing">{{ 'customer.register.marketing_checkbox' | t }}</label>
                     </div>
                   </div>
+                  
+                  <small>{{ 'customer.register.marketing_disclaimer' | t }}</small>
 
                   <p class="checkbox-error hide">You must subscribe to Marketing to register an account</p>
-
 
                   <button type="submit" is="loader-button" class="submit-button form__submit button button--primary button--full">{{ 'customer.register.submit' | t }}</button>
 

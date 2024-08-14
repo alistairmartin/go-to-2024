@@ -4930,8 +4930,8 @@ class TimelineVertical extends HTMLElement {
             opacity: [0, 1],
             transform: [`translateY(${prefersReducedMotion ? 0 : window.innerWidth < 1000 ? 35 : 60}px)`, "translateY(0)"]
           }, {
-            duration: 600,
-            delay: 1200,
+            duration: window.innerWidth < 1000 ? 600 : 600,
+            delay: window.innerWidth < 1000 ? 600 : 1200,
             easing: "ease"
           }));
           animation.play();
@@ -4949,8 +4949,8 @@ class TimelineVertical extends HTMLElement {
             opacity: [0, 1],
             transform: [`translateY(${prefersReducedMotion ? 0 : window.innerWidth < 1000 ? 35 : 60}px)`, "translateY(0)"]
           }, {
-            duration: 800,
-            delay: 800,
+            duration: window.innerWidth < 1000 ? 600 : 800,
+            delay: window.innerWidth < 1000 ? 600 : 800,
             easing: "ease"
           }));
           animation.play();

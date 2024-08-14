@@ -1275,6 +1275,12 @@ store-header.background-blur {
     }
   }
 
+  .container {
+    @include media-query($small) {
+      padding: 0;
+    }
+  }
+
 
   .timeline-vertical {
     display: grid;
@@ -1299,8 +1305,16 @@ store-header.background-blur {
       }
 
       img {
-        padding: 16px;
+        padding: 0;
         border-radius: var(--image-border-radius);
+
+        @include media-query($medium-up) {
+          padding: 16px;
+        }
+      }
+
+      .text, .blocks--button {
+        padding: var(--container-gutter);
       }
     }
  
@@ -1334,22 +1348,8 @@ store-header.background-blur {
       justify-content: center;
       align-items: flex-start;
       width: 100%;
-      padding: 0;
-      margin-top: 100px;
-
-      @include media-query($small) {
-        position: relative;
-        &:after {
-          content: "";
-          height: 75px;
-          width: 2px;
-          background: var(--color-primary);
-          position: absolute;
-          left: 50%;
-          top: -50px;
-          transform: translate(-50%,-50%);
-        }
-      }
+      margin-top: 50px;
+      padding: var(--container-gutter);
       
       @include media-query($medium-up) {
         margin-top: 0;
@@ -2190,6 +2190,22 @@ product-rerender {
 
 
 
+.shopify-section--main-customers-register, .shopify-section--main-customers-login {
+  .go-to-gang-logo {
+    max-width: 550px;
+    padding: 10px;
+    margin: 0 auto !important;
+    display: block !important;
+  }
+
+  .customer-register--instructions, .customer-login--instructions {
+    font-weight: 500;
+    text-align: center;
+    margin: 20px auto;
+  }
+
+
+
 
 #register-customer {
   .submit-button:disabled {
@@ -2199,7 +2215,17 @@ product-rerender {
   }
   
   .checkbox-error {
-    color: red !important;
-    margin-bottom: 0;
+      color: red !important;
+      margin-bottom: 0;
+    }
+  }
+
+  .checkbox-container {
+
+  }
+
+  small {
+    margin: 16px 0 0;
+    display: block;
   }
 }

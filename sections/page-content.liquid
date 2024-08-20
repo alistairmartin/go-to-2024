@@ -1,0 +1,43 @@
+
+
+<section>
+  <div class="container">
+    <div class="page-content page-content--{{ section.settings.page_width }} rte {% if page.content == blank %}hide{% endif %}">
+        {{- page.content -}}
+      </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page Content",
+  "class": "shopify-section--page-content",
+  "settings": [
+    {
+      "type": "select",
+      "id": "page_width",
+      "label": "Page width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Page Content"
+    }
+  ]
+}
+{% endschema %}

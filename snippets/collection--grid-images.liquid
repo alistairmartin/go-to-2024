@@ -12,17 +12,15 @@
       {% for item in collectionHandles %}
         {% if item == collection.handle %}
 
-          {%- for i in (1..3) -%}
+          {%- for i in (1..9) -%}
 
           {% capture mobileImageSettings %}mobile_image_{{ i }}{% endcapture %}
           {% capture mobilePositionSettings %}mobile_position_{{ i }}{% endcapture %}
           {% capture mobileLinkSettings %}mobile_link_{{ i }}{% endcapture %}
           {% capture mobileSpanSettings %}mobile_span_{{ i }}{% endcapture %}
-
-
-          {%- assign mobileImage = block.settings[mobileImageSettings] -%}
+     
           {%- assign mobilePosition = block.settings[mobilePositionSettings] | times: 1  -%}
-          {%- assign mobileLink = block.settings[mobileLinkSettings]  -%}
+      
           {%- assign mobileSpan = block.settings[mobileSpanSettings] | times: 1 -%}
 
           {% capture desktopImageSettings %}desktop_image_{{ i }}{% endcapture %}
@@ -34,6 +32,18 @@
           {%- assign desktopPosition = block.settings[desktopPositionSettings] | times: 1 -%}
           {%- assign desktopLink = block.settings[desktopLinkSettings]  -%}
           {%- assign desktopSpan = block.settings[desktopSpanSettings] | times: 1 -%}
+
+          {%- if block.settings[mobileImageSettings] == blank -%}
+            {%- assign mobileImage = block.settings[desktopImageSettings] -%}
+          {%- else -%}
+           {%- assign mobileImage = block.settings[mobileImageSettings] -%}
+          {%- endif -%}
+
+          {%- if block.settings[mobileLinkSettings] == blank -%}
+            {%- assign mobileLink = block.settings[desktopLinkSettings] -%}
+          {%- else -%}
+            {%- assign mobileLink = block.settings[mobileLinkSettings]  -%}
+          {%- endif -%}
 
           {% if outerForloop == desktopPosition  %}
 

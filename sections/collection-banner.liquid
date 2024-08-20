@@ -66,12 +66,14 @@
 
           <div class="image-overlay__content content-box content-box--{{ section.settings.text_width }} content-box--text-center content-box--center text-container">
             {%- if section.settings.show_collection_title -%}
-              <h1 class="heading h1">
+              <h1 class="heading h3">
                 <split-lines reveal>{{ collection.title }}</split-lines>
               </h1>
             {%- endif -%}
 
-            {%- if collection.metafields.custom.short_description != blank or collection.description != blank -%}
+            {%- if collection.metafields.custom.subtitle != blank -%}
+              <h2 class="heading heading--secondary h4">{{ collection.metafields.custom.subtitle | metafield_tag }}</h2>
+            {%- elsif collection.metafields.custom.short_description != blank or collection.description != blank -%}
               {%- if section.settings.show_collection_description -%}
                 <div class="image-overlay__text-container">
                   {%- if collection.metafields.custom.short_description != blank -%}
@@ -96,7 +98,9 @@
             <h1 class="heading h1">{{ collection.title }}</h1>
           {%- endif -%}
 
-          {%- if collection.metafields.custom.short_description != blank or collection.description != blank -%}
+          {%- if collection.metafields.custom.subtitle != blank -%}
+            <h2 class="heading heading--secondary h4">{{ collection.metafields.custom.subtitle | metafield_tag }}</h2>
+          {%- elsif collection.metafields.custom.short_description != blank or collection.description != blank -%}
             {%- if section.settings.show_collection_description -%}
               <div class="image-overlay__text-container">
                 {%- if collection.metafields.custom.short_description != blank -%}

@@ -432,6 +432,20 @@
     }
   },
   "gift_card": {
+    "issued_legacy": {
+      "subtext": "Your e-Gift Card! It's here! On this very page!",
+      "illustration_alt": "Gift card illustration",
+      "disabled": "Your gift card is disabled.",
+      "expired": "Shucks! Your gift card expired on {{ expiry }}.",
+      "expires_on": "Your gift card expires on {{ expiry }}.",
+      "redeem_html": "Use this very fancy code at checkout to redeem your gift card.",
+      "shop_link": "I'm ready to shop!",
+      "print": "print",
+      "initial_amount_html": "Gift Card Amount: {{initial_amount}}",
+      "remaining_balance_html": "Balance left: {{balance}}",
+      "add_to_apple_wallet": "Add to Apple Wallet",
+      "gift_card_code_html": "E-Gift card code: <strong>{{ gift_card_code }}<\/strong>"
+    },
     "issued": {
       "subtext": "Here's your gift card!",
       "illustration": "Gift card illustration",

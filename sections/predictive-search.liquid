@@ -64,7 +64,12 @@
 
         <ul class="predictive-search__product-list list--unstyled" role="list" data-type="products">
           {%- for product in predictive_search.resources.products -%}
-            <li class="predictive-search__product-item line-item line-item--centered">
+
+            {%- if product.template_suffix contains "hidden" or product.tags contains "hidden" -%}
+              {% continue %}
+            {%- endif -%}
+
+            <li class="predictive-search__product-item line-item line-item--centered product-brand--{{ product.vendor | handle | remove: "-skincare" }}">
               <a href="{{ product.url }}" class="line-item__content-wrapper" data-instant>
                 {%- if product.featured_media -%}
                   <span class="line-item__image-wrapper">
@@ -75,23 +80,38 @@
                 <div class="line-item__info">
                   <div class="product-item-meta">
 
-                 
-                    <span class="product-item-meta__title text--small"><strong>{{ product.title | remove: "Bro-To " | remove: "Gro-To" }}</strong></span>
-                    <span class="product-item-meta__vendor text text--xxsmall">{{ product.vendor | remove: " Skincare" }}</span>
+                    {% comment %} <span class="product-item-meta__vendor text text--xxsmall"><i>{{ product.vendor | remove: " Skincare" }}</i></span> {% endcomment %}
+                    <span class="product-item-meta__title text--small"><strong>{{ product.title | remove: "Bro-To " | remove: "Gro-To" }}</strong>  <span class="separator--dot"> • </span> <span class="text text--xxsmall"><i>{{ product.vendor | remove: " Skincare" }}</i></span> </span>
+                    {%- if product.metafields.custom.product_subtitle__description != blank or product.metafields.custom.product_subtitle__measurement != blank -%}
+                      <span class="product-item-meta__vendor text text--xxsmall">
+                        {%- if product.metafields.custom.product_subtitle__description != blank -%}
+                          {{- product.metafields.custom.product_subtitle__description -}}
+                        {%- endif -%}
+                  
+                        {%- if product.metafields.custom.product_subtitle__description != blank and product.metafields.custom.product_subtitle__measurement != blank -%}
+                          <span class="separator--dot"> • </span> 
+                        {%- endif -%}
+                  
+                        {%- if product.metafields.custom.product_subtitle__measurement != blank -%}
+                          {{- product.metafields.custom.product_subtitle__measurement -}}
+                        {%- endif -%}
+                  
+                      </span>
+                      {%- endif -%}
                     
                     <div class="product-item-meta__price-list-container text--small">
                       <div class="price-list">
                         {%- if product.compare_at_price_min > product.price_min -%}
-                          <span class="price price--highlight">{{ product.price_min | money }}</span>
-                          <span class="price price--compare">{{ product.compare_at_price_min | money }}</span>
+                          <span class="price price--highlight">{{ product.price_min | money | remove: ".00" }}</span>
+                          <span class="price price--compare">{{ product.compare_at_price_min | money | remove: ".00" }}</span>
                         {%- else -%}
-                          <span class="price">{{ product.price_min | money }}</span>
+                          <span class="price">{{ product.price_min | money | remove: ".00" }}</span>
                         {%- endif -%}
 
                         {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
                           <div class="price text--xsmall text--subdued">
                             <div class="unit-price-measurement">
-                              <span class="unit-price-measurement__price">{{ product.selected_or_first_available_variant.unit_price | money }}</span>
+                              <span class="unit-price-measurement__price">{{ product.selected_or_first_available_variant.unit_price | money | remove: ".00" }}</span>
                               <span class="unit-price-measurement__separator">/</span>
 
                               {%- if product.selected_or_first_available_variant.unit_price_measurement.reference_value != 1 -%}

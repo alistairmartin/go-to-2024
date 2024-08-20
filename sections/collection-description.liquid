@@ -58,13 +58,12 @@
 
         <div class="content-box content-box--{{ section.settings.text_width }} content-box--text-{{ text_alignment }} content-box--{{ text_position }} text-container">
 
-            {%- if collection.metafields.custom.short_description != blank -%}
-              <div class="rte">
-                {{ collection.metafields.custom.short_description | metafield_tag }}
-              </div>
-            {%- endif -%}
+              {%- if collection.metafields.custom.short_description != blank -%}
+                <div class="rte">
+                  {{ collection.metafields.custom.short_description | metafield_tag }}
+                </div>
+              {%- endif -%}
        
-
                 <button is="toggle-button" class="collapsible-toggle text--strong" aria-controls="block-{{ section.id }}" aria-expanded="false">
                    Read more
                   <span class="animated-plus"></span>

@@ -71,6 +71,65 @@
                     {{- block.settings.title |  escape -}}
                   </h2>
 
+                {%- when 'question-with-table' -%} 
+                  <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                  <button is="toggle-button" class="collapsible-toggle text--strong heading heading--{{ section.settings.font_family }}" aria-controls="block-{{ section.id }}-{{ block.id }}" aria-expanded="false" itemprop="name">
+                    {{- block.settings.title -}}
+                    <span class="animated-plus"></span>
+                  </button>
+
+                  <collapsible-content id="block-{{ section.id }}-{{ block.id }}" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" {{ block.shopify_attributes }}>
+                    <div class="collapsible__content text-container" itemprop="text">
+
+                    {%- capture tableContentHeader -%}
+                      {% assign tableDataCells = block.settings.table01 | split: "|" %}
+                      <tr>{%- for cell in tableDataCells -%}<th>{{ cell }}</th>{%- endfor -%}</tr>
+                    {%- endcapture -%}
+
+                      {%- capture tableContentBody -%}
+                        {%- for i in (2..9) -%}
+                          {%- if i < 10 -%}
+                            {%- assign iterator = i | prepend: "0" -%}
+                          {%- endif -%}
+                          {% capture tableSettings %}table{{ iterator }}{% endcapture %}
+                          {% assign tableData = block.settings[tableSettings] %}
+
+                          {%- if tableData != blank -%}
+                            {%- assign tableDataCells = tableData | split: "|" -%}
+                            <tr>
+                             {%- for cell in tableDataCells -%} <td>{{ cell }}</td>{%- endfor -%}
+                            </tr>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      {%- endcapture -%}
+
+                      {%- if block.settings.table_position == "bottom" -%}
+                        {{ block.settings.answer }}
+                      {%- endif -%}
+
+
+                      {%- if tableContentBody != blank -%}
+                        <div class="rte">
+                          <table class="table table--bordered ">
+                            <thead>
+                            {{ tableContentHeader }}
+                            </thead>
+                            <tbody>
+                              {{ tableContentBody }}
+                            </tbody>
+                         
+                          </table>
+                        </div>
+                      {%- endif -%}
+                     
+                      {%- if block.settings.table_position == "top" -%}
+                        {{ block.settings.answer }}
+                      {%- endif -%}
+
+                    </div>
+                  </collapsible-content>
+                </div>
+
                 {%- when 'question' -%}
                   <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
                     <button is="toggle-button" class="collapsible-toggle text--strong heading heading--{{ section.settings.font_family }}" aria-controls="block-{{ section.id }}-{{ block.id }}" aria-expanded="false" itemprop="name">
@@ -181,6 +240,96 @@
           "id": "answer",
           "label": "Answer",
           "default": "<p>Write content to help your customers to better understand your products or policies.</p>"
+        }
+      ]
+    },
+    {
+      "type": "question-with-table",
+      "name": "Question & Table",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Question",
+          "default": "About your shop"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>Write content to help your customers to better understand your products or policies.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Table"
+        },
+        {
+          "type": "radio",
+          "id": "table_position",
+          "label": "Table Position",
+          "options": [
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
+          ]
+        },
+        {
+          "type": "textarea",
+          "id": "table01",
+          "label": "Row #1",
+          "default": "Cell 1|Cell 2|Cell3"
+        },
+        {
+          "type": "textarea",
+          "id": "table02",
+          "label": "Row #2",
+          "default": "Cell 1|Cell 2|Cell3"
+        },
+        {
+          "type": "textarea",
+          "id": "table03",
+          "label": "Row #3",
+          "default": "Cell 1|Cell 2|Cell3"
+        },
+        {
+          "type": "textarea",
+          "id": "table04",
+          "label": "Row #4"
+        },
+        {
+          "type": "textarea",
+          "id": "table05",
+          "label": "Row #5"
+        },
+        {
+          "type": "textarea",
+          "id": "table06",
+          "label": "Row #6"
+        },
+        {
+          "type": "textarea",
+          "id": "table07",
+          "label": "Row #7"
+        },
+        {
+          "type": "textarea",
+          "id": "table08",
+          "label": "Row #8"
+        },
+        {
+          "type": "textarea",
+          "id": "table09",
+          "label": "Row #9"
+        },
+        {
+          "type": "textarea",
+          "id": "table10",
+          "label": "Row #10"
         }
       ]
     }

@@ -1,0 +1,25 @@
+{%- assign page_content = page.content | replace: '<p><span>[/collapsible]</span></p>', '<p>[/collapsible]</p>' | split: '<p>[/collapsible]</p>' -%}
+
+{%- for collapsible in page_content -%}
+  {%- if forloop.last -%}
+    {{- collapsible -}}
+  {%- else -%}
+    {%- assign this_collapsible = collapsible | replace: '<p><span>[collapsible]</span></p>', '<p>[collapsible]</p>' | split: '<p>[collapsible]</p>' -%}
+    {%- assign head = this_collapsible[0] -%}
+    {%- assign body = this_collapsible[1] | replace: '<p><span>--</span></p>', '<p>--</p>' | split: '<p>--</p>' -%}
+
+    {{ head }}
+
+    <div class="Collapsible">
+      {%- assign this_collapsible = this_collapsible | split: '<p>--</p>' -%}
+      <button class="Collapsible__Button" data-action="toggle-collapsible" aria-expanded="false">
+        <span class="Collapsible__Arrow Collapsible__Arrow--small Collapsible__Arrow--right"></span><span class="Text--bold">{{- body | first | replace: '<p>' | replace: '</p>' -}}</span>
+      </button>
+      <div class="Collapsible__Inner">
+        <div class="Collapsible__Content">
+          {{ body | last }}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+{%- endfor -%}

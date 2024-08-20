@@ -7,6 +7,10 @@
 <link rel="stylesheet" href="{{ 'blogs.css' | asset_url }}">
 {%- endif -%}
 
+{%- if template == "giftcard" -%}
+    <link rel="stylesheet" href="{{ 'giftcard.css' | asset_url }}">
+{%- endif -%}
+
 {%- if article -%}
 <link rel="stylesheet" href="{{ 'articles.css' | asset_url }}">
 {%- endif -%}

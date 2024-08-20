@@ -193,12 +193,14 @@
                     <p>{{ whatsIncludedProduct.metafields.custom.product_subtitle__description }}</p>
                   {%- endif -%}
                   {%- if whatsIncludedProduct.metafields.custom.product_subtitle__measurement != blank -%}
-                    <p>{{ whatsIncludedProduct.metafields.custom.product_subtitle__measurement }}</p>
+                    <p class="text--small">{{ whatsIncludedProduct.metafields.custom.product_subtitle__measurement }}</p>
                   {%- endif -%}
                 </div>
 
                 {%- unless whatsIncludedProduct.template_suffix == "hidden" or whatsIncludedProduct.tag contains "hidden" -%}
-                <a href="{{ whatsIncludedProduct.url }}" class="Button--link Button--link-primary Button--withArrow Text--sizeTiny">MORE DETAILS {%- render 'icon', icon: 'arrow-link' -%}</a>
+                <a href="{{ whatsIncludedProduct.url }}" class="link link--primary">MORE DETAILS {%- render 'icon' with "brand-arrow-right" -%}</a>
+
+
                 {%- endunless -%}
               </div>
 

@@ -157,8 +157,11 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
       {%- render 'theme--special-effects--header' -%}
       {%- include "theme--filter-search" -%}
 
-      {%- sections 'aside-group' -%}
-      {{ content_for_layout }}
+      <div id="main-inner">
+        {%- sections 'aside-group' -%}
+        {{ content_for_layout }}
+      </div>
+
     </div>
 
     {%- if request.page_type != 'gift_card' and request.page_type != 'password' -%}

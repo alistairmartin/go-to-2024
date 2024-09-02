@@ -1295,7 +1295,7 @@ store-header.background-blur {
 
   .blocks--text {
     width: 100%;
-
+    font-family: var(--font-family-mobile);
     text-align: var(--font-alignment-mobile);
     margin-top: var(--margin-top-mobile) !important;
     margin-bottom: var(--margin-bottom-mobile) !important;
@@ -1303,6 +1303,7 @@ store-header.background-blur {
     font-weight: var(--font-weight-mobile) !important;
 
     @include media-query($medium-up) {
+      font-family: var(--font-family-desktop);
       text-align: var(--font-alignment-desktop);
       margin-top: var(--margin-top-desktop) !important;
       margin-bottom: var(--margin-bottom-desktop) !important;
@@ -1311,15 +1312,12 @@ store-header.background-blur {
     }
 
     &.blocks--text-custom {
-      font-family: var(--font-family-mobile);
       font-style: var(--font-style-mobile);
       font-size: var(--font-size-mobile);
       line-height: var(--font-line-height-mobile);
       letter-spacing: var(--font-letter-spacing-mobile);
       @include media-query($medium-up) {
-        font-family: var(--font-family-desktop);
         font-style: var(--font-style-desktop);
-       
         font-size: var(--font-size-desktop);
         line-height: var(--font-line-height-desktop);
         letter-spacing: var(--font-letter-spacing-desktop);
@@ -2378,6 +2376,7 @@ product-rerender {
       top: 50%;
       transform: translate(-50%, -50%);
       z-index: 2;
+      box-shadow: 2px 2px 2px #9b9b9b49;
     }
 
     .blocks-video--image-text {
@@ -2409,6 +2408,7 @@ product-rerender {
 
       @include media-query($medium-up) {
         border-radius: 10px;
+        box-shadow: 2px 2px 2px #9b9b9b49;
       }
     }
   }

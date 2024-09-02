@@ -172,9 +172,20 @@
                 {%- endif -%}
 
                 <div class="predictive-search__article-info">
+
                   {%- if article.tags.size > 0 -%}
-                    <span class="predictive-search__article-category heading heading--xxsmall text--subdued">{{ article.tags.first }}</span>
+                    {%- assign acceptedTags = "The Zo Down,Extras,In Her Skin,Wellness,Routines,Skin School" -%}
+                    {%- for tag in article.tags -%}
+                        {%- if acceptedTags contains tag -%}
+                          <span class="predictive-search__article-category heading heading--xxsmall text--subdued">{{ tag }}</span>
+                          {% break %}
+                        {%- endif -%}
+                    {%- endfor -%}
                   {%- endif -%}
+
+                  {% comment %} {%- if article.tags.size > 0 -%}
+                    <span class="predictive-search__article-category heading heading--xxsmall text--subdued">{{ article.tags.first }}</span>
+                  {%- endif -%} {% endcomment %}
 
                   <span class="predictive-search__article-title">{{ article.title }}</span>
                 </div>

@@ -393,8 +393,12 @@
       {%- else -%}
         <a href="{{ routes.cart_url }}" class="button button--primary button--full" data-no-instant>{{ 'cart.general.go_to_cart' | t }}</a>
       {%- endif -%}
+
+ 
     </footer>
   {%- endif -%}
+
+
 
   {%- if section.settings.show_order_note -%}
     <openable-element id="mini-cart-note" class="mini-cart__order-note">
@@ -404,6 +408,10 @@
       <button type="button" data-action="close" class="form__submit form__submit--closer button button--secondary">{{ 'cart.general.order_note_save' | t }}</button>
     </openable-element>
   {%- endif -%}
+
+  {% if additional_checkout_buttons %}
+    {{ content_for_additional_checkout_buttons }}
+  {% endif %}
 </cart-drawer>
 
 {% schema %}

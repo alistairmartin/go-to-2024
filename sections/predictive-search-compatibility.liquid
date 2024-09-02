@@ -118,9 +118,9 @@ IMPORTANT NOTE: this section is not used for most stores. By default, when using
                 {%- endif -%}
 
                 <div class="predictive-search__article-info">
-                  {%- if article.tags.size > 0 -%}
+                  {% comment %} {%- if article.tags.size > 0 -%}
                     <span class="predictive-search__article-category heading heading--xxsmall text--subdued">{{ article.tags.first }}</span>
-                  {%- endif -%}
+                  {%- endif -%} {% endcomment %}
 
                   <span class="predictive-search__article-title">{{ article.title }}</span>
                 </div>

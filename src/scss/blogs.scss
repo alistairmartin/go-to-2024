@@ -232,7 +232,7 @@ store-header {
 .shopify-section--main-blog {
     .article-list {
       display: grid;
-      gap: 20px;
+      gap: 8px;
       grid-template-columns: 1fr !important;
   
       @include media-query($medium-up) {
@@ -251,6 +251,7 @@ store-header {
   
       .article-item__content.text-container {
         min-height: 150px;
+        margin: 16px;
       }
   
       .article-item__image-container {

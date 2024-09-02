@@ -46,9 +46,17 @@
 
   <div class="article__header-content text-container">
     {%- if section.settings.show_category and article.tags.size > 0 -%}
-      <a href="{{ blog.url }}/tagged/{{ article.tags.first | handle }}" class="article__category heading heading--small">{{ article.tags.first }}</a>
+      {%- assign acceptedTags = "The Zo Down,Extras,In Her Skin,Wellness,Routines,Skin School" -%}
+      {%- for tag in article.tags -%}
+          {%- if acceptedTags contains tag -%}
+            <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="article__category heading heading--small">{{ tag }}</a>
+          {%- endif -%}
+    {%- endfor -%}
     {%- endif -%}
 
+
+ 
+    
     <h1 class="article__title heading h1">{{ article.title }}</h1>
 
     {%- if article.excerpt != blank -%}

@@ -23,7 +23,16 @@
         {%- endunless -%}
       {%- endfor -%}
 
-      <a href="{{ blog_url | remove_first: '/' }}/tagged/{{ article.tags.first | handle }}" class="article-item__category heading heading--xsmall">{{ article.tags.first }}</a>
+
+      {%- assign acceptedTags = "The Zo Down,Extras,In Her Skin,Wellness,Routines,Skin School" -%}
+      {%- for tag in article.tags -%}
+          {%- if acceptedTags contains tag -%}
+            <a href="{{ blog_url | remove_first: '/' }}/tagged/{{ tag | handle }}" class="article-item__category heading heading--xsmall">{{ tag }}</a>
+            {% break %}
+          {%- endif -%}
+      {%- endfor -%}
+
+      
     {%- endif -%}
 
     <h3 class="article-item__title heading {{ heading_size }}">

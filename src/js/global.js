@@ -68,3 +68,23 @@ function openAccessabilityWidget() {
 
 
 
+  function moveCarousel(direction, sectionId) {
+    const section = document.querySelector(`[data-section-id="${sectionId}"]`);
+    const radios = section.querySelectorAll(`input[name="featured-product-carousel-${sectionId}"]`);
+    let currentIndex;
+    
+    radios.forEach((radio, index) => {
+      if (radio.checked) {
+        currentIndex = index;
+      }
+    });
+
+    let newIndex = currentIndex + direction;
+    if (newIndex < 0) {
+      newIndex = radios.length - 1;
+    } else if (newIndex >= radios.length) {
+      newIndex = 0;
+    }
+    radios[newIndex].checked = true;
+  }
+

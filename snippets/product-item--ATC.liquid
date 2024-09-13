@@ -6,6 +6,12 @@
   {%- assign product_url_contains_query = false -%}
 {%- endif -%}
 
+
+{%- if button_class == blank -%}
+  {%- assign button_class = "link--animated link link--primary" -%}
+{%- endif -%}
+
+
 <product-item class="product-item {% if horizontal == true %}horizontal{% endif %} {{ classes }} {% unless product.available %}product-item--sold-out{% endunless %}" {% if reveal %}reveal{% endif %}>
       {%- if request.page_type != 'password' and settings.product_add_to_cart and product.available and reduced_content != true and show_cta != true -%}
         {%- if product.variants.size == 1 -%}
@@ -14,7 +20,7 @@
             <input type="hidden" name="quantity" value="1">
             <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
       
-            <button is="loader-button" type="submit" class="link--animated link link--primary">{{ 'collection.product.add_to_cart_short' | t }}</button>
+            <button is="loader-button" type="submit" class="{{ button_class }}">{{ 'collection.product.add_to_cart_short' | t }}{% if button_text != blank %}{{ button_text }}{% endif %}</button>
             {% comment %} <button type="submit" class="product-item__quick-buy-button hidden-no-touch">
               <span class="visually-hidden">{{ 'collection.product.add_to_cart_short' | t }}</span>
               {%- render 'icon' with quick_buy_icon_name -%}
@@ -27,7 +33,7 @@
           {%- endcomment -%}
       
           <div class="product-item__quick-form-alt">
-            <button is="toggle-button" loader aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" aria-expanded="false" class="link--animated link link--primary">{{ 'collection.product.quick_view' | t }}</button>
+            <button is="toggle-button" loader aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" aria-expanded="false" class="{{ button_class }}">{{ 'collection.product.quick_view' | t }}{% if button_text != blank %}{{ button_text }}{% endif %}</button>
             {% comment %} <button is="toggle-button" aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" aria-expanded="false" class="product-item__quick-buy-button hidden-no-touch hidden-phone">
               <span class="visually-hidden">{{ 'collection.product.quick_view' | t }}</span>
               {%- render 'icon' with quick_buy_icon_name -%}
@@ -51,7 +57,7 @@
             {%- form 'product', product, is: 'product-form', id: form_id -%}
               <input type="hidden" name="quantity" value="1">
               <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
-              <button type="submit" {% if show_cta %}is="loader-button"{% endif %} class="{% if reduced_content %}product-item__link link text--subdued{% else %}product-item__cta button button--primary{% endif %}">{{ 'collection.product.add_to_cart_short' | t }}</button>
+              <button type="submit" {% if show_cta %}is="loader-button"{% endif %} class="{% if reduced_content %}product-item__link link text--subdued{% else %}product-item__cta button button--primary{% endif %}">{{ 'collection.product.add_to_cart_short' | t }}{% if button_text != blank %}{{ button_text }}{% endif %}</button>
             {%- endform -%}
           {%- else -%}
             <button type="button" {% if show_cta %}loader{% endif %} is="toggle-button" aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" aria-expanded="false" class="{% if reduced_content %}product-item__link link text--subdued{% else %}product-item__cta button button--primary{% endif %} hidden-phone">{{ 'collection.product.quick_view' | t }}</button>

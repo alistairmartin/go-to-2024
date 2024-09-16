@@ -11,11 +11,11 @@
 
   <div class="footer__copyright-container">
     <span class="footer__copyright text--small text--subdued heading heading--secondary">&copy; {{ "now" | date: "%Y" }} Go-To Skincare PTY LTD</span>
-    {%- if brand == 'bro-to' %}
+    {% comment %} {%- if brand == 'bro-to' %}
       <span class="footer__copyright text--small text--subdued heading heading--secondary">&copy; {{ "now" | date: "%Y" }} Bro-To Skincare PTY LTD</span>
     {%- elsif brand == 'gro-to' %}
       <span class="footer__copyright text--small text--subdued heading heading--secondary">&copy; {{ "now" | date: "%Y" }} Gro-To Skincare PTY LTD</span>
-    {%- endif -%}
+    {%- endif -%} {% endcomment %}
   
   </div>
 

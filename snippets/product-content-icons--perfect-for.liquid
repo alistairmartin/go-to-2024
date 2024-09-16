@@ -1,5 +1,7 @@
 {%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
-<div class="perfect-for--icon">
+
+{%- if brand == "go-to" -%}
+  <div class="perfect-for--icon">
   {%- case icon -%}
     {%- when 'teen' -%}
       <img src="{{ '0123_GT_Icon_Teen.svg' | asset_url }}" alt="Teen Skin">
@@ -27,5 +29,36 @@
       <p>Acne Prone</p>
   {% endcase %}
 </div>
+{%- elsif brand == "bro-to" -%}
+<div class="perfect-for--icon">
+  {%- case icon -%}
+    {%- when 'teen' -%}
+      <img src="{{ 'bro-to_Teen.svg' | asset_url }}" alt="Teen Skin">
+      <p>Teen Skin</p>
+    {%- when 'sensitive' -%}
+      <img src="{{ 'bro-to_Senstive.svg' | asset_url }}" alt="Sensitive Skin">
+      <p>Sensitive Skin</p>
+    {%- when 'oily' -%}
+      <img src="{{ 'bro-to_Oily.svg' | asset_url }}" alt="Oily Skin">
+      <p>Oily Skin</p>
+    {%- when 'normal' -%}
+      <img src="{{ 'bro-to_Normal.svg' | asset_url }}" alt="Normal Skin">
+      <p>Normal Skin</p>
+    {%- when 'dry' -%}
+      <img src="{{ 'bro-to_Dry.svg' | asset_url }}" alt="Dry Skin">
+      <p>Dry Skin</p>
+    {%- when 'combination' -%}
+      <img src="{{ 'bro-to_Combination.svg' | asset_url }}" alt="Combination Skin">
+      <p>Combination Skin</p>
+    {%- when 'ageing' -%}
+      <img src="{{ 'bro-to_Ageing.svg' | asset_url }}" alt="Ageing Skin">
+      <p>Ageing Skin</p>
+    {%- when 'acne' -%}
+      <img src="{{ 'bro-to_Acne-Prone.svg' | asset_url }}" alt="Acne Prone">
+      <p>Acne Prone</p>
+  {% endcase %}
+</div>
+
 {%- endif -%}
+
 

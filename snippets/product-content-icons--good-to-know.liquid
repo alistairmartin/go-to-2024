@@ -1,6 +1,8 @@
 {%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
 
-<div class="who-is-it-for--icon">
+
+{%- if brand == "go-to" or brand == 'gro-to' -%}
+  <div class="who-is-it-for--icon">
   {%- case icon -%}
     {%- when 'Australia' -%}
       <img src="{{ brand | append: '_Made_in_Australia.svg' | asset_url }}" alt="Made In Australia" loading="lazy" width="auto" height="auto" class="{{ class }}">
@@ -51,3 +53,59 @@
       <p>Eco SunPass Approved</p>
   {% endcase %}
 </div>
+
+{%- elsif brand == "bro-to" -%}
+
+  <div class="who-is-it-for--icon">
+  {%- case icon -%}
+    {%- when 'Australia' -%}
+      <img src="{{ brand | append: '_Made_in_Australia.svg' | asset_url }}" alt="Made In Australia" loading="lazy" width="auto" height="auto" class="{{ class }}">
+      <p>Made In Australia</p>
+      
+    {%- when 'Cruelty Free' -%}
+      <img src="{{ brand | append: '_Cruelty_Free.svg' | asset_url }}" alt="Cruelty Free" loading="lazy" width="auto" height="auto" class="{{ class }}">
+      <p>Cruelty Free</p>
+
+    {%- when 'Dermatologically Tested' -%}
+      <img src="{{ brand | append: '_Dermalogically_Tested.svg' | asset_url }}" alt="Dermatologically Tested" loading="lazy" width="auto" height="auto" class="{{ class }}">
+      <p>Dermatologically Tested</p>
+
+    {%- when 'Fragrance Free' -%}
+      <img src="{{ brand | append: '_Fragrance_Free.svg' | asset_url }}" alt="Fragrance Free" loading="lazy" width="auto" height="auto" class="{{ class }}">
+      <p>Fragrance Free</p>
+
+    {%- when 'Hypoallergenic' -%}
+      <img src="{{ brand | append: '_Hypoallergenic.svg' | asset_url }}" alt="Hypoallergenic" loading="lazy" width="auto" height="auto" class="{{ class }}">
+      <p>Hypoallergenic</p>
+
+    {%- when 'Non Irritating' -%}
+      <img src="{{ brand | append: '_Non-Irritating.svg' | asset_url }}" alt="Non-irritating" loading="lazy" width="auto" height="auto" class="{{ class }}">
+      <p>Formulated to be non-irritating</p>
+
+    {%- when 'PH Balanced' -%}
+      <img src="{{ brand | append: '_PH_Balanced.svg' | asset_url }}" alt="PH Balanced" loading="lazy" width="auto" height="auto" class="{{ class }}">
+      <p>pH balanced for delicate skin</p>
+
+    {%- when 'Pregnancy' -%}
+      <img src="{{ brand | append: '_Pregnancy_Safe.svg' | asset_url }}" alt="Pregnancy" loading="lazy" width="auto" height="auto" class="{{ class }}">
+      <p>Pregnancy Safe</p>
+
+    {%- when 'Sulfate Free' -%}
+      <img src="{{ brand | append: '_Sulfate_Free.svg' | asset_url }}" alt="Sulfate & Paraben Free" loading="lazy" width="auto" height="auto" class="{{ class }}">
+      <p>Sulfate & Paraben Free</p>
+
+    {%- when 'Sustainable' -%}
+      <img src="{{ brand | append: '_Sustainable.svg' | asset_url }}" alt="Sustainable Packaging" loading="lazy" width="auto" height="auto" class="{{ class }}">
+      <p>Sustainable Packaging</p>
+
+    {%- when 'Vegan' -%}
+      <img src="{{ brand | append: '_Vegan.svg' | asset_url }}" alt="Vegan" loading="lazy" width="auto" height="auto" class="{{ class }}">
+      <p>Vegan</p>
+    
+    {%- when 'Eco SunPass Approved' -%}
+      <img src="{{ brand | append: '_Eco_SunPass_Approved.svg' | asset_url }}" alt="Vegan" loading="lazy" width="auto" height="auto" class="{{ class }}">
+      <p>Eco SunPass Approved</p>
+  {% endcase %}
+</div>
+
+{%- endif -%}

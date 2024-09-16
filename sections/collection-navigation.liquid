@@ -1,3 +1,11 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    --section-background: {{ section.settings.background }};
+    --border-color-setting: {{ section.settings.border_color }};
+  }
+</style> 
+
+
 {%- for block in section.blocks -%}
   {% assign collectionHandles = block.settings.collection_list %}
 
@@ -13,7 +21,7 @@
 {%- if collectionFound == true -%}
 
   <section>
-    <div class="container">
+    <div class="{% if section.settings.enable_container %}container{% endif %}">
       <div class="page-header">
         <link-bar class="link-bar">
           <div class="container">
@@ -65,6 +73,25 @@
   {
     "name": "Collection Navigation",
     "class": "shopify-section--custom-navigation",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_container",
+        "label": "Enable Container",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background"
+      },
+      {
+        "type": "color",
+        "id": "border_color",
+        "label": "Border Colour",
+        "default": "#dddddd"
+      }
+    ],
     "blocks": [
       {
         "name": "Collection",
@@ -89,7 +116,8 @@
           {
             "type": "header",
             "content": "Link #1"
-          }, {
+          },
+          {
             "type": "url",
             "id": "url1",
             "label": "URL"
@@ -174,7 +202,140 @@
             "type": "text",
             "id": "text8",
             "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #9"
+          }, {
+            "type": "url",
+            "id": "url9",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text9",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #10"
+          }, {
+            "type": "url",
+            "id": "url10",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text10",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #11"
+          }, {
+            "type": "url",
+            "id": "url11",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text11",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #12"
+          }, {
+            "type": "url",
+            "id": "url12",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text12",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #13"
+          }, {
+            "type": "url",
+            "id": "url13",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text13",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #14"
+          }, {
+            "type": "url",
+            "id": "url14",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text14",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #15"
+          }, {
+            "type": "url",
+            "id": "url15",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text15",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #16"
+          }, {
+            "type": "url",
+            "id": "url16",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text16",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #17"
+          }, {
+            "type": "url",
+            "id": "url17",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text17",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #18"
+          }, {
+            "type": "url",
+            "id": "url18",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text18",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #19"
+          }, {
+            "type": "url",
+            "id": "url19",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text19",
+            "label": "Text"
+          }, {
+            "type": "header",
+            "content": "Link #20"
+          }, {
+            "type": "url",
+            "id": "url20",
+            "label": "URL"
+          }, {
+            "type": "text",
+            "id": "text20",
+            "label": "Text"
           }
+
         ]
       }
     ],

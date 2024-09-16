@@ -10,7 +10,7 @@
       {% assign collectionHandles = block.settings.array_of_collections %}
 
       {% for item in collectionHandles %}
-        {% if item == collection.handle %}
+        {% if item.handle == collection.handle %}
 
           {%- for i in (1..9) -%}
 

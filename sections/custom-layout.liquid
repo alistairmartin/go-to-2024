@@ -9,12 +9,15 @@
 
     --paddingVerticalDesktop: {{ section.settings.padding_vertical_desktop }}px;
     --paddingHorizontalDesktop: {{ section.settings.padding_horizontal_desktop }}px;
+
+    --position-desktop: {{ section.settings.position_desktop }};
+    --position-mobile: {{ section.settings.position_mobile }};
   }
 </style>
 {%- endcapture -%}
 {{- styles | strip_newlines | remove:" " | strip -}}
 
-<section class="{% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %}"> 
+<section class="{% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}> 
 
   {%- for block in section.blocks -%}
     {%- capture blockId -%}id="block-{{ block.id }}"{%- endcapture -%}
@@ -66,6 +69,12 @@
       "default": "🧩 Custom Layout"
     },
     {
+      "type": "text",
+      "id": "id",
+      "label": "ID",
+      "info": "Optional. Used with in-page navigation."
+    },
+    {
       "type": "checkbox",
       "id": "hide_mobile",
       "label": "Hide Mobile?"
@@ -111,6 +120,37 @@
         "label": "↔️ Left/Right"
     },
     {
+      "type": "select",
+      "id": "position_desktop",
+      "label": "Position",
+      "info": "Keep as relative. If wanting to overlay an element, the parent is 'Relative', and the child is 'Absolute'.",
+      "options": [
+        {
+          "value": "relative",
+          "label": "Relative"
+        },
+        {
+          "value": "absolute",
+          "label": "Absolute"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "position_absolute_desktop",
+      "label": "Absolute Position",
+      "options": [
+        {
+          "value": "unset",
+          "label": "Unset"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ]
+    },
+    {
         "type": "header",
         "content": "--- 📱 MOBILE SETTINGS 📱 ---"
     },
@@ -144,6 +184,37 @@
         "unit": "px",
         "default": 0,
         "label": "↔️ Left/Right"
+    },
+    {
+      "type": "select",
+      "id": "position_mobile",
+      "label": "Position",
+      "info": "Keep as relative. If wanting to overlay an element, the parent is 'Relative', and the child is 'Absolute'.",
+      "options": [
+        {
+          "value": "relative",
+          "label": "Relative"
+        },
+        {
+          "value": "absolute",
+          "label": "Absolute"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "position_absolute_mobile",
+      "label": "Absolute Position",
+      "options": [
+        {
+          "value": "unset",
+          "label": "Unset"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ]
     }
   ],
   "blocks": [
@@ -406,6 +477,37 @@
           "label": "Max Width (Pixels)"
         },
         {
+          "type": "select",
+          "id": "position_desktop",
+          "label": "Position",
+          "info": "Keep as relative. If wanting to overlay an element, the parent is 'Relative', and the child is 'Absolute'.",
+          "options": [
+            {
+              "value": "relative",
+              "label": "Relative"
+            },
+            {
+              "value": "absolute",
+              "label": "Absolute"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "position_absolute_desktop",
+          "label": "Absolute Position",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ]
+        },
+        {
           "type": "header",
           "content": "--- 📱 MOBILE SETTINGS 📱 ---"
         },
@@ -609,6 +711,37 @@
           "unit": "px",
           "default": 100,
           "label": "Max Width (Pixels)"
+        },
+        {
+          "type": "select",
+          "id": "position_mobile",
+          "label": "Position",
+          "info": "Keep as relative. If wanting to overlay an element, the parent is 'Relative', and the child is 'Absolute'.",
+          "options": [
+            {
+              "value": "relative",
+              "label": "Relative"
+            },
+            {
+              "value": "absolute",
+              "label": "Absolute"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "position_absolute_mobile",
+          "label": "Absolute Position",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ]
         }
       ]
     },
@@ -784,6 +917,26 @@
           "label": "Enable Play Button?"
         },
         {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Autoplay?"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_controls",
+          "label": "Hide Controls?"
+        },
+        {
+          "type": "checkbox",
+          "id": "rounded_video_corners_desktop",
+          "label": "Rounded Video Corners? (Desktop)"
+        },
+        {
+          "type": "checkbox",
+          "id": "rounded_video_corners_mobile",
+          "label": "Rounded Video Corners? (Mobile)"
+        },
+        {
           "type": "select",
           "id": "video_aspect_ratio_desktop",
           "label": "Video aspect ratio (Desktop)",
@@ -797,11 +950,11 @@
               "label": "Normal (4:3)"
             },
             {
-              "value": "1.7777778",
+              "value": "0.5625",
               "label": "Cinematic (16:9)"
             },
             {
-              "value": "2.3333333",
+              "value": "0.4285714286",
               "label": "Wide (21:9)"
             }
           ]

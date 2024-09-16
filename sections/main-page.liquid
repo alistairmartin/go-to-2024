@@ -1,4 +1,46 @@
 
+<style>
+#shopify-section-{{ section.id }} {
+  --page-header-text-align: {{ section.settings.text_alignment }};
+}
+
+</style>
+
+{%- capture pageContent -%}
+  {%- assign outerloop = 0 -%}
+  {%- assign page_content = page.content | replace: '<p><span>[/collapsible]</span></p>', '<p>[/collapsible]</p>' | split: '<p>[/collapsible]</p>' -%}
+
+  <div class="faq__wrapper" itemscope itemtype="https://schema.org/FAQPage">
+  {%- for collapsible in page_content -%}
+    {%- if forloop.last -%}
+      {{- collapsible -}}
+    {%- else -%}
+      {%- assign this_collapsible = collapsible | replace: '<p><span>[collapsible]</span></p>', '<p>[collapsible]</p>' | split: '<p>[collapsible]</p>' -%}
+      {%- assign head = this_collapsible[0] -%}
+      {%- assign body = this_collapsible[1] | replace: '<p><span>--</span></p>', '<p>--</p>' | split: '<p>--</p>' -%}
+
+      {{ head }}
+
+      <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        {%- assign this_collapsible = this_collapsible | split: '<p>--</p>' -%}
+        <button is="toggle-button" class="collapsible-toggle text--strong heading heading--secondary" aria-controls="block-{{ section.id }}-{{ outerloop }}-{{- body | first | strip_html | handle }}" aria-expanded="false" itemprop="name">
+          {{- body | first | replace: '<p>' | replace: '</p>' -}}
+          <span class="animated-plus"></span>
+        </button>
+        <collapsible-content id="block-{{ section.id }}-{{ outerloop }}-{{- body | first  | strip_html | handle }}" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" {{ block.shopify_attributes }}>
+        <div class="collapsible__content text-container" itemprop="text">
+          <div class="rte">
+            {{ body | last }}
+          </div>
+        </div>
+      </collapsible-content>
+      </div>
+
+      {%- assign outerloop = outerloop | plus: 1 -%}
+    {%- endif -%}
+  {%- endfor -%}
+  </div>
+{%- endcapture -%}
 
 <section>
   <div class="container">
@@ -15,15 +57,20 @@
         </ol>
       </nav>
 
-      <div class="page-header__text-wrapper text-container {% unless section.settings.show_title %}hide{% endunless %}">
-        <h1 class="heading h3  {% unless section.settings.show_title %}hide{% endunless %} text-align--{{ section.settings.text_alignment }}">{{ page.title }}</h1>
+      <div class="page-header__text-wrapper text-container {% unless section.settings.show_title %}hide{% endunless %}  page-content--{{ section.settings.page_width }}">
+        <h1 class="heading h2  {% unless section.settings.show_title %}hide{% endunless %} text-align--{{ section.settings.text_alignment }}">{{ page.title }}</h1>
 
-        <div class="page-content--{{ section.settings.page_width }}">
-        {%- if section.settings.show_page_content -%}
-          {%- if template.suffix contains 'contact' or template.suffix contains 'faq' -%}
-            {{- page.content -}}
+        <div class="page-content page-content--{{ section.settings.page_width }}">
+           
+          {%- if section.settings.show_page_content -%} 
+            {%- if page.content contains "[collapsible]" -%}
+              {{ pageContent }}
+            {%- else -%}
+              {{ page.content }}
+            {%- endif -%}
+          
           {%- endif -%}
-        {%- endif -%}
+      
   
         </div>
       </div>
@@ -32,7 +79,11 @@
   {%- if section.settings.show_page_content -%}
     {%- unless template.suffix contains 'contact' or template.suffix contains 'faq' -%}
     <div class="page-content page-content--{{ section.settings.page_width }} rte {% if page.content == blank %}hide{% endif %}">
-        {{- page.content -}}
+      {%- if page.content contains "[collapsible]" -%}
+        {{ pageContent }}
+      {%- else -%}
+        {{ page.content }}
+      {%- endif -%}
       </div>
     {%- endunless -%}
   {%- endif -%}

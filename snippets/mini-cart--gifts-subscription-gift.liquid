@@ -1,0 +1,38 @@
+{% assign gwpInCart = false %}
+{% assign gwpProduct = block.settings.get_product %}
+
+{% assign buyProductInCart = false -%}
+
+{% assign getProductHandle = block.settings.get_product %}
+{% assign getProductInCart = false -%}
+
+
+
+{%- for item in cart.items -%}
+  {% if gwpProduct.handle == item.product.handle %}
+      {% assign gwpInCart = true %}
+  {%- endif -%}
+
+  {%- if item.selling_plan_allocation != nil -%}
+    {% assign buyProductInCart = true %}
+  {%- endif -%}
+{%- endfor -%}
+
+
+{%- if buyProductInCart == true and gwpInCart == false -%}
+  {% if gwpProduct.available == true %}
+      <div class="mini-cart-gift">
+      <div class="heading h6 mini-cart-gift--title">{{ block.settings.gwp_title }}</div>
+      {%- render 'product-item--gift', product: gwpProduct, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true -%}
+      </div>
+  {%- endif -%}
+{%- endif -%}
+
+{% comment %} {%- capture tests -%}
+  gwpInCart: {{ gwpInCart }}<br>
+  gwpHandle: {{ gwpHandle }}<br>
+  getProductHandle: {{ getProductHandle }}<br>
+  buyProductHandle: {{ buyProductHandle }}<br>
+  <hr>
+  {%- endcapture -%}
+{{ tests }} {% endcomment %}

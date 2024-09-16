@@ -207,9 +207,23 @@
         {%- if shop.customer_accounts_enabled -%}
           <a class="icon-text" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}">
             {%- render 'icon' with 'header-customer' -%}
-            {{- 'header.general.account' | t -}}
+            <span>
+            {% if customer %}
+              {%- if customer.first_name -%}
+              Hi {{ customer.first_name  }}!
+              {% else %}
+              Account
+              {%- endif -%}
+            {% else %}
+            Login
+            {% endif %}
+            </span>
           </a>
         {%- endif -%}
+
+        <a href="{% if customer %}{{ routes.account_url }}{% else %}/pages/go-to-gang{% endif %}" class="customer-accounts-login--loyalty" aria-label="{% if customer %}{{ 'header.general.account' | t | escape }}{% else %}{{ 'header.general.login' | t | escape }}{% endif %}">
+        <img src="{{ 'loyalty--go-to-gang.svg' | asset_url }}" alt="Go-To Gang">
+        </a>
 
         {%- if locale_selector or country_selector -%}
           {%- form 'localization', id: 'header-sidebar-localization-form', class: 'header__cross-border' -%}

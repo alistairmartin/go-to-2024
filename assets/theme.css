@@ -4454,7 +4454,7 @@ split-lines {
   --section-background: initial;
   background: rgb(var(--background));
   color: rgb(var(--text-color));
-  z-index: 10;
+  z-index: 15;
   transform: translateX(calc(var(--transform-logical-flip) * 100%));
   visibility: hidden;
   text-align: start;
@@ -7189,7 +7189,7 @@ input:checked + .popover__choice-label:is(:lang(ae), :lang(ar), :lang(arc), :lan
 }
 
 .line-item__loader {
-  background: rgb(var(--root-background));
+  background: var(--color-primary);
   color: rgb(var(--root-text-color));
   border-radius: 32px;
   justify-content: center;
@@ -7471,7 +7471,31 @@ input:checked + .popover__choice-label:is(:lang(ae), :lang(ar), :lang(arc), :lan
   overflow: hidden;
 }
 
-@media screen and (max-width: 999px) {
+.mini-cart__recommendations .scroller {
+  -webkit-scroll-snap-type: x mandatory;
+          scroll-snap-type: x mandatory;
+  margin-inline: calc(-1 * var(--container-gutter));
+  scrollbar-width: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.mini-cart__recommendations .scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.mini-cart__recommendations .scroller__inner {
+  padding-inline: var(--container-gutter);
+  min-width: -webkit-min-content;
+  min-width: -moz-min-content;
+  min-width: min-content;
+  -webkit-margin-start: auto;
+          margin-inline-start: auto;
+  -webkit-margin-end: auto;
+          margin-inline-end: auto;
+}
+
+
   .mini-cart__recommendations-list {
     grid-gap: var(--grid-gap);
     grid-auto-columns: minmax(64vw, 1fr);
@@ -7509,9 +7533,9 @@ input:checked + .popover__choice-label:is(:lang(ae), :lang(ar), :lang(arc), :lan
   .mini-cart__recommendations .price-list {
     justify-content: start;
   }
-}
 
-@media screen and (min-width: 1000px) {
+
+/* @media screen and (min-width: 1000px) {
   .mini-cart__recommendations {
     text-align: center;
     width: 240px;
@@ -7569,7 +7593,7 @@ input:checked + .popover__choice-label:is(:lang(ae), :lang(ar), :lang(arc), :lan
     height: 100%;
     display: flex;
   }
-}
+} */
 
 .cart__recap {
   padding: var(--container-gutter);

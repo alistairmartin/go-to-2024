@@ -1284,7 +1284,7 @@
         "type": "text",
         "id": "show_confetti_on_template",
         "label": "Comma-separated template names where to show confetti",
-        "info": "E.g.: index, product, blog, etc"
+        "info": "E.g.: index, collection.christmas-landing, product.go-to-face-hero-extra etc"
       },
       {
         "type": "header",
@@ -1300,7 +1300,7 @@
         "type": "text",
         "id": "show_glitter_on_template",
         "label": "Comma-separated template suffix names where to show glitter",
-        "info": "E.g.: index, christmas-landing, etc"
+        "info": "E.g.: index, collection.christmas-landing, product.go-to-face-hero-extra etc"
       },
       {
         "type": "range",

@@ -31,7 +31,7 @@
         <div class="predictive-search__menu-list">
           {%- if search_menu.levels == 1 -%}
             <div class="predictive-search__menu">
-              <p class="predictive-search__menu-title heading heading--small">{{ search_menu.title }}</p>
+              <p class="predictive-search__menu-title heading heading--small">{{ section.settings.search_menu_title }}</p>
 
               <ul class="linklist list--unstyled" role="list">
                 {%- for link in search_menu.links -%}
@@ -60,8 +60,38 @@
               </div>
             {%- endfor -%}
           {%- endif -%}
+
+            {%- assign search_featured_products = section.settings.search_products -%}
+            <div class="predictive-search-custom__products">
+      
+              <p class="predictive-search__menu-title heading heading--small">{{ section.settings.search_products_title }}</p>
+              <div class="predictive-search-custom__products-grid">
+              {%- for product in search_featured_products -%}
+                {%- render 'product-item', product: product, reveal: false, show_cta: true, reduced_content: true -%}
+              {%- endfor -%}
+              </div>
+            </div>
+        
+        
+            <div class="predictive-search-custom__articles">
+      
+              <p class="predictive-search__menu-title heading heading--small">{{ section.settings.search_articles_title }}</p>
+              <div class="predictive-search-custom__articles-grid">
+        
+              {% assign article1 = articles[section.settings.search_articles1] %}
+              {%- render 'article-item', article: article1, heading_size: 'h6', reveal: false-%}
+        
+              {% assign article2 = articles[section.settings.search_articles2] %}
+              {%- render 'article-item', article: article2, heading_size: 'h6', reveal: false-%}
+        
+              </div>
+            </div>
         </div>
       {%- endif -%}
+
+
+
+
     </div>
   </div>
 

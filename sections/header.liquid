@@ -293,11 +293,11 @@ IMPLEMENTATION NOTE: the header in Focal is pretty complex as it allows a lot of
             </a>
           {%- endif -%}
 
-          {%- if shop.customer_accounts_enabled -%}
+          {% comment %} {%- if shop.customer_accounts_enabled -%}
             <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="header__icon-wrapper tap-area hidden-phone {% unless section.settings.show_icons %}hidden-desk{% endunless %}" aria-label="{% if customer %}{{ 'header.general.account' | t | escape }}{% else %}{{ 'header.general.login' | t | escape }}{% endif %}">
               {%- render 'icon' with 'header-customer' -%}
             </a>
-          {%- endif -%}
+          {%- endif -%} {% endcomment %}
 
           <a href="{{ routes.cart_url }}" {% unless settings.cart_type == 'page' or request.page_type == 'cart' %}is="toggle-link" aria-controls="mini-cart" aria-expanded="false"{% endunless %} class="header__icon-wrapper tap-area {% unless section.settings.show_icons %}hidden-desk{% endunless %}" aria-label="{{ 'header.general.cart' | t | escape }}" data-no-instant>
             {%- case settings.cart_icon -%}
@@ -574,10 +574,49 @@ SEARCH DRAWER
       "content": "Search"
     },
     {
+      "type": "text",
+      "id": "search_menu_title",
+      "label": "Menu Title"
+    },
+    {
       "type": "link_list",
       "id": "search_menu",
       "label": "Quick links menu",
       "info": "Display quick links when empty. This menu has limited support for dropdown items."
+    },
+    {
+      "type": "header",
+      "content": "Search (Products)"
+    },
+    {
+      "type": "text",
+      "id": "search_products_title",
+      "label": "Products Title"
+    },
+    {
+      "type": "product_list",
+      "id": "search_products",
+      "label": "Featured Products",
+      "limit": 2
+    },
+    {
+      "type": "header",
+      "content": "Search (Articles)"
+    },
+    {
+      "type": "text",
+      "id": "search_articles_title",
+      "label": "Articles Title"
+    },
+    {
+      "type": "article",
+      "id": "search_articles1",
+      "label": "Featured Article #1"
+    },
+    {
+      "type": "article",
+      "id": "search_articles2",
+      "label": "Featured Article #2"
     },
     {
       "type": "header",

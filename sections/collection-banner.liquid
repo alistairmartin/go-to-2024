@@ -1,4 +1,9 @@
 <style>
+
+#shopify-section-{{ section.id }} {
+  --page-header-text-align: {{ section.settings.text_alignment }};
+}
+
 #shopify-section-{{ section.id }} section {
     --section-background: {{ section.settings.background }};
     --text-color: {{ section.settings.text_color.red }}, {{ section.settings.text_color.green }}, {{ section.settings.text_color.blue }};

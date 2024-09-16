@@ -42,30 +42,34 @@
 </style>
 
 
-<section class="section" data-section-id="{{ section.id }}">
+<section class="section" data-section-id="{{ section.id }}" data-current="0">
 
   <div class="section__color-wrapper">
+
     <div class="container vertical-breather">
 
-      <div class="text-container">
-        {%- if section.settings.subheading != blank -%}
-          <h2 class="heading heading--small">{{ section.settings.subheading | escape }}</h2>
+    {%- for block in section.blocks -%}
+      <div class="text-container" data-index="{{ forloop.index0 }}">
+        {%- if block.settings.text_subheading != blank -%}
+          <h2 class="heading heading--small">{{ block.settings.text_subheading | escape }}</h2>
         {%- endif -%}
 
-        {%- if section.settings.title != blank -%}
-          <h3 class="heading h3">{{ section.settings.title | escape }}</h3>
+        {%- if block.settings.text_title != blank -%}
+          <h3 class="heading h3">{{ block.settings.text_title | escape }}</h3>
         {%- endif -%}
 
-        {%- if section.settings.content != blank -%}
-          {{- section.settings.content -}}
+        {%- if block.settings.text_content != blank -%}
+          {{- block.settings.text_content -}}
         {%- endif -%}
 
-        {%- if section.settings.button_text != blank -%}
+        {%- if block.settings.button_text != blank -%}
           <div class="button-wrapper">
-            <a href="{{ section.settings.button_link }}" class="link link--tierary"><strong>{{ section.settings.button_text | escape }}</strong></a>
+            <a href="{{ block.settings.button_link }}" class="link link--tierary"><strong>{{ block.settings.button_text | escape }}</strong></a>
           </div>
         {%- endif -%}
     </div>
+    {%- endfor -%}
+
 
   {% comment %} https://codepen.io/aybukeceylan/pen/RwrRPoOL {% endcomment %}
   <div class="featured-carousel-product">
@@ -105,37 +109,9 @@
 
 {% schema %}
     {
-      "name": "Prod. Carousel (Feature)",
-      "class": "shopify-section--featured-product-carousel",
+      "name": "Prod. Carousel (Text)",
+      "class": "shopify-section--featured-product-carousel-text",
       "settings": [
-        {
-        "type": "text",
-        "id": "subheading",
-        "label": "Subheading",
-        "default": "Subheading"
-        },
-        {
-        "type": "text",
-        "id": "title",
-        "label": "Heading",
-        "default": "Talk about your brand"
-        },
-        {
-        "type": "richtext",
-        "id": "content",
-        "label": "Content",
-        "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
-        },
-        {
-        "type": "text",
-        "id": "button_text",
-        "label": "Button text"
-        },
-        {
-        "type": "url",
-        "id": "button_link",
-        "label": "Button link"
-        },
         {
         "type": "header",
         "content": "Colors"
@@ -177,6 +153,42 @@
         "type": "product",
         "settings": [
           {
+            "type": "header",
+            "content": "Text"
+          },
+          {
+        "type": "text",
+        "id": "text_subheading",
+        "label": "Subheading",
+        "default": "Subheading"
+        },
+        {
+        "type": "text",
+        "id": "text_title",
+        "label": "Heading",
+        "default": "Talk about your brand"
+        },
+        {
+        "type": "richtext",
+        "id": "text_content",
+        "label": "Content",
+        "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+        },
+        {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button text"
+        },
+        {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button link"
+        },
+          {
+            "type": "header",
+            "content": "Product"
+          },
+          {
             "type": "product",
             "id": "product",
             "label": "Product"
@@ -211,7 +223,7 @@
       ],
       "presets": [
     {
-      "name": "Prod. Carousel (Feature)"
+      "name": "Prod. Carousel (Text)"
     }
   ]
     }

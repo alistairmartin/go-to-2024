@@ -1,0 +1,8 @@
+{%- for block in section.blocks -%}
+  {%- if block.type == "buy_x_get_y" -%}
+    {%- render 'mini-cart--gifts-buy-x-get-y' -%}
+
+  {%- elsif block.type == "subscription_gift" -%}
+    {%- render 'mini-cart--gifts-subscription-gift' -%}
+  {%- endif -%}
+{%- endfor -%}

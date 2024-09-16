@@ -2,14 +2,18 @@
 @import "components/variables";
 
 .line-item {
-    margin-bottom: 32px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 32px;
   
     .product-item-meta__title {
-      font-weight: 600;
+      line-height: 1;
     }
   
     .price  {
       font-weight: 600;
+      font-size: 14px;
+      line-height: 1;
     }
   
     .property--byo-bundle {
@@ -70,5 +74,112 @@
     .drawer__content {
         padding-left: 0;
         padding-right: 0;
+        position: relative;
+    }
+
+    .mini-cart__recommendations {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .mini-cart__recommendations-inner {
+        margin: 0;
+    }
+
+    .mini-cart__recommendations-list {
+      grid-auto-columns: auto;
+      gap: 20px;
+
+      .product-item {
+        position: relative;
+        max-width: 300px;
+        width: 300px;
+        border: 1px solid var(--color-grey);
+        padding: 8px;
+        border-radius: var(--image-border-radius);
+
+        .product-item__link {
+          margin: 0;
+        }
+
+        .product-item-meta__title {
+          max-width: 140px;
+          overflow: visible;
+          display: block;
+          white-space: normal;
+        }
+
+        .product-item__label-list {
+          display: none;
+        }
+
+        .price-list {
+          position: absolute;
+          right: 10px;
+          top: 14px;
+
+          .price {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+
+
+
+  .mini-cart-gift {
+    box-shadow: 2px 2px 2px #9b9b9b49;
+    border: 1px solid var(--color-grey-dark);
+    padding: 10px 0 0;
+    margin: 20px;
+    border-radius: var(--image-border-radius);
+    background: var(--color-primary);
+
+    .mini-cart-gift--title {
+      text-align: center;
+      // margin-bottom: 20px;
+      padding-bottom: 10px;
+      // border-bottom: 2px solid var(--color-grey);
+    }
+
+
+  }
+
+  .product-item--gift {
+    background: var(--color-secondary);
+    border-radius: var(--image-border-radius);
+    border-top: 1px solid var(--color-grey-dark);
+    padding: 10px !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+
+    .product-item--gift-inner {
+      display: flex;
+      // max-width: 300px;
+      gap: 20px;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .product-item__image-wrapper  {
+      width: 100px;
+      height: 100px;
+      margin: 0;
+
+      img {
+        border-radius: var(--image-border-radius);
+      }
+    }
+
+    .button {
+      @include media-query($medium-up) {
+        min-width: 250px;
+      }
     }
   }

@@ -16,7 +16,12 @@
 #block-{{ block.id }} .blocks-video--video {
 --video-aspect-ratio-mobile: {{ block.settings.video_aspect_ratio_mobile | times: 100.000 }}%;
 --video-aspect-ratio-desktop: {{ block.settings.video_aspect_ratio_desktop | times: 100.000 }}%;
+
+--rounded-video-corners-mobile: {% if block.settings.rounded_video_corners_mobile %}8px{% else %}0px{% endif %};
+--rounded-video-corners-desktop: {% if block.settings.rounded_video_corners_desktop %}8px{% else %}0px{% endif %};
 }
+
+
 </style>
 {%- endcapture -%}
 {{- styles | strip_newlines | strip -}} 
@@ -27,8 +32,9 @@
 
 
   <div id="blocks-video-{{ block.id | remove: '-' }}" class="blocks-video">
-    <div class="blocks-video--image">  
 
+    {%- unless block.settings.autoplay -%}
+    <div class="blocks-video--image">  
       {%- if block.settings.enable_play_button -%}
         <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M48 96C74.5097 96 96 74.5097 96 48C96 21.4903 74.5097 0 48 0C21.4903 0 0 21.4903 0 48C0 74.5097 21.4903 96 48 96ZM35.863 64.0632L64.001 47.4355L35.863 30.8078V64.0632Z" fill="white"/>
@@ -52,7 +58,9 @@
       {%- endif -%}
 
     </div>
-    <div class="blocks-video--video hidden">
+    {%- endunless -%}
+
+    <div class="blocks-video--video {% unless block.settings.autoplay %}hidden{% endunless %}">
       <div id="video-{{ block.id | remove: '-' }}">
       </div>
     </div>
@@ -67,29 +75,32 @@
     var videoOptions{{ block.id | remove: '-' }} = {
         id: {{ block.settings.video_url_desktop | remove: "https://vimeo.com/" }},
         quality: "720p",
-        background: false,
+        background: {{ block.settings.hide_controls }},
         loop: true,
-        autoplay:false,
+        autoplay: {{ block.settings.autoplay }},
         muted: true
     };
   } else {
     var videoOptions{{ block.id | remove: '-' }} = {
         id: {{ block.settings.video_url_mobile | remove: "https://vimeo.com/" }},
         quality: "360p",
-        background: false,
+        background: {{ block.settings.hide_controls }},
         loop: true,
-        autoplay:false,
+        autoplay: {{ block.settings.autoplay }},
         muted: true
     };
   }
   document.addEventListener("DOMContentLoaded", function(event) {
     var videoSection{{ block.id | remove: "-" }} = new Vimeo.Player('video-{{ block.id | remove: "-" }}', videoOptions{{ block.id | remove: '-' }});
     console.log(videoSection{{ block.id | remove: "-" }})
+
+    {% unless block.settings.autoplay %}
     $("#blocks-video-{{ block.id | remove: '-' }} .blocks-video--image").on( "click", function() {
       $(this).addClass("hidden")
       $("#blocks-video-{{ block.id | remove: '-' }} .blocks-video--video").removeClass("hidden");
       videoSection{{ block.id | remove: "-" }}.play();
     });
+    {% endunless %}
 });
 </script>
 

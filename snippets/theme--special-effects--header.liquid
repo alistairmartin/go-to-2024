@@ -1,7 +1,21 @@
-{%- if settings.show_glitter == true and settings.show_glitter_on_template contains template.suffix or settings.show_glitter == true and settings.show_glitter_on_template contains template -%}
+{%- assign glitterTemplateSettings = settings.show_glitter_on_template | split: "," -%}
+{%- for glitterTemplate in glitterTemplateSettings -%}
+  {%- if template == glitterTemplate -%}
+    {%- assign showGlitter = true -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign confettiTemplateSettings = settings.show_confetti_on_template | split: "," -%}
+{%- for confettiTemplate in confettiTemplateSettings -%}
+  {%- if template == glitterTemplate -%}
+    {%- assign showConfetti = true -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if settings.show_glitter and showGlitter == true -%}
   <div id="starshine"><div class="template shine"></div></div>
 {%- endif -%}
 
-{%- if settings.show_confetti == true and settings.show_confetti_on_template contains template.suffix or settings.show_confetti == true and settings.show_confetti_on_template contains template -%}
+{%- if settings.show_confetti and showConfetti == true -%}
     <canvas id="canvas" class="canvas-confetti" style="position: absolute; z-index: 9; display: block; pointer-events: none;"></canvas>
 {%- endif -%}

@@ -1,14 +1,17 @@
 {%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
   
 {% for block in section.blocks %}
-  {% assign collectionHandles = block.settings.array_of_collections | split: "," %}
+  {% assign collectionHandles = block.settings.array_of_collections %}
+
   {% for item in collectionHandles %}
-    {% if item == collection.handle %}
+    {% if item.handle == collection.handle %}
       {%- assign validCollectionForImages = true -%}
       {% break %}
     {% endif %}
   {% endfor %}
 {% endfor %}
+
+
 
 {%- assign collection_sort_by = collection.sort_by | default: collection.default_sort_by -%}
 {%- assign active_filters_count = 0 -%}

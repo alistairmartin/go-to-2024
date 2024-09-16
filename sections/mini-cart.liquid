@@ -14,6 +14,7 @@
 <cart-drawer section="{{ section.id }}" id="mini-cart" class="mini-cart drawer drawer--large">
   <span class="drawer__overlay"></span>
 
+  {%- if section.settings.enable_custom_message -%}
   <header class="drawer__header">
     <p class="drawer__title heading h6">
 
@@ -46,6 +47,11 @@
       {%- render 'icon' with 'close' -%}
     </button>
   </header>
+  {% else %}
+  <button type="button" class="drawer__close-button tap-area no-custom-message" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
+    {%- render 'icon' with 'close' -%}
+  </button>
+  {% endif %}
 
   {%- if cart.item_count == 0 -%}
     <div class="drawer__content drawer__content--center">
@@ -109,6 +115,8 @@
           </free-shipping-bar>
         {%- endif -%}
       {%- endif -%}
+
+      {%- render 'mini-cart--gifts' -%}
 
       <form id="mini-cart-form" action="{{ routes.cart_url }}" novalidate method="post">
         <input type="hidden" name="checkout">
@@ -186,7 +194,7 @@
                     {%- endunless -%}
                   {%- endif -%}
 
-                  <a href="{{ line_item.url }}" class="product-item-meta__title text--small heading">{{ line_item.product.title }}</a>
+                  <a href="{{ line_item.url }}" class="product-item-meta__title text--small heading heading--secondary">{{ line_item.product.title }}</a>
 
                   {%- if line_item.product.metafields.custom.product_subtitle__description != blank -%}
                     <a href="{{ line_item.url }}" class="product-item-meta__subtitle text--xxsmall">{{ line_item.product.metafields.custom.product_subtitle__description }}</a>
@@ -317,12 +325,18 @@
                   <p class="mini-cart__recommendations-heading heading heading--xsmall text--subdued hidden-lap-and-up">{{ section.settings.recommendations_title | escape }}</p>
                 {%- endif -%}
 
+                <div class="arrows-container hide-mobile--flex">
+                  <button class="mini-cart__recommendations-left" onclick="miniCartRecommendationsLeft()">{% render "icon" with "chevron-back" %}</button>
+                  <button class="mini-cart__recommendations-right" onclick="miniCartRecommendationsRight()">{% render "icon" with "chevron-back" %}</button>
+                </div>
+
                 <div class="scroller">
                   <div class="scroller__inner">
                     <div class="mini-cart__recommendations-list">
                       {%- assign shown_products_count = 0 -%}
 
                       {%- for product in recommendations.products -%}
+                        {% unless product.tags contains 'hidden' %}
                         {%- if shown_products_count >= 10 -%}
                           {%- break -%}
                         {%- endif -%}
@@ -333,6 +347,7 @@
                           {%- assign shown_products_count = shown_products_count | plus: 1 -%}
                           {%- render 'product-item', product: product, reduced_content: true, reduced_font_size: true, hide_secondary_image: true, sizes_attribute: '(max-width: 740px) 65px, 92px', horizontal_layout: true -%}
                         {%- endif -%}
+                        {% endunless %}
                       {%- endfor -%}
                     </div>
                   </div>
@@ -408,16 +423,121 @@
       <button type="button" data-action="close" class="form__submit form__submit--closer button button--secondary">{{ 'cart.general.order_note_save' | t }}</button>
     </openable-element>
   {%- endif -%}
-
-  {% if additional_checkout_buttons %}
-    {{ content_for_additional_checkout_buttons }}
-  {% endif %}
 </cart-drawer>
 
 {% schema %}
 {
   "name": "Cart drawer",
   "class": "shopify-section--mini-cart",
+  "blocks": [
+    {
+      "type": "note",
+      "name": "📝 Block Note",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Note",
+          "info": "Only Admin Will See This. 🟣🔴🔵🟢🟡🟠⚫️⚪️",
+          "default": "🟣 --- GWP Subscription ---"
+        }
+      ]
+    },  
+    {
+      "type": "buy_x_get_y",
+      "name": "Buy X Get Y",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Admin Title",
+          "info": "Only Admin Will See This."
+        },
+        {
+          "type": "text",
+          "id": "tag_buy",
+          "label": "Buy Product",
+          "info": "Product Tag"
+        },
+        {
+          "type": "product",
+          "id": "tag_get",
+          "label": "Get Product",
+          "info": "Product Tag"
+        },
+        {
+          "type": "header",
+          "content": "Text"
+        },
+        {
+          "type": "text",
+          "id": "gwp_title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "gwp_description",
+          "label": "Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "gwp_image",
+          "label": "Image",
+          "info": "Optional"
+        }
+      ]
+    },
+    {
+      "type": "subscription_gift",
+      "name": "Subscription Gift",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Admin Title",
+          "info": "Only Admin Will See This."
+        },
+        {
+          "type": "header",
+          "content": "Buy Product"
+        },
+        {
+          "type": "paragraph",
+          "content": "Any Product that has a subscription (Or a selling plan) will be applicable for the 'Buy' Condition."
+        },
+        {
+          "type": "header",
+          "content": "Get Product"
+        },
+        {
+          "type": "product",
+          "id": "get_product",
+          "label": "Get Product",
+          "info": "Product Tag"
+        },
+        {
+          "type": "header",
+          "content": "Text"
+        },
+        {
+          "type": "textarea",
+          "id": "gwp_title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "gwp_description",
+          "label": "Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "gwp_image",
+          "label": "Image",
+          "info": "Optional. Will use product image as default."
+        }
+      ]
+    }
+  ],
   "settings": [
     {
       "type": "paragraph",

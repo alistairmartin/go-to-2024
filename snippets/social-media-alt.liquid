@@ -160,6 +160,9 @@
       </a>
     </li>
   {%- endif -%}
+
+    <button class="button button--outline" id="text-me">Text me, Go-To</button>
+  {%- render 'modal', modalId: 'text-me', content:  '<div class="klaviyo-form-TM8QyX show-on-open"></div>', buttonId: 'text-me' -%}
 {%- endcapture -%}
 
 {%- if social_media != blank -%}

@@ -33,6 +33,9 @@
       {%- assign text_color = section.settings.text_color -%}
     {%- endif -%}
 
+    --text-content-height-desktop: {{ section.settings.min_height_desktop }}px;
+    --text-content-height-mobile: {{ section.settings.min_height_mobile }}px;
+
     --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
     --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
 
@@ -41,7 +44,7 @@
   }
 </style>
 
-<section class="section {% unless blends_with_background %}section--flush{% endunless %} {% if section.settings.overlay_text_on_image %}blog-posts--overlay-text{% endif %}">
+<section class="section {% unless blends_with_background %}section--flush{% endunless %} {% if section.settings.overlay_text_on_image %}blog-posts--overlay-text{% endif %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
   <div class="section__color-wrapper">
     <div class="{% unless blends_with_background %}vertical-breather{% endunless %}">
       <div class="container">
@@ -52,7 +55,10 @@
             {%- endif -%}
 
             {%- if section.settings.title != blank -%}
-              <h3 class="heading h3">{{ section.settings.title | escape }}</h3>
+              <a href="{{ blog.url }}" class="blog-link {{ section.settings.text_alignment }}">
+                <h3 class="heading h3">{{ section.settings.title | escape }}</h3> 
+                {% comment %} {% render "icon" with "chevron-back" %} {% endcomment %}
+              </a>
             {%- endif -%}
           </header>
         {%- endif -%}
@@ -69,11 +75,11 @@
             {%- if section.blocks.size > 0 -%}
               {%- for block in section.blocks -%}
                   {% assign article = articles[block.settings.article] %}
-                {%- render 'article-item', article: article, heading_size: 'h4' -%}
+                {%- render 'article-item', article: article, heading_size: 'h4', reveal: true -%}
               {% endfor %}
             {% else %}
             {%- for article in blog.articles limit: section.settings.articles_count -%}
-              {%- render 'article-item', article: article, heading_size: 'h4' -%}
+              {%- render 'article-item', article: article, heading_size: 'h4', reveal: true -%}
             {%- else -%}
               {%- for i in (1..section.settings.articles_count) -%}
                 <div {% if settings.stagger_blog_posts_apparition %}reveal{% endif %} class="article-item">
@@ -169,7 +175,7 @@
         <div class="text-container blog-posts--button">
             <div class="button-wrapper">
               {% comment %} <a href="{{ blog.url }}" class="link link">Read More</a> {% endcomment %}
-              <a class="blocks--button link--primary" href="{{ blog.url  }}">VISIT THE {{ blog.title }} {%- render 'icon' with "brand-arrow-right" -%}</a>
+              <a class="blocks--button link--primary" href="{{ blog.url  }}">READ MORE {%- render 'icon' with "brand-arrow-right" -%}</a>
             </div>
           </div>
       </div>
@@ -189,6 +195,32 @@
     "groups": ["header", "custom.overlay"]
   },
   "settings": [
+    {
+      "type": "text",
+      "id": "id",
+      "label": "ID",
+      "info": "Optional. Used with in-page navigation."
+    },
+    {
+      "type": "range",
+      "id": "min_height_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "label": "Text Content (Desktop)",
+      "default": 100,
+      "info": "Min Height (PX)"
+    },
+    {
+      "type": "range",
+      "id": "min_height_mobile",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "label": "Text Content (Mobile)",
+      "default": 100,
+       "info": "Min Height (PX)"
+    },
     {
       "type": "blog",
       "id": "blog",

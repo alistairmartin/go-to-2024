@@ -29,6 +29,9 @@
       --flex-align-items-mobile: {{ block.settings.flex_justify_content_mobile }};
       --flex-align-items-desktop: {{ block.settings.flex_align_items_desktop }};
 
+      --position-desktop: {{ block.settings.position_desktop }};
+      --position-mobile: {{ block.settings.position_mobile }};
+
       {%- if block.settings.max_width_enabled_mobile == "enabled" -%}
         --max-width-mobile: {{ block.settings.max_width_value_mobile }}px;
       {% else %}
@@ -98,6 +101,14 @@
         {% assign classes = classes | append: " flex-column-reverse--mobile" %}
     {%- endif -%}
 
+
+    {%- if block.settings.position_absolute_mobile == "center" -%}
+      {% assign classes = classes | append: " absolute-center--mobile" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "center" -%}
+      {% assign classes = classes | append: " absolute-center--desktop" %}
+    {%- endif -%}
 
     <div class="container-custom container-custom--{{ block.settings.page_width }} {{ classes }}" {{ blockId }}>
 {%- endif -%}

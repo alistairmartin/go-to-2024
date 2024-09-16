@@ -68,9 +68,10 @@ function openAccessabilityWidget() {
 
 
 
-  function moveCarousel(direction, sectionId) {
+function moveCarousel(direction, sectionId) {
     const section = document.querySelector(`[data-section-id="${sectionId}"]`);
     const radios = section.querySelectorAll(`input[name="featured-product-carousel-${sectionId}"]`);
+  
     let currentIndex;
     
     radios.forEach((radio, index) => {
@@ -78,13 +79,46 @@ function openAccessabilityWidget() {
         currentIndex = index;
       }
     });
-
+  
     let newIndex = currentIndex + direction;
+  
+    // Handle wrapping
     if (newIndex < 0) {
       newIndex = radios.length - 1;
     } else if (newIndex >= radios.length) {
       newIndex = 0;
     }
+  
+    // Update the radio button to the newIndex
     radios[newIndex].checked = true;
+  
+    // Update the data-index of the text-container
+    section.setAttribute('data-current', newIndex);
   }
+  
+
+  function miniCartRecommendationsLeft() {
+    console.log('here')
+    const scroller = document.querySelector('.mini-cart__recommendations-inner .scroller');
+    if (scroller) {
+      scroller.scrollBy({
+        top: 0,
+        left: -300, 
+        behavior: 'smooth' 
+      });
+    }
+  }
+  
+  function miniCartRecommendationsRight() {
+    console.log('here')
+    const scroller = document.querySelector('.mini-cart__recommendations-inner .scroller');
+    if (scroller) {
+      scroller.scrollBy({
+        top: 0,
+        left: 300,  
+        behavior: 'smooth' 
+      });
+    }
+  }
+  
 

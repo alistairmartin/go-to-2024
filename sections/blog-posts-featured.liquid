@@ -33,6 +33,8 @@
       {%- assign text_color = section.settings.text_color -%}
     {%- endif -%}
 
+
+
     --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
     --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
 
@@ -70,11 +72,11 @@
             {%- if section.blocks.size > 0 -%}
               {%- for block in section.blocks -%}
                   {% assign article = articles[block.settings.article] %}
-                {%- render 'article-item', article: article, heading_size: 'h4', index: forloop.index -%}
+                {%- render 'article-item', article: article, heading_size: 'h4', index: forloop.index , reveal: true -%}
               {% endfor %}
             {% else %}
             {%- for article in blog.articles limit: section.settings.articles_count -%}
-              {%- render 'article-item', article: article, heading_size: 'h4', index: forloop.index  -%}
+              {%- render 'article-item', article: article, heading_size: 'h4', index: forloop.index, reveal: true  -%}
             {%- else -%}
               {%- for i in (1..section.settings.articles_count) -%}
                 <div {% if settings.stagger_blog_posts_apparition %}reveal{% endif %} class="article-item">

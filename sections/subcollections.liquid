@@ -64,7 +64,7 @@
   {% if section.settings.enable_alt_style %}
   #shopify-section-{{ section.id }} .logo-list__list {
     --logos-gap: 5px;
-    grid-template-columns: repeat(min(var(--logos-per-row),var(--section-logo-count)),minmax(140px,400px))
+    grid-template-columns: repeat(min(6,6),minmax(140px,400px))
   }
 {%- endif -%}
 </style>
@@ -91,7 +91,7 @@
           {%- for block in section.blocks -%}
 
             {% assign collectionHandles = block.settings.collection_list %}
-
+            {%- assign blockCounter = 0 -%}
             {%- for collectionHandle in collectionHandles -%}
               {%- if collectionHandle.handle == collection.handle -%}
 
@@ -108,6 +108,7 @@
                   <a href="{{ LinkSetting }}" {% if section.settings.reveal_on_scroll %}reveal{% endif %} class="logo-list__item" {{ block.shopify_attributes }}>
 
                   {%- if ImageSetting != blank -%}
+                    {%- assign blockCounter = blockCounter | plus: 1 -%}
                     {%- assign logo_max_size = ImageSetting.width | divided_by: 2 | at_most: 200 -%}
                     {%- capture logo_widths -%}{{ logo_max_size }},{{ logo_max_size | times: 2 }}{%- endcapture -%}
                     {%- capture logo_sizes -%}{{ logo_max_size }}px{%- endcapture -%}
@@ -143,7 +144,7 @@
         <div class="scroller">
           <div class="scroller__inner">
             <logo-list {% if section.settings.reveal_on_scroll %}reveal-on-scroll{% endif %} class="logo-list logo-list--carousel">
-              {%- if section.blocks.size > 6 -%}
+              {%- if blockCounter > 6 -%}
                 <prev-next-buttons class="logo-list__prev-next hidden-pocket">
                   <button class="logo-list__arrow prev-next-button prev-next-button--prev" disabled>
                     <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>

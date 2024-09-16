@@ -231,7 +231,7 @@
 
                           <div class="product-list__inner">
                             {%- for product in filtered_results -%}
-                              {%- render 'product-item', product: product, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition -%}
+                              {%- render 'product-item', product: product, collection: collection, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, show_cta: true, reduced_content: true -%}
                             {%- endfor -%}
                           </div>
                         </product-list>

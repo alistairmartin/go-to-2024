@@ -6,13 +6,10 @@
       {%- assign section_background = section.settings.background -%}
     {%- endif -%}
 
-    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
-      {%- assign heading_color = settings.heading_color -%}
-      {%- assign text_color = settings.text_color -%}
-    {%- else -%}
-      {%- assign heading_color = section.settings.heading_color -%}
-      {%- assign text_color = section.settings.text_color -%}
-    {%- endif -%}
+   
+    {%- assign heading_color = section.settings.heading_color -%}
+    {%- assign text_color = section.settings.text_color -%}
+
 
     {%- if section.settings.button_background == 'rgba(0,0,0,0)' -%}
       {%- assign button_background = settings.primary_button_background -%}
@@ -55,7 +52,7 @@
         {%- endif -%}
 
         {%- if block.settings.text_title != blank -%}
-          <h3 class="heading h3">{{ block.settings.text_title | escape }}</h3>
+          <h3 class="heading h3 heading--secondary">{{ block.settings.text_title | escape }}</h3>
         {%- endif -%}
 
         {%- if block.settings.text_content != blank -%}

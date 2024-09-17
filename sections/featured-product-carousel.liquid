@@ -45,30 +45,49 @@
 <section class="section" data-section-id="{{ section.id }}">
 
   <div class="section__color-wrapper">
+
     <div class="container vertical-breather">
 
-      <div class="text-container">
-        {%- if section.settings.subheading != blank -%}
-          <h2 class="heading heading--small">{{ section.settings.subheading | escape }}</h2>
+
+      <div class="text-container--alt">
+        {%- if section.settings.text_subheading != blank -%}
+          <h2 class="heading subtitle">{{ section.settings.text_subheading | escape }}</h2>
         {%- endif -%}
 
-        {%- if section.settings.title != blank -%}
-          <h3 class="heading h3">{{ section.settings.title | escape }}</h3>
+        {%- if section.settings.text_title != blank -%}
+          <h3 class="heading h3 title">{{ section.settings.text_title | escape }}</h3>
         {%- endif -%}
 
-        {%- if section.settings.content != blank -%}
-          {{- section.settings.content -}}
-        {%- endif -%}
-
-        {%- if section.settings.button_text != blank -%}
-          <div class="button-wrapper">
-            <a href="{{ section.settings.button_link }}" class="link link--tierary"><strong>{{ section.settings.button_text | escape }}</strong></a>
+        {%- if section.settings.text_content != blank -%}
+          <div class="text-content">
+            {{- section.settings.text_content -}}
           </div>
+         
         {%- endif -%}
     </div>
 
+
+    <div class="hide-mobile">
+      <div class="featured-carousel-product--grid">
+      {%- for block in section.blocks -%}
+        {%- assign product = block.settings.product -%}
+  
+          <div class="featured-carousel-product--grid-item" data-index="{{ forloop.index }}">
+            {{ block.settings.image | image_url: width: 1000 | image_tag: alt: product.title }}
+            <div class="featured-carousel-product--grid-item-text">
+              <h2 class="title heading heading--secondary">{{ block.settings.title }}</h2>
+              <h3 class="subtitle">{{ block.settings.subtitle }}</h3>
+              <h3 class="subtitle2">{{ block.settings.subtitle2 }}</h3>
+              {%- render 'product-item--ATC' product: product, button_class: "button button--primary button--full" -%}
+            </div>
+          </div>
+      {%- endfor -%}
+      </div>
+    </div>
+
+
   {% comment %} https://codepen.io/aybukeceylan/pen/RwrRPoOL {% endcomment %}
-  <div class="featured-carousel-product">
+  <div class="featured-carousel-product hide-desktop">
     <input type="radio" name="featured-product-carousel-{{ section.id }}" id="item-1-{{ section.id }}" class="item-1" checked>
     <input type="radio" name="featured-product-carousel-{{ section.id }}" id="item-2-{{ section.id }}" class="item-2">
     <input type="radio" name="featured-product-carousel-{{ section.id }}" id="item-3-{{ section.id }}" class="item-3">
@@ -83,6 +102,7 @@
             <div class="featured-carousel-product--text-inner">
               <h2 class="title heading heading--secondary">{{ block.settings.title }}</h2>
               <h3 class="subtitle">{{ block.settings.subtitle }}</h3>
+              <h3 class="subtitle2">{{ block.settings.subtitle2 }}</h3>
               {% capture button_text %} | <strong> {{ product.price | money }}</strong>{% endcapture %}
               {%- render 'product-item--ATC' product: product, button_text: button_text, button_class: "button button--full" -%}
             </div>
@@ -101,41 +121,31 @@
 </section>
 
 
-
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const animatedElements{{ section.id | remove: '_' | remove: '-' }} = document.querySelectorAll('.featured-carousel-product--grid');
+  
+    const observer{{ section.id | remove: '_' | remove: '-' }} = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-before');
+        } else {
+          // entry.target.classList.remove('animate-before');
+        }
+      });
+    }, { threshold: 0.1 });
+  
+    animatedElements{{ section.id | remove: '_' | remove: '-' }}.forEach(element => {
+      observer{{ section.id | remove: '_' | remove: '-' }}.observe(element);
+    });
+  });
+</script>
 
 {% schema %}
     {
       "name": "Prod. Carousel (Feature)",
-      "class": "shopify-section--featured-product-carousel",
+      "class": "shopify-section--featured-product-carousel-feature shopify-section--featured-product-carousel-text",
       "settings": [
-        {
-        "type": "text",
-        "id": "subheading",
-        "label": "Subheading",
-        "default": "Subheading"
-        },
-        {
-        "type": "text",
-        "id": "title",
-        "label": "Heading",
-        "default": "Talk about your brand"
-        },
-        {
-        "type": "richtext",
-        "id": "content",
-        "label": "Content",
-        "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
-        },
-        {
-        "type": "text",
-        "id": "button_text",
-        "label": "Button text"
-        },
-        {
-        "type": "url",
-        "id": "button_link",
-        "label": "Button link"
-        },
         {
         "type": "header",
         "content": "Colors"
@@ -169,6 +179,28 @@
         "id": "button_text_color",
         "label": "Button text",
         "default": "rgba(0,0,0,0)"
+        },
+        {
+            "type": "header",
+            "content": "Text"
+          },
+          {
+        "type": "text",
+        "id": "text_subheading",
+        "label": "Subheading",
+        "default": "Subheading"
+        },
+        {
+        "type": "text",
+        "id": "text_title",
+        "label": "Heading",
+        "default": "Talk about your brand"
+        },
+        {
+        "type": "richtext",
+        "id": "text_content",
+        "label": "Content",
+        "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
         }
       ],
       "blocks": [
@@ -176,6 +208,10 @@
         "name": "Product",
         "type": "product",
         "settings": [
+          {
+            "type": "header",
+            "content": "Product"
+          },
           {
             "type": "product",
             "id": "product",
@@ -190,6 +226,11 @@
             "type": "textarea",
             "id": "subtitle",
             "label": "Subtitle"
+          },
+          {
+            "type": "textarea",
+            "id": "subtitle2",
+            "label": "Subtitle #2"
           },
           {
             "type": "image_picker",
@@ -211,7 +252,7 @@
       ],
       "presets": [
     {
-      "name": "Prod. Carousel (Feature)"
+      "name": "Prod. Carousel (Text)"
     }
   ]
     }

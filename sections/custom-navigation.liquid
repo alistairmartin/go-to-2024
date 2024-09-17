@@ -11,7 +11,7 @@
 <section>
 <div class="{% if section.settings.enable_container %}container{% endif %}">
   <div class="page-header">
-    <link-bar class="link-bar">
+    <link-bar class="link-bar {% if section.settings.reduce_padding %}reduce-padding{% endif %}">
       <div class="container">
         <div class="link-bar__wrapper">
 
@@ -48,6 +48,11 @@
         "id": "enable_container",
         "label": "Enable Container",
         "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "reduce_padding",
+        "label": "Reduce Padding"
       },
       {
         "type": "text",

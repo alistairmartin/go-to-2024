@@ -1,6 +1,7 @@
 $grid-medium: 740px;
 $grid-large: 1200px;
 $grid-widescreen: 1400px;
+$grid-widescreen-large: 2000px;
 
 $small: 'small';
 $medium: 'medium';
@@ -10,6 +11,7 @@ $large: 'large';
 $large-down: 'large-down';
 $large-up: 'large-up';
 $widescreen: 'widescreen';
+$widescreen-large: 'widescreen-large';
 
 $grid-breakpoints: (
   $small '(max-width: #{$grid-medium - 1})',
@@ -20,6 +22,7 @@ $grid-breakpoints: (
   $large-down '(max-width: #{$grid-widescreen - 1})',
   $large-up '(min-width: #{$grid-large})',
   $widescreen '(min-width: #{$grid-widescreen})'
+    $widescreen '(min-width: #{$grid-widescreen-large})'
 );
 
 /*================ Media Query Mixin ================*/

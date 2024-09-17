@@ -30,10 +30,13 @@
     <div class="section__color-wrapper vertical-breather">
       <div class="container">
 
-        <div class="nifty-fifty-text">
+        <div class="nifty-fifty-text hide-mobile">
             {{ section.settings.text }}
         </div>
-       
+
+        <div class="nifty-fifty-text hide-desktop">
+          {{ section.settings.text_mobile }}
+      </div>
       </div>
     </div>
   </section>
@@ -70,6 +73,12 @@ document.addEventListener("DOMContentLoaded", function () {
           "type": "textarea",
           "id": "text",
           "label": "Text",
+          "info": "Use <i>text</i> to highlight scrollable text."
+        },
+        {
+          "type": "textarea",
+          "id": "text_mobile",
+          "label": "Text (Mobile)",
           "info": "Use <i>text</i> to highlight scrollable text."
         }
     ],

@@ -82,7 +82,7 @@
           <div class="featured-carousel-product--text">
             {{ block.settings.image | image_url: width: 1000 | image_tag: alt: product.title }}
             <div class="featured-carousel-product--text-inner">
-              <h2 class="title heading heading--secondary">{{ block.settings.title }}</h2>
+              <h2 class="title heading">{{ block.settings.title }}</h2>
               <h3 class="subtitle">{{ block.settings.subtitle }}</h3>
               {% capture button_text %} | <strong> {{ product.price | money }}</strong>{% endcapture %}
               {%- render 'product-item--ATC' product: product, button_text: button_text, button_class: "button button--full" -%}

@@ -19,7 +19,7 @@
     <div class="product-content-ingredients--text">
       <h3 class="heading h3 text--bold hide-mobile">{{ section.settings.title }}</h3>
       <div class="hidden-phone hidden-tablet">
-        {%- assign glossaryMetaobjects = product.metafields.custom.ingredients_featured.value | sort: "title" -%}
+        {%- assign glossaryMetaobjects = product.metafields.custom.ingredients_featured.value  -%}
         {% for metaobject in glossaryMetaobjects %}
           <div class="product-content-ingredients--text-item">
             <p class="heading h4 text--bold">{{ metaobject.title | strip_html }}</p>
@@ -31,7 +31,7 @@
       <div class="product-content-ingredients--text__mobile hide-desktop">
         <div class="line"></div>
         {%- assign ingredientCounter = 0 -%}
-        {%- assign glossaryMetaobjects = product.metafields.custom.ingredients_featured.value | sort: "title" -%}
+        {%- assign glossaryMetaobjects = product.metafields.custom.ingredients_featured.value  -%}
         {% for metaobject in glossaryMetaobjects %}
             <div class="product-content-ingredients--text-item__mobile {% if ingredientCounter == 0 %}active{% endif %}" data-action="activate">
               {%- assign ingredientCounter = 1 -%}

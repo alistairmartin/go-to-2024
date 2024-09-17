@@ -66,6 +66,13 @@
     </div>
   {%- endif -%}
 </product-recommendations>
+{%- if shown_products_count == 0 or shown_products_count == blank -%}
+  <style>
+    .bought-with {
+      display: none !important;
+    }
+  </style>
+{%- endif -%}
 
 {% schema %}
 {

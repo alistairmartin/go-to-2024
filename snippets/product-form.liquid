@@ -59,6 +59,7 @@
                 {%- assign selector_type = 'variant_image' -%}
               {%- endif -%}
 
+  
               <div class="product-form__option-selector" data-selector-type="{{ selector_type | replace: '_', '-' | escape }}">
                 <div class="product-form__option-info">
                   <span class="product-form__option-name">{{ option.name }}:</span>
@@ -204,6 +205,21 @@
               </div>
             </noscript>
           </variant-picker>
+        {% else %}
+          {%- assign related_products = product.metafields.custom.product_main_information__related_products | split: "|" -%}
+          {%- if related_products != blank -%}
+          <div class="block-swatch-list block-swatch-list--custom">
+            {%- for product_handle in related_products -%}
+              {%- assign related_product = all_products[product_handle] -%}
+              {%- assign related_product_title = related_product.metafields.gts_theme.alternate_title | default: related_product.title -%}
+              <div class="block-swatch">
+                  <a href="{{ related_product.url }}" class="block-swatch__item  {% if related_product.id == product.id %}is-selected{% endif %}"  title="{{ related_product_title }}" >
+                    {{- related_product_title -}}
+                  </a>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
         {%- endunless -%}
 
       {%- comment -%}

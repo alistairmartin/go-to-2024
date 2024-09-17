@@ -293,11 +293,11 @@ IMPLEMENTATION NOTE: the header in Focal is pretty complex as it allows a lot of
             </a>
           {%- endif -%}
 
-          {% comment %} {%- if shop.customer_accounts_enabled -%}
+          {%- if shop.customer_accounts_enabled -%}
             <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="header__icon-wrapper tap-area hidden-phone {% unless section.settings.show_icons %}hidden-desk{% endunless %}" aria-label="{% if customer %}{{ 'header.general.account' | t | escape }}{% else %}{{ 'header.general.login' | t | escape }}{% endif %}">
               {%- render 'icon' with 'header-customer' -%}
             </a>
-          {%- endif -%} {% endcomment %}
+          {%- endif -%} 
 
           <a href="{{ routes.cart_url }}" {% unless settings.cart_type == 'page' or request.page_type == 'cart' %}is="toggle-link" aria-controls="mini-cart" aria-expanded="false"{% endunless %} class="header__icon-wrapper tap-area {% unless section.settings.show_icons %}hidden-desk{% endunless %}" aria-label="{{ 'header.general.cart' | t | escape }}" data-no-instant>
             {%- case settings.cart_icon -%}

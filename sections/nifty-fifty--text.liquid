@@ -31,11 +31,19 @@
       <div class="container">
 
         <div class="nifty-fifty-text hide-mobile">
-            {{ section.settings.text }}
+            {%- assign text_desktop = section.settings.text | split: "<br>" -%}
+
+            {%- for text_desktop_item in text_desktop -%}
+              <span>{{ text_desktop_item }}</span>
+            {%- endfor -%}
         </div>
 
         <div class="nifty-fifty-text hide-desktop">
-          {{ section.settings.text_mobile }}
+          {%- assign text_mobile = section.settings.text_mobile | split: "<br>" -%}
+
+          {%- for text_mobile_item in text_mobile -%}
+            <span>{{ text_mobile_item }}</span>
+          {%- endfor -%}
       </div>
       </div>
     </div>

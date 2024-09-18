@@ -2,6 +2,8 @@
   @media screen and (min-width: 999px) {
     #shopify-section-{{ section.id }} {
       --section-products-per-row: 3;
+      --grid-gap: 32px;
+      --section-header-text-align: {{ section.settings.text_alignment }};
     }
   }
 </style>
@@ -20,10 +22,10 @@
   {%- if recommendations.performed -%}
     <div class="container vertical-breather vertical-breather--tight vertical-breather--margin">
       {%- if section.settings.title != blank or section.settings.subheading != blank -%}
-        <header class="section__header">
+        <header class="section__header text-align--{{ section.settings.text_alignment }}">
           <div class="text-container">
             {%- if section.settings.title != blank -%}
-              <h2 class="heading h3">
+              <h2 class="heading h2">
                 {% if product.metafields.custom.product_upsell__title != blank %}
                   {{ product.metafields.custom.product_upsell__title }}
                 {% else %}
@@ -66,13 +68,13 @@
     </div>
   {%- endif -%}
 </product-recommendations>
-{%- if shown_products_count == 0 or shown_products_count == blank -%}
+{% comment %} {%- if shown_products_count == 0 or shown_products_count == blank -%}
   <style>
     .bought-with {
       display: none !important;
     }
   </style>
-{%- endif -%}
+{%- endif -%} {% endcomment %}
 
 {% schema %}
 {
@@ -88,6 +90,26 @@
       "id": "title",
       "label": "Heading",
       "default": "You may also like"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
     }
   ]
 }

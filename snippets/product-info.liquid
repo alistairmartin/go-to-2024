@@ -1,6 +1,6 @@
 <div class="product__info">
   <!-- PRODUCT META -->
-  <product-meta data-block-type="meta" data-block-id="{{ section.id }}" price-class="price--large" class="product-meta">
+  <product-meta data-block-type="meta" data-block-id="{{ section.id }}" price-class="price--large" class="product-meta product-meta--desktop hide-mobile">
     {%- if section.settings.show_vendor -%}
       <h2 class="product-meta__vendor heading heading--small">
         {%- assign vendor_handle = product.vendor | handle -%}
@@ -15,7 +15,7 @@
     {%- endif -%}
 
     {% unless featured %}
-      <h1 class="product-meta__title heading h4 heading--secondary">{{ product.title | remove: "Bro-To " | remove: "Gro-To " }}</h1>
+      <h1 class="product-meta__title heading h4 heading--secondary ">{{ product.title | remove: "Bro-To " | remove: "Gro-To " }}</h1>
     {% else %}
       <h2 class="product-meta__title heading h4 heading--secondary">
         <a href="{{ product.url }}">{{ product.title }}</a>

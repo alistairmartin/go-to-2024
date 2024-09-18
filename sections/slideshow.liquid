@@ -103,16 +103,28 @@
           {%- endcomment -%}
 
           {%- capture section_content -%}
-            {%- if block.settings.subheading != blank -%}
-              <h2 class="heading heading--small">
-                <split-lines {% if section.settings.transition_type != 'fade' %}reveal{% endif %}>{{ block.settings.subheading | escape }}</split-lines>
-              </h2>
-            {%- endif -%}
+            {%- capture subtitle -%}
+              {%- if block.settings.subheading != blank -%}
+                <h2 class="heading heading--small subtitle">
+                  <split-lines {% if section.settings.transition_type != 'fade' %}reveal{% endif %}>{{ block.settings.subheading | escape }}</split-lines>
+                </h2>
+              {%- endif -%}
+            {%- endcapture -%}
 
-            {%- if block.settings.title != blank -%}
-              <h3 class="heading heading--large">
-                <split-lines {% if section.settings.transition_type != 'fade' %}reveal{% endif %}>{{ block.settings.title | escape }}</split-lines>
-              </h3>
+            {%- capture title -%}
+              {%- if block.settings.title != blank -%}
+                <h3 class="heading heading--large title">
+                  <split-lines {% if section.settings.transition_type != 'fade' %}reveal{% endif %}>{{ block.settings.title | escape }}</split-lines>
+                </h3>
+              {%- endif -%}
+            {%- endcapture -%}
+
+            {%- if block.settings.text_order == "heading_first" -%}
+              {{ title }}
+              {{ subtitle }}
+            {%- else -%}
+              {{ subtitle }}
+              {{ title }}
             {%- endif -%}
 
             {%- capture buttons -%}
@@ -310,6 +322,21 @@
         {
           "type": "header",
           "content": "Content"
+        },
+        {
+          "type": "select",
+          "id": "text_order",
+          "label": "Text Order",
+          "options": [
+            {
+            "value": "subtitle_first",
+            "label": "Subtitle First"
+            },
+            {
+              "value": "heading_first",
+              "label": "Heading First"
+            }
+          ]
         },
         {
           "type": "select",

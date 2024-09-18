@@ -275,6 +275,10 @@
     .product-content-routine--text {
       width: 100%;
 
+      .SectionHeader__Heading {
+        margin-bottom: 16px;
+      }
+
       @include media-query($medium-up) {
         max-width: 440px;
         margin-right: 32px;
@@ -475,6 +479,8 @@
       flex-direction: row;
     }
 
+
+
     .product-content-ingredients--image {
       width: 100%;
       margin-bottom: 10px;
@@ -516,6 +522,9 @@
         max-width: 400px;
       }
 
+      .heading.h3 {
+        margin-bottom: 16px;
+      }
 
       .h2.heading {
         margin-bottom: 32px;
@@ -565,7 +574,7 @@
           background: var(--color-grey-dark);
         }
 
-        .title {
+        .heading {
           color: var(--color-black);
           opacity: 0.5;
           margin-bottom: 8px;
@@ -575,10 +584,11 @@
 
         .text {
           display: none;
+          margin-bottom: 16px;
         }
 
         &.active {
-          .title {
+          .heading {
             opacity: 1;
             margin-bottom: 0;
           }
@@ -595,6 +605,18 @@
             display: block;
           }
         }
+      }
+    }
+
+    .popover-buttons {
+      margin-top: 36px;
+      margin-bottom: 16px;
+      margin-left: 46px;
+
+
+      @include media-query($medium-up) {
+        margin-top: 16px;
+        margin-left: 0;
       }
     }
   }
@@ -673,7 +695,7 @@
       font-size: 72px;
       line-height: 125%;
 
-      &.Product__USP-title-small {
+      &.product-USP--title__small {
         font-size: 62px;
 
         @include media-query($medium-up) {
@@ -754,7 +776,7 @@
     }
 
     .rc-template__radio {
-      padding: 0 16px;
+      padding: 8px;
       background: white;
       border: 1px solid var(--color-primary);
       -webkit-border-radius: var(--image-border-radius);
@@ -955,5 +977,150 @@
     .block-swatch__item.is-selected {
       background: rgb(var(--secondary-background));
       border: 2px solid rgb(var(--text-color));
+    }
+  }
+
+
+  .shopify-section--image-with-text-product {
+
+
+
+
+    img, picture, .image-overlay__image-wrapper, image-with-text-overlay {
+      border-radius: var(--image-border-radius);
+    }
+
+    img {
+      width: 100%;
+    }
+
+    .image-overlay {
+      @include media-query($medium-up) {
+        &.text-position-desktop--top {
+          align-items: flex-start;
+        }
+
+        &.text-position-desktop--middle {
+          align-items: center;
+        }
+
+        &.text-position-desktop--bottom {
+          align-items: flex-end;
+        }
+
+        &.color-desktop--white {
+          .link--primary {
+            @include media-query($medium-up) {
+              text-decoration-color: var(--color-primary) !important;
+
+              svg {
+                * {
+                  fill: #fff;
+                }
+              }
+            }
+          }
+        }
+    
+        &.color-desktop--black {
+          .link--primary {
+            @include media-query($medium-up) {
+              text-decoration-color: #fff !important;
+            }
+          }
+        }
+      }
+
+
+      @include media-query($medium-up) {
+        &.color-mobile--white {
+    
+        }
+    
+        // &.color-mobile--black {
+    
+        // }
+      }
+    }
+
+    .image-overlay__content {
+      margin: 0;
+      max-width: 516px;
+
+      @include media-query($medium-up) {
+        margin: 0 48px;
+      }
+
+      &.desktop--top {
+
+      }
+
+      &.desktop--middle {
+
+      }
+
+      &.desktop--end {
+
+      }
+    }
+
+    .image-overlay__content-wrapper {
+      justify-content: flex-start;
+    }
+
+    .image-overlay__text-container {
+      line-height: 1.65;
+
+
+      .link--primary {
+        margin-top: 24px;
+      }
+    }
+
+    .text-position-mobile--above {
+      @include media-query($small) {
+      background: unset;
+      display: flex;
+      flex-direction: column-reverse;
+      }
+    }
+
+    .text-position-mobile--below {
+      @include media-query($small) {
+      background: unset;
+      display: flex;
+      flex-direction: column;
+      }
+    }
+  }
+
+  .product-sticky-form {
+    z-index: 10;
+  }
+
+  .rc-widget {
+
+    .rc-template__radio {
+      background: #fffcfb;
+    }
+
+    .rc-radio__label {
+      line-height: 1;
+    }
+
+    .rc-subscription-details {
+      margin-top: 0;
+    }
+  }
+
+  .product__media {
+    .product__media-item {
+      @include media-query($small) {
+        padding: 0;
+
+        img, .product__media-image-wrapper {
+          border-radius: 0 !important;
+        }
+      }
     }
   }

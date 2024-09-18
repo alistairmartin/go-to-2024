@@ -1,6 +1,7 @@
 <style>
   #shopify-section-{{ section.id }} {
     --section-background: {{ section.settings.background }};
+    --background: {{ section.settings.background | color_to_rgb | remove: "rgb(" | remove: ")"}};
     --border-color: {{ section.settings.border_color }};
   }
 </style> 

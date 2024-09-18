@@ -10,7 +10,7 @@
 {% assign imgMobileSrc = imgMobile.cloudinary_src %}
 
 {%- if imgMobileSrc != blank or imgDesktopSrc != blank -%}
-    <picture {% if class %}class="{{ class }}"{% endif %}>
+    <picture {% if class %}class="{{ class }}"{% endif %} {% if reveal %}reveal{% endif %}>
       {%- if imgMobileSrc != blank -%}
           <source media="(max-width: {{ grid_small }}px)"
                 srcset="{{ imgMobileSrc | append: '&transform=&resize=480' }} {{ grid_small }}w,

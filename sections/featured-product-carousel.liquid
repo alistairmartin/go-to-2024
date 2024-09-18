@@ -42,7 +42,7 @@
 </style>
 
 
-<section class="section" data-section-id="{{ section.id }}">
+<section class="section" data-section-id="{{ section.id }}" data-current="1">
 
   <div class="section__color-wrapper">
 
@@ -88,23 +88,27 @@
 
   {% comment %} https://codepen.io/aybukeceylan/pen/RwrRPoOL {% endcomment %}
   <div class="featured-carousel-product hide-desktop">
-    <input type="radio" name="featured-product-carousel-{{ section.id }}" id="item-1-{{ section.id }}" class="item-1" checked>
-    <input type="radio" name="featured-product-carousel-{{ section.id }}" id="item-2-{{ section.id }}" class="item-2">
+    <input type="radio" name="featured-product-carousel-{{ section.id }}" id="item-1-{{ section.id }}" class="item-1">
+    <input type="radio" name="featured-product-carousel-{{ section.id }}" id="item-2-{{ section.id }}" class="item-2" checked>
     <input type="radio" name="featured-product-carousel-{{ section.id }}" id="item-3-{{ section.id }}" class="item-3">
   
     <div class="featured-carousel-product--items">
       {%- for block in section.blocks -%}
         {%- assign product = block.settings.product -%}
   
-        <label class="featured-carousel-product--item product-{{ forloop.index }}" for="item-{{ forloop.index }}-{{ section.id }}" id="product-{{ forloop.index }}-{{ section.id }}">
+        <label data-index="{{ forloop.index }}" class="featured-carousel-product--item product-{{ forloop.index }}" for="item-{{ forloop.index }}-{{ section.id }}" id="product-{{ forloop.index }}-{{ section.id }}">
           <div class="featured-carousel-product--text">
             {{ block.settings.image | image_url: width: 1000 | image_tag: alt: product.title }}
             <div class="featured-carousel-product--text-inner">
+              {% comment %} <div class="dots">
+                <div class="dot dot-1"></div>
+                <div class="dot dot-2"></div>
+                <div class="dot dot-3"></div>
+              </div> {% endcomment %}
               <h2 class="title heading heading--secondary">{{ block.settings.title }}</h2>
               <h3 class="subtitle">{{ block.settings.subtitle }}</h3>
               <h3 class="subtitle2">{{ block.settings.subtitle2 }}</h3>
-              {% capture button_text %} | <strong> {{ product.price | money }}</strong>{% endcapture %}
-              {%- render 'product-item--ATC' product: product, button_text: button_text, button_class: "button button--full" -%}
+              {%- render 'product-item--ATC' product: product, button_class: "button button--full button--primary" -%}
             </div>
           </div>
         </label>

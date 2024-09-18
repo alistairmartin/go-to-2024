@@ -1,3 +1,7 @@
+
+
+
+
 {%- liquid
 assign counter = 1
 assign indexCounter = 0
@@ -8,8 +12,8 @@ for mediaWithText in product.metafields.custom.product_media_with_text__title
   if sectionNumber == counter 
     assign title = product.metafields.custom.product_media_with_text__title[indexCounter]
     assign text = product.metafields.custom.product_media_with_text__text[indexCounter]
-    assign text_position_desktop = product.metafields.custom.product_media_with_text__text_position_desktop[indexCounter]
-    assign text_position_mobile = product.metafields.custom.product_media_with_text__text_position_mobile[indexCounter]
+    assign text_position_desktop = product.metafields.custom.product_media_with_text__text_position_desktop[indexCounter] 
+    assign text_position_mobile = product.metafields.custom.product_media_with_text__text_position_mobile[indexCounter] 
     assign text_color_desktop = product.metafields.custom.product_media_with_text__text_color_desktop[indexCounter]
     assign text_color_mobile = product.metafields.custom.product_media_with_text__text_color_mobile[indexCounter]
     assign button_title = product.metafields.custom.product_media_with_text__button_title[indexCounter]
@@ -17,6 +21,12 @@ for mediaWithText in product.metafields.custom.product_media_with_text__title
     assign image_desktop = product.metafields.custom.product_media_with_text__image_desktop[indexCounter]
     assign image_mobile = product.metafields.custom.product_media_with_text__image_mobile[indexCounter]
     assign vimeo_id = product.metafields.custom.product_media_with_text__vimeo[indexCounter]
+
+    assign image_mobile_object = image_mobile | first
+    assign image_mobile_aspect = image_mobile_object.aspect_ratio
+
+    assign image_desktop_object = image_desktop | first
+    assign image_desktop_aspect = image_desktop_object.aspect_ratio
   endif
 
   assign counter = counter | plus: 1
@@ -28,47 +38,117 @@ if image_desktop != blank or image_mobile != blank
 endif
 -%}
 
+{%- if text_color_desktop == "White" -%}
+  {%- assign text_color_desktop_value = "255,255,255" -%}
+{% else %}
+  {%- assign text_color_desktop_value = "0,0,0" -%}
+{%- endif -%}
+
+{%- if text_color_mobile == "White" -%}
+  {%- assign text_color_mobile_value = "255,255,255" -%}
+{% else %}
+  {%- assign text_color_mobile_value = "0,0,0" -%}
+{%- endif -%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+
+      {%- assign button_background = section.settings.button_background -%}
+      {%- assign button_text_color = section.settings.button_text_color -%}
+
+    --heading-color: {{ text_color_mobile_value }};
+    --text-color: {{ text_color_mobile_value }};
+    --primary-button-background: {{ button_background.red }}, {{ button_background.green }}, {{ button_background.blue }};
+    --primary-button-text-color: {{ button_text_color.red }}, {{ button_text_color.green }}, {{ button_text_color.blue }};
+
+    --section-items-alignment: {{ section_items_alignment }};
+    --section-overlay-color: {{ section.settings.overlay_color.red }}, {{ section.settings.overlay_color.green }}, {{ section.settings.overlay_color.blue }};
+    --section-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  }
+
+  #shopify-section-{{ section.id }} .image-overlay {
+    --image-aspect-ratio: {{ image_mobile_aspect }};
+  }
+
+  #shopify-section-{{ section.id }} .image-overlay__image-wrapper {
+    padding-bottom: {{ 100.0 | divided_by: image_mobile_aspect }}%;
+  }
+
+  
+
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} {
+      --heading-color: {{ text_color_desktop_value }};
+      --text-color: {{ text_color_desktop_value }};
+    }
+
+    #shopify-section-{{ section.id }} .image-overlay {
+      --image-aspect-ratio: {{ image_desktop_aspect }};
+    }
+
+    #shopify-section-{{ section.id }} .image-overlay__image-wrapper {
+      padding-bottom: {{ 100.0 | divided_by: image_desktop_aspect }}%;
+    }
+  }
+</style>
+
 {%- if imageFound == true or title != blank -%}
-<section class="Section Section--spacingLarge Section--ProductContentImageWithText Text-Color-Desktop--{{ text_color_desktop }}">
-  <div class="ContentWidth">
-    <div class="ProductContentImageWithText ProductContentImageWithText--text-position-desktop__{{ text_position_desktop }} ProductContentImageWithText--text-position-mobile__{{ text_position_mobile }}">
-      <div class="ProductContentImageWithText--content">
-        {%- if title != blank -%}
-          <h3 class="SectionHeader__Heading Heading Text--bold u-h1">{{ title }}</h3>
-        {%- endif -%}
-        {%- if title != blank -%}
-          <p>{{ text }}</p>
-        {%- endif -%}
+<section class="section">
+<div class="container">
 
-        {%- if button_url != blank -%}
-        <a href="{{ button_url }}" type="button" name="button" class="Button--link Button--withArrow Text--sizeTiny Button--link-primary">{{ button_title }} {%- render 'icon', icon: 'arrow-link' -%}</a>
-        {%- endif -%}
-      </div>
+  <image-with-text-overlay {% if section.settings.reveal_on_scroll %}reveal-on-scroll{% endif %} class="image-overlay image-overlay--auto color-desktop--{{ text_color_desktop | handle }} color-mobile--{{ text_color_mobile_value | handle }} text-position-mobile--{{ text_position_mobile | handle }} text-position-desktop--{{ text_position_desktop | handle }}">
+    <div class="image-overlay__image-wrapper">
 
-      <div class="ProductContentImageWithText--image">
-        {%- if image_desktop != blank or image_mobile != blank -%}
-          {% render "responsive-image-metafields", src_desktop: image_desktop, src_mobile: image_mobile %}
-        {%- endif -%}
-      </div>
+      {%- if image_desktop != blank or image_mobile != blank -%}
+        {% render "responsive-image-metafields", src_desktop: image_desktop, src_mobile: image_mobile, reveal: section.settings.reveal_on_scroll, class: "image-overlay__image" %}
+      {%- endif -%}
+
     </div>
-  </div>
+
+    {%- capture section_content -%}
+      {%- assign text_alignment = section.settings.text_position | split: '_' | last -%}
+
+      <div class="image-overlay__content-wrapper">
+        <div class="image-overlay__content content-box content-box--{{ section.settings.text_width }} content-box--text-{{ text_alignment }} content-box--{{ text_alignment }} text-container">
+
+          {%- if title != blank -%}
+            <h3 class="heading h2 image-overlay__content-title" {% if section.settings.reveal_on_scroll %}reveal{% endif %}>
+              {{ title | escape }}
+            </h3>
+          {%- endif -%}
+
+          {%- if text != blank or button_title != blank -%}
+            <div class="image-overlay__text-container" {% if section.settings.reveal_on_scroll %}reveal{% endif %}>
+              {%- if text != blank-%}
+                {{ text }}
+              {%- endif -%}
+
+              {%- if button_title != blank -%}
+              <a class="link--primary" href="{{ button_url }}">{{ button_title }} {%- render 'icon' with "brand-arrow-right" -%}</a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endcapture -%}
+
+    {{- section_content -}}
+
+  </image-with-text-overlay>
+</div>
 </section>
 {%- endif -%}
 
 {% schema %}
   {
-    "name": "Prod. Con: Image /W Text",
+    "name": "Prod. Con: Image & Text",
+    "class": "shopify-section--image-with-text-overlay shopify-section--image-with-text-product",
+    "disabled_on": {
+      "groups": ["header", "custom.overlay"]
+    },
     "settings": [
-      {
-        "type": "text",
-        "id": "title",
-        "label": "Title"
-      },
-      {
-        "type": "text",
-        "id": "description",
-        "label": "Description"
-      },
       {
          "type": "radio",
          "id": "section_number",
@@ -86,40 +166,215 @@ endif
          ]
       },
       {
-        "type": "header",
-        "content": "Images"
+        "type": "checkbox",
+        "id": "reveal_on_scroll",
+        "label": "Reveal on scroll",
+        "info": "Show animation when section becomes visible.",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "section_height",
+        "label": "Section height",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Original image ratio"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          }
+        ],
+        "info": "Choose \"Original image ratio\" to not cut images. [Learn more](https://help.shopify.com/en/manual/online-store/images/theme-images#best-practices-for-slideshows-and-full-width-images)",
+        "default": "auto"
       },
       {
         "type": "image_picker",
-        "id": "image_mobile",
-        "label": "Image - Mobile"
+        "id": "image",
+        "label": "Image",
+        "info": "2000 x 980px .jpg recommended"
       },
       {
-        "type": "image_picker",
-        "id": "image_desktop",
-        "label": "Image - Desktop"
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading",
+        "default": "Subheading"
       },
       {
-        "type": "header",
-        "content": "Buttons"
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Image with text overlay"
+      },
+      {
+        "type": "richtext",
+        "id": "content",
+        "label": "Content",
+        "default": "<p>Use overlay text to give your customers insight into your brand. Select imagery and text that relates to your style and story.</p>"
       },
       {
         "type": "text",
         "id": "button_text",
-        "label": "Button - Text",
-        "info": "Optional"
+        "label": "Button text"
       },
       {
         "type": "url",
-        "id": "button_url",
-        "label": "Button / Image - Link"
+        "id": "button_link",
+        "label": "Button link"
+      },
+      {
+        "type": "select",
+        "id": "link_style",
+        "label": "Link style",
+        "options": [
+          {
+            "value": "link",
+            "label": "Link"
+          },
+          {
+            "value": "button",
+            "label": "Button"
+          }
+        ],
+        "default": "link"
+      },
+      {
+        "type": "select",
+        "id": "background_type",
+        "label": "Background",
+        "options": [
+          {
+            "value": "full_width",
+            "label": "Full width"
+          },
+          {
+            "value": "boxed",
+            "label": "Boxed"
+          }
+        ],
+        "default": "full_width"
+      },
+      {
+        "type": "select",
+        "id": "text_width",
+        "label": "Text width",
+        "options": [
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          },
+          {
+            "value": "fill",
+            "label": "Fill screen"
+          }
+        ],
+        "default": "medium"
+      },
+      {
+        "type": "select",
+        "id": "text_position",
+        "label": "Text position",
+        "options": [
+          {
+            "value": "top_left",
+            "label": "Top left"
+          },
+          {
+            "value": "top_center",
+            "label": "Top center"
+          },
+          {
+            "value": "top_right",
+            "label": "Top right"
+          },
+          {
+            "value": "middle_left",
+            "label": "Middle left"
+          },
+          {
+            "value": "middle_center",
+            "label": "Middle center"
+          },
+          {
+            "value": "middle_right",
+            "label": "Middle right"
+          },
+          {
+            "value": "bottom_left",
+            "label": "Bottom left"
+          },
+          {
+            "value": "bottom_center",
+            "label": "Bottom center"
+          },
+          {
+            "value": "bottom_right",
+            "label": "Bottom right"
+          }
+        ],
+        "default": "middle_center"
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "button_background",
+        "label": "Button background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "button_text_color",
+        "label": "Button text",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "overlay_color",
+        "label": "Overlay",
+        "default": "#000000"
+      },
+      {
+        "type": "range",
+        "id": "overlay_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "%",
+        "label": "Overlay opacity",
+        "default": 30
       }
     ],
-    "presets":[
+    "presets": [
       {
-        "name": "Prod. Con: Image /W Text",
-        "category": "Product"
+        "name": "Prod. Con: Image & Text",
+        "settings": {}
       }
     ]
   }
-{% endschema %}
+  {% endschema %}

@@ -1,6 +1,10 @@
 {% assign vimeoVideoId = section.settings.vimeo_video_id %}
-{%- if product.metafields.custom.product_video_with_title__vimeo != blank -%}
+{%- if product.metafields.custom.product_video_with_title__vimeo != blank and product.metafields.custom.product_video_with_title__vimeo_mobile != blank -%}
   {% assign vimeoVideoId = product.metafields.custom.product_video_with_title__vimeo %}
+  {% assign vimeoVideoIdMobile = product.metafields.custom.product_video_with_title__vimeo_mobile %}
+{% elsif product.metafields.custom.product_video_with_title__vimeo != blank %}
+  {% assign vimeoVideoId = product.metafields.custom.product_video_with_title__vimeo %}
+  {% assign vimeoVideoIdMobile = product.metafields.custom.product_video_with_title__vimeo %}
 {%- endif -%}
 
 {%- if product.metafields.custom.product_video_with_title__vimeo != blank -%}
@@ -40,7 +44,7 @@
       };
     } else {
       var videoOptions{{ section.id | remove: '-' }} = {
-          id: {{ vimeoVideoId }},
+          id: {{ vimeoVideoIdMobile }},
           quality: "360p",
           background: false,
           loop: true,

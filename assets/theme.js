@@ -4577,6 +4577,9 @@ var ImageWithTextOverlay = class extends CustomHTMLElement {
   async _setupVisibility() {
     await this.untilVisible();
     const image = this.querySelector(".image-overlay__image"), headings = await resolveAsyncIterator(this.querySelectorAll("split-lines")), prefersReducedMotion = MediaFeatures.prefersReducedMotion();
+    const contentTitle = this.querySelector(".image-overlay__content-title");
+
+    console.log(image)
     await imageLoaded(image);
     const innerEffect = [
       new CustomKeyframeEffect(image, { opacity: [0, 1], transform: [`scale(${prefersReducedMotion ? 1 : 1.1})`, "scale(1)"] }, { duration: 500, easing: "cubic-bezier(0.65, 0, 0.35, 1)" }),
@@ -4591,6 +4594,16 @@ var ImageWithTextOverlay = class extends CustomHTMLElement {
           easing: "cubic-bezier(0.5, 0.06, 0.01, 0.99)"
         });
       })),
+
+      contentTitle ? new CustomKeyframeEffect(contentTitle, {
+        opacity: [0, 1],
+        transform: [`translateY(${prefersReducedMotion ? 0 : "100%"})`, "translateY(0)"]
+      }, {
+        duration: 300,
+        easing: "cubic-bezier(0.5, 0.06, 0.01, 0.99)"
+      }) : null,
+
+
       new CustomKeyframeEffect(this.querySelector(".image-overlay__text-container"), { opacity: [0, 1] }, { duration: 300 })
     ];
     const animation = prefersReducedMotion ? new CustomAnimation(new ParallelEffect(innerEffect)) : new CustomAnimation(new SequenceEffect(innerEffect));
@@ -4614,6 +4627,8 @@ var ImageWithTextOverlay = class extends CustomHTMLElement {
   }
 };
 window.customElements.define("image-with-text-overlay", ImageWithTextOverlay);
+
+
 
 // js/custom-element/section/image-with-text-block/image-with-text-block.js
 var ImageWithTextBlock = class extends CustomHTMLElement {

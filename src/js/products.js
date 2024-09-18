@@ -23,4 +23,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.querySelector('.product-content-description--teaser').setAttribute('aria-revealed', 'false');
     });
 
+    document.querySelectorAll('.product-content-ingredients--text-item__mobile').forEach(function(item) {
+        item.addEventListener("click", function() {
+            
+            document.querySelectorAll('.product-content-ingredients--text-item__mobile').forEach(function(el) {
+                el.classList.remove('active');
+            });
+    
+            this.classList.add("active");
+        });
+    });
+    
+
 });

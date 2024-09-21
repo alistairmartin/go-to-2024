@@ -72,7 +72,7 @@
   <div class="section__color-wrapper">
     <div class="container {% unless blends_with_background %}vertical-breather{% endunless %}">
       {%- if section.blocks.size > 1 or section.settings.title != blank or section.settings.subheading != blank or section.settings.content != blank -%}
-        <header class="section__header {% if section.settings.content != blank %}section__header--tight{% endif %}">
+        <header class="section__header {% if section.settings.content != blank %}section__header--tight{% endif %} text-{{ section.settings.header_text_alignment }}">
           {%- if section.settings.title != blank or section.settings.subheading != blank or section.settings.content != blank -%}
             <div class="text-container">
               {%- if section.settings.subheading != blank -%}
@@ -225,6 +225,26 @@
     {
       "type": "header",
       "content": "Text"
+    },
+    {
+      "type": "select",
+      "id": "header_text_alignment",
+      "label": "Header Text Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
     },
     {
       "type": "text",

@@ -3,14 +3,13 @@
 #shopify-section-{{ section.id }} {
   --page-header-text-align: {{ section.settings.text_alignment }};
 }
-
 </style>
 
 {%- capture pageContent -%}
   {%- assign outerloop = 0 -%}
   {%- assign page_content = page.content | replace: '<p><span>[/collapsible]</span></p>', '<p>[/collapsible]</p>' | split: '<p>[/collapsible]</p>' -%}
 
-  <div class="faq__wrapper" itemscope itemtype="https://schema.org/FAQPage">
+  <div class="faq__wrapper rte" itemscope itemtype="https://schema.org/FAQPage">
   {%- for collapsible in page_content -%}
     {%- if forloop.last -%}
       {{- collapsible -}}
@@ -19,8 +18,9 @@
       {%- assign head = this_collapsible[0] -%}
       {%- assign body = this_collapsible[1] | replace: '<p><span>--</span></p>', '<p>--</p>' | split: '<p>--</p>' -%}
 
-      {{ head }}
 
+      {%- if body != blank -%}
+        {{ head }}
       <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
         {%- assign this_collapsible = this_collapsible | split: '<p>--</p>' -%}
         <button is="toggle-button" class="collapsible-toggle text--strong heading heading--secondary" aria-controls="block-{{ section.id }}-{{ outerloop }}-{{- body | first | strip_html | handle }}" aria-expanded="false" itemprop="name">
@@ -35,6 +35,7 @@
         </div>
       </collapsible-content>
       </div>
+    {%- endif -%}
 
       {%- assign outerloop = outerloop | plus: 1 -%}
     {%- endif -%}
@@ -62,20 +63,23 @@
 
         <div class="page-content page-content--{{ section.settings.page_width }}">
            
-          {%- if section.settings.show_page_content -%} 
+         {%- if section.settings.show_page_content -%} 
             {%- if page.content contains "[collapsible]" -%}
-              {{ pageContent }}
+              <div class="custom-collapsible-content">
+                {{ pageContent }}
+              </div>
+              
             {%- else -%}
               {{ page.content }}
             {%- endif -%}
           
-          {%- endif -%}
+          {%- endif -%} 
       
   
         </div>
       </div>
     </div>
-    
+  
   {%- if section.settings.show_page_content -%}
     {%- unless template.suffix contains 'contact' or template.suffix contains 'faq' -%}
     <div class="page-content page-content--{{ section.settings.page_width }} rte {% if page.content == blank %}hide{% endif %}">
@@ -86,7 +90,7 @@
       {%- endif -%}
       </div>
     {%- endunless -%}
-  {%- endif -%}
+  {%- endif -%} 
 
 
 

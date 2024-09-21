@@ -95,7 +95,15 @@
             <scrollable-content class="tabs-nav__scroller hide-scrollbar">
               <div class="tabs-nav__scroller-inner">
                 <div class="tabs-nav__item-list">
-                  <button class="tabs-nav__item heading heading--small" data-type="{{ first_matching_type | escape }}" aria-expanded="true" aria-controls="search-{{ section.id }}-{{ first_matching_type }}">{{ label }}</button>
+                  <button class="tabs-nav__item heading heading--small" data-type="{{ first_matching_type | escape }}" aria-expanded="true" aria-controls="search-{{ section.id }}-{{ first_matching_type }}">
+                    
+
+                    {%- if label == "Journal" -%}
+                      Go-To Guide
+                    {% else %}
+                    {{ label }}
+                    {%- endif -%}
+                    </button>
                 </div>
               </div>
             </scrollable-content>

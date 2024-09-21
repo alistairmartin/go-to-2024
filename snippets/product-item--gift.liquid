@@ -30,7 +30,7 @@
       </div>
     {%- endif -%}
 
-    <a href="{{ product.url }}" data-instant class="product-item__aspect-ratio aspect-ratio {% if settings.product_image_size != 'natural' %}aspect-ratio--{{ settings.product_image_size }}{% endif %}" style="padding-bottom: {{ 100.0 | divided_by: product.featured_media.preview_image.aspect_ratio }}%; --aspect-ratio: {{ product.featured_media.preview_image.aspect_ratio }}">
+    <div class="product-item__aspect-ratio aspect-ratio {% if settings.product_image_size != 'natural' %}aspect-ratio--{{ settings.product_image_size }}{% endif %}" style="padding-bottom: {{ 100.0 | divided_by: product.featured_media.preview_image.aspect_ratio }}%; --aspect-ratio: {{ product.featured_media.preview_image.aspect_ratio }}">
       {%- if product.featured_media -%}
         {{ product.featured_media | image_url: width: product.featured_media.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '200,300,400,500,600,700,800,900,1000,1100,1200', class: 'product-item__primary-image', data-media-id: product.featured_media.id }}
       {%- endif -%}
@@ -56,7 +56,7 @@
         {%- assign next_media = product.media[product.featured_media.position] | default: product.media[1] -%}
         {{- next_media | image_url: width: next_media.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '200,300,400,500,600,700,800,900,1000,1100,1200', class: 'product-item__secondary-image' -}}
       {%- endif -%}
-    </a>
+    </div>
 
     {%- if request.page_type != 'password' and settings.product_add_to_cart and product.available and reduced_content != true and show_cta != true -%}
       {%- if product.variants.size == 1 -%}
@@ -107,7 +107,7 @@
         {%- endunless -%}
       {%- endif -%}
 
-      <a href="{{ product.url }}" data-instant class="product-item-meta__title">
+      <div class="product-item-meta__title">
 
         {%- unless product.handle == "weekly-essentials" -%}
           <span class="variant-option">
@@ -118,19 +118,25 @@
             {%- endif -%}
           </span>
         {%- endunless -%}
-   
 
-        <span class="title">
-          {{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}
+        {%- if description != blank -%}
+        <span class="description">
+            {{ description }}
         </span>
-      
-      </a>
+        {%- endif -%}
 
-      {%- if product.metafields.custom.product_subtitle__description != blank -%}
+
+        {% comment %} <span class="title">
+          {{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}
+        </span> {% endcomment %}
+      
+      </div>
+
+      {% comment %} {%- if product.metafields.custom.product_subtitle__description != blank -%}
         <a href="{{ product.url }}" data-instant class="product-item-meta__subtitle text--xsmall">
           {{ product.metafields.custom.product_subtitle__description }}
         </a>
-      {%- endif -%}
+      {%- endif -%} {% endcomment %}
 
     
       {% comment %} {%- if settings.show_product_rating -%}
@@ -232,7 +238,7 @@
                 <span class="unit-price-measurement__separator">/</span>
 
                 {%- if product.selected_or_first_available_variant.unit_price_measurement.reference_value != 1 -%}
-                  <span class="unit-price-measurement__reference-value">{{ product.selected_or_first_available_variant.unit_price_measurement.reference_value }}</span>
+                  <span class="unit-price-mefasurement__reference-value">{{ product.selected_or_first_available_variant.unit_price_measurement.reference_value }}</span>
                 {%- endif -%}
 
                 <span class="unit-price-measurement__reference-unit">{{ product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}</span>
@@ -253,7 +259,7 @@
           {%- form 'product', product, is: 'product-form', id: form_id -%}
             <input type="hidden" name="quantity" value="1">
             <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
-            <button type="submit" {% if show_cta %}is="loader-button"{% endif %} class="button button--ternary">ADD FREE GIFT</button>
+            <button type="submit" {% if show_cta %}is="loader-button"{% endif %} class="button button--ternary button--full">ADD FREE GIFT</button>
           {%- endform -%}
         {%- else -%}
           <button type="button" {% if show_cta %}loader{% endif %} is="toggle-button" aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" aria-expanded="false" class="button button--ternary hidden-phone">{{ 'collection.product.quick_view' | t }}</button>

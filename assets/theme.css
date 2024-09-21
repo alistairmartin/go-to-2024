@@ -2439,7 +2439,7 @@ p a:not(.button), .rte a:not(.button), .link {
 
 .tabs-nav__item-list {
   vertical-align: top;
-  box-shadow: 0 -1px rgb(var(--border-color)) inset;
+  box-shadow: 0 -4px rgb(var(--border-color)) inset;
   grid-auto-columns: -webkit-max-content;
   grid-auto-columns: max-content;
   grid-auto-flow: column;
@@ -2464,7 +2464,7 @@ p a:not(.button), .rte a:not(.button), .link {
   transform-origin: 0;
   background: currentColor;
   width: 100%;
-  height: 2px;
+  height: 4px;
   position: absolute;
   bottom: 0;
 }
@@ -10584,7 +10584,7 @@ input:checked + .popover__choice-label:is(:lang(ae), :lang(ar), :lang(arc), :lan
 
 @media screen and (max-width: 740px) {
   .product:not(.product--featured) {
-    margin-block: var(--container-gutter) 36px;
+    margin-block: 0 36px var(--container-gutter);
   }
 }
 

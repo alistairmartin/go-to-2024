@@ -35,7 +35,10 @@
           {%- endif -%}
 
           {%- if predictive_search.resources.articles.size > 0 -%}
-            <button type="button" class="tabs-nav__item heading heading--small" aria-expanded="{% if is_first %}true{% else %}false{% endif %}" aria-controls="predictive-search-articles">{{- 'search.general.articles' | t -}}</button>
+            <button type="button" class="tabs-nav__item heading heading--small" aria-expanded="{% if is_first %}true{% else %}false{% endif %}" aria-controls="predictive-search-articles">
+              Go-To Guide
+              {% comment %} {{- 'search.general.articles' | t -}} {% endcomment %}
+              </button>
             {%- assign is_first = false -%}
           {%- endif -%}
 

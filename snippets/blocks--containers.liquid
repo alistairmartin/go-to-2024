@@ -89,13 +89,18 @@
         {% assign classes = classes | append: " flex-column-reverse--desktop" %}
     {%- endif -%}
 
-    {%- if block.settings.mobile_grid == "flex-grid" -%}
+    {%- if block.settings.mobile_grid contains "flex-grid" -%}
         {% assign classes = classes | append: " flex-grid--mobile" %}
     {%- endif -%}
 
     {%- if block.settings.mobile_grid == "flex-grid-wrap" -%}
         {% assign classes = classes | append: " flex-grid-wrap--mobile" %}
     {%- endif -%}
+
+
+    {%- if block.settings.mobile_grid == "flex-column" -%}
+      {% assign classes = classes | append: " flex-column--mobile" %}
+  {%- endif -%}
 
     {%- if block.settings.mobile_grid == "flex-column-reverse" -%}
         {% assign classes = classes | append: " flex-column-reverse--mobile" %}

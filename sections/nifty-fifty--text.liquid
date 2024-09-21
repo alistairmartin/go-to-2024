@@ -56,15 +56,46 @@ document.addEventListener("DOMContentLoaded", function () {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('animate-before');
+
+      if(window.innerWidth < 768) {
+        setTimeout(() => {
+          entry.target.classList.add('animate-before');
+        }, 2500); 
+
       } else {
-        entry.target.classList.remove('animate-before');
+        setTimeout(() => {
+          entry.target.classList.add('animate-before');
+        }, 1500); 
+
+      }
       }
     });
   }, { threshold: 0.1 });
 
   animatedElements.forEach(element => {
     observer.observe(element);
+  });
+
+
+  const animatedElementsSpanDesktop = document.querySelectorAll('.nifty-fifty-text.hide-mobile span');
+  const animatedElementsSpanMobile = document.querySelectorAll('.nifty-fifty-text.hide-desktop span');
+
+  const observerSpan = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-on-scroll');
+      } 
+    });
+  }, { threshold: 0.1 });
+
+  animatedElementsSpanDesktop.forEach((element, index) => {
+    element.style.transitionDelay = `${index * 500}ms`; 
+    observerSpan.observe(element);
+  });
+
+  animatedElementsSpanMobile.forEach((element, index) => {
+    element.style.transitionDelay = `${index * 500}ms`; 
+    observerSpan.observe(element);
   });
 });
   </script>

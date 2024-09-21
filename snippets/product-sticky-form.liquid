@@ -13,7 +13,11 @@
         }
       </style>
 
-      <product-sticky-form form-id="{{ product_form_id }}" hidden class="product-sticky-form hide-desktop">
+    {%- if product.metafields.custom.product_main_information__related_products != blank -%}
+      {%- assign customVariants = true -%}
+    {%- endif -%}
+
+      <product-sticky-form form-id="{{ product_form_id }}" hidden class="product-sticky-form hide-desktop {% if product.metafields.custom.product_main_information__related_products != blank %}product-sticky-form--custom-variants{% endif %}">
         <div class="container">
           <div class="product-sticky-form__inner">
             <div class="product-sticky-form__content-wrapper hidden-pocket">
@@ -118,6 +122,58 @@
                   {%- endfor -%}
                 </div>
               {%- endunless -%}
+
+
+              {%- if product.metafields.custom.product_main_information__related_products != blank -%}
+                {%- assign related_products = product.metafields.custom.product_main_information__related_products | split: "|" -%}
+                <div class="product-sticky-form__variants  product-sticky-form__variants-custom hidden-pocket"></div>
+    
+                
+                    <div class="select-wrapper variants-custom" data-selector-type="dropdown">
+                      <combo-box fit-toggle initial-focus-selector="[aria-selected='true']" id="{{ option_id }}-combo-box" class="combo-box">
+                        <span class="combo-box__overlay"></span>
+
+                        <header class="combo-box__header">
+                          <p class="combo-box__title heading h6">Options</p>
+
+                          <button type="button" class="combo-box__close-button tap-area" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
+                            {%- render 'icon' with 'close' -%}
+                          </button>
+                        </header>
+
+                        <div class="combo-box__option-list" role="listbox">
+
+                          {%- assign primaryProduct = product.title -%}
+                          {%- for product_handle in related_products -%}
+                            {%- assign related_product = all_products[product_handle] -%}
+                            {%- assign related_product_title = related_product.metafields.gts_theme.alternate_title | default: related_product.title -%}
+
+                            <a href="{{ related_product.url }}" type="button" role="option" class="combo-box__option-item" aria-selected="{% if related_product.handle == product.handle %}true{% else %}false{% endif %}">
+                              {{ related_product | image_url: width: related_product.width | image_tag: loading: 'lazy', sizes: '270px', sizes: '270,540,810', class: "image-variant" }}
+                              <span class="text">
+                                <span class="heading title">{{ related_product.title | remove: related_product_title }} <span class="price">{{ product.price | money | remove: ".00" | remove: ",00" }}</span></span>
+                                <span class="option">{{ related_product_title }}</span>
+                                {%- if related_product.metafields.custom.product_subtitle__description != blank -%}
+                                  <span class="description">{{ related_product.metafields.custom.product_subtitle__description }}</span>
+                                {%- endif -%}
+                              </span>
+                            </a>
+                          {%- endfor -%}
+                        </div>
+
+                      </combo-box>
+
+                      <button type="button" is="toggle-button" class="select" aria-expanded="false" aria-haspopup="listbox" aria-controls="{{ option_id }}-combo-box">
+                        <span class="select__selected-value">
+                          {{- related_product_title -}}
+                        </span>
+
+                        {%- render 'icon' with 'chevron' -%}
+                      </button>
+                    </div>
+                 
+                </div>
+              {%- endif -%}
 
               <product-payment-container class="product-sticky-form__payment-container">
                 {%- capture button_content -%}

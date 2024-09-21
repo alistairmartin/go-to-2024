@@ -46,6 +46,7 @@
 
     --section-star-colour: {{ section.settings.stars_colour }};
   }
+
   #shopify-section-{{ section.id }} .logo-list__list {
     --logos-gap: 5px;
     grid-template-columns: repeat(min(var(--logos-per-row),var(--section-logo-count)),minmax(260px,400px));
@@ -64,7 +65,7 @@
 <section class="section {% unless blends_with_background or is_boxed %}section--flush{% endunless %}">
   <div class="section__color-wrapper">
     <div class="container {% unless blends_with_background %}vertical-breather{% endunless %}">
-      <header class="section__header text-container">
+      <header class="section__header text-container text-{{ section.settings.header_text_alignment }}">
         {%- if section.settings.subheading != blank -%}
           <h2 class="heading heading--small">{{ section.settings.subheading | escape }}</h2>
         {%- endif -%}
@@ -155,6 +156,26 @@
       "label": "Reveal on scroll",
       "info": "Show animation when section becomes visible.",
       "default": true
+    },
+    {
+      "type": "select",
+      "id": "header_text_alignment",
+      "label": "Header Text Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
     },
     {
       "type": "text",

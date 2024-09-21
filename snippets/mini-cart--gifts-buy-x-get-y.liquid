@@ -1,8 +1,29 @@
-{%- for block in section.blocks -%}
-  {%- if block.type == "buy_x_get_y" -%}
-    {%- render 'mini-cart--gifts-buy-x-get-y' -%}
+{% assign buyProductInCart = false -%}
+{% assign buyProductTag = block.settings.buy_tag -%}
 
-  {%- elsif block.type == "subscription_gift" -%}
-    {%- render 'mini-cart--gifts-subscription-gift' -%}
+{% assign getProductInCart = false %}
+{% assign getProductTag = block.settings.get_tag %}
+{% assign getProduct = block.settings.get_product %}
+
+
+
+{%- for item in cart.items -%}
+  {% if getProduct.handle == item.product.handle %}
+    {% assign getProductInCart = true %}
+  {%- endif -%}
+
+  {%- if item.product.tags contains buyProductTag -%}
+    {% assign buyProductInCart = true -%}
   {%- endif -%}
 {%- endfor -%}
+
+{%- if buyProductInCart == true and getProductInCart == false -%}
+  {% if getProduct.available == true %}
+      <div class="mini-cart-gift">
+      <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title }}</div>
+      {%- render 'product-item--gift', product: getProduct, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true, description: block.settings.gwp_description -%}
+      </div>
+  {%- endif -%}
+{%- endif -%}
+
+{{  }}

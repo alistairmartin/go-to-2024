@@ -7,7 +7,22 @@
 
   <div class="brand-switcher--brands">
     {%- for block in section.blocks -%}
-    <a href="{% if block.settings.brand == "go-to" %}{{ routes.root_url }}{% else %}{{ block.settings.brand_url }}{% endif %}" class="brand-switcher--brand {{ block.settings.brand }} {% if brand == block.settings.brand %}active{% endif %}">
+      {%- assign isHomepage = false -%}
+
+      {%- if template == "index" and brand == "go-to" -%}
+        {%- assign isHomepage = true -%}
+      {%- elsif block.settings.brand == brand and block.settings.brand_url and brand == "bro-to" -%}
+        {%- assign isHomepage = true -%}
+      {%- elsif block.settings.brand == brand and block.settings.brand_url and brand == "gro-to" -%}
+          {%- assign isHomepage = true -%}
+      {%- endif -%}
+
+      {%- if isHomepage and block.settings.brand == brand -%}
+        <button class="brand-switcher--brand {{ block.settings.brand }} {% if brand == block.settings.brand %}active{% endif %}">
+        {% else %}
+        <a href="{% if block.settings.brand == "go-to" %}{{ routes.root_url }}{% else %}{{ block.settings.brand_url }}{% endif %}" class="brand-switcher--brand {{ block.settings.brand }} {% if brand == block.settings.brand %}active{% endif %}">
+      {%- endif -%}
+
       {%- if block.settings.brand == "go-to" -%}
         {%- render 'svg--logo-go-to' -%}
       {%- elsif block.settings.brand == "bro-to" -%}
@@ -15,7 +30,12 @@
       {%- elsif block.settings.brand == "gro-to" -%}
         {%- render 'svg--logo-gro-to' -%}
       {%- endif -%}
+
+      {%- if isHomepage and block.settings.brand == brand-%}
+      </button>
+      {% else %}
       </a>
+    {%- endif -%}
     {%- endfor -%}
   </div>
 

@@ -5,6 +5,7 @@
 {%- endcomment -%}
 
 {%- assign active_filters_count = 0 -%}
+{%- assign product_tags_filter = section.settings.product_tags_filter | split: "," -%}
 
 {%- for filter in filters -%}
   {%- if filter.type == 'list' -%}
@@ -24,6 +25,7 @@
   {%- assign sort_by = search.sort_by | default: search.default_sort_by -%}
 {%- endif -%}
 
+
 {%- for filter in filters -%}
   {%- case filter.type -%}
     {%- when 'list' -%}
@@ -34,7 +36,15 @@
           {%- if section.settings.show_filter_group_name -%}
             {{- filter.label }}: {{ filter_value.label -}}
           {%- else -%}
-            {{- filter_value.label -}}
+
+          {%- assign filterTag = filter_value.label -%}
+
+            {%- for custom_filter in product_tags_filter -%}
+              {%- assign filter_prefix = custom_filter | split: ")" | last -%}
+              {%- assign filterTag = filterTag | remove: filter_prefix -%}
+            {%- endfor -%}
+
+            {{ filterTag | handle | replace: "-", " " | capitalize }}
           {%- endif -%}
         </div>
       {%- endfor -%}

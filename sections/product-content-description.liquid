@@ -29,7 +29,7 @@
           </div>
       
         {%- comment %} CONTENT -  DESCRIPTION {% endcomment -%}
-
+        
         <div class="product-content-description--content-inner tab-panel description" id="product-content-description--tab-1" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-1" aria-hidden="false">
           {% assign product_desc = product.description | split: ' ' %}
           <div class="product-content-description--teaser" aria-revealed="{% if product_desc.size > 110 %}false{% else %}true{% endif %}">
@@ -39,12 +39,25 @@
               {%- endif -%}
             {%- endcapture -%}
 
-            {%- if product.metafields.custom.product_gwp__url != blank -%}
+
+            
+            {%- assign productCallOutModal = product.metafields.accentuate.product_gwp__modal_content -%}
+
+            {%- if productCallOutModal != blank -%}
+                <button class="link link--primary" id="open-product-quiz">
+                  {{ callout_image }}
+                </button>
+                {%- render 'modal', modalId: "open-product-quiz", buttonId: "open-product-quiz" content: productCallOutModal -%}
+            {% endif %}
+            
+            {% comment %}             
+            {%- elsif product.metafields.custom.product_gwp__url != blank -%}
               {%- assign product_gwp__url = product.metafields.custom.product_gwp__url | split: '#' -%}
 
-              {%- if product_gwp__url.size > 1 -%}
-                {%- assign modal_target = product_gwp__url | last -%}
-                <button type="button" data-target="{{ modal_target }}" aria-controls="{{ modal_target }}" data-toggle="modal" data-action="open-modal">{{ callout_image }}</button>
+              
+
+
+                
               {%- else -%}
                 <a href="{{ product.metafields.custom.product_gwp__url }}">{{ callout_image }}</a>
               {%- endif -%}
@@ -52,9 +65,10 @@
               <a href="{{ product.metafields.custom.product_gwp__link }}">{{ callout_image }}</a>              
             {%- else -%}
               {{ callout_image }}
-            {%- endif -%}
+            {%- endif -%} {% endcomment %}
 
             {{ product.description }}
+            
           </div>
 
           {% unless product_desc.size < 110 %}
@@ -63,39 +77,51 @@
 
           {% endunless %}
 
+          {% assign skinTypeCounter = 0 %}
+          {%- for tag in product.tags -%}
+            {%- if tag contains "skintype_" -%}
+              {% assign skinTypeFound = true %}
+              {%- assign skinTypeCounter = skinTypeCounter | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+  
+          {%- if skinTypeFound == true -%}
           <div class="perfect-for">
             <h3 class="text--bold">{{ 'product.content.plays_nice_with' | t }}</h3>
-            <div class="perfect-for--container">
+            <div class="perfect-for--container items-{{ skinTypeCounter }}">
               {%- for tag in product.tags -%}
                 {%- if tag contains "skintype_" -%}
-                  {% assign skinTypeFound = true %}
                   {% assign icon = tag | remove: "skintype_" %}
                   {% render "product-content-icons--perfect-for", icon: icon %}
                 {%- endif -%}
               {%- endfor -%}
             </div>
           </div>
+        {%- endif -%}
 
-          {%- if skinTypeFound -%}
-          <style>.perfect-for {display: block !important;}</style>
+        {% assign badgeCounter = 0 %}
+        {%- for tag in product.tags -%}
+          {%- if tag contains "badge_" -%}
+            {% assign badgeFound = true %}
+            {%- assign badgeCounter = badgeCounter | plus: 1 -%}
+            {% break %}
           {%- endif -%}
+        {%- endfor -%}
 
+        {%- if badgeFound -%}
           <div class="who-is-it-for">
             <h3 class="text--bold">{{ 'product.content.good_to_know' | t }}</h3>
-            <div class="who-is-it-for--container">
+            <div class="who-is-it-for--container items-{{ badgeCounter }}">
               {%- for tag in product.tags -%}
                 {%- if tag contains "badge_" -%}
-                  {% assign badgeFound = true %}
                   {% assign icon = tag | remove: "badge_" %}
                   {% render "product-content-icons--good-to-know", icon: icon %}
                 {%- endif -%}
               {%- endfor -%}
             </div>
           </div>
-
-          {%- if badgeFound -%}
-          <style>.who-is-it-for {display: block !important;}</style>
-          {%- endif -%}
+        {%- endif -%}
         </div>
 
         {%- comment %} CONTENT -  REVIEWS {% endcomment -%}

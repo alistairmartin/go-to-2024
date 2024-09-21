@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function (event) {
 
+
     document.querySelectorAll('.brand-switcher--brand path').forEach(path => {
         const bbox = path.getBBox();
         const x = bbox.x + bbox.width / 2;
@@ -56,9 +57,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     }
     
-    var debouncedScrollHandler = debounce(handleScrollHeader, 100);
+    var debouncedScrollHandler = debounce(handleScrollHeader, 200);
     
     document.addEventListener('scroll', debouncedScrollHandler);
+
+    const logoItems = document.querySelectorAll('.press-list__logo-item');
+    const handleHover = function() {
+      this.click(); 
+    };
+  
+    logoItems.forEach(function(logoItem) {
+      logoItem.addEventListener('mouseover', debounce(handleHover, 400, false)); 
+    });
 });
 
 function openAccessabilityWidget() {

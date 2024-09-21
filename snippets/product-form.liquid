@@ -576,3 +576,13 @@ IMPLEMENTATION NOTE: if during the iteration of the options we have found an opt
     </div>
   </popover-content>
 {%- endif -%}
+
+
+{% if product.selling_plan_groups.size > 0 %}
+{% else %}
+<style>
+  .recharge-subscription-widget {
+    display: none !important;
+  }
+</style>
+{% endif %}

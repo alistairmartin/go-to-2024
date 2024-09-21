@@ -207,7 +207,7 @@
 
     {%- if product.media.size > 1 -%}
       <flickity-controls controls="product-{{ section.id }}-{{ product.id }}-media-list" class="product__media-nav">
-        <button class="product__media-prev-next {% if section.settings.show_thumbnails_on_mobile %}hidden-pocket{% endif %} hidden-lap-and-up tap-area tap-area--large" aria-label="{{ 'general.accessibility.previous' | t }}" data-action="prev">
+        <button class="product__media-prev-next hidden-pocket {% if section.settings.show_thumbnails_on_mobile %}hidden-pocket{% endif %} hidden-lap-and-up tap-area tap-area--large" aria-label="{{ 'general.accessibility.previous' | t }}" data-action="prev">
           {%- render 'icon' with 'nav-arrow-left', direction_aware: true -%}
         </button>
 
@@ -314,7 +314,7 @@
           </div>
         </scroll-shadow>
 
-        <button class="product__media-prev-next {% if section.settings.show_thumbnails_on_mobile %}hidden-pocket{% endif %} hidden-lap-and-up tap-area tap-aera--large" aria-label="{{ 'general.accessibility.next' | t }}" data-action="next">
+        <button class="product__media-prev-next hidden-pocket {% if section.settings.show_thumbnails_on_mobile %}hidden-pocket{% endif %} hidden-lap-and-up tap-area tap-aera--large" aria-label="{{ 'general.accessibility.next' | t }}" data-action="next">
           {%- render 'icon' with 'nav-arrow-right', direction_aware: true -%}
         </button>
       </flickity-controls>

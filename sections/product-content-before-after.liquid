@@ -1,6 +1,6 @@
 {%- unless product.metafields.custom.product_trials__before == blank or product.metafields.custom.product_trials__after == blank -%}
-  <section class="Section Section--spacingNone BeforeAfter {% unless product.metafields.custom.product_trials.size < 2 %}BeforeAfter--hasTabs{% endunless %}" data-section-id="{{ section.id }}" data-section-type="before-after">
-    <div class="ContentWidth">
+  <section class="section BeforeAfter {% unless product.metafields.custom.product_trials.size < 2 %}BeforeAfter--hasTabs{% endunless %}" data-section-id="{{ section.id }}" data-section-type="before-after">
+    <div class="container">
       {%- unless product.metafields.custom.product_trials__trial_title.size < 2 -%}
         <div class="BeforeAfter__TabButtonsContainer">
           <ul>
@@ -40,11 +40,12 @@
     </div>
   </section>
   
-  {%- unless product.metafields.custom.product_trials__modal_content == blank -%}
+  {% comment %} {%- unless product.metafields.custom.product_trials__modal_content == blank -%}
     {%- assign modal_id = 'modal-' | append: section.id -%}
     {%- render 'modal', id: modal_id, title: product.metafields.custom.product_trials__modal_title, content: product.metafields.custom.product_trials__modal_content, class: 'Modal--medium' -%}
-  {%- endunless -%}
+  {%- endunless -%} 
 {%- endunless -%}
+{% endcomment %}
 
 <style>
   #shopify-section-{{ section.id }} {
@@ -73,6 +74,93 @@
     }
   }
 </style>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function(event) {
+
+var BeforeAfterSliderSection = function (element) {
+    this.element = $(element);
+    this._build();
+    this._attachListeners();
+};
+
+BeforeAfterSliderSection.prototype._attachListeners = function () {
+    var self = this;
+
+    this.element.on('click', '[data-action=tab]', function (e) {
+        self._switchTab(e, $(this));
+    });
+
+    this.element.on('change input', '[data-action=slider]', function (e) {
+        self._slide(e, $(this));
+    });
+
+    $(document).on('breakpoint:changed', function () {
+        self._build();
+    });
+};
+
+BeforeAfterSliderSection.prototype._onUnload = function () {
+    this.element.off();
+    $(document).off('breakpoint:changed');
+};
+
+BeforeAfterSliderSection.prototype._switchTab = function (e, target) {
+    this.element.find('.BeforeAfter__SliderContainer').hide().removeClass('active');
+    this.element.find('.BeforeAfter__TabButton').removeClass('active');
+
+    var targetTab = target.data('target'),
+        activeTab = this.element.find('#' + targetTab);
+
+    activeTab.show().addClass('active');
+    target.addClass('active');
+
+    this._build();
+};
+
+BeforeAfterSliderSection.prototype._build = function () {
+    var sliderContainer = this.element.find('.BeforeAfter__SliderContainer.active'),
+        slider = sliderContainer.find('[data-action=slider]'),
+        containerHeight = sliderContainer.height(),
+        containerWidth = sliderContainer.width();
+
+    if (slider.length) {
+        slider.css('height', containerHeight);
+    }
+
+    this.sliderButton = sliderContainer.find('.BeforeAfter__SliderButton');
+    this.imageWrapper = sliderContainer.find('.BeforeAfter__Image--before');
+
+    this.element.find('.BeforeAfter__Image').each(function () {
+        $(this).css({
+            'height': containerHeight + 'px',
+            'background-size': containerWidth + 'px 100%'
+        });
+    });
+
+    this.element.find('style').remove();
+
+    var tempCSS = '<style>[data-action=slider]::-webkit-slider-thumb { height: ' + containerHeight + 'px } [data-action=slider]::-moz-range-thumb { height: ' + containerHeight + 'px }</style>';
+    this.element.prepend(tempCSS);
+};
+
+BeforeAfterSliderSection.prototype._slide = function (event, target) {
+    var sliderValue = target.val();
+    this.imageWrapper.css('width', sliderValue + '%');
+    this.sliderButton.css('left', 'calc(' + sliderValue + '% - 15px)');
+};
+
+// Initialize the section
+$(document).ready(function() {
+    $('.BeforeAfter').each(function() {
+        new BeforeAfterSliderSection(this);
+    });
+});
+
+  });
+</script>
+
 {% schema %}
   {
     "name": "Prod. Con: Before / After",

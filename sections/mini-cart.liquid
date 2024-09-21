@@ -122,8 +122,10 @@
         <input type="hidden" name="checkout">
 
         {%- for line_item in cart.items -%}
-          <line-item class="line-item">
+          <line-item class="line-item line-item--type__{{ line_item.product.type | handle }}">
             <div class="line-item__content-wrapper">
+
+              <div class="line-item__content-wrapper--left">
               <a href="{{ line_item.url }}" class="line-item__image-wrapper" tabindex="-1" aria-hidden="true">
                 <span class="line-item__loader" hidden>
                   <span class="line-item__loader-spinner spinner" hidden>{% render 'icon' with 'spinner', width: 16, height: 16, stroke_width: 6 %}</span>
@@ -232,9 +234,9 @@
                     </div>
                   {%- endif -%}
 
-                  <div class="product-item-meta__price-list-container text--small">
+                  {% comment %} <div class="product-item-meta__price-list-container text--small">
                     <div class="price-list hidden-tablet-and-up">
-                      {{-  -}}
+                      {{- line_price -}}
                       {{- unit_price -}}
                     </div>
 
@@ -243,7 +245,7 @@
                         {{- unit_price -}}
                       </div>
                     {%- endif -%}
-                  </div>
+                  </div> {% endcomment %}
                 </div>
 
                 {%- if line_item.line_level_discount_allocations != blank -%}
@@ -265,6 +267,8 @@
                 {%- endif -%}
 
                 <line-item-quantity class="line-item__quantity">
+
+                  {%- unless line_item.product.type == "Gift" -%}
                   <div class="quantity-selector quantity-selector--small">
                     <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
                       {%- render 'icon' with 'minus' -%}
@@ -282,12 +286,14 @@
                       </span>
                     {%- endif -%}
                   </div>
+                {%- endunless -%}
 
                   <a href="{{ line_item.url_to_remove }}" class="line-item__remove-button link text--subdued text--xxsmall" data-no-instant>{{ 'cart.general.remove' | t }}</a>
                 </line-item-quantity>
               </div>
+              </div>
 
-              <div class="line-item__price-list-container text--small hidden-phone">
+              <div class="line-item__price-list-container text--small">
                 {%- if settings.show_vendor -%}
                   {%- comment -%}
                     IMPLEMENTATION NOTE: in the design, the price is aligned in regards of the product title (not the brand). It was a
@@ -304,66 +310,66 @@
           </line-item>
         {%- endfor -%}
       </form>
+    </div>
 
-      {%- if section.settings.show_recommendations -%}
-        <cart-drawer-recommendations section-id="{{ section.id }}" product-id="{{ cart.items.first.product_id }}" class="mini-cart__recommendations">
-          {%- assign acceptable_recommendations_count = 0 -%}
+    {%- if section.settings.show_recommendations -%}
+      <cart-drawer-recommendations section-id="{{ section.id }}" product-id="{{ cart.items.first.product_id }}" class="mini-cart__recommendations">
+        {%- assign acceptable_recommendations_count = 0 -%}
 
-          {%- for product in recommendations.products -%}
-            {%- assign matching_product = cart.items | where: 'product_id', product.id | first -%}
+        {%- for product in recommendations.products -%}
+          {%- assign matching_product = cart.items | where: 'product_id', product.id | first -%}
 
-            {%- if matching_product == blank -%}
-              {%- assign acceptable_recommendations_count = acceptable_recommendations_count | plus: 1 -%}
-            {%- endif -%}
-          {%- endfor -%}
+          {%- if matching_product == blank -%}
+            {%- assign acceptable_recommendations_count = acceptable_recommendations_count | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
 
-          {%- if recommendations.performed -%}
-            {%- if acceptable_recommendations_count > 0 -%}
-              <div class="mini-cart__recommendations-inner">
-                {%- if section.settings.recommendations_title != blank -%}
-                  <p class="mini-cart__recommendations-heading heading heading--small hidden-pocket">{{ section.settings.recommendations_title | escape }}</p>
-                  <p class="mini-cart__recommendations-heading heading heading--xsmall text--subdued hidden-lap-and-up">{{ section.settings.recommendations_title | escape }}</p>
-                {%- endif -%}
+        {%- if recommendations.performed -%}
+          {%- if acceptable_recommendations_count > 0 -%}
+            <div class="mini-cart__recommendations-inner">
+              {%- if section.settings.recommendations_title != blank -%}
+                <p class="mini-cart__recommendations-heading heading heading--small hidden-pocket">{{ section.settings.recommendations_title | escape }}</p>
+                <p class="mini-cart__recommendations-heading heading heading--xsmall text--subdued hidden-lap-and-up">{{ section.settings.recommendations_title | escape }}</p>
+              {%- endif -%}
 
-                <div class="arrows-container hide-mobile--flex">
-                  <button class="mini-cart__recommendations-left" onclick="miniCartRecommendationsLeft()">{% render "icon" with "chevron-back" %}</button>
-                  <button class="mini-cart__recommendations-right" onclick="miniCartRecommendationsRight()">{% render "icon" with "chevron-back" %}</button>
-                </div>
+              <div class="arrows-container hide-mobile--flex">
+                <button class="mini-cart__recommendations-left" onclick="miniCartRecommendationsLeft()">{% render "icon" with "chevron-back" %}</button>
+                <button class="mini-cart__recommendations-right" onclick="miniCartRecommendationsRight()">{% render "icon" with "chevron-back" %}</button>
+              </div>
 
-                <div class="scroller">
-                  <div class="scroller__inner">
-                    <div class="mini-cart__recommendations-list">
-                      {%- assign shown_products_count = 0 -%}
+              <div class="scroller">
+                <div class="scroller__inner">
+                  <div class="mini-cart__recommendations-list">
+                    {%- assign shown_products_count = 0 -%}
 
-                      {%- for product in recommendations.products -%}
-                        {% unless product.tags contains 'hidden' %}
-                        {%- if shown_products_count >= 10 -%}
-                          {%- break -%}
-                        {%- endif -%}
+                    {%- for product in recommendations.products -%}
+                      {% unless product.tags contains 'hidden' %}
+                      {%- if shown_products_count >= 10 -%}
+                        {%- break -%}
+                      {%- endif -%}
 
-                        {%- assign matching_product = cart.items | where: 'product_id', product.id -%}
+                      {%- assign matching_product = cart.items | where: 'product_id', product.id -%}
 
-                        {%- if matching_product.size == 0 -%}
-                          {%- assign shown_products_count = shown_products_count | plus: 1 -%}
-                          {%- render 'product-item', product: product, reduced_content: true, reduced_font_size: true, hide_secondary_image: true, sizes_attribute: '(max-width: 740px) 65px, 92px', horizontal_layout: true -%}
-                        {%- endif -%}
-                        {% endunless %}
-                      {%- endfor -%}
-                    </div>
+                      {%- if matching_product.size == 0 -%}
+                        {%- assign shown_products_count = shown_products_count | plus: 1 -%}
+                        {%- render 'product-item', product: product, reduced_content: true, reduced_font_size: true, hide_secondary_image: true, sizes_attribute: '(max-width: 740px) 65px, 92px', horizontal_layout: true -%}
+                      {%- endif -%}
+                      {% endunless %}
+                    {%- endfor -%}
                   </div>
                 </div>
               </div>
-            {%- endif -%}
-          {%- else -%}
-            <div class="mini-cart__recommendations-inner">
-              <div class="spinner">
-                {%- render 'icon' with 'spinner', stroke_width: 3, width: 40, height: 40 -%}
-              </div>
             </div>
           {%- endif -%}
-        </cart-drawer-recommendations>
-      {%- endif -%}
-    </div>
+        {%- else -%}
+          <div class="mini-cart__recommendations-inner">
+            <div class="spinner">
+              {%- render 'icon' with 'spinner', stroke_width: 3, width: 40, height: 40 -%}
+            </div>
+          </div>
+        {%- endif -%}
+      </cart-drawer-recommendations>
+    {%- endif -%}
 
     <footer class="mini-cart__drawer-footer drawer__footer drawer__footer--tight drawer__footer--bordered">
       {% comment %} {%- capture shipping_tax_note -%}{{ 'cart.general.shipping_tax_note' | t }}{%- endcapture -%} {% endcomment %}
@@ -398,13 +404,17 @@
       {%- endif -%}
 
       {%- if section.settings.show_checkout_button -%}
+        {%- if cart.total_price > 2500 -%}
         <button form="mini-cart-form" type="submit" class="checkout-button button button--primary button--full" name="checkout">
           {% comment %} <span class="checkout-button__lock">{%- render 'icon' with 'lock' -%}</span> {% endcomment %}
-
           {{- 'cart.general.checkout' | t -}}
           <span class="square-separator"></span>
           {{- cart.total_price | money_with_currency | remove: ".00" | remove: ",00" -}}
         </button>
+        {%- else - %}
+        <p>The total items in your cart are below the minimum order value of $25. Please add more very good skin care to proceed. Go on, get shopping.</p>
+        <a href="/collections/shop-all" class="button button--ternary button--full" data-no-instant>Continue Shopping</a>
+       {%- endif -%}
       {%- else -%}
         <a href="{{ routes.cart_url }}" class="button button--primary button--full" data-no-instant>{{ 'cart.general.go_to_cart' | t }}</a>
       {%- endif -%}
@@ -454,28 +464,42 @@
           "info": "Only Admin Will See This."
         },
         {
+          "type": "header",
+          "content": "Buy Product"
+        },
+        {
           "type": "text",
-          "id": "tag_buy",
-          "label": "Buy Product",
+          "id": "buy_tag",
+          "label": "BUY Tag",
+          "info": "Product Tag"
+        },
+        {
+          "type": "header",
+          "content": "Get Product"
+        },
+        {
+          "type": "text",
+          "id": "get_tag",
+          "label": "GET Tag",
           "info": "Product Tag"
         },
         {
           "type": "product",
-          "id": "tag_get",
+          "id": "get_product",
           "label": "Get Product",
-          "info": "Product Tag"
+          "info": "This will be added to cart."
         },
         {
           "type": "header",
           "content": "Text"
         },
         {
-          "type": "text",
+          "type": "textarea",
           "id": "gwp_title",
           "label": "Title"
         },
         {
-          "type": "text",
+          "type": "richtext",
           "id": "gwp_description",
           "label": "Description"
         },
@@ -483,7 +507,7 @@
           "type": "image_picker",
           "id": "gwp_image",
           "label": "Image",
-          "info": "Optional"
+          "info": "Optional. Will use product image as default."
         }
       ]
     },

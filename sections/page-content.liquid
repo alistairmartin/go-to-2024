@@ -1,12 +1,12 @@
 
-
+{% comment %} 
 <section>
   <div class="container">
     <div class="page-content page-content--{{ section.settings.page_width }} rte {% if page.content == blank %}hide{% endif %}">
         {{- page.content -}}
       </div>
   </div>
-</section>
+</section> {% endcomment %}
 
 {% schema %}
 {
@@ -41,3 +41,4 @@
   ]
 }
 {% endschema %}
+

@@ -40,7 +40,6 @@
         <div class="scroller">
           <div class="product-list__inner product-list__inner--scroller product-list__inner--desktop-no-scroller hide-scrollbar">
             {%- for product in recommendations.products -%}
-              {{ product.tags }}
               {% unless product.tags contains 'hidden' %}
               {%- if shown_products_count >= 4 -%}
                 {%- break -%}
@@ -53,7 +52,7 @@
                 {%- assign largest_image_aspect_ratio = largest_image_aspect_ratio | at_most: product.featured_media.aspect_ratio -%}
 
                 {%- capture sizes_attribute -%}(max-width: 740px) 75vw, min({{ 100.0 | divided_by: 4 | ceil }}vw, {{ 1520.0 | divided_by: 4 | ceil }}px){%- endcapture -%}
-                {%- render 'product-item', product: product, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition -%}
+                {%- render 'product-item', product: product, reduced_content: true, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition -%}
               {%- endif -%}
             {% endunless %}
             {%- endfor -%}

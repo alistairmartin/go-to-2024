@@ -225,6 +225,8 @@
                           {%- endif -%}
 
                           {%- capture quantity_selector_inner -%}
+
+                            {%- unless line_item.product.type == "Gift" -%}
                             <div class="quantity-selector quantity-selector--small">
                               <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
                                 {% render 'icon' with 'minus' %}
@@ -242,6 +244,7 @@
                                 </span>
                               {%- endif -%}
                             </div>
+                          {%- endunless -%}
 
                             <a href="{{ line_item.url_to_remove }}" class="line-item__remove-button link text--subdued text--xxsmall hidden-tablet-and-up" data-no-instant>{{ 'cart.general.remove' | t }}</a>
                             <a href="{{ line_item.url_to_remove }}" class="line-item__remove-button link text--subdued text--xsmall hidden-phone" data-no-instant>{{ 'cart.general.remove' | t }}</a>

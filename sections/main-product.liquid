@@ -77,7 +77,7 @@
 
     <product-rerender id="product-info-{{ product.id }}-{{ section.id }}" observe-form="{{ product_form_id }}" allow-partial-rerender>
       <div class="product product--thumbnails-{{ section.settings.desktop_thumbnails_position }}">
-        {%- render 'product-info--mobile', product: product, product_form_id: product_form_id, update_url: true -%}
+        {% comment %} {%- render 'product-info--mobile', product: product, product_form_id: product_form_id, update_url: true -%} {% endcomment %}
         {%- render 'product-media', product: product, product_form_id: product_form_id -%}
         {%- render 'product-info', product: product, product_form_id: product_form_id, update_url: true -%}
       </div>

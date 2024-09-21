@@ -66,9 +66,6 @@ Code that create the faceted search for the collection and search pages. It curr
 
       <div class="product-facet__filter-list">
         {%- for filter in filters -%}
-
-          {%- unless filter.param_name == "filter.p.tag" -%}
-
           {%- assign is_filter_group_open = false -%}
 
           {%- if filter.active_values.size > 0 or filter.max_value.value != blank or filter.min_value.value != blank or forloop.first and section.settings.open_first_filter_group -%}
@@ -198,11 +195,7 @@ Code that create the faceted search for the collection and search pages. It curr
               {{- filter_content -}}
             </div>
           {%- endif -%}
-
-          {%- endunless -%}
         {%- endfor -%}
-
-        {% render "facet-filters--tags"  filters: filters %}
       </div>
 
       <noscript>

@@ -8,7 +8,7 @@
     <script src="{{ 'products.min.js' | asset_url }}" defer></script>
 {%- endif -%}
 
-{%- if collection.handle == "build-your-routine" -%}
+{% if template.suffix == "build-your-routine" %}
     <script src="{{ 'byo-bundle.min.js' | asset_url }}" defer></script>
 {%- endif -%}
 

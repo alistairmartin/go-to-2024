@@ -259,7 +259,7 @@
       {%- endif -%}
     </div>
 
-    {%- if page.handle == "build-your-routine" -%}
+    {% if template.suffix == "build-your-routine" %}
       {% render "product-item--ATC-BYO", product: product %}
     {%- else -%}
       {%- if request.page_type != 'password' and settings.product_add_to_cart and product.available and reduced_content != true and show_cta != true -%}

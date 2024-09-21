@@ -42,7 +42,7 @@
 </style>
 
 
-<section class="section" data-section-id="{{ section.id }}" data-current="1">
+<section class="section section--flush" data-section-id="{{ section.id }}" data-current="1">
 
   <div class="section__color-wrapper">
 
@@ -133,6 +133,13 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('animate-before');
+
+          const textElements = document.querySelectorAll('.featured-carousel-product--grid-item-text');
+          setTimeout(() => {
+            textElements.forEach(textElement => {
+              textElement.classList.add('fade-in');
+            });
+          }, 4000);
         } else {
           // entry.target.classList.remove('animate-before');
         }

@@ -131,16 +131,19 @@
     <p>{{ product.metafields.global.description_tag }}</p>
   {%- endif -%}
 
+  {% assign skinTypeCounter = 0 %}
   {%- for tag in product.tags -%}
     {%- if tag contains "skintype_" -%}
       {% assign skinTypeFound = true %}
-      {% break %}
+      {%- assign skinTypeCounter = skinTypeCounter | plus: 1 -%}
     {%- endif -%}
   {%- endfor -%}
 
+  {% assign badgeCounter = 0 %}
   {%- for tag in product.tags -%}
     {%- if tag contains "badge_" -%}
       {% assign badgeFound = true %}
+      {%- assign badgeCounter = badgeCounter | plus: 1 -%}
       {% break %}
     {%- endif -%}
   {%- endfor -%}
@@ -151,7 +154,7 @@
       {%- if skinTypeFound -%}
         <div class="perfect-for">
           <h3 class="text--bold">{{ 'product.content.plays_nice_with' | t }}</h3>
-          <div class="perfect-for--container">
+          <div class="perfect-for--container items-{{ skinTypeCounter }}">
             {%- for tag in product.tags -%}
               {%- if tag contains "skintype_" -%}
                 {% assign skinTypeFound = true %}
@@ -167,7 +170,7 @@
       {%- if badgeFound -%}
         <div class="who-is-it-for">
           <h3 class="text--bold">{{ 'product.content.good_to_know' | t }}</h3>
-          <div class="who-is-it-for--container">
+          <div class="who-is-it-for--container items-{{ badgeCounter }}">
             {%- for tag in product.tags -%}
               {%- if tag contains "badge_" -%}
                 {% assign badgeFound = true %}

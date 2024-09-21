@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", function(event) {
+
+
+    // Routine Switcher
     document.querySelector('.product-content-routine').addEventListener("click", function() {
         var contentRoutine = document.querySelector('.product-content-routine');
 
@@ -11,6 +14,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }
     });
 
+
+    // Teaser 
     document.querySelector('.product-content-description--teaser-open').addEventListener("click", function() {
         this.classList.add("hidden");
         document.querySelector('.product-content-description--teaser-close').classList.remove("hidden");
@@ -23,6 +28,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.querySelector('.product-content-description--teaser').setAttribute('aria-revealed', 'false');
     });
 
+
+    // Ingredients
     document.querySelectorAll('.product-content-ingredients--text-item__mobile').forEach(function(item) {
         item.addEventListener("click", function() {
             
@@ -33,6 +40,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
             this.classList.add("active");
         });
     });
-    
+
 
 });
+
+
+

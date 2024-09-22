@@ -4,12 +4,16 @@
 
 store-header {
     &:hover {
-        z-index: 222;
+        z-index: 222 !important;
+        
+        .mega-menu {
+            z-index: 222 !important;
+        }
     }
 }
 
 .header-position--top .shopify-section--blog-header {
-    z-index: 10;
+    z-index: 2;
     .blog-header-logo {
         max-width: 400px;
         padding: 20px 10px 10px;
@@ -36,6 +40,10 @@ store-header {
         @include media-query($medium-up) {
             padding: 27px 0 !important;
         }
+    }
+
+    .link-bar__wrapper:after {
+        background: linear-gradient(to var(--transform-origin-start), #fde4db, #fde4db00);
     }
 
     #predictive-search-form-articles {
@@ -224,12 +232,18 @@ store-header {
                 }
             }
         }
-    }
-
-    
+    }   
 }
 
+
 .shopify-section--main-blog {
+
+    .container {
+        @include media-query($small) {
+          padding: 0;
+        }
+      }
+
     .article-list {
       display: grid;
       gap: 8px;
@@ -248,22 +262,53 @@ store-header {
           grid-area: unset !important;
         }
       }
-  
+
+      .article-item__title {
+        @include media-query($small) {
+            text-align: center;
+            grid-area: unset !important;
+          }
+      }
+      
+
+      .article-item__category {
+        font-weight: 500;
+        @include media-query($small) {
+            text-align: center;
+            display: block;
+            margin: 0 auto;
+        }
+      }
+
       .article-item__content.text-container {
-        min-height: 150px;
-        margin: 16px;
+        margin: 16px 16px 52px;
+       
+
+        @include media-query($medium-up) {
+            min-height: 150px;
+            margin: 16px;
+        }
       }
   
       .article-item__image-container {
         height: 100%;
         aspect-ratio: unset !important;
         margin: 0;
+
+        @include media-query($small) {
+            border-radius: 0;
+        }
       }
   
       img {
         object-fit: cover;
         margin: 0;
         height: 100%;
+        width: 100%;
+
+        @include media-query($small) {
+            border-radius: 0;
+        }
       }
     }
   }

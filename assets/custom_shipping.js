@@ -107,7 +107,7 @@
                           <p class="heading h5 heading--secondary">Order Date</p>
                           <p class="OrderDetails__Value">${order.order_date}</p>
                         </div>
-                        <div class="OrderDetails__Row">
+                        <div class="OrderDetails__Row tracking ${order.tracking_no}">
                           <p class="heading h5 heading--secondary">Tracking Number</p>
                           <p class="OrderDetails__Value">
                             <a href="${order.courier.url}" target="_blank" class="button button--primary button--full">${order.tracking_no}</a>
@@ -136,8 +136,8 @@
                       <div class="tracking-buttons">
                         <p>Keeping you up to date every step of the way. Visit our shipping partners for full delivery details.</p>
                         <div class="OrderTracking__ResultsButtons">
-                          <a href="${order.courier.url}" class="button button--secondary button--full" target="_blank">TRACK WITH COURIER</a>
-                          <button type="button" class="button button--secondary button--full" onclick="handleResetTracking()">TRACK A DIFFERENT ORDER</button>
+                          <a href="${order.courier.url}" class="button button--primary button--full track-with-courier ${order.courier.url}" target="_blank">TRACK WITH COURIER</a>
+                          <button type="button" class="button button--primary button--full" onclick="handleResetTracking()">TRACK A DIFFERENT ORDER</button>
                         </div>
                       </div>
                     </div>

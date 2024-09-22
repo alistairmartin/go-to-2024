@@ -1,11 +1,14 @@
 {%- paginate blog.articles by section.settings.articles_per_page -%}
 
+
   {%- if paginate.current_page == paginate.pages -%}
-    {%- assign currentPageArticles = paginate.items | minus: paginate.current_offset -%}
-  {% else %}
-    {%- assign currentPageArticles = paginate.page_size  -%}
-  {%- endif -%}
+      {%- assign currentPageArticles = paginate.items | minus: paginate.current_offset -%}
+    {% else %}
+      {%- assign currentPageArticles = paginate.page_size  -%}
+    {%- endif -%}
+
   {%- assign desktopGridRows = currentPageArticles | divided_by: 6.0 | ceil | times: 8 -%}
+
   <style>
   #shopify-section-{{ section.id }} .article-list {
     --articleListGridDesktop: {{ desktopGridRows }};
@@ -90,6 +93,8 @@
 
     <div class="vertical-breather vertical-breather--margin vertical-breather--extra-tight">
       <div class="container">
+
+   
         {%- paginate blog.articles by section.settings.articles_per_page -%}
 
           <article-list {% if settings.stagger_blog_posts_apparition %}stagger-apparition{% endif %} class="article-list article-list--stacked">
@@ -114,6 +119,8 @@
               {%- endif -%}
 
               {%- render 'article-item', article: article, heading_size: 'h4', style: style -%}
+
+              
             {%- endfor -%}
           </article-list>
 

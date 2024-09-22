@@ -134,7 +134,7 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     {%- sections 'overlay-group--gro-to' -%} 
     {%- sections 'overlay-group--bro-to' -%}  {% endcomment %}
 
-    {%- if request.page_type != 'gift_card' and request.page_type != 'password' -%}
+    {%- if request.page_type != 'password' -%}
       {%- if brand == "go-to" -%}
         {%- sections 'header-group' -%}
       {%- elsif brand == "bro-to" -%}
@@ -164,7 +164,7 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
 
     </div>
 
-    {%- if request.page_type != 'gift_card' and request.page_type != 'password' -%}
+    {%- if request.page_type != 'password' -%}
 
       {%- if brand == "go-to" -%}
         {%- sections 'footer-group' -%}

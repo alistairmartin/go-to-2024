@@ -131,7 +131,7 @@
                     </div>
 
                   {%- when 'block' -%}
-                    <div class="block-swatch-list">
+                    <div class="block-swatch-list product-type--{{ product.type | handle }}">
                       {%- for value in option.values -%}
                         <div class="block-swatch {% unless value.available %}is-disabled{% endunless %}">
                           {%- if value.product_url != blank -%}
@@ -448,8 +448,8 @@
                 <gift-card-recipient class="gift-card-recipient">
                   <div class="input input--checkbox">
                     <div class="checkbox-container">
-                      <input type="checkbox" class="checkbox" name="properties[__shopify_send_gift_card_to_recipient]" id="product-{{ section.id }}-{{ product.id }}-send-gift-card-to-recipient">
-                      <label for="product-{{ section.id }}-{{ product.id }}-send-gift-card-to-recipient" class="text--subdued">{{ 'gift_card.recipient.checkbox' | t }}</label>
+                      <input type="checkbox" class="checkbox hide" name="properties[__shopify_send_gift_card_to_recipient]" id="product-{{ section.id }}-{{ product.id }}-send-gift-card-to-recipient">
+                      <label for="product-{{ section.id }}-{{ product.id }}-send-gift-card-to-recipient" class="button button--full button--outline">{{ 'gift_card.recipient.checkbox' | t }}</label>
                     </div>
                   </div>
 

@@ -30,6 +30,7 @@
     {%- include "blocks--video" -%}
     {%- include "blocks--image-text-overlay" -%}
     {%- include "blocks--text" -%}
+    {%- include "blocks--product-item" -%}
     {%- include "blocks--product-ATC" -%}
     {%- include "blocks--button" -%}
     {%- include "blocks--spacer" -%}
@@ -141,12 +142,40 @@
       "label": "Absolute Position",
       "options": [
         {
-          "value": "unset",
-          "label": "Unset"
+          "value": "top_left",
+          "label": "Top left"
         },
         {
-          "value": "center",
-          "label": "Center"
+          "value": "top_center",
+          "label": "Top center"
+        },
+        {
+          "value": "top_right",
+          "label": "Top right"
+        },
+        {
+          "value": "middle_left",
+          "label": "Middle left"
+        },
+        {
+          "value": "middle_center",
+          "label": "Middle center"
+        },
+        {
+          "value": "middle_right",
+          "label": "Middle right"
+        },
+        {
+          "value": "bottom_left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom_center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "bottom_right",
+          "label": "Bottom right"
         }
       ]
     },
@@ -211,8 +240,16 @@
           "label": "Unset"
         },
         {
+          "value": "top",
+          "label": "Top"
+        },
+        {
           "value": "center",
           "label": "Center"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
         }
       ]
     }
@@ -498,12 +535,40 @@
           "label": "Absolute Position",
           "options": [
             {
-              "value": "unset",
-              "label": "Unset"
+              "value": "top_left",
+              "label": "Top left"
             },
             {
-              "value": "center",
-              "label": "Center"
+              "value": "top_center",
+              "label": "Top center"
+            },
+            {
+              "value": "top_right",
+              "label": "Top right"
+            },
+            {
+              "value": "middle_left",
+              "label": "Middle left"
+            },
+            {
+              "value": "middle_center",
+              "label": "Middle center"
+            },
+            {
+              "value": "middle_right",
+              "label": "Middle right"
+            },
+            {
+              "value": "bottom_left",
+              "label": "Bottom left"
+            },
+            {
+              "value": "bottom_center",
+              "label": "Bottom center"
+            },
+            {
+              "value": "bottom_right",
+              "label": "Bottom right"
             }
           ]
         },
@@ -738,8 +803,16 @@
               "label": "Unset"
             },
             {
+              "value": "top",
+              "label": "Top"
+            },
+            {
               "value": "center",
               "label": "Center"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
             }
           ]
         }
@@ -1563,6 +1636,74 @@
         "step": 0.1,
         "default": 1,
         "label": "Letter Spacing"
+        }
+      ]
+    },
+    {
+      "type": "product-item",
+      "name": "🛍️ Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_product_fill_space",
+          "label": "Enable Fill Space"
+        },
+        {
+        "type": "header",
+        "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---",
+        },
+        {
+            "type": "header",
+            "content": "Margins",
+        },
+        {
+            "type": "range",
+            "id": "margin_top_desktop",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 0,
+            "label": "⬆ Margin Top"
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom_desktop",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 0,
+            "label": "⬇ Margin Bottom"
+        },
+        {
+            "type": "header",
+            "content": "--- 📱 MOBILE SETTINGS 📱 ---"
+        },
+        {
+            "type": "range",
+            "id": "margin_top_mobile",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 0,
+            "label": "⬆ Margin Top"
+        },
+        {
+            "type": "range",
+            "id": "margin_bottom_mobile",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "default": 0,
+            "label": "⬇ Margin Bottom"
         }
       ]
     },

@@ -2,7 +2,16 @@
 @import "components/variables";
 
 
+
+
+
 #shopify-section-mini-cart{ 
+
+  .cart-empty {
+    .button-wrapper {
+      padding-bottom: 10px;
+    }
+  }
 
 .line-item__content-wrapper {
   display: flex;
@@ -156,6 +165,7 @@
 
         .product-item__link {
           margin: 0;
+          font-size: 12px;
         }
 
         .product-item-meta__title {

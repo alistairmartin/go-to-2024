@@ -9,8 +9,16 @@
 
         {%- comment %} CONTENT -  TABS {% endcomment -%}
 
+        {%- assign hideTabs = false -%}
+
+        {% if product.metafields.custom.product_main_information__review_title == blank and product.metafields.accentuate.product_main_information__whats_in_it == blank and product.metafields.custom.product_main_information__included_products == blank %}
+          {% assign hideTabs = true %}
+        {% endif %}
+
+        
+        
         <div class="tab-list">
-          <div class="tab-list--outer">
+          <div class="tab-list--outer  {% if hideTabs == true %}hide{% endif %}">
             <div class="tab-list--inner" role="tablist">
               <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-1" class="tab-list--tab active">{{ 'product.content.what_is_it' | t }}</button>
 
@@ -27,6 +35,7 @@
               {%- endif -%}
             </div>
           </div>
+       
       
         {%- comment %} CONTENT -  DESCRIPTION {% endcomment -%}
         
@@ -48,16 +57,13 @@
                   {{ callout_image }}
                 </button>
                 {%- render 'modal', modalId: "open-product-quiz", buttonId: "open-product-quiz" content: productCallOutModal -%}
+            {% elsif callout_image != blank %}
+              {{ callout_image }}
             {% endif %}
             
             {% comment %}             
             {%- elsif product.metafields.custom.product_gwp__url != blank -%}
               {%- assign product_gwp__url = product.metafields.custom.product_gwp__url | split: '#' -%}
-
-              
-
-
-                
               {%- else -%}
                 <a href="{{ product.metafields.custom.product_gwp__url }}">{{ callout_image }}</a>
               {%- endif -%}
@@ -250,6 +256,7 @@
 {% schema %}
 {
   "name": "Prod. Con: Description",
+  "class": "shopify-section--product-content-description",
   "settings": [],
   "presets":[
     {

@@ -151,8 +151,24 @@
                             <a href="{{ related_product.url }}" type="button" role="option" class="combo-box__option-item" aria-selected="{% if related_product.handle == product.handle %}true{% else %}false{% endif %}">
                               {{ related_product | image_url: width: related_product.width | image_tag: loading: 'lazy', sizes: '270px', sizes: '270,540,810', class: "image-variant" }}
                               <span class="text">
-                                <span class="heading title">{{ related_product.title | remove: related_product_title }} <span class="price">{{ product.price | money | remove: ".00" | remove: ",00" }}</span></span>
-                                <span class="option">{{ related_product_title }}</span>
+                                <span class="heading title">
+
+                                {%- assign product_title = related_product.title | remove: related_product_title -%}
+                                  {%- if product_title != blank -%}
+                                    {{ product_title }}
+                                  {%- else -%}
+                                   {{ related_product.title }}
+                                  {%- endif -%}
+
+                                  <span class="price">{{ related_product.price | money | remove: ".00" | remove: ",00" }}</span>
+                                </span>
+                                <span class="option">
+
+                                    {%- unless related_product_title == related_product.title -%}
+                                      {{ related_product_title }}
+                                    {%- endunless -%}
+                                    
+                                  </span>
                                 {%- if related_product.metafields.custom.product_subtitle__description != blank -%}
                                   <span class="description">{{ related_product.metafields.custom.product_subtitle__description }}</span>
                                 {%- endif -%}

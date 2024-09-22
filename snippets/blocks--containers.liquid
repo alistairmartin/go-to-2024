@@ -107,12 +107,56 @@
     {%- endif -%}
 
 
-    {%- if block.settings.position_absolute_mobile == "center" -%}
+      {% comment %} MOBILE --- Positioning {% endcomment %}
+
+    {%- if block.settings.position_absolute_mobile == "top" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-top--mobile" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_mobile == "center" and block.settings.position_desktop == "absolute" -%}
       {% assign classes = classes | append: " absolute-center--mobile" %}
     {%- endif -%}
 
-    {%- if block.settings.position_absolute_desktop == "center" -%}
-      {% assign classes = classes | append: " absolute-center--desktop" %}
+    {%- if block.settings.position_absolute_mobile == "bottom" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-bottom--mobile" %}
+    {%- endif -%}
+
+    {% comment %} DESKTOP --- Positioning {% endcomment %}
+
+    {%- if block.settings.position_absolute_desktop == "top_left" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-top_left--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "top_center" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-top_center--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "top_right" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-top_right--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "middle_left" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-middle_left--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "middle_center"and block.settings.position_desktop == "absolute"  -%}
+      {% assign classes = classes | append: " absolute-middle_center--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "middle_right" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-middle_right--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "bottom_left" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-bottom_left--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "bottom_center" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-bottom_center--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "bottom_right" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-bottom_right--desktop" %}
     {%- endif -%}
 
     <div class="container-custom container-custom--{{ block.settings.page_width }} {{ classes }}" {{ blockId }}>

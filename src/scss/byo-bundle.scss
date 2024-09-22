@@ -24,6 +24,20 @@
       backdrop-filter: saturate(180%) blur(20px) !important;
       display: flex;
       justify-content: flex-end;
+
+      .build-your-build--selected-items {
+        display: flex;
+        gap: 10px;
+        padding: 0 10px;
+        
+        @include media-query($small) {
+          display: none;
+        }
+
+        img {
+          border-radius: var(--image-border-radius);
+        }
+      }
   
       .bundle-your-bundle--totals {
         margin: 0 20px 0 10px;
@@ -32,6 +46,13 @@
         justify-content: space-evenly;
         align-items: center;
         flex-direction: column;
+       
+
+        @include media-query($medium-up) {
+          background: var(--color-primary);
+          border-radius: var(--image-border-radius);
+          min-width: 200px;
+        }
   
         p {
           margin: 0;

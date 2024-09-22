@@ -1,6 +1,10 @@
 @import "components/media-queries";
 @import "components/variables";
 
+.shopify-section--product-content-description {
+  margin-top: 20px;
+}
+
 .product-meta {
     text-align: center;
     margin: 0;
@@ -711,6 +715,7 @@
   .product-USP {
     position: relative;
     min-height: 250px;
+    margin-bottom: 20px;
 
     @include media-query($medium-up) {
       margin-top: 40px;
@@ -1517,3 +1522,4 @@
     }
   }
   
+

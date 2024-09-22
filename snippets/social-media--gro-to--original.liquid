@@ -6,8 +6,7 @@
 
     <li class="social-media__item social-media__item--facebook">
       <a href="{{ settings.groto_social_facebook | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Facebook' }}">
-        {% comment %} {%- render 'icon' with 'facebook' -%} {% endcomment %}
-        <img src="{{ 'gro-to_FacebookIcon.png' | asset_url }}" width="45" height="auto" loading="lazy" />
+        {%- render 'icon' with 'facebook' -%}
       </a>
     </li>
   {%- endif -%}
@@ -37,8 +36,7 @@
 
     <li class="social-media__item social-media__item--instagram">
       <a href="{{ settings.groto_social_instagram | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Instagram' }}">
-        {% comment %} {%- render 'icon' with 'instagram' -%} {% endcomment %}
-        <img src="{{ 'gro-to_InstagramIcon.png' | asset_url }}" width="45" height="auto" loading="lazy" />
+        {%- render 'icon' with 'instagram' -%}
       </a>
     </li>
   {%- endif -%}
@@ -58,8 +56,7 @@
 
     <li class="social-media__item social-media__item--youtube">
       <a href="{{ settings.groto_social_youtube | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'YouTube' }}">
-        {% comment %} {%- render 'icon' with 'youtube' -%} {% endcomment %}
-        <img src="{{ 'gro-to_YoutubeIcon.png' | asset_url }}" width="45" height="auto" loading="lazy" />
+        {%- render 'icon' with 'youtube' -%}
       </a>
     </li>
   {%- endif -%}
@@ -166,7 +163,7 @@
 {%- endcapture -%}
 
 {%- if social_media != blank -%}
-  <ul class="social-media social-media--gro-to {% if active_accounts > 3 %}social-media--no-radius{% endif %} list--unstyled" role="list">
+  <ul class="social-media {% if active_accounts > 3 %}social-media--no-radius{% endif %} list--unstyled" role="list">
     {{ social_media }}
   </ul>
 {%- endif -%}

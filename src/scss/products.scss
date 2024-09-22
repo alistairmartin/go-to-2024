@@ -1017,6 +1017,9 @@
       flex: 1;
 
       .block-swatch__item {
+        border-radius: var(--image-border-radius);
+        padding: 12px 0;
+
         &.is-selected {
           font-weight: bold !important;
         }

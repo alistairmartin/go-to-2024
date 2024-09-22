@@ -8,6 +8,7 @@
   }
 </style>
 
+
 <product-recommendations section-id="{{ section.id }}" intent="complementary" product-id="{{ product.id }}" recommendations-count="10" class="section {% unless blends_with_background %}section--flush{% endunless %}" hidden>
   {%- assign acceptable_recommendations_count = 0 -%}
 
@@ -21,16 +22,19 @@
 
   {%- if recommendations.performed -%}
     <div class="container vertical-breather vertical-breather--tight vertical-breather--margin">
-      {%- if section.settings.title != blank or section.settings.subheading != blank -%}
+      {%- if section.settings.title != blank or section.settings.subheading != blank or product.metafields.custom.product_upsell__title != blank-%}
         <header class="section__header text-align--{{ section.settings.text_alignment }}">
           <div class="text-container">
-            {%- if section.settings.title != blank -%}
+            {%- if section.settings.title != blank or product.metafields.custom.product_upsell__title != blank -%}
               <h2 class="heading h2">
-                {% if product.metafields.custom.product_upsell__title != blank %}
+                 {% if product.metafields.custom.product_upsell__title != blank %}
                   {{ product.metafields.custom.product_upsell__title }}
-                {% else %}
+                {% else if section.settings.title != blank %}
                   {{ section.settings.title }}
+                {% else %}
+                Pairs Well With
                 {% endif %}
+
                 </h2>
             {%- endif -%}
 

@@ -1,6 +1,6 @@
-<div class="ContentWidth ContentWidth--no-padding-mobile">
+<div class="container container--no-padding-mobile">
   <div class="ProductContentIngredients">
-    <h3 class="SectionHeader__Heading Heading Text--bold u-h1">{{ section.settings.title }}</h3>
+    <h3 class="SectionHeader__Heading heading h2">{{ section.settings.title }}</h3>
 
     <div class="ProductContentIngredients--container">
       {%- assign ingredientCounter = 0 -%}
@@ -48,8 +48,42 @@
     </div>
 
     <div class="button-container">
-      <button type="button" rel="modal:open" data-action="open-modal" aria-controls="modal-ingredients" title="VIEW FULL INGREDIENT GLOSSARY" class="Button--link Button--withArrow Text--sizeTiny Button--link-primary">VIEW FULL INGREDIENT GLOSSARY {%- render 'icon', icon: 'arrow-link' -%}</button>
-      {% render 'modal', id: 'modal-ingredients', class: 'Modal--medium' title: 'Full Ingredient Glossary', content: pages[section.settings.ingredients_page-gro_to].content %}
+      {%- if product.metafields.custom.ingredients != blank -%}
+
+        {%- capture glossaryContent -%}
+          {%- assign glossaryMetaobjects = product.metafields.custom.ingredients.value | sort: "title" -%}
+          <div class="ingredients-glossary">
+          <div class="ingredients-glossary--description ">
+          {% for metaobject in glossaryMetaobjects %}
+            <div class="ingredients-glossary--description-item">
+              <strong>{{ metaobject.title }}</strong>
+              <div>
+                {{ metaobject.description | metafield_tag }}
+              </div>
+          </div>
+          {% endfor %}  
+          </div>
+          </div>
+        {%- endcapture -%}
+
+
+        <div class="popover-buttons">
+        {%- assign popoverTitle = "Ingredients For " | append: product.title -%}
+        {%- render 'popover', popoverId: "ingredients-glossary", popoverTitle: popoverTitle, popoverButton: "View All Ingredients", popoverContent: glossaryContent -%}
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(event) {
+  document.querySelectorAll('.ProductContentIngredients--text-item').forEach(item => {
+  item.addEventListener('click', function() {
+    document.querySelectorAll('.ProductContentIngredients--text-item').forEach(el => el.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+});
+</script>

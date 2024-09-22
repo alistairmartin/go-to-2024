@@ -1,48 +1,50 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 
-
     // Routine Switcher
-    document.querySelector('.product-content-routine').addEventListener("click", function() {
-        var contentRoutine = document.querySelector('.product-content-routine');
-
-        if (contentRoutine.classList.contains('active--morning')) {
-            contentRoutine.classList.add('active--evening');
-            contentRoutine.classList.remove('active--morning');
-        } else {
-            contentRoutine.classList.add('active--morning');
-            contentRoutine.classList.remove('active--evening');
-        }
-    });
-
+    var contentRoutine = document.querySelector('.product-content-routine');
+    if (contentRoutine) {
+        contentRoutine.addEventListener("click", function() {
+            if (contentRoutine.classList.contains('active--morning')) {
+                contentRoutine.classList.add('active--evening');
+                contentRoutine.classList.remove('active--morning');
+            } else {
+                contentRoutine.classList.add('active--morning');
+                contentRoutine.classList.remove('active--evening');
+            }
+        });
+    }
 
     // Teaser 
-    document.querySelector('.product-content-description--teaser-open').addEventListener("click", function() {
-        this.classList.add("hidden");
-        document.querySelector('.product-content-description--teaser-close').classList.remove("hidden");
-        document.querySelector('.product-content-description--teaser').setAttribute('aria-revealed', 'true');
-    });
+    var teaserOpen = document.querySelector('.product-content-description--teaser-open');
+    var teaserClose = document.querySelector('.product-content-description--teaser-close');
+    var teaser = document.querySelector('.product-content-description--teaser');
+    
+    if (teaserOpen && teaserClose && teaser) {
+        teaserOpen.addEventListener("click", function() {
+            this.classList.add("hidden");
+            teaserClose.classList.remove("hidden");
+            teaser.setAttribute('aria-revealed', 'true');
+        });
 
-    document.querySelector('.product-content-description--teaser-close').addEventListener("click", function() {
-        this.classList.add("hidden");
-        document.querySelector('.product-content-description--teaser-open').classList.remove("hidden");
-        document.querySelector('.product-content-description--teaser').setAttribute('aria-revealed', 'false');
-    });
-
+        teaserClose.addEventListener("click", function() {
+            this.classList.add("hidden");
+            teaserOpen.classList.remove("hidden");
+            teaser.setAttribute('aria-revealed', 'false');
+        });
+    }
 
     // Ingredients
-    document.querySelectorAll('.product-content-ingredients--text-item__mobile').forEach(function(item) {
-        item.addEventListener("click", function() {
-            
-            document.querySelectorAll('.product-content-ingredients--text-item__mobile').forEach(function(el) {
-                el.classList.remove('active');
-            });
-    
-            this.classList.add("active");
-        });
-    });
+    var ingredientItems = document.querySelectorAll('.product-content-ingredients--text-item__mobile');
+    if (ingredientItems.length > 0) {
+        ingredientItems.forEach(function(item) {
+            item.addEventListener("click", function() {
+                ingredientItems.forEach(function(el) {
+                    el.classList.remove('active');
+                });
 
+                this.classList.add("active");
+            });
+        });
+    }
 
 });
-
-
-

@@ -1,6 +1,4 @@
-
-
-
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
 
 {%- liquid
 assign counter = 1
@@ -27,6 +25,10 @@ for mediaWithText in product.metafields.custom.product_media_with_text__title
 
     assign image_desktop_object = image_desktop | first
     assign image_desktop_aspect = image_desktop_object.aspect_ratio
+
+    if brand == "gro-to" 
+    assign text_position_mobile = "below"
+    endif
   endif
 
   assign counter = counter | plus: 1

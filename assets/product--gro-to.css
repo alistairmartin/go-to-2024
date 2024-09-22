@@ -1,0 +1,24 @@
+/* Error: Undefined mixin.
+ *    ,
+ * 32 | /       @include av-mq('phone-md') {
+ * 33 | |         img {
+ * 34 | |           display: none;
+ * 35 | |   
+ * 36 | |           &:nth-child(2n) {
+ * 37 | |             display: block;
+ * 38 | |           }
+ * 39 | |         }
+ * 40 | \       }
+ *    '
+ *   src/scss/product--gro-to.scss 32:7  root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Undefined mixin.\a    \2577 \a 32 \2502  \250c        @include av-mq('phone-md') {\a 33 \2502  \2502          img {\a 34 \2502  \2502            display: none;\a 35 \2502  \2502    \a 36 \2502  \2502            &:nth-child(2n) {\a 37 \2502  \2502              display: block;\a 38 \2502  \2502            }\a 39 \2502  \2502          }\a 40 \2502  \2514        }\a    \2575 \a   src/scss/product--gro-to.scss 32:7  root stylesheet";
+}

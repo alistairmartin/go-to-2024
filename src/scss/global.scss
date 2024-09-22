@@ -3992,3 +3992,9 @@ product-rerender {
     padding: 20px !important;
   }
 }
+
+#take-me-to-the-quiz-modal {
+  .modal__content-inner {
+    background: transparent;
+  }
+}

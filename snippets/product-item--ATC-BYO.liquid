@@ -21,10 +21,15 @@
     {%- endif -%}
   </div>
   {%- else -%}
-  <div class="product-item--BYO-ATC disabled" aria-disabled="true">
-    <button class="link--animated link link--primary" disabled>
+  <div class="product-item--BYO-ATC disabled waitlist">
+    {% comment %} 
+    <div class="product-item--BYO-ATC disabled" aria-disabled="true"></div>
+  <button class="link--animated link link--primary" disabled>
       Sold out
-    </button> 
+    </button>  {% endcomment %}
+
+    <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')"  class="link link--primary back-in-stock">WAITLIST ME</button>
+
 
     {% comment %} <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')"  class="link link--primary back-in-stock">WAITLIST ME</button> {% endcomment %}
 

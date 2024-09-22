@@ -115,8 +115,15 @@
     &.disabled {
       .link--primary {
         cursor: no-drop;
-        text-decoration-color: $gotoGrey;
+        text-decoration-color: $gotoGrey !important;
+      }
     }
+
+    &.waitlist {
+      .link--primary {
+        cursor: pointer;
+        text-decoration-color: $gotoGrey !important;
+      }
     }
   
     .link--primary {

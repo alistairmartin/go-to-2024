@@ -66,6 +66,31 @@
       --section-products-per-row: {{ section.settings.products_per_row }};
     }
   }
+
+  {%- if section.settings.enable_background -%}
+  #shopify-section-{{ section.id }} .product-list__inner {
+    {%- if brand == 'bro-to' -%}
+      --product-list-block-spacing: 8px;
+      --product-list-column-gap: 8px;
+    {%- else %}
+      --product-list-block-spacing: 8px;
+      --product-list-column-gap: 8px;
+    {%- endif -%}
+ 
+  }
+
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} .product-list__inner {
+      {%- if brand == 'bro-to' -%}
+      --product-list-block-spacing: 24px;
+      --product-list-column-gap: 24px;
+    {%- else %}
+      --product-list-block-spacing: 8px;
+      --product-list-column-gap: 8px;
+    {%- endif -%}
+  }
+  }
+  {%- endif -%}
 </style>
 
 <section class="section {% unless blends_with_background %}section--flush{% endunless %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
@@ -84,7 +109,9 @@
               {%- endif -%}
 
               {%- if section.settings.content != blank -%}
-                {{- section.settings.content -}}
+                <div class="content">
+                  {{- section.settings.content -}}
+                </div>
               {%- endif -%}
             </div>
           {%- endif -%}
@@ -114,7 +141,7 @@
           {%- assign collection = block.settings.collection -%}
           {%- assign smallest_image_aspect_ratio = 0 -%}
 
-          <product-list {% if settings.stagger_products_apparition %}stagger-apparition{% endif %} {% unless forloop.first %}hidden{% endunless %} id="block-{{ section.id }}-{{ block.id }}" class="product-list product-list--center">
+          <product-list {% if settings.stagger_products_apparition %}stagger-apparition{% endif %} {% unless forloop.first %}hidden{% endunless %} id="block-{{ section.id }}-{{ block.id }}" class="product-list product-list--{{ block.settings.product_list_alignment }} {% if section.settings.enable_background %}product-list__background{% endif %}">
             <div {% unless section.settings.stack_products %}class="scroller"{% endunless %}>
               <div class="product-list__inner {% unless section.settings.stack_products %}product-list__inner--scroller hide-scrollbar{% endunless %}">
                 {%- assign number_of_products_minus_one = section.settings.products_per_row | minus: 1 -%}
@@ -127,6 +154,8 @@
                   {%- endif -%}
 
                   {%- render 'product-item', product: product, collection: collection, reduced_content: true, show_cta: section.settings.show_cta, block: block, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, section_name: "featured-collections", outerCollectionHandle: outerCollectionHandle -%}
+
+                  {%- include 'featured-collections--grid-images', validCollectionForImages: validCollectionForImages, reveal: settings.stagger_products_apparition -%}
                 {%- else -%}
                   {%- assign smallest_image_aspect_ratio = 1 -%}
 
@@ -211,7 +240,223 @@
           "id": "button_url",
           "label": "Button link",
           "info": "If empty, the collection URL is used."
+        },
+
+        {
+          "type": "radio",
+          "id": "product_list_alignment",
+          "label": "Product Alignment",
+          "info": "If Less than 4 products, position the items center or left.",
+          "options": [
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            }
+          ],
+          "default": "center"
+        },
+        {
+      "type": "header",
+      "content": "Image #1"
+    },
+    {
+      "type": "text",
+      "id": "mobile_position_1",
+      "label": "Position (Mobile)",
+      "info": "Position In The Collection"
+    },
+    {
+      "type": "text",
+      "id": "desktop_position_1",
+      "label": "Position (Desktop)",
+      "info": "Position In The Collection"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image_1",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "desktop_link_1",
+      "label": "Link"
+    },
+    {
+      "type": "radio",
+      "id": "mobile_span_1",
+      "label": "Column Width (Mobile)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 Column"
+        },
+        {
+          "value": "2",
+          "label": "2 Columns"
         }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "radio",
+      "id": "desktop_span_1",
+      "label": "Width (Desktop)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 Column"
+        },
+        {
+          "value": "2",
+          "label": "2 Columns"
+        },
+        {
+          "value": "3",
+          "label": "3 Columns"
+        },
+        {
+          "value": "4",
+          "label": "4 Columns (Full)"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Image #2"
+    },
+    {
+      "type": "text",
+      "id": "mobile_position_2",
+      "label": "Position (Mobile)",
+      "info": "Position In The Collection"
+    },
+    {
+      "type": "text",
+      "id": "desktop_position_2",
+      "label": "Position (Desktop)",
+      "info": "Position In The Collection"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image_2",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "desktop_link_2",
+      "label": "Link"
+    },
+    {
+      "type": "radio",
+      "id": "mobile_span_2",
+      "label": "Column Width (Mobile)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 Column"
+        },
+        {
+          "value": "2",
+          "label": "2 Columns"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "radio",
+      "id": "desktop_span_2",
+      "label": "Width (Desktop)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 Column"
+        },
+        {
+          "value": "2",
+          "label": "2 Columns"
+        },
+        {
+          "value": "3",
+          "label": "3 Columns"
+        },
+        {
+          "value": "4",
+          "label": "4 Columns (Full)"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Image #3"
+    },
+    {
+      "type": "text",
+      "id": "mobile_position_3",
+      "label": "Position (Mobile)",
+      "info": "Position In The Collection"
+    },
+    {
+      "type": "text",
+      "id": "desktop_position_3",
+      "label": "Position (Desktop)",
+      "info": "Position In The Collection"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image_3",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "desktop_link_3",
+      "label": "Link"
+    },
+    {
+      "type": "radio",
+      "id": "mobile_span_3",
+      "label": "Column Width (Mobile)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 Column"
+        },
+        {
+          "value": "2",
+          "label": "2 Columns"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "radio",
+      "id": "desktop_span_3",
+      "label": "Width (Desktop)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 Column"
+        },
+        {
+          "value": "2",
+          "label": "2 Columns"
+        },
+        {
+          "value": "3",
+          "label": "3 Columns"
+        },
+        {
+          "value": "4",
+          "label": "4 Columns (Full)"
+        }
+      ],
+      "default": "2"
+    }
       ]
     }
   ],
@@ -349,12 +594,6 @@
     },
     {
       "type": "color",
-      "id": "background",
-      "label": "Background",
-      "default": "rgba(0,0,0,0)"
-    },
-    {
-      "type": "color",
       "id": "text_color",
       "label": "Text",
       "default": "rgba(0,0,0,0)"
@@ -369,6 +608,22 @@
       "type": "color",
       "id": "button_text_color",
       "label": "Button text",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_background",
+      "label": "Enable White Product Card",
+      "info": "Will make the background of the product card white, enabling the use of the background setting to be used on the section for contrast."
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
       "default": "rgba(0,0,0,0)"
     }
   ],

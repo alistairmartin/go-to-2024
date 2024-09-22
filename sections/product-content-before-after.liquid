@@ -32,20 +32,23 @@
           <div class="BeforeAfter__Description">
             {{ product.metafields.custom.product_trials__description }}
             {%- unless product.metafields.custom.product_trials__modal_button_text == blank -%}
-              <button type="button" title="{{ product.metafields.custom.product_trials__modal_button_text }}" class="Button--link Button--link-primary" data-target="modal-{{ section.id }}" aria-controls="modal-{{ section.id }}" data-toggle="modal" data-action="open-modal">{{ product.metafields.custom.product_trials__modal_button_text }}</button>
+              <button class="link link--primary" id="open-trials">
+                {{ product.metafields.custom.product_trials__modal_button_text }}
+              </button>
+
+              {%- capture modalContent -%}
+                <div class="rte ">
+                  {{ product.metafields.custom.product_trials__modal_content }}
+                </div>
+              {%- endcapture -%}
+              {%- render 'modal', modalId: "open-trials", buttonId: "open-trials" content: modalContent -%}
             {%- endunless -%}
           </div>
         </div>
       </div>
     </div>
   </section>
-  
-  {% comment %} {%- unless product.metafields.custom.product_trials__modal_content == blank -%}
-    {%- assign modal_id = 'modal-' | append: section.id -%}
-    {%- render 'modal', id: modal_id, title: product.metafields.custom.product_trials__modal_title, content: product.metafields.custom.product_trials__modal_content, class: 'Modal--medium' -%}
-  {%- endunless -%} 
 {%- endunless -%}
-{% endcomment %}
 
 <style>
   #shopify-section-{{ section.id }} {

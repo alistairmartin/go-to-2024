@@ -75,15 +75,24 @@
         IMPLEMENTATION NOTE: Depending on the device we show a different icon or open a different mode (either popover or drawer)
         {%- endcomment -%}
 
+        {%- capture QuickViewTitle -%}
+          {% if product.options.size > 0 %}
+            {% assign quick_view_variant_title = product.options.first %}
+            {{ 'collection.product.quick_view' | t: quick_view_title: quick_view_variant_title }}
+          {% else %}
+            {{ 'collection.product.quick_view' | t: quick_view_title: 'A Size' }}
+          {% endif %}
+        {%- endcapture -%}
+
         <div class="product-item__quick-form">
-          <button is="toggle-button" loader aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" aria-expanded="false" class="button button--outline button--text button--full {% if section.settings.desktop_products_per_row >= 5 %}button--small{% endif %} hidden-touch hidden-phone">{{ 'collection.product.quick_view' | t }}</button>
+          <button is="toggle-button" loader aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" aria-expanded="false" class="button button--outline button--text button--full {% if section.settings.desktop_products_per_row >= 5 %}button--small{% endif %} hidden-touch hidden-phone">{{ QuickViewTitle }}</button>
           <button is="toggle-button" aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" aria-expanded="false" class="product-item__quick-buy-button hidden-no-touch hidden-phone">
-            <span class="visually-hidden">{{ 'collection.product.quick_view' | t }}</span>
+            <span class="visually-hidden">{{ QuickViewTitle }}</span>
             {%- render 'icon' with quick_buy_icon_name -%}
           </button>
 
           <button is="toggle-button" aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-popover" aria-expanded="false" class="product-item__quick-buy-button hidden-tablet-and-up">
-            <span class="visually-hidden">{{ 'collection.product.quick_view' | t }}</span>
+            <span class="visually-hidden">{{ QuickViewTitle }}</span>
             {%- render 'icon' with quick_buy_icon_name -%}
           </button>
         </div>
@@ -262,8 +271,18 @@
             <button type="submit" {% if show_cta %}is="loader-button"{% endif %} class="button button--ternary button--full">ADD FREE GIFT</button>
           {%- endform -%}
         {%- else -%}
-          <button type="button" {% if show_cta %}loader{% endif %} is="toggle-button" aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" aria-expanded="false" class="button button--ternary hidden-phone">{{ 'collection.product.quick_view' | t }}</button>
-          <button type="button" {% if show_cta %}loader{% endif %} is="toggle-button" aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-popover" aria-expanded="false" class="button button--ternary hidden-tablet-and-up">{{ 'collection.product.quick_view' | t }}</button>
+
+        {%- capture QuickViewTitle -%}
+          {% if product.options.size > 0 %}
+            {% assign quick_view_variant_title = product.options.first %}
+            {{ 'collection.product.quick_view' | t: quick_view_title: quick_view_variant_title }}
+          {% else %}
+            {{ 'collection.product.quick_view' | t: quick_view_title: 'A Size' }}
+          {% endif %}
+        {%- endcapture -%}
+        
+          <button type="button" {% if show_cta %}loader{% endif %} is="toggle-button" aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" aria-expanded="false" class="button button--ternary hidden-phone">{{ QuickViewTitle }}</button>
+          <button type="button" {% if show_cta %}loader{% endif %} is="toggle-button" aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-popover" aria-expanded="false" class="button button--ternary hidden-tablet-and-up">{{ QuickViewTitle }}</button>
 
           <quick-buy-popover id="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-popover" href="{{ product.url }}" class="popover popover--quick-buy hidden-tablet-and-up"></quick-buy-popover>
           <quick-buy-drawer id="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" href="{{ product.url }}" class="drawer drawer--large drawer--quick-buy hidden-phone"></quick-buy-drawer>

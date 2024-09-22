@@ -62,6 +62,8 @@
           {%- endif -%}
 
             {%- assign search_featured_products = section.settings.search_products -%}
+
+            {%- if search_featured_products != blank -%}
             <div class="predictive-search-custom__products">
       
               <p class="predictive-search__menu-title heading heading--small">{{ section.settings.search_products_title }}</p>
@@ -71,21 +73,25 @@
               {%- endfor -%}
               </div>
             </div>
-        
-        
+            {%- endif -%}
+              
+            {% assign article1 = articles[section.settings.search_articles1] %}
+            {% assign article2 = articles[section.settings.search_articles2] %}
+
+            {%- if article1 or article2 -%}
             <div class="predictive-search-custom__articles">
       
               <p class="predictive-search__menu-title heading heading--small">{{ section.settings.search_articles_title }}</p>
               <div class="predictive-search-custom__articles-grid">
-        
-              {% assign article1 = articles[section.settings.search_articles1] %}
-              {%- render 'article-item', article: article1, heading_size: 'h6', reveal: false-%}
-        
-              {% assign article2 = articles[section.settings.search_articles2] %}
-              {%- render 'article-item', article: article2, heading_size: 'h6', reveal: false-%}
-        
+                {%- if article1 -%}
+                  {%- render 'article-item', article: article1, heading_size: 'h6', reveal: false-%}
+                {%- endif -%}
+                {%- if article2 -%}
+                  {%- render 'article-item', article: article2, heading_size: 'h6', reveal: false-%}
+                {%- endif -%}
               </div>
             </div>
+          {%- endif -%}
         </div>
       {%- endif -%}
 

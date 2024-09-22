@@ -73,7 +73,8 @@
         {%- assign product = block.settings.product -%}
   
           <div class="featured-carousel-product--grid-item" data-index="{{ forloop.index }}">
-            {{ block.settings.image | image_url: width: 1000 | image_tag: alt: product.title }}
+            {{ block.settings.image | image_url: width: 1000 | image_tag: alt: product.title, class: "hide-mobile" }}
+            {{ block.settings.image_mobile | image_url: width: 600 | image_tag: alt: product.title, class: "hide-desktop" }}
             <div class="featured-carousel-product--grid-item-text">
               <h2 class="title heading heading--secondary">{{ block.settings.title }}</h2>
               <h3 class="subtitle">{{ block.settings.subtitle }}</h3>
@@ -98,7 +99,8 @@
   
         <label data-index="{{ forloop.index }}" class="featured-carousel-product--item product-{{ forloop.index }}" for="item-{{ forloop.index }}-{{ section.id }}" id="product-{{ forloop.index }}-{{ section.id }}">
           <div class="featured-carousel-product--text">
-            {{ block.settings.image | image_url: width: 1000 | image_tag: alt: product.title }}
+            {{ block.settings.image | image_url: width: 1000 | image_tag: alt: product.title, class: "hide-mobile" }}
+            {{ block.settings.image_mobile | image_url: width: 600 | image_tag: alt: product.title, class: "hide-desktop" }}
             <div class="featured-carousel-product--text-inner">
               {% comment %} <div class="dots">
                 <div class="dot dot-1"></div>
@@ -247,6 +249,11 @@
             "type": "image_picker",
             "id": "image",
             "label": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_mobile",
+            "label": "Image (Mobile)"
           },
           {
             "type": "header",

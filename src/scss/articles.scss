@@ -2,10 +2,10 @@
 @import "components/variables";
 
 .article__nav-wrapper {
-    padding: 58px 0 10px;
+    padding: 10px 0 10px;
     
     @include media-query($medium-up) {
-        padding: 38px 0 15px;
+        padding: 45px 0 15px;
     }
 }
 

@@ -291,6 +291,15 @@ section {
   color: #fff;
 }
 
+
+.breadcrumb__item {
+  line-height: 1;
+  max-width: 300px;
+  white-space: nowrap; 
+  overflow: hidden;    
+  text-overflow: ellipsis; 
+}
+
 .header__linklist-link {
   font-weight: 600;
   font-size: 14px;
@@ -834,12 +843,45 @@ store-header.background-blur {
     text-align: center;
     display: block;
     margin: 6px auto 0;
+    text-decoration-color: $gotoGrey !important;
   }
 
   .link {
     font-size: 14px;
   }
+}
 
+.go-to {
+  .product-brand--bro-to {
+    .label {
+      border-radius: 0;
+      background: $brotoBlue;
+      color: #fff;
+    }
+
+    .link--primary {
+      text-decoration-color: $brotoBlue !important;
+    }
+
+    .rating__star {
+      color: $brotoRed;
+    }
+  }
+
+  .product-brand--gro-to {
+    .label {
+      background: $grotoBlue;
+      color: #fff;
+    }
+
+    .link--primary {
+      text-decoration-color: $grotoBlue !important;
+    }
+
+    .rating__star {
+      color: $grotoPink;
+    }
+  }
 }
 
 .tab-list {
@@ -1910,7 +1952,8 @@ store-header.background-blur {
     }
   }
   .modal__content-inner {
-    background: var(--color-secondary);
+    // background: var(--color-secondary);
+    background: #fff;
   }
 }
 
@@ -2108,6 +2151,16 @@ footer {
   #text-me {
     background: #fff;
   }
+
+  #text-me-modal {
+    .modal__content-inner {
+      background: var(--color-secondary);
+    }
+
+    form {
+      min-height: 500px;
+    }
+  }
 }
 
 .shopify-section--faq .collapsible-toggle {
@@ -2224,6 +2277,7 @@ footer {
     align-items: center;
 
     #back-in-stock-form-container,  #back-in-stock-success {
+      background: var(--color-secondary);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -2300,7 +2354,7 @@ footer {
 
     .page-header__text-wrapper {
       margin-bottom: 16px;
-      margin-top: 0;
+      margin-top: 32px;
 
       .metafield-rich_text_field {
         font-weight: normal;
@@ -2332,6 +2386,7 @@ footer {
       background: #fff !important;
       border-radius: var(--image-border-radius);
       box-shadow: 1px 1px 1px #9b9b9b49;
+      border: 1px solid #f9f9f9;
 
       .product-item__info   {
         padding-bottom: 20px;
@@ -2385,6 +2440,16 @@ footer {
     }
 
  
+  }
+
+
+  .product-item__grid-image {
+    img  {
+      border-radius: var(--image-border-radius);
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
   }
 
 
@@ -2854,19 +2919,50 @@ product-rerender {
 
 .predictive-search__product-item {
   margin-bottom: 16px;
-  padding: 8px;
+  padding: 8px 8px 0;
   border-radius: var(--image-border-radius);
+
+  .product-item {
+    padding-top: 6px;
+    margin-top: 8px;
+    padding-bottom: 13px;
+  }
+ 
 
   &.product-brand--go-to {
     background: $gotoPinkLight;
+
+    .product-item {
+      border-top: 1px solid $gotoPink;
+
+      .link--primary {
+        text-decoration-color:  $gotoPink !important;
+      }
+    }
   }
 
   &.product-brand--bro-to {
     background: $brotoGrey;
+
+    .product-item {
+      border-top: 1px solid $gotoGreyDark;
+
+      .link--primary {
+        text-decoration-color:  $brotoRed !important;
+      }
+    }
   }
 
   &.product-brand--gro-to {
     background: #b493c480;
+
+    .product-item {
+      border-top: 1px solid $grotoPurple;
+
+      .link--primary {
+        text-decoration-color:  $grotoPink !important;
+      }
+    }
   }
 
   .line-item__content-wrapper {
@@ -3566,6 +3662,13 @@ product-rerender {
 }
 
 .shopify-section--featured-collections {
+
+  header {
+    .heading {
+      margin-bottom: 5px;
+    }
+  }
+
   .tabs-nav__position {
     color: var(--color-primary);
   }
@@ -3578,6 +3681,17 @@ product-rerender {
     margin-left: -28px;
     width: calc(100% + 56px);
   }
+
+  .product-list__background {
+    .product-list__inner {
+      @include media-query($small) {
+        padding-left: 8px;
+      }
+    }
+  }
+
+
+
 }
 
 .shopify-section--main-search {

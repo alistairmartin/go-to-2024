@@ -1295,6 +1295,12 @@
     background: #f7f7f7;
     padding: 24px 0;
   }
+
+  .rte {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px 10px;
+  }
 }
 
   .BeforeAfter__Container {
@@ -1315,11 +1321,6 @@
     
     @include media-query($medium-up) {
       padding: 0 40px;
-    }
-  
-    li {
-      text-indent: -22px;
-      margin-left: 22px;
     }
   }
   
@@ -1344,6 +1345,10 @@
     @include media-query($medium-up) {
       font-size: 24px;
       line-height: 32px;
+    }
+
+    .link {
+      font-size: 17px;
     }
   
     p {

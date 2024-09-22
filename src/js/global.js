@@ -1,37 +1,6 @@
 document.addEventListener("DOMContentLoaded", function (event) {
 
 
-    document.querySelectorAll('.brand-switcher--brand path').forEach(path => {
-        const bbox = path.getBBox();
-        const x = bbox.x + bbox.width / 2;
-        const y = bbox.y + bbox.height / 2;
-        path.style.setProperty('--origin-x', `${x}px`);
-        path.style.setProperty('--origin-y', `${y}px`);
-    });
-
-    document.querySelectorAll("button[data-action='toggle-tab']").forEach(function (button) {
-        button.addEventListener("click", function () {
-            console.log('clicked');
-            let targetElement = document.getElementById(this.getAttribute("aria-controls"));
-            let tabList = this.closest(".tab-list").querySelectorAll(".tab-list--tab");
-
-            console.log(targetElement);
-
-            tabList.forEach(function (tab) {
-                tab.setAttribute("aria-selected", false);
-                tab.classList.remove("active");
-            });
-
-            this.setAttribute("aria-selected", true);
-            this.classList.add("active");
-
-            this.closest(".tab-list").querySelectorAll(".tab-panel").forEach(function (panel) {
-                panel.setAttribute("aria-hidden", true);
-            });
-
-            targetElement.setAttribute("aria-hidden", false);
-        });
-    });
 
 
     function debounce(func, wait, immediate) {
@@ -48,7 +17,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
             if (callNow) func.apply(context, args);
         };
     }
-    
+
+
+
+    // Headers
     function handleScrollHeader() {
         if (window.pageYOffset === 0) {
             document.querySelector('body').classList.add('header-position--top');
@@ -58,25 +30,61 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
     
     var debouncedScrollHandler = debounce(handleScrollHeader, 200);
-    
     document.addEventListener('scroll', debouncedScrollHandler);
 
-    const logoItems = document.querySelectorAll('.press-list__logo-item');
-    const handleHover = function() {
-      this.click(); 
-    };
-  
-    logoItems.forEach(function(logoItem) {
-      logoItem.addEventListener('mouseover', debounce(handleHover, 400, false)); 
-    });
+
+    // Brand Switcher Animations
+
+    document.querySelectorAll('.brand-switcher--brand path').forEach(path => {
+      const bbox = path.getBBox();
+      const x = bbox.x + bbox.width / 2;
+      const y = bbox.y + bbox.height / 2;
+      path.style.setProperty('--origin-x', `${x}px`);
+      path.style.setProperty('--origin-y', `${y}px`);
+  });
+
+    // Press Section
+    if(window.innerWidth > 768) {
+      const logoItems = document.querySelectorAll('.press-list__logo-item');
+      const handleHover = function() {
+        this.click(); 
+      };
+    
+      logoItems.forEach(function(logoItem) {
+        logoItem.addEventListener('mouseover', debounce(handleHover, 400, false)); 
+      });
+    }
+
+    // Tabs 
+    document.querySelectorAll("button[data-action='toggle-tab']").forEach(function (button) {
+      button.addEventListener("click", function () {
+          console.log('clicked');
+          let targetElement = document.getElementById(this.getAttribute("aria-controls"));
+          let tabList = this.closest(".tab-list").querySelectorAll(".tab-list--tab");
+
+          console.log(targetElement);
+
+          tabList.forEach(function (tab) {
+              tab.setAttribute("aria-selected", false);
+              tab.classList.remove("active");
+          });
+
+          this.setAttribute("aria-selected", true);
+          this.classList.add("active");
+
+          this.closest(".tab-list").querySelectorAll(".tab-panel").forEach(function (panel) {
+              panel.setAttribute("aria-hidden", true);
+          });
+
+          targetElement.setAttribute("aria-hidden", false);
+      });
+  });
 });
 
 function openAccessabilityWidget() {
     UserWay.widgetOpen();
     document.querySelector('.uwy').classList.add('show');
 }
-
-
 
 function moveCarousel(direction, sectionId) {
     const section = document.querySelector(`[data-section-id="${sectionId}"]`);

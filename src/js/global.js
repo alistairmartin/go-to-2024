@@ -2,35 +2,36 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-
     function debounce(func, wait, immediate) {
-        var timeout;
+        let timeout;
         return function () {
-            var context = this, args = arguments;
-            var later = function () {
+            const context = this, args = arguments;
+            const later = function () {
                 timeout = null;
                 if (!immediate) func.apply(context, args);
             };
-            var callNow = immediate && !timeout;
+            const callNow = immediate && !timeout;
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
             if (callNow) func.apply(context, args);
         };
     }
 
-
-
-    // Headers
     function handleScrollHeader() {
-        if (window.pageYOffset === 0) {
-            document.querySelector('body').classList.add('header-position--top');
-        } else {
-            document.querySelector('body').classList.remove('header-position--top');
-        }
+        requestAnimationFrame(() => {
+            if (window.scrollY < 100) {
+                document.querySelector('body').classList.add('header-position--top');
+            } else {
+                document.querySelector('body').classList.remove('header-position--top');
+            }
+        });
     }
-    
-    var debouncedScrollHandler = debounce(handleScrollHeader, 200);
+
+    const debouncedScrollHandler = debounce(handleScrollHeader, 50);
+
+    // Remove passive: true and add touchmove event listener for iOS
     document.addEventListener('scroll', debouncedScrollHandler);
+    document.addEventListener('touchmove', debouncedScrollHandler);
 
 
     // Brand Switcher Animations

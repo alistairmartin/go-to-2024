@@ -86,8 +86,11 @@
               {{- block.settings.content -}}
             {%- endif -%}
 
-            <div class="klaviyo-form-{{ block.settings.klaviyo_list_id }}"></div>
 
+            <div class="klaviyo-form">
+              {{ block.settings.embed_desktop }}
+            </div>
+            {% comment %} <div class="klaviyo-form-{{ block.settings.klaviyo_list_id }}"></div> {% endcomment %}
             {% comment %} {%- render 'footer--newsletter' -%} {% endcomment %}
           </div>
       {%- endcase -%}

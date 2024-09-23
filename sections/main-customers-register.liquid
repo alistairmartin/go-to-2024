@@ -77,7 +77,9 @@
                   
                   <small>{{ 'customer.register.marketing_disclaimer' | t }}</small>
 
-                  <p class="checkbox-error hide">You must subscribe to Marketing to register an account</p>
+                  <p class="checkbox-error hide">
+                    {{ 'customer.register.marketing_error' | t }}
+                  </p>
 
                   <button type="submit" is="loader-button" class="submit-button form__submit button button--primary button--full">{{ 'customer.register.submit' | t }}</button>
 

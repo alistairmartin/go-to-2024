@@ -1139,8 +1139,12 @@
           position: absolute;
         }
 
+        .image-overlay__image-wrapper {
+          position: relative;
+        }
+
         .image-overlay__content {
-          margin: 16px;
+          margin: 0;
         }
       }
     }
@@ -1156,6 +1160,10 @@
 
   .product-sticky-form {
     z-index: 10;
+    // box-shadow: 0 -4px 10px #cdcdcd40;
+    // background-color: #fde4db80;
+    // background: linear-gradient(180deg, rgba(242,242,242,0) 0%, rgba(253,228,219,0.8) 100%);
+    // padding-top: 8px;
   }
 
   .rc-widget {

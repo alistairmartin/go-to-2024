@@ -24,7 +24,7 @@
           {%- endif -%}
         {%- endfor -%}
 
-      <div class="product-facet__filter-item">
+      <div class="product-facet__filter-item custom-tags">
       <button type="button" is="toggle-button" class="collapsible-toggle text--strong" aria-controls="facet-filter-{{ filter.param_name | escape }}-{{ outerCounter }}" aria-expanded="{% if is_filter_group_open %}true{% else %}false{% endif %}">
         {{- filter_title -}}
 
@@ -45,7 +45,7 @@
                   {%- if filter_value.label contains filter_prefix  -%}
                   <div class="checkbox-container">
                     <input class="checkbox" type="checkbox" name="{{ filter_value.param_name }}" id="{{ filter_value.param_name | escape }}-{{ forloop.index }}-{{ outerCounter }}" value="{{ filter_value.value | escape }}" {% if filter_value.active %}checked="checked"{% endif %} {% if filter_value.count == 0 %}disabled{% endif %}>
-                    <label for="{{ filter_value.param_name | escape }}-{{ forloop.index }}-{{ outerCounter }}">{{ filter_value.label | remove: filter_prefix | handle | replace: "-", " " | capitalize }} ({{ filter_value.count}})&lrm;</label>
+                    <label for="{{ filter_value.param_name | escape }}-{{ forloop.index }}-{{ outerCounter }}">{{ filter_value.label | remove: filter_prefix | replace: "-", " " }} ({{ filter_value.count}})&lrm;</label>
                   </div>
                 {%- endif -%}
                 {%- endfor -%}

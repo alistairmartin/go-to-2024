@@ -1,60 +1,96 @@
+{% comment %} https://developers.klaviyo.com/en/docs/how_to_set_up_custom_back_in_stock {% endcomment %}
 
 <script src="https://a.klaviyo.com/media/js/onsite/onsite.js"></script> 
 <script>
-    var klaviyo = klaviyo || [];
-    klaviyo.init({
-      account: "KZvmWH",
-      platform: "shopify"
-    });
-
-  function openBackInStock(productId,variantId,productTitle){
-      window.themeVariables.backInStock.productId = productId;
-      window.themeVariables.backInStock.variantId = variantId;
-      
-      document.getElementById('back-in-stock-modal-title').innerText = productTitle;
-      document.getElementById('back-in-stock-modal').setAttribute('open', true);
-  }
-
-  document.addEventListener("DOMContentLoaded", function() {
-
-      $("#back-in-stock-form").on('submit', function(event) {
-        event.preventDefault();
-        let hasError = false;
-        $("#back-in-stock-error").addClass("hide");
-        $("#back-in-stock-submit").attr('aria-busy', true);
-
-        var email = $('#back-in-stock-email').val();
-
-        $.ajax({
-          type: "POST",
-          url: "https://a.klaviyo.com/onsite/components/back-in-stock/subscribe",
-          data: {
-            a: "KZvmWH",
-            email: email, 
-            variant: window.themeVariables.backInStock.variantId,
-            product: window.themeVariables.backInStock.productId,
-            platform: "shopify",
-            subscribe_for_newsletter: false
-          },
-          success: function(response) {
-            console.log(response);
-            $("#back-in-stock-form").addClass("hide");
-            $("#back-in-stock-form-container").addClass("hide");
-            $("#back-in-stock-success").removeClass("hide");
-          },
-          error: function(xhr) {
-            console.error("Error:", xhr.statusText);
-            $("#back-in-stock-error").removeClass("hide");
-            $("#back-in-stock-submit").attr('aria-busy', false);
-            hasError = true;
-          }
-        });
-
-        if (hasError) {
-        return; 
-        }
-      });
+var klaviyo = klaviyo || [];
+klaviyo.init({
+  account: "KZvmWH",
+  platform: "shopify"
 });
+
+function openBackInStock(productId, variantId, productTitle) {
+  window.themeVariables.backInStock.productId = productId;
+  window.themeVariables.backInStock.variantId = variantId;
+
+  document.getElementById('back-in-stock-modal-title').innerText = productTitle;
+  document.getElementById('back-in-stock-modal').setAttribute('open', true);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  $("#back-in-stock-form").on('submit', function (event) {
+    event.preventDefault();
+    let hasError = false;
+    $("#back-in-stock-error").addClass("hide");
+    $("#back-in-stock-submit").attr('aria-busy', true);
+
+    var email = $('#back-in-stock-email').val();
+    var variantId = window.themeVariables.backInStock.variantId;
+    
+    // Create the payload for the new API format
+    const payload = {
+      "data": {
+        "type": "back-in-stock-subscription",
+        "attributes": {
+          "profile": {
+            "data": {
+              "type": "profile",
+              "attributes": {
+                "email": email,
+              }
+            }
+          },
+          "channels": ["EMAIL"],
+        },
+        "relationships": {
+          "variant": {
+            "data": {
+              "type": "catalog-variant",
+              "id": `$shopify:::$default:::${variantId}`
+            }
+          }
+        }
+      }
+    };
+
+    var requestOptions = {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "revision": "2024-06-15",
+      },
+      body: JSON.stringify(payload),
+    };
+
+    fetch("https://a.klaviyo.com/client/back-in-stock-subscriptions/?company_id=KZvmWH", requestOptions)
+      .then(result => {
+        if (result) {
+          // Log the result (JSON payload) from the API
+          console.log("Response JSON:", result);
+
+          // Success UI updates
+          $("#back-in-stock-form").addClass("hide");
+          $("#back-in-stock-form-container").addClass("hide");
+          $("#back-in-stock-success").removeClass("hide");
+        }
+      })
+      .catch(error => {
+        // Log any error that occurs during the request
+        console.error("Error:", error);
+        $("#back-in-stock-error").removeClass("hide");
+        $("#back-in-stock-submit").attr('aria-busy', false);
+        hasError = true;
+      });
+
+  });
+
+  $("#back-in-stock-modal .modal__close-button, #back-in-stock-modal .modal__overlay").on('click', function (event) {
+    $("#back-in-stock-form").removeClass("hide");
+    $("#back-in-stock-form-container").removeClass("hide");
+    $("#back-in-stock-success").addClass("hide");
+    $("#back-in-stock-error").addClass("hide");
+  });
+});
+
 
 </script>
 

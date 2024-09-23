@@ -76,8 +76,9 @@
               </h1>
             {%- endif -%}
 
+
             {%- if collection.metafields.custom.subtitle != blank -%}
-              <h2 class="heading heading--secondary h4">{{ collection.metafields.custom.subtitle | metafield_tag }}</h2>
+              <h2 class="heading heading--secondary h4 {% unless section.settings.show_collection_description %}hide{% endunless %}">{{ collection.metafields.custom.subtitle | metafield_tag }}</h2>
             {%- elsif collection.metafields.custom.short_description != blank or collection.description != blank -%}
               {%- if section.settings.show_collection_description -%}
                 <div class="image-overlay__text-container">
@@ -104,7 +105,7 @@
           {%- endif -%}
 
           {%- if collection.metafields.custom.subtitle != blank -%}
-            <h2 class="heading heading--secondary h4">{{ collection.metafields.custom.subtitle | metafield_tag }}</h2>
+            <h2 class="heading heading--secondary h4 {% unless section.settings.show_collection_description %}hide{% endunless %}">{{ collection.metafields.custom.subtitle | metafield_tag }}</h2>
           {%- elsif collection.metafields.custom.short_description != blank or collection.description != blank -%}
             {%- if section.settings.show_collection_description -%}
               <div class="image-overlay__text-container">

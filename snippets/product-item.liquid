@@ -384,8 +384,18 @@
         {%- endif -%}
       </div>
     {%- elsif reduced_content -%}
+
+      {%- if product.tags contains 'no-waitlist' -%}
+        {% assign noWaitlist = true %}
+      {%- endif -%}
+
       <div class="product-item__cta-wrapper">
-        <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')"  class="link link--primary back-in-stock">WAITLIST ME</button>
+        {%- if noWaitlist -%}
+          {{ 'collection.product.sold_out' | t }}
+        {% else  %}
+          <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')"  class="link link--primary back-in-stock">WAITLIST ME</button>
+        {%- endif -%}
+
       </div>
     {%- endif -%}
   </div>

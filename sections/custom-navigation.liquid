@@ -3,6 +3,7 @@
     --section-background: {{ section.settings.background }};
     --background: {{ section.settings.background | color_to_rgb | remove: "rgb(" | remove: ")"}};
     --border-color: {{ section.settings.border_color }};
+    --text-color: {{ section.settings.text_color }};
   }
 </style> 
 
@@ -65,6 +66,12 @@
         "type": "color",
         "id": "background",
         "label": "Background"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text Colour",
+        "default": "#1c1c1c"
       },
       {
         "type": "color",

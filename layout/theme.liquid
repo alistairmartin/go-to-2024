@@ -144,7 +144,9 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
       {%- endif -%}
 
       {%- if blog or article -%}
-        {% section "blog-header" %}
+        {%- if brand == "go-to" -%}
+          {% section "blog-header" %}
+        {%- endif -%}
       {%- endif -%}
    
       {%- unless settings.cart_type == 'page' or request.page_type == 'cart' -%}

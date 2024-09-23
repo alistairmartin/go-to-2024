@@ -104,62 +104,6 @@
   }
 
 
-  // START -- Yotpo Refer a Friend
-  .loyalty-refer-a-friend {
-    .yotpo-widget-referral-widget {
-
-        .yotpo-tile-box {
-            @include media-query($medium-up) {
-            width: 100% !important;
-          }
-        }
-      
-        .yotpo-action-button-widget {
-          margin-top: 6px !important;
-          button {
-            width: 100% !important;
-            border: 2px solid #000 !important;
-            filter: drop-shadow(5px 5px 0px #000);
-      
-            span {
-              font-weight: bold !important;
-            }
-          }
-        }
-      
-        .yotpo-input-container {
-            margin-bottom: 18px !important;
-      
-            input {
-              border-radius: 4px !important;
-               border: 1px solid #000 !important;
-            }
-        }
-      
-      
-      
-        #yotpoReferralTitleText {
-          text-transform: capitalize;
-          font-family: Moderno FB, Montserrat, sans-serif !important;
-        }
-      
-        .yotpo-right-align-background, .yotpo-tile {
-          background: #F9C6B9 !important;
-        }
-      
-        .yotpo-is-mobile {
-          .yotpo-header-text {
-            display: none !important;
-          }
-      
-          .yotpo-tile {
-            min-height: 470px !important;
-          }
-        }
-      }
-  }
-  // END -- Yotpo Refer a Friend
-
 
 .loyalty-header {
   .heading {

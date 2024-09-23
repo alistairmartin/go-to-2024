@@ -1,3 +1,4 @@
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
 <div {% if reveal %}reveal{% endif %} class="article-item {% if use_featured_layout %}{% if is_first %}article-item--featured{% else %}article-item--horizontal{% endif %}{% endif %} image-zoom {% if index != blank %}article-{{ index }}{% endif %}" style="{{ style }}">
   {%- if article.image -%}
   
@@ -23,16 +24,19 @@
         {%- endunless -%}
       {%- endfor -%}
 
-
-      {%- assign acceptedTags = "The Zo Down,Extras,In Her Skin,Wellness,Routines,Skin School" -%}
-      {%- for tag in article.tags -%}
-          {%- if acceptedTags contains tag -%}
-            <a href="{{ blog_url | remove_first: '/' }}/tagged/{{ tag | handle }}" class="article-item__category heading heading--xsmall">{{ tag }}</a>
-            {% break %}
-          {%- endif -%}
-      {%- endfor -%}
-
+      {%- if brand == "gro-to" -%}
+        {%- assign acceptedTags = "5-7PM,FUN,SKIN & HAIR,Grown-Ups,SKIN STUFF" -%}
+      {% else %}
+        {%- assign acceptedTags = "The Zo Down,Extras,In Her Skin,Wellness,Routines,Skin School" -%}
+      {%- endif -%}
       
+      {%- for tag in article.tags -%}
+        {%- if acceptedTags contains tag -%}
+          <a href="{{ blog_url | remove_first: '/' }}/tagged/{{ tag | handle }}" class="article-item__category heading heading--xsmall tag--{{ tag | handle }}">{{ tag }}</a>
+          {% break %}
+        {%- endif -%}
+    {%- endfor -%}
+
     {%- endif -%}
 
     <h3 class="article-item__title heading {{ heading_size }}">

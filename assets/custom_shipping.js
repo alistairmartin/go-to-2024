@@ -51,7 +51,7 @@
             <div class="ContentWidth">
               <div class="OrderTracking__Form">
                 <div class="Form__Panel">
-                  <h1 class="Heading Text--bold Text--alignCenter">${languages.shipping.title}</h1>
+                  <h1 class="heading heading--secondary">${languages.shipping.title}</h1>
                   <form onsubmit="return false;" class="form">
                     <div class="input">
                       <input oninput="handleChangeProxy(event)" type="email" class="input__field" id="email_address" name="email" required aria-label="${languages.shipping.form.emailPlaceholder}" autofocus />

@@ -1,4 +1,11 @@
-<form method="post" id="klaviyo-subscribe-footer" class="footer__newsletter-form form" action="//manage.kmail-lists.com/subscriptions/subscribe?a={{ settings.klaviyo_api_key }}&g={{ block.settings.klaviyo_list_id }}" target="_blank">
+{% comment %} {
+  "type": "text",
+  "id": "klaviyo_list_id",
+  "label": "The Klaviyo mailing list ID",
+  "info": "Login to your Klaviyo account and select the ID of the mailing list you want"
+} {% endcomment %}
+
+{% comment %} <form method="post" id="klaviyo-subscribe-footer" class="footer__newsletter-form form" action="//manage.kmail-lists.com/subscriptions/subscribe?a={{ settings.klaviyo_api_key }}&g={{ block.settings.klaviyo_list_id }}" target="_blank">
 <div class="klaviyo-subscribe-form">
   {%- liquid
     case brand
@@ -25,29 +32,9 @@
   <p style="display:none" class="success_message Alert Alert--success"></p>
   <p style="display:none" class="error_message Alert Alert--error"></p>
 </div>
-</form>
+</form> {% endcomment %}
 
-{% comment %} 
-             {%- form 'customer', id: 'footer-newsletter', class: 'footer__newsletter-form form' -%}
-                    {%- if form.posted_successfully? -%}
-                      <div class="form__banner banner banner--success">
-                        <span class="banner__ribbon">{% render 'icon' with 'form-success' %}</span>
-                        <p class="banner__content">{{ 'footer.newsletter.success' | t }}</p>
-                      </div>
-                    {%- else -%}
-                      {%- if form.errors -%}
-                        <div class="form__banner banner banner--error">
-                          <span class="banner__ribbon">{% render 'icon' with 'form-error' %}</span>
-                          <p class="banner__content">{{ form.errors.translated_fields['email'] }} {{ form.errors.messages['email'] }}</p>
-                        </div>
-                      {%- endif -%}
 
-                      <input type="hidden" name="contact[tags]" value="newsletter">
+{{ block.settings.embed_desktop }}
 
-                      <div class="input">
-                        <input type="email" id="footer[contact][email]" name="contact[email]" class="input__field input__field--text">
-                        <label for="footer[contact][email]" class="input__label">{{ 'footer.newsletter.email' | t }}</label>
-                        <button type="submit" class="input__submit-icon tap-area" title="{{ 'footer.newsletter.submit' | t }}">{% render 'icon' with 'nav-arrow-right', direction_aware: true %}</button>
-                      </div>
-                    {%- endif -%}
-                  {%- endform -%} {% endcomment %}
+{{ block.settings.embed_mobile }}

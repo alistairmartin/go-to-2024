@@ -1,15 +1,6 @@
 {%- assign active_accounts = 0 -%}
 
 {%- capture social_media -%}
-  {%- if settings.social_facebook != blank -%}
-    {%- assign active_accounts = active_accounts | plus: 1 -%}
-
-    <li class="social-media__item social-media__item--facebook">
-      <a href="{{ settings.social_facebook | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Facebook' }}">
-        {%- render 'icon' with 'facebook' -%}
-      </a>
-    </li>
-  {%- endif -%}
 
   {%- if settings.social_twitter != blank -%}
     {%- assign active_accounts = active_accounts | plus: 1 -%}
@@ -37,6 +28,16 @@
     <li class="social-media__item social-media__item--instagram">
       <a href="{{ settings.social_instagram | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Instagram' }}">
         {%- render 'icon' with 'instagram' -%}
+      </a>
+    </li>
+  {%- endif -%}
+
+  {%- if settings.social_facebook != blank -%}
+    {%- assign active_accounts = active_accounts | plus: 1 -%}
+
+    <li class="social-media__item social-media__item--facebook">
+      <a href="{{ settings.social_facebook | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Facebook' }}">
+        {%- render 'icon' with 'facebook' -%}
       </a>
     </li>
   {%- endif -%}
@@ -161,8 +162,8 @@
     </li>
   {%- endif -%}
 
-    <button class="button button--outline" id="text-me">Text me, Go-To</button>
-  {%- render 'modal', modalId: 'text-me', content:  '<div class="klaviyo-form-TM8QyX show-on-open"></div>', buttonId: 'text-me' -%}
+    {% comment %} <button class="button button--outline" id="text-me">Text me, Go-To</button>
+  {%- render 'modal', modalId: 'text-me', content:  '<div class="klaviyo-form-TM8QyX show-on-open"></div>', buttonId: 'text-me' -%} {% endcomment %}
 {%- endcapture -%}
 
 {%- if social_media != blank -%}

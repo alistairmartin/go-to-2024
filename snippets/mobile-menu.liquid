@@ -128,7 +128,9 @@
                 {% endif %}
               {% endfor %}
 
-              {{- link.title -}}
+              <div class="heading heading--secondary h4">
+                {{ link.title }}
+              </div>
             </div>
 
               <span class="animated-plus"></span>
@@ -141,7 +143,7 @@
                     <li class="mobile-nav__item" data-level="2">
                       {%- if sub_link.links.size > 0 -%}
                         <button is="toggle-button" class="mobile-nav__link" aria-controls="mobile-menu-{{ forloop.parentloop.index }}-{{ forloop.index }}" aria-expanded="false">
-                          {{- sub_link.title -}}
+                          <strong>{{- sub_link.title -}}</strong>
                           <span class="animated-plus"></span>
                         </button>
 
@@ -184,7 +186,10 @@
                   {%- endif -%}
                 {% endif %}
               {% endfor %}
-              {{ link.title }}
+              <div class="heading heading--secondary h4">
+                {{ link.title }}
+              </div>
+             
               </div>
               </a>
           {%- endif -%}

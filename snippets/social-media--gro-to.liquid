@@ -4,13 +4,7 @@
   {%- if settings.groto_social_facebook != blank -%}
     {%- assign active_accounts = active_accounts | plus: 1 -%}
 
-    <li class="social-media__item social-media__item--facebook">
-      <a href="{{ settings.groto_social_facebook | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Facebook' }}">
-        {% comment %} {%- render 'icon' with 'facebook' -%} {% endcomment %}
-        <img src="{{ 'gro-to_FacebookIcon.png' | asset_url }}" width="45" height="auto" loading="lazy" />
-      </a>
-    </li>
-  {%- endif -%}
+
 
   {%- if settings.groto_social_twitter != blank -%}
     {%- assign active_accounts = active_accounts | plus: 1 -%}
@@ -42,6 +36,14 @@
       </a>
     </li>
   {%- endif -%}
+
+  <li class="social-media__item social-media__item--facebook">
+    <a href="{{ settings.groto_social_facebook | replace_first: 'https://', '' | replace_first: 'http://', '' | prepend: 'https://' }}" target="_blank" rel="noopener" class="social-media__link" aria-label="{{ 'general.social.follow_label' | t: social_media: 'Facebook' }}">
+      {% comment %} {%- render 'icon' with 'facebook' -%} {% endcomment %}
+      <img src="{{ 'gro-to_FacebookIcon.png' | asset_url }}" width="45" height="auto" loading="lazy" />
+    </a>
+  </li>
+{%- endif -%}
 
   {%- if settings.groto_social_pinterest != blank -%}
     {%- assign active_accounts = active_accounts | plus: 1 -%}

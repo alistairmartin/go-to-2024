@@ -18,15 +18,37 @@
         {%- assign section_items_alignment = 'flex-end' -%}
     {%- endcase -%}
 
+    {%- assign text_position_mobile = block.settings.text_position_mobile -%}
+
+    {%- case text_position_mobile -%}
+      {%- when 'top' -%}
+        {%- assign section_items_alignment_mobile = 'flex-start' -%}
+      {%- when 'middle' -%}
+        {%- assign section_items_alignment_mobile = 'center' -%}
+      {%- when 'bottom' -%}
+        {%- assign section_items_alignment_mobile = 'flex-end' -%}
+    {%- endcase -%}
+
     #block-{{ section.id }}-{{ block.id }} {
+      --heading-color: {{ block.settings.text_color_mobile.red }}, {{ block.settings.text_color_mobile.green }}, {{ block.settings.text_color_mobile.blue }};
+      --text-color: {{ block.settings.text_color_mobile.red }}, {{ block.settings.text_color_mobile.green }}, {{ block.settings.text_color_mobile.blue }};
+      --primary-button-background: {{ block.settings.button_background_mobile.red }}, {{ block.settings.button_background_mobile.green }}, {{ block.settings.button_background_mobile.blue }};
+      --primary-button-text-color: {{ block.settings.button_text_color_mobile.red }}, {{ block.settings.button_text_color_mobile.green }}, {{ block.settings.button_text_color_mobile.blue }};
+
+      --section-blocks-alignment: {{ section_items_alignment_mobile }};
+      --section-blocks-overlay-color: {{ block.settings.overlay_color.red }}, {{ block.settings.overlay_color.green }}, {{ block.settings.overlay_color.blue }};
+      --section-blocks-overlay-opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+    }
+
+    @media screen and (min-width: 741px) {
+      #block-{{ section.id }}-{{ block.id }} {
+      --section-blocks-alignment: {{ section_items_alignment }};
       --heading-color: {{ block.settings.text_color.red }}, {{ block.settings.text_color.green }}, {{ block.settings.text_color.blue }};
       --text-color: {{ block.settings.text_color.red }}, {{ block.settings.text_color.green }}, {{ block.settings.text_color.blue }};
       --primary-button-background: {{ block.settings.button_background.red }}, {{ block.settings.button_background.green }}, {{ block.settings.button_background.blue }};
       --primary-button-text-color: {{ block.settings.button_text_color.red }}, {{ block.settings.button_text_color.green }}, {{ block.settings.button_text_color.blue }};
 
-      --section-blocks-alignment: {{ section_items_alignment }};
-      --section-blocks-overlay-color: {{ block.settings.overlay_color.red }}, {{ block.settings.overlay_color.green }}, {{ block.settings.overlay_color.blue }};
-      --section-blocks-overlay-opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+    }
     }
   {%- endfor -%}
 </style>
@@ -383,6 +405,26 @@
           "default": "middle_center"
         },
         {
+          "type": "select",
+          "id": "text_position_mobile",
+          "label": "Text position (Mobile)",
+          "options": [
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "middle",
+              "label": "Middle"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
+          ],
+          "default": "middle"
+        },
+        {
           "type": "textarea",
           "id": "subheading",
           "label": "Subheading",
@@ -449,7 +491,7 @@
         },
         {
           "type": "header",
-          "content": "Colors"
+          "content": "Colors (Desktop)"
         },
         {
           "type": "color",
@@ -468,6 +510,32 @@
           "id": "button_text_color",
           "label": "Button text",
           "default": "#000000"
+        },
+        {
+          "type": "header",
+          "content": "Colors (Mobile)"
+        },
+        {
+          "type": "color",
+          "id": "text_color_mobile",
+          "label": "Text",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_background_mobile",
+          "label": "Button background",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color_mobile",
+          "label": "Button text",
+          "default": "#000000"
+        },
+        {
+          "type": "header",
+          "content": "Overlay"
         },
         {
           "type": "color",

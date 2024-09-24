@@ -19,6 +19,10 @@
 
 <section class="{% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}> 
 
+  {%- if section.settings.enable_container -%}
+    <div class="container">
+  {%- endif -%}
+
   {%- for block in section.blocks -%}
     {%- capture blockId -%}id="block-{{ block.id }}"{%- endcapture -%}
 
@@ -49,8 +53,11 @@
   {%- comment -%} Button Modals --- START  {%- endcomment -%}
 
 
-</section>
+  {%- if section.settings.enable_container -%}
+    </div>
+  {%- endif -%}
 
+</section>
 
 {% schema %}
 {
@@ -84,6 +91,12 @@
       "type": "checkbox",
       "id": "hide_desktop",
       "label": "Hide Desktop?"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "enable_container",
+      "label": "Enable Container"
     },
     {
         "type": "header",
@@ -835,7 +848,6 @@
         },
       ]
     },
-
     {
       "type": "text-overlay-start",
       "name": "⏹️⏹️ Text Overlay - START",
@@ -855,7 +867,7 @@
     },
     {
       "type": "text-overlay-end",
-      "name": "⏹️⏹️ Container - END",
+      "name": "⏹️⏹️ Text Overlay - END",
       "settings": [
         {
           "type": "paragraph",

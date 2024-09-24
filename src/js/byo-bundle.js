@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 byoBundleCounterPrice = 0;
                 byoBundleCounterItems = 0;
                 $(".build-your-build--selected-items").empty();
-                $(".add-bundle-to-cart").removeClass("loading").prop("disabled", false);
+                $(".add-bundle-to-cart").removeClass("loading").addClass("under");
                 $(".build-your-bundle--cost").text("0.00");
                 $('.product-item--BYO-ATC.active, .product-item--BYO-ATC-variant.active').removeClass("active");
               })

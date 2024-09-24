@@ -90,6 +90,13 @@
             <div class="klaviyo-form">
               {{ block.settings.embed_desktop }}
             </div>
+
+            {%- if brand == "go-to" -%}
+              <img class="not-tested-on-animals" src="{{ "not_tested_on_animals.png" | asset_img_url: "200x" }}" width="200" height="auto" loading="lazy" alt="Not Tested On Animals">
+              {% else %}
+              <img class="not-tested-on-animals" src="{{ "not_tested_on_animals_white.png" | asset_img_url: "200x" }}" width="200" height="auto" loading="lazy" alt="Not Tested On Animals">
+             {%- endif -%}
+
             {% comment %} <div class="klaviyo-form-{{ block.settings.klaviyo_list_id }}"></div> {% endcomment %}
             {% comment %} {%- render 'footer--newsletter' -%} {% endcomment %}
           </div>

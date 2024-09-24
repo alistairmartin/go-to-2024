@@ -40,17 +40,20 @@
                     {%- for collectionHandle in collectionHandles -%}
                       {%- if collectionHandle.handle == collection.handle -%}
 
-                        {%- for i in (1..8) -%}
+                        {%- for i in (1..20) -%}
                           {% capture textId %}text{{ i }}{% endcapture %}
                           {% capture linkId %}url{{ i }}{% endcapture %}
                           {%- assign textSetting = block.settings[textId] -%}
                           {%- assign LinkSetting = block.settings[linkId] -%}
 
-                          <li class="link-bar__link-item {% if canonical_url contains LinkSetting %}link-bar__link-item--selected text--underlined{% endif %}">
-                            <a href="{{ LinkSetting }}">
-                              {{ textSetting }}
-                            </a>
-                          </li>
+                          {%- if textSetting != blank -%}
+                            <li class="link-bar__link-item {% if canonical_url contains LinkSetting %}link-bar__link-item--selected text--underlined{% endif %}">
+                              <a href="{{ LinkSetting }}">
+                                {{ textSetting }}
+                              </a>
+                            </li>
+                          {%- endif -%}
+                       
 
                         {%- endfor -%}
                         {% break %}

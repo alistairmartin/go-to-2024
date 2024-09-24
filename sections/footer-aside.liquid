@@ -1,6 +1,6 @@
 {%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
 <style>
-  #shopify-section-{{ section.id }} .footer-aside { 
+  #shopify-section-{{ section.id }} .footer-aside, #shopify-section-{{ section.id }}  { 
     --background: {{ section.settings.background }};
     --text-color: {{ section.settings.text_color }};
   }
@@ -35,9 +35,9 @@
     {%- endif -%}
   </div> {% endcomment %}
 
-  <img src="{{ "not_tested_on_animals.png" | asset_img_url: "200x" }}" width="200" height="auto" loading="lazy" alt="Not Tested On Animals">
+  {% comment %} <img src="{{ "not_tested_on_animals.png" | asset_img_url: "200x" }}" width="200" height="auto" loading="lazy" alt="Not Tested On Animals">
 
-
+ {% endcomment %}
 
   {% comment %} <img data-src="//gotoskincare.com/cdn/shop/files/not_tested_on_animals.png?v=1644811577&amp;width=320" loading="lazy" width="auto" height="auto" alt="" class=" Image--lazyLoaded" src="//gotoskincare.com/cdn/shop/files/not_tested_on_animals.png?v=1644811577&amp;width=320"> {% endcomment %}
 

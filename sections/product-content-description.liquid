@@ -159,7 +159,9 @@
             {{ 'product.general.read_more_reviews' | t }} {%- render 'icon', icon: 'arrow-link' -%}
           </button> {% endcomment %}
 
+            <div class="button-wrapper">
         <a href="#customer-reviews" class="blocks--button link--primary">{{ 'product.general.read_more_reviews' | t }} {%- render 'icon' with "brand-arrow-right" -%}</a>
+        </div>
 
         </div>
         {%- endif -%}
@@ -170,7 +172,7 @@
         <div class="product-content-description--content-inner tab-panel whats-in-it" id="product-content-description--tab-3" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-3" aria-hidden="true">
 
         <p class="text text--small">
-          {{ product.metafields.accentuate.product_main_information__whats_in_it |  strip_html }}
+          {{ product.metafields.accentuate.product_main_information__whats_in_it }}
         </p>
      
 

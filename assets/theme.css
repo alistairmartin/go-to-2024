@@ -4682,7 +4682,7 @@ split-lines {
           padding-block-start: 0 !important;
 }
 
-.drawer__footer:before {
+/* .drawer__footer:before {
   content: "";
   background: linear-gradient(rgba(var(--root-background), 0), rgb(var(--root-background)));
   z-index: 1;
@@ -4691,7 +4691,7 @@ split-lines {
   height: 24px;
   position: absolute;
   bottom: 100%;
-}
+} */
 
 .drawer__footer:not(:lang(ae), :lang(ar), :lang(arc), :lang(bcc), :lang(bqi), :lang(ckb), :lang(dv), :lang(fa), :lang(glk), :lang(he), :lang(ku), :lang(mzn), :lang(nqo), :lang(pnb), :lang(ps), :lang(sd), :lang(ug), :lang(ur), :lang(yi)):before {
   left: 0;
@@ -8744,7 +8744,7 @@ input:checked + .popover__choice-label:is(:lang(ae), :lang(ar), :lang(arc), :lan
 
 .header--bordered .mega-menu {
   margin-top: 1px;
-}
+} 
 
 .mega-menu__inner {
   justify-content: center;

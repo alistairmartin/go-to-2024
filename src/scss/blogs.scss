@@ -245,13 +245,18 @@ store-header {
       }
 
     .article-list {
-      display: grid;
-      gap: 8px;
-      grid-template-columns: 1fr !important;
-  
-      @include media-query($medium-up) {
-        grid-template-columns: repeat(3,1fr) !important;
-        grid-template-rows: repeat(var(--articleListGridDesktop),1fr) !important;
+        display: flex;
+        flex-direction: column;
+
+      .inner-container {
+        display: grid;
+        gap: 8px;
+        grid-template-columns: 1fr !important;
+    
+        @include media-query($medium-up) {
+          grid-template-columns: repeat(3,1fr) !important;
+          grid-template-rows: repeat(8,100px) !important;
+        }
       }
   
       .article-item {
@@ -285,7 +290,7 @@ store-header {
        
 
         @include media-query($medium-up) {
-            min-height: 150px;
+            min-height: 100px;
             margin: 16px;
         }
       }
@@ -305,6 +310,7 @@ store-header {
         margin: 0;
         height: 100%;
         width: 100%;
+        object-position: 0% 30%;
 
         @include media-query($small) {
             border-radius: 0;

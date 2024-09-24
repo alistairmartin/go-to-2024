@@ -10,7 +10,7 @@
 
 
 
-<section>
+<section class="{% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %}">
 <div class="{% if section.settings.enable_container %}container{% endif %}">
   <div class="page-header">
     <link-bar class="link-bar {% if section.settings.reduce_padding %}reduce-padding{% endif %}">
@@ -45,6 +45,16 @@
     "name": "Custom Navigation",
     "class": "shopify-section--custom-navigation",
     "settings": [
+      {
+        "type": "checkbox",
+        "id": "hide_mobile",
+        "label": "Hide Mobile?"
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_desktop",
+        "label": "Hide Desktop?"
+      },
       {
         "type": "checkbox",
         "id": "enable_container",

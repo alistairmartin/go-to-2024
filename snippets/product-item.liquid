@@ -44,7 +44,15 @@
       {%- else -%}
         <span class="label label--label-custom label--soldout">{{ 'product.labels.soldout' | t }}</span>
       {%- endif -%} {% endcomment %}
-      <span class="label label--label-custom label--soldout">{{ 'product.labels.waitlist' | t }}</span>
+
+      {% assign noWaitlist = false %}
+      {%- if product.tags contains 'no-waitlist' -%}
+        {% assign noWaitlist = true %}
+        {% break %}
+      {%- endif -%}
+
+      <span class="label label--label-custom label--waitlist {% if noWaitlist == true %}hide{% endif %}">{{ 'product.labels.waitlist' | t }}</span>
+      <span class="label label--label-custom label--soldout {% if noWaitlist == false %}hide{% endif %}">{{ 'product.labels.sold_out' | t }}</span>
     {%-  elsif product.metafields.gts_theme.label != blank -%}
       <span class="label label--label-custom label--{{ product.metafields.gts_theme.label | handle }}">{{ product.metafields.gts_theme.label }}</span>
     {%- endif  -%}
@@ -387,6 +395,7 @@
 
       {%- if product.tags contains 'no-waitlist' -%}
         {% assign noWaitlist = true %}
+        {% break %}
       {%- endif -%}
 
       <div class="product-item__cta-wrapper">

@@ -7,7 +7,7 @@
       {%- assign currentPageArticles = paginate.page_size  -%}
     {%- endif -%}
 
-  {%- assign desktopGridRows = currentPageArticles | divided_by: 6.0 | ceil | times: 8 -%}
+  {%- assign desktopGridRows = 6 | divided_by: 6.0 | ceil | times: 8 -%}
 
   <style>
   #shopify-section-{{ section.id }} .article-list {
@@ -93,40 +93,48 @@
 
     <div class="vertical-breather vertical-breather--margin vertical-breather--extra-tight">
       <div class="container">
-
-   
         {%- paginate blog.articles by section.settings.articles_per_page -%}
-
-          <article-list {% if settings.stagger_blog_posts_apparition %}stagger-apparition{% endif %} class="article-list article-list--stacked">
+    
+        <article-list {% if settings.stagger_blog_posts_apparition %}stagger-apparition{% endif %} class="article-list article-list--stacked">
             {%- for article in blog.articles -%}
-
-              {%- assign currentIndex = forloop.index0 -%}
-              {%- assign sectionNumber = forloop.index0 |  divided_by: 6 | floor | times: 8 -%}
-              {%- assign moduloIndex = currentIndex | modulo: 6 -%}
-
-              {%- if moduloIndex == 0 -%}
-                {%- capture style -%}grid-area: {{ 1 | plus: sectionNumber }} / 1 / {{ 4 | plus: sectionNumber }} / 2;{%- endcapture -%}
-              {%- elsif moduloIndex == 1 -%}
-                {%- capture style -%}grid-area: {{ 4 | plus: sectionNumber }} / 1 / {{ 9 | plus: sectionNumber }} / 2;{%- endcapture -%}
-              {%- elsif moduloIndex == 2 -%}
-                {%- capture style -%}grid-area: {{ 1 | plus: sectionNumber }} / 2 / {{ 6 | plus: sectionNumber }} / 3;{%- endcapture -%}
-              {%- elsif moduloIndex == 3 -%}
-                {%- capture style -%}grid-area: {{ 6 | plus: sectionNumber }} / 2 / {{ 9 | plus: sectionNumber }} / 3;{%- endcapture -%}
-              {%- elsif moduloIndex == 4 -%}
-                {%- capture style -%}grid-area: {{ 1 | plus: sectionNumber }} / 3 / {{ 4 | plus: sectionNumber }} / 4;{%- endcapture -%}
-              {%- elsif moduloIndex == 5 -%}
-                {%- capture style -%}grid-area: {{ 4 | plus: sectionNumber }} / 3 / {{ 9 | plus: sectionNumber }} / 4;{%- endcapture -%}
-              {%- endif -%}
-
-              {%- render 'article-item', article: article, heading_size: 'h4', style: style -%}
-
-              
+    
+                {%- assign currentIndex = forloop.index0 -%}
+                {%- assign sectionNumber = forloop.index0 | divided_by: 6 | floor | times: 8 -%}
+                {%- assign moduloIndex = currentIndex | modulo: 6 -%}
+    
+                {%- if moduloIndex == 0 -%}
+                    <!-- Start wrapping every 6 items -->
+                    <div class="inner-container">
+                {%- endif -%}
+    
+                {%- if moduloIndex == 0 -%}
+                    {%- capture style -%}grid-area: 1 / 1 / 4 / 2;{%- endcapture -%}
+                {%- elsif moduloIndex == 1 -%}
+                    {%- capture style -%}grid-area: 4 / 1 / 9 / 2;{%- endcapture -%}
+                {%- elsif moduloIndex == 2 -%}
+                    {%- capture style -%}grid-area:1 / 2 / 6 / 3;{%- endcapture -%}
+                {%- elsif moduloIndex == 3 -%}
+                    {%- capture style -%}grid-area: 6 / 2 / 9 / 3;{%- endcapture -%}
+                {%- elsif moduloIndex == 4 -%}
+                    {%- capture style -%}grid-area: 1 / 3 / 4 / 4;{%- endcapture -%}
+                {%- elsif moduloIndex == 5 -%}
+                    {%- capture style -%}grid-area: 4 / 3 / 9 / 4;{%- endcapture -%}
+                {%- endif -%}
+    
+                {%- render 'article-item', article: article, heading_size: 'h5', style: style -%}
+    
+                {%- if moduloIndex == 5 or forloop.last -%}
+                    <!-- Close wrapping after every 6 items or the last item -->
+                    </div>
+                {%- endif -%}
+    
             {%- endfor -%}
-          </article-list>
-
-          {%- render 'pagination', paginate: paginate -%}
+        </article-list>
+    
+        {%- render 'pagination', paginate: paginate -%}
         {%- endpaginate -%}
-      </div>
+    </div>
+    
     </div>
   {%- endif -%}
 </section>

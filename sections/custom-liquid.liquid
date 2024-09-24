@@ -33,8 +33,8 @@
   }
 </style>
 
-<section>
-  <div class="{% if section.settings.add_vertical_spacing %}section{% endif %} {% unless blends_with_background or is_boxed %}section--flush{% endunless %}">
+<section class="section--outer {% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %}">
+  <div class="section--inner {% if section.settings.add_vertical_spacing %}section{% endif %} {% unless blends_with_background or is_boxed %}section--flush{% endunless %}">
   <div {% if is_boxed or section.settings.enable_container %}class="container"{% endif %}>
     <div class="section__color-wrapper {% if is_boxed %}section__color-wrapper--boxed{% endif %}">
 
@@ -73,6 +73,16 @@
     "groups": ["custom.overlay"]
   },
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "hide_mobile",
+      "label": "Hide Mobile?"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_desktop",
+      "label": "Hide Desktop?"
+    },
     {
       "type": "select",
       "id": "page_width",

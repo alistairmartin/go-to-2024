@@ -1545,4 +1545,11 @@
     }
   }
   
-
+  .oke-button {
+    border-radius: var(--image-border-radius) !important;
+    color: var(--color-button-primary-text) !important;
+    background: var(--color-button-primary-background) !important;
+    box-shadow: 4px 4px 0 0 var(--color-button-primary-shadow) !important;
+    font-family: var(----text-font-family) !important;
+    text-transform: uppercase;
+  } 

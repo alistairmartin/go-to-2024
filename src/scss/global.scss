@@ -920,7 +920,7 @@ store-header.background-blur {
     text-align: center;
     display: block;
     margin: 6px auto 0;
-    text-decoration-color: $gotoGrey !important;
+    border-color: $gotoGrey !important;
   }
 
   .link {
@@ -937,7 +937,7 @@ store-header.background-blur {
     }
 
     .link--primary {
-      text-decoration-color: $brotoBlue !important;
+      border-color: $brotoBlue !important;
     }
 
     .rating__star {
@@ -952,7 +952,7 @@ store-header.background-blur {
     }
 
     .link--primary {
-      text-decoration-color: $grotoBlue !important;
+      border-color: $grotoBlue !important;
     }
 
     .rating__star {
@@ -1099,6 +1099,11 @@ store-header.background-blur {
     margin-top: calc(var(--vertical-breather) / 2);
     // justify-content: center;
     // align-items: center;
+  }
+
+  .article-item__category {
+    text-align: center;
+    margin-bottom: 0;
   }
 
   .article-item__excerpt {
@@ -2385,6 +2390,15 @@ split-lines[reveal] {
 footer {
     z-index: 2;
     position: relative;
+
+    .footer__item-content {
+      font-size: 14px;
+
+      p {
+        font-size: 14px;
+        line-height: 1;
+      }
+    }
   
   .open-accessability {
     margin-top: 32px;
@@ -2509,6 +2523,7 @@ footer {
 
 
 .mega-menu__column {
+  flex: 1;
   .mega-menu__title {
     text-transform: capitalize;
     font-weight: 600;
@@ -2707,11 +2722,11 @@ footer {
       background: #fff !important;
       border-radius: var(--image-border-radius) !important;
       box-shadow: 1px 1px 1px #9b9b9b49;
-      border: 1px solid #f9f9f9;
+      // border: 1px solid #f9f9f9;
 
       &:hover {
         // box-shadow: 1px 1px 1px transparent;
-        border: 1px solid transparent;
+        // border: 1px solid transparent;
       }
 
       .product-item__info   {
@@ -4001,6 +4016,10 @@ product-rerender {
     }
   }
 
+  .tabs-nav__item {
+    min-width: 145px;
+  }
+
   .tabs-nav__position {
     color: var(--color-primary);
   }
@@ -4335,4 +4354,11 @@ product-rerender {
   }
 }
 
+.template-page--go-to-faqs {
+  .shopify-section--sidebar-menus {
+    @include media-query($medium-up) {
+      display: none;
+    }
+  }
+}
 

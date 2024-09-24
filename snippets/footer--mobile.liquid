@@ -101,14 +101,14 @@
             {{ block.settings.embed_mobile }}
            </div>
 
-           {%- if brand == "go-to" -%}
+          <button onclick="openAccessabilityWidget()" class="link link--secondary open-accessability"><strong>OPEN ACCESSABILITY</strong></button>
+
+          {%- if brand == "go-to" -%}
             <img class="not-tested-on-animals" src="{{ "not_tested_on_animals.png" | asset_img_url: "200x" }}" width="200" height="auto" loading="lazy" alt="Not Tested On Animals">
             {% else %}
             <img class="not-tested-on-animals" src="{{ "not_tested_on_animals_white.png" | asset_img_url: "200x" }}" width="200" height="auto" loading="lazy" alt="Not Tested On Animals">
            {%- endif -%}
       
-          
-          <button onclick="openAccessabilityWidget()" class="link link--secondary open-accessability"><strong>OPEN ACCESSABILITY</strong></button>
         </div>
     </div>
 {%- endcase -%}

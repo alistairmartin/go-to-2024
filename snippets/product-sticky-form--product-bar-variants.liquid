@@ -1,32 +1,21 @@
-{%- assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ',' -%}
-{%- assign color_white_label = 'general.label.white' | t | downcase -%}
-{%- assign buy_buttons_block = section.blocks | where: 'type', 'buy_buttons' | first -%}
 
-{%- if buy_buttons_block != blank -%}
-  <product-rerender id="product-sticky-form-{{ product.id }}-{{ section.id }}" observe-form="{{ product_form_id }}">
-    {%- if product.selected_or_first_available_variant != nil -%}
-      <style>
-        @media screen and (min-width: 1000px) {
-          :root {
-            --anchor-offset: 140px; /* When the sticky form is activate, every scroll must be offset by an extra value */
-          }
-        }
-      </style>
+  <product-rerender id="product-sticky-form-{{ product.id }}-{{ section.id }}" observe-form="{{ section.settings.make_visible_from_id }}">
 
-    {%- if product.metafields.custom.product_main_information__related_products != blank -%}
-      {%- assign customVariants = true -%}
-    {%- endif -%}
+    {%- assign customVariants = true -%}
 
-      <product-sticky-form form-id="{{ product_form_id }}" hidden class="product-sticky-form hide-desktop {% if product.metafields.custom.product_main_information__related_products != blank %}product-sticky-form--custom-variants{% endif %}">
+      <product-sticky-form form-id="{{ product_form_id }}" hidden class="product-sticky-form product-sticky-form--custom-variants">
         <div class="container">
           <div class="product-sticky-form__inner">
             <div class="product-sticky-form__content-wrapper hidden-pocket">
+
               {%- if product.selected_or_first_available_variant.featured_image != blank -%}
                 <div class="product-sticky-form__image-wrapper">
                   {%- assign featured_media = product.selected_or_first_available_variant.featured_image | default: product.featured_media -%}
                   {{- featured_media | image_url: width: featured_media.width | image_tag: loading: 'lazy', sizes: '55px', widths: '55,110,165', class: 'product-sticky-form__image' -}}
                 </div>
               {%- endif -%}
+
+              {{ product.selected_or_first_available_variant.featured_image }}
 
               <div class="product-sticky-form__info">
                 <div class="product-sticky-form__bottom-info">
@@ -124,8 +113,6 @@
               {%- endunless -%}
 
 
-              {%- if product.metafields.custom.product_main_information__related_products != blank -%}
-                {%- assign related_products = product.metafields.custom.product_main_information__related_products | split: "|" -%}
                 <div class="product-sticky-form__variants  product-sticky-form__variants-custom hidden-pocket">
     
                 
@@ -144,8 +131,9 @@
                         <div class="combo-box__option-list" role="listbox">
 
                           {%- assign primaryProduct = product.title -%}
-                          {%- for product_handle in related_products -%}
-                            {%- assign related_product = all_products[product_handle] -%}
+                          {%- for block in section.blocks -%}
+                            {%- assign related_product_object = block.settings.product -%}
+                            {%- assign related_product = all_products[related_product_object] -%}
                             {%- assign related_product_title = related_product.metafields.gts_theme.alternate_title | default: related_product.title -%}
 
                             <a href="{{ related_product.url }}" type="button" role="option" class="combo-box__option-item" aria-selected="{% if related_product.handle == product.handle %}true{% else %}false{% endif %}">
@@ -189,7 +177,7 @@
                     </div>
                  
                 </div>
-              {%- endif -%}
+
 
               <product-payment-container class="product-sticky-form__payment-container">
                 {%- capture button_content -%}
@@ -212,6 +200,5 @@
           </div>
         </div>
       </product-sticky-form>
-    {%- endif -%}
+
   </product-rerender>
-{%- endif -%}

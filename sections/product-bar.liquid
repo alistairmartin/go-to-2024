@@ -1,5 +1,12 @@
-{%- assign product = all_products[section.settings.product] -%}
-{%- render 'product-sticky-form--product-bar', product: product -%}
+
+
+{%- if section.blocks.size > 1 -%}
+  {%- assign product = all_products[section.settings.product] -%}
+  {%- render 'product-sticky-form--product-bar-variants', product: product -%}
+{% else %}
+  {%- assign product = all_products[section.settings.product] -%}
+  {%- render 'product-sticky-form--product-bar', product: product -%}
+{%- endif -%}
 
 {% schema %}
     {
@@ -10,6 +17,19 @@
           "type": "product",
           "id": "product",
           "label": "Product"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "product",
+          "name": "Product",
+          "settings": [
+            {
+              "type": "product",
+              "id": "product",
+              "label": "Product"
+            }
+          ]
         }
       ],
       "presets": [

@@ -116,7 +116,7 @@
           {%- if link.links.size > 0 or mega_menu_images != blank -%}
             <button is="toggle-button" class="mobile-nav__link heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}" aria-controls="mobile-menu-{{ forloop.index }}" aria-expanded="false">
 
-            <div class="mobile-nav__image-container">
+            <a class="mobile-nav__image-container" href="{{ link.url }}">
               {%- for block in section.blocks -%}
                 {%- if block.type == "mobile_menu"  -%}
                   {%- assign link_title_downcase = link.title | strip | downcase -%}
@@ -131,7 +131,7 @@
               <div class="heading heading--secondary h4">
                 {{ link.title }}
               </div>
-            </div>
+            </a>
 
               <span class="animated-plus"></span>
             </button>

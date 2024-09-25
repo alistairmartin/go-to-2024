@@ -39,7 +39,7 @@
 </style>
 
 
-<section class="section" data-section-id="{{ section.id }}" data-current="0">
+<section {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %} class="section" data-section-id="{{ section.id }}" data-current="0">
 
   <div class="section__color-wrapper">
 
@@ -61,7 +61,14 @@
 
         {%- if block.settings.button_text != blank -%}
           <div class="button-wrapper">
-            <a href="{{ block.settings.button_link }}" class="link link--tierary"><strong>{{ block.settings.button_text | escape }}</strong></a>
+
+            {%- assign blockId = block.settings.button_text | append: "-" | append: forloop.index | handle -%}
+            <button class="link link--secondary" id="{{ blockId }}">
+              {{ block.settings.button_text }}
+            </button>
+            {%- render 'modal', modalId: blockId, buttonId: blockId, content: block.settings.modal_content, class: "modal-padding" -%}
+
+            {% comment %} <a href="{{ block.settings.button_link }}" class="link link--tierary"><strong>{{ block.settings.button_text | escape }}</strong></a> {% endcomment %}
           </div>
         {%- endif -%}
     </div>
@@ -85,7 +92,7 @@
             <div class="featured-carousel-product--text-inner">
               <h2 class="title heading">{{ block.settings.title }}</h2>
               <h3 class="subtitle">{{ block.settings.subtitle }}</h3>
-              {% capture button_text %} | <strong> {{ product.price | money }}</strong>{% endcapture %}
+              {% capture button_text %} | <strong> {{ product.price | money | remove: ".00" | remove: ",00" }}</strong>{% endcapture %}
               {%- render 'product-item--ATC' product: product, button_text: button_text, button_class: "button button--full" -%}
             </div>
           </div>
@@ -110,6 +117,12 @@
       "name": "Prod. Carousel (Text)",
       "class": "shopify-section--featured-product-carousel-text",
       "settings": [
+        {
+        "type": "text",
+        "id": "id",
+        "label": "ID",
+        "info": "Optional. Used with in-page navigation."
+        },
         {
         "type": "header",
         "content": "Colors"
@@ -178,9 +191,9 @@
         "label": "Button text"
         },
         {
-        "type": "url",
-        "id": "button_link",
-        "label": "Button link"
+          "type": "richtext",
+          "id": "modal_content",
+          "label": "Modal Content"
         },
           {
             "type": "header",

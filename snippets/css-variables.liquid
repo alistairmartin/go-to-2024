@@ -95,9 +95,12 @@
 
     /* Control the look and feel of the theme by changing radius of various elements */
     --image-border-radius: 8px;
-    --button-border-radius: {{ settings.button_border_radius }}px;
-    --block-border-radius: {% if settings.block_border_radius == 'none' %}0{% elsif settings.block_border_radius == 'small' %}8{% elsif settings.block_border_radius == 'medium' %}16{% else %}32{% endif %}px;
-    --block-border-radius-reduced: {% if settings.block_border_radius == 'none' %}0{% elsif settings.block_border_radius == 'small' %}4{% elsif settings.block_border_radius == 'medium' %}8{% else %}16{% endif %}px;
+    --button-border-radius:8px;
+    /* --block-border-radius: {% if settings.block_border_radius == 'none' %}0{% elsif settings.block_border_radius == 'small' %}8{% elsif settings.block_border_radius == 'medium' %}16{% else %}32{% endif %}px;
+    --block-border-radius-reduced: {% if settings.block_border_radius == 'none' %}0{% elsif settings.block_border_radius == 'small' %}4{% elsif settings.block_border_radius == 'medium' %}8{% else %}16{% endif %}px; */
+
+  --block-border-radius: 8px;
+  --block-border-radius-reduced: 8px;
     --color-swatch-border-radius: {% if settings.round_color_swatches %}100%{% else %}0px{% endif %};
 
     /* Button size */

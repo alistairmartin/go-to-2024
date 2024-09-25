@@ -59,7 +59,7 @@
             {%- capture title -%}
             {%- if section.settings.title != blank -%}
               <a href="{{ blog.url }}" class="blog-link {{ section.settings.text_alignment }}">
-                <h3 class="heading h3">{{ section.settings.title | escape }}</h3> 
+                <h3 class="heading h3 heading--{{ section.settings.font_family_title }}"">{{ section.settings.title | escape }}</h3> 
                 {% comment %} {% render "icon" with "chevron-back" %} {% endcomment %}
               </a>
             {%- endif -%}
@@ -278,6 +278,23 @@
       "id": "title",
       "label": "Heading",
       "default": "Blog posts"
+    },
+    {
+      "type": "select",
+      "id": "font_family_title",
+      "label": "Font Family (Title)",
+      "info": "For Section Header",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary"
     },
     {
       "type": "select",

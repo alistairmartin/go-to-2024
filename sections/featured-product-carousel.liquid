@@ -67,21 +67,37 @@
     </div>
 
 
-    <div class="hide-mobile">
+    <div class="hide-mobile featured-carousel-product--grid-outer">
       <div class="featured-carousel-product--grid">
       {%- for block in section.blocks -%}
         {%- assign product = block.settings.product -%}
   
-          <div class="featured-carousel-product--grid-item" data-index="{{ forloop.index }}">
-            {{ block.settings.image | image_url: width: 1000 | image_tag: alt: product.title, class: "hide-mobile" }}
-            {{ block.settings.image_mobile | image_url: width: 600 | image_tag: alt: product.title, class: "hide-desktop" }}
+          <a href="{{ product.url }}" class="featured-carousel-product--grid-item" data-index="{{ forloop.index }}" target="_blank">
+            {% comment %} {{ block.settings.image_mobile | image_url: width: 600 | image_tag: alt: product.title, class: "hide-desktop" }} {% endcomment %}
+            {% comment %} {{ block.settings.image | image_url: width: 1000 | image_tag: alt: product.title, class: "hide-mobile" }} {% endcomment %}
+
+            {% comment %} {{ block.settings.image_mobile | image_url: width: 600 | image_tag: alt: product.title, class: "hide-desktop" }}  {% endcomment %}
+            {%- if forloop.first -%}
+              <img src="https://cdn.shopify.com/s/files/1/0014/3232/2131/files/Web_NF_Imagery__Mob3.png?v=1727238212" alt="">
+            {% elsif forloop.index == 2 %}
+              <img src=" https://cdn.shopify.com/s/files/1/0014/3232/2131/files/Web_NF_Imagery__Mob.png?v=1727238247" alt="">
+             
+              {% elsif forloop.index == 3 %}
+                <img src="https://cdn.shopify.com/s/files/1/0014/3232/2131/files/Web_NF_Imagery__Mob2.png?v=1727238280" alt="">
+            {% else %}
+             
+            {%- endif -%}
+       
+
+            {% comment %} <img src="{{ block.settings.image | img_url: '1000x' }}" alt="{{ product.title }}"> {% endcomment %}
+
             <div class="featured-carousel-product--grid-item-text">
               <h2 class="title heading heading--secondary">{{ block.settings.title }}</h2>
               <h3 class="subtitle">{{ block.settings.subtitle }}</h3>
               <h3 class="subtitle2">{{ block.settings.subtitle2 }}</h3>
               {%- render 'product-item--ATC' product: product, button_class: "button button--primary button--full" -%}
             </div>
-          </div>
+          </a>
       {%- endfor -%}
       </div>
     </div>
@@ -99,17 +115,22 @@
   
         <label data-index="{{ forloop.index }}" class="featured-carousel-product--item product-{{ forloop.index }}" for="item-{{ forloop.index }}-{{ section.id }}" id="product-{{ forloop.index }}-{{ section.id }}">
           <div class="featured-carousel-product--text">
-            {{ block.settings.image | image_url: width: 1000 | image_tag: alt: product.title, class: "hide-mobile" }}
             {{ block.settings.image_mobile | image_url: width: 600 | image_tag: alt: product.title, class: "hide-desktop" }}
+            {% comment %} {{ block.settings.image | image_url: width: 1000 | image_tag: alt: product.title, class: "hide-mobile" }} {% endcomment %}
+            {{ block.settings.image | image_url: width: 1000 | image_tag: alt: product.title, class: "hide-mobile" }}
+
             <div class="featured-carousel-product--text-inner">
               {% comment %} <div class="dots">
                 <div class="dot dot-1"></div>
                 <div class="dot dot-2"></div>
                 <div class="dot dot-3"></div>
               </div> {% endcomment %}
-              <h2 class="title heading heading--secondary">{{ block.settings.title }}</h2>
-              <h3 class="subtitle">{{ block.settings.subtitle }}</h3>
-              <h3 class="subtitle2">{{ block.settings.subtitle2 }}</h3>
+              <a href="{{ product.url }}" target="_blank">
+                <h2 class="title heading heading--secondary">{{ block.settings.title }}</h2>
+                <h3 class="subtitle">{{ block.settings.subtitle }}</h3>
+                <h3 class="subtitle2">{{ block.settings.subtitle2 }}</h3>
+              </a>
+           
               {%- render 'product-item--ATC' product: product, button_class: "button button--full button--primary" -%}
             </div>
           </div>
@@ -141,7 +162,7 @@
             textElements.forEach(textElement => {
               textElement.classList.add('fade-in');
             });
-          }, 4000);
+          }, 1200);
         } else {
           // entry.target.classList.remove('animate-before');
         }

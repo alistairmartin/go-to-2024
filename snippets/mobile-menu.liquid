@@ -136,18 +136,22 @@
               <span class="animated-plus"></span>
             </button>
 
+            {%- assign level2Loop = true -%}
             <collapsible-content id="mobile-menu-{{ forloop.index }}" class="collapsible">
               {%- if link.links.size > 0 -%}
                 <ul class="mobile-nav list--unstyled" role="list">
                   {%- for sub_link in link.links -%}
                     <li class="mobile-nav__item" data-level="2">
                       {%- if sub_link.links.size > 0 -%}
-                        <button is="toggle-button" class="mobile-nav__link" aria-controls="mobile-menu-{{ forloop.parentloop.index }}-{{ forloop.index }}" aria-expanded="false">
+                     
+                        <button is="toggle-button" class="mobile-nav__link" aria-controls="mobile-menu-{{ forloop.parentloop.index }}-{{ forloop.index }}" aria-expanded="{% if level2Loop %}true{% else %}false{% endif %}">
                           <strong>{{- sub_link.title -}}</strong>
                           <span class="animated-plus"></span>
                         </button>
 
-                        <collapsible-content id="mobile-menu-{{ forloop.parentloop.index }}-{{ forloop.index }}" class="collapsible">
+                        <collapsible-content id="mobile-menu-{{ forloop.parentloop.index }}-{{ forloop.index }}" class="collapsible" {% if level2Loop %}open style="overflow: visible;"{% endif %}>
+                          {%- assign level2Loop = false -%}
+
                           <ul class="mobile-nav list--unstyled" role="list">
                             {%- for sub_sub_link in sub_link.links -%}
                               <li class="mobile-nav__item" data-level="3">

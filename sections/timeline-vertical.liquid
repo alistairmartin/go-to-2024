@@ -44,7 +44,9 @@
             {%- endif -%}
 
             {%- if  block.settings.button_text != blank -%}
-            <a class="blocks--button hide-desktop--flex {% if block.settings.button_style contains "link" %}link--primary{% else %}button {{ block.settings.button_style }}{% endif %}" href="{{ block.settings.button_link }}">{{ block.settings.button_text }} {% if block.settings.button_style == "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</a>
+              <div class="button-wrapper">
+              <a class="blocks--button hide-desktop--flex {% if block.settings.button_style contains "link" %}link--primary{% else %}button {{ block.settings.button_style }}{% endif %}" href="{{ block.settings.button_link }}">{{ block.settings.button_text }} {% if block.settings.button_style == "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</a>
+              </div>
             {%- endif -%}
           </div>
 
@@ -63,7 +65,9 @@
             {%- endif -%}
 
             {%- if  block.settings.button_text != blank -%}
+              <div class="button-wrapper">
             <a class="blocks--button hide-mobile--flex {% if block.settings.button_style contains "link" %}link--primary{% else %}button {{ block.settings.button_style }}{% endif %}" href="{{ block.settings.button_link }}">{{ block.settings.button_text }} {% if block.settings.button_style == "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</a>
+              </div>
             {%- endif -%}
           </div>
         </div> 

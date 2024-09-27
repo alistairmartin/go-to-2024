@@ -33,14 +33,33 @@
 {%- endif -%}
 
 
-
 {%- if brand == "bro-to" -%}
     <link rel="stylesheet" href="{{ 'brand--bro-to.css' | asset_url }}">
 {%- elsif brand == "gro-to" -%}
     <link rel="stylesheet" href="{{ 'brand--gro-to.css' | asset_url }}">
 {%- endif -%}
 
-
 {%- if product -%}
+    <link rel="stylesheet" href="{{ 'products.css' | asset_url }}">
+  {%- endif -%}
+
+  {%- if product -%}
     {%- render 'okendo-reviews-css', brand: brand -%}
+{%- endif -%}
+
+  {%- if collection -%}
+    <link rel="stylesheet" href="{{ 'collections.css' | asset_url }}">
+  {%- endif -%}
+
+
+{%- assign glitterTemplateSettings = settings.show_glitter_on_template | split: "," -%}
+{%- capture templateName -%}{{ template.name }}.{{ template.suffix }}{%- endcapture -%}
+{%- for glitterTemplate in glitterTemplateSettings -%}
+  {%- if templateName == glitterTemplate -%}
+    {%- assign showGlitter = true -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if settings.show_glitter and showGlitter == true -%}
+    <link rel="stylesheet" href="{{ 'glitter.css' | asset_url }}">
 {%- endif -%}

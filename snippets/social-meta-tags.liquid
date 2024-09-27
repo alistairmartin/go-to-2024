@@ -29,7 +29,7 @@ Validate your Pinterest rich pins
   <meta property="og:title" content="{{ page_title | escape }}">
 {%- endif -%}
 
-{%- if page_image -%}
+{%- if page_image or template == index -%}
   <meta property="og:image" content="http:{{ page_image | image_url: width: 1024 }}">
   <meta property="og:image:secure_url" content="https:{{ page_image | image_url: width: 1024 }}">
   <meta property="og:image:width" content="{{ page_image.width }}">
@@ -42,6 +42,8 @@ Validate your Pinterest rich pins
 
 <meta property="og:url" content="{{ canonical_url }}">
 <meta property="og:site_name" content="{{ shop.name }}">
+
+
 
 {%- comment -%}
 This snippet renders meta data needed to create a Twitter card

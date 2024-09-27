@@ -18,9 +18,9 @@ body.bro-to {
     }
 
     .product-list__background {
-        .product-list__inner {
-            gap: 24px !important;
-        }
+        // .product-list__inner {
+        //     gap: 24px !important;
+        // }
 
         .product-item__cta-wrapper .product-item__link, .product-item__cta-wrapper .back-in-stock {
             @include media-query($medium-up) {

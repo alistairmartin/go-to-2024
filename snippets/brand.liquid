@@ -26,6 +26,10 @@
       unless blog.metafields.gts_theme.scheme == blank
         assign brand = blog.metafields.gts_theme.scheme | downcase
       endunless
+
+      if blog.title == "5-7PM" or blog.title == "FUN" or blog.title == "Grown-Ups" or blog.title == "Skin & Hair"
+       assign brand = 'gro-to'
+      endif
   endcase
 
 

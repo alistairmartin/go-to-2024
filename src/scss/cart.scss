@@ -3,7 +3,13 @@
 
 
 
-
+.bro-to {
+  #shopify-section-mini-cart{ 
+    .line-item__loader {
+      color: #fff !important;
+    }
+  }
+}
 
 #shopify-section-mini-cart{ 
 

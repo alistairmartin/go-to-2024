@@ -83,15 +83,15 @@
             {% assign article1 = articles[section.settings.search_articles1] %}
             {% assign article2 = articles[section.settings.search_articles2] %}
 
-            {%- if article1 or article2 -%}
+            {%- if article1 != blank or article2 != blank -%}
             <div class="predictive-search-custom__articles">
       
               <p class="predictive-search__menu-title heading heading--small">{{ section.settings.search_articles_title }}</p>
               <div class="predictive-search-custom__articles-grid">
-                {%- if article1 -%}
+                {%- if article1 != blank -%}
                   {%- render 'article-item', article: article1, heading_size: 'h6', reveal: false-%}
                 {%- endif -%}
-                {%- if article2 -%}
+                {%- if article2 != blank -%}
                   {%- render 'article-item', article: article2, heading_size: 'h6', reveal: false-%}
                 {%- endif -%}
               </div>

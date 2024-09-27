@@ -40,6 +40,8 @@
     endfor
   endunless
 
+
+
   if ingredientFound
     echo '<section class="section">'
       case brand
@@ -47,16 +49,21 @@
           render 'product-content-ingredients--gro-to', section: section, productIngredients: productIngredients, ingredientsGlossary: ingredientsGlossary
         when 'go-to'
           render 'product-content-ingredients--go-to', section: section, productIngredients: productIngredients, ingredientsGlossary: ingredientsGlossary
-        when 'bro-to'
-          render 'product-content-ingredients--go-to', section: section, productIngredients: productIngredients, ingredientsGlossary: ingredientsGlossary
       endcase
     echo '</section>'
   endif
 -%}
 
+{%- if brand == "bro-to" -%}
+  <section class="section bro-to">
+  {% render 'product-content-ingredients--bro-to', section: section, productIngredients: productIngredients, ingredientsGlossary: ingredientsGlossary %}
+  </section>
+{%- endif -%}
+
 {% schema %}
   {
     "name": "Prod. Con: Ingredients",
+    "class": "section--product-content-ingredients",
     "settings": [
       {
         "type": "text",

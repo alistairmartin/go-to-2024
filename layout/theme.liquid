@@ -83,21 +83,6 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     {% render 'js-variables', direction: direction %}
     <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
     {%- render "files-css", brand: brand -%}
-
-    {%- if product -%}
-      <link rel="stylesheet" href="{{ 'products.css' | asset_url }}">
-    {%- endif -%}
-
-    {%- if collection -%}
-      <link rel="stylesheet" href="{{ 'collections.css' | asset_url }}">
-    {%- endif -%}
-
-    {%- if settings.show_glitter == true and settings.show_glitter_on_template contains template.suffix or settings.show_glitter == true and settings.show_glitter_on_template contains template -%}
-      <link rel="stylesheet" href="{{ 'glitter.css' | asset_url }}">
-    {%- endif -%}
-
-
-
     {%- render 'files-js' -%}
 
     {{ content_for_header }}

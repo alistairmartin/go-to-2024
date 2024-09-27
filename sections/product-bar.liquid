@@ -2,7 +2,9 @@
 
 {%- if section.blocks.size > 1 -%}
   {%- assign product = all_products[section.settings.product] -%}
-  {%- render 'product-sticky-form--product-bar-variants', product: product -%}
+  {% comment %} {%- render 'product-sticky-form--product-bar-variants', product: product -%} {% endcomment %}
+
+  {%- render 'product-sticky-form--product-bar', product: product -%}
 {% else %}
   {%- assign product = all_products[section.settings.product] -%}
   {%- render 'product-sticky-form--product-bar', product: product -%}

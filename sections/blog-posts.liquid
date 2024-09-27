@@ -52,25 +52,29 @@
           <header class="section__header text-container text-align--{{ section.settings.text_alignment }}">
             {%- capture subtitle -%}
             {%- if section.settings.subheading != blank -%}
-              <h2 class="heading heading--small">{{ section.settings.subheading | escape }}</h2>
+              <h2 class="heading heading--small subtitle subtitle--{{ section.settings.subtitle_weight }}">{{ section.settings.subheading | escape }}</h2>
             {%- endif -%}
            {%- endcapture -%}
 
             {%- capture title -%}
             {%- if section.settings.title != blank -%}
               <a href="{{ blog.url }}" class="blog-link {{ section.settings.text_alignment }}">
-                <h3 class="heading h3 heading--{{ section.settings.font_family_title }}"">{{ section.settings.title | escape }}</h3> 
+                <h3 class="heading h2 heading--{{ section.settings.font_family_title }}"">{{ section.settings.title | escape }}</h3> 
                 {% comment %} {% render "icon" with "chevron-back" %} {% endcomment %}
               </a>
             {%- endif -%}
           {%- endcapture -%}
 
             {%- if section.settings.text_order == "heading_first" -%}
+              <div class="title--first">
               {{ title }}
               {{ subtitle }}
+              </div>
             {%- else -%}
+            <div class="subtitle--first">
               {{ subtitle }}
               {{ title }}
+              </div>
             {%- endif -%}
 
 
@@ -264,6 +268,21 @@
         {
           "value": "heading_first",
           "label": "Heading First"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "subtitle_weight",
+      "label": "Subtitle (Weight)",
+      "options": [
+        {
+        "value": "bold",
+        "label": "Bold"
+        },
+        {
+          "value": "normal",
+          "label": "Normal"
         }
       ]
     },

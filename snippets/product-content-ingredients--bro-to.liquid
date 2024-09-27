@@ -1,0 +1,53 @@
+
+<div class="container">
+  <div class="product-content-ingredients bro-to">      
+    <h3 class="heading h3 text--bold hide-desktop">{{ section.settings.title }}</h3>
+
+    
+    <div class="product-content-ingredients--text">
+      <h3 class="heading h3 text--bold hide-mobile">{{ section.settings.title }}</h3>
+      <div class="product-content-ingredients--text-inner">
+
+        {%- assign ingredientCounter = 0 -%}
+        {%- assign glossaryMetaobjects = product.metafields.custom.ingredients_featured.value  -%}
+        {% for metaobject in glossaryMetaobjects %}
+          <div class="product-content-ingredients--text-item">
+            <p class="heading h4 text--bold">{{ metaobject.title | strip_html }}</p>
+            {{ metaobject.description | metafield_tag }}
+          </div>
+          {%- assign ingredientCounter = ingredientCounter | plus: 1 -%}
+        {% endfor %}  
+      </div>
+
+      {%- capture glossaryContent -%}
+        {%- assign glossaryMetaobjects = product.metafields.custom.ingredients.value | sort: "title" -%}
+        <div class="ingredients-glossary">
+        <div class="ingredients-glossary--description ">
+        {% for metaobject in glossaryMetaobjects %}
+          <div class="ingredients-glossary--description-item">
+            <strong>{{ metaobject.title }}</strong>
+            <div>
+              {{ metaobject.description | metafield_tag }}
+            </div>
+        </div>
+        {% endfor %}  
+        </div>
+        </div>
+      {%- endcapture -%}
+
+  
+    </div>
+    
+    {%- assign popoverTitle = "Ingredients For " | append: product.title -%}
+    {%- render 'popover', popoverId: "ingredients-glossary", popoverTitle: popoverTitle, popoverButton: "View All Ingredients", popoverContent: glossaryContent -%}
+
+  </div>
+</div>
+
+<style>
+{%- if ingredientCounter == 0 -%}
+.section--product-content-ingredients {
+    display: none !important;
+}
+{%- endif -%}
+</style>

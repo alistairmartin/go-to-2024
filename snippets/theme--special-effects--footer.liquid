@@ -1,13 +1,15 @@
 {%- assign glitterTemplateSettings = settings.show_glitter_on_template | split: "," -%}
+{%- capture templateName -%}{{ template.name }}.{{ template.suffix }}{%- endcapture -%}
+
 {%- for glitterTemplate in glitterTemplateSettings -%}
-  {%- if template == glitterTemplate -%}
+  {%- if templateName == glitterTemplate -%}
     {%- assign showGlitter = true -%}
   {%- endif -%}
 {%- endfor -%}
 
 {%- assign confettiTemplateSettings = settings.show_confetti_on_template | split: "," -%}
 {%- for confettiTemplate in confettiTemplateSettings -%}
-  {%- if template == glitterTemplate -%}
+  {%- if templateName == glitterTemplate -%}
     {%- assign showConfetti = true -%}
   {%- endif -%}
 {%- endfor -%}

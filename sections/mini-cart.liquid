@@ -196,7 +196,7 @@
                     {%- endunless -%}
                   {%- endif -%}
 
-                  <a href="{{ line_item.url }}" class="product-item-meta__title text--small heading heading--secondary">{{ line_item.product.title }}</a>
+                  <a href="{{ line_item.url }}" class="product-item-meta__title text--small heading heading--secondary">{{ line_item.product.title | remove: "Bro-To " | remove: "Gro-To " }}</a>
 
                   {%- if line_item.product.metafields.custom.product_subtitle__description != blank -%}
                     <a href="{{ line_item.url }}" class="product-item-meta__subtitle text--xxsmall">{{ line_item.product.metafields.custom.product_subtitle__description }}</a>

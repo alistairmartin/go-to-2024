@@ -4,9 +4,11 @@
 {% comment %} --- Get Customer Total Spend {% endcomment %}
 {% for order in customer.orders %}
   {% if order.financial_status == 'paid' or order.financial_status == 'partially_refunded' %}
-    {% assign account_total_spend = account_total_spend | plus: order.total_price | minus: order.total_refunded_amount %}
+    {% assign account_total_spend = account_total_spend | plus: order.total_price | minus: order.total_refunded_amount | divided_by: 100 %}
   {% endif %}
 {% endfor %}
+
+
 
 {% comment %} --- Get Customer Tag {% endcomment %}
 {% for tag in customer.tags %}

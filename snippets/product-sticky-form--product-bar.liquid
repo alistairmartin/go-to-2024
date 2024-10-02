@@ -11,6 +11,10 @@
     }
   </style>
 
+{%- form 'product', product, is: 'product-form', id: product_form_id -%}
+  <input type="hidden" disabled name="id" value="{{ product.selected_or_first_available_variant.id }}">
+{%- endform -%}
+
   <product-sticky-form form-id="{{ product_form_id }}" hidden class="product-sticky-form">
     <div class="container">
       <div class="product-sticky-form__inner">
@@ -26,9 +30,9 @@
               <span class="square-separator square-separator--subdued"></span>
               <span class="product-sticky-form__price">
                 {%- if settings.currency_code_enabled -%}
-                  {{- product.selected_or_first_available_variant.price | money_with_currency -}}
+                  {{- product.selected_or_first_available_variant.price | money_with_currency | remove: ".00" | remove: ",00" -}}
                 {%- else -%}
-                  {{- product.selected_or_first_available_variant.price | money -}}
+                  {{- product.selected_or_first_available_variant.price | money | remove: ".00" | remove: ",00" -}}
                 {%- endif -%}
               </span>
 

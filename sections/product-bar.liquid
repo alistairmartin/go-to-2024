@@ -1,14 +1,50 @@
-
+<div class="product-bar--observer"></div>
 
 {%- if section.blocks.size > 1 -%}
-  {%- assign product = all_products[section.settings.product] -%}
-  {% comment %} {%- render 'product-sticky-form--product-bar-variants', product: product -%} {% endcomment %}
 
-  {%- render 'product-sticky-form--product-bar', product: product -%}
+
+    {%- for block in section.blocks -%}
+      {%- assign product = all_products[block.settings.product] -%}
+      {%- assign outerIndex = forloop.index -%}
+      {%- render 'product-sticky-form--product-bar-variants', product: product, outerIndex: outerIndex -%}
+    {%- endfor -%}
+
+
 {% else %}
   {%- assign product = all_products[section.settings.product] -%}
   {%- render 'product-sticky-form--product-bar', product: product -%}
 {%- endif -%}
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const productBar = document.querySelectorAll('.section-product-bar');
+    const referenceElement = document.querySelector('.product-bar--observer'); 
+  
+    const observerProductBar = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const referenceRect = referenceElement.getBoundingClientRect();
+        const entryRect = entry.target.getBoundingClientRect();
+        
+        // Add 'in-view' class when element is in view or when scrolled past it
+        if (entry.isIntersecting || entryRect.top < window.innerHeight && entryRect.bottom < 0) {
+          entry.target.classList.add('in-view');
+        } 
+        // Remove 'in-view' class if scrolled back above the element
+        else if (entryRect.top >= window.innerHeight) {
+          entry.target.classList.remove('in-view');
+        }
+      });
+    }, { threshold: 0.1 });
+  
+    productBar.forEach(element => {
+      observerProductBar.observe(element);
+    });
+  });
+</script>
+
+
 
 {% schema %}
     {

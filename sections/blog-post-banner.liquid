@@ -1,3 +1,5 @@
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+
 <style>
   #shopify-section-{{ section.id }} {
     {%- if section.settings.blog_header_text_color == 'rgba(0,0,0,0)' -%}
@@ -46,7 +48,13 @@
 
   <div class="article__header-content text-container">
     {%- if section.settings.show_category and article.tags.size > 0 -%}
-      {%- assign acceptedTags = "The Zo Down,Extras,In Her Skin,Wellness,Routines,Skin School" -%}
+
+      {%- if brand == "gro-to" -%}
+        {%- assign acceptedTags = settings.blog_tags_gro-to -%}
+      {% else %}
+        {%- assign acceptedTags = settings.blog_tags_go-to -%}
+      {%- endif -%}
+
       {%- for tag in article.tags -%}
           {%- if acceptedTags contains tag -%}
             <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="article__category heading heading--small">{{ tag }}</a>

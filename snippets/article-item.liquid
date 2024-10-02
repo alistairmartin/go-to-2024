@@ -25,9 +25,9 @@
       {%- endfor -%}
 
       {%- if brand == "gro-to" -%}
-        {%- assign acceptedTags = "5-7PM,FUN,SKIN & HAIR,Grown-Ups,SKIN STUFF" -%}
+        {%- assign acceptedTags = settings.blog_tags_gro-to -%}
       {% else %}
-        {%- assign acceptedTags = "The Zo Down,Extras,In Her Skin,Wellness,Routines,Skin School" -%}
+        {%- assign acceptedTags = settings.blog_tags_go-to -%}
       {%- endif -%}
       
       {%- for tag in article.tags -%}

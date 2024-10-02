@@ -1,9 +1,28 @@
+{%- assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ',' -%}
+{%- assign color_white_label = 'general.label.white' | t | downcase -%}
+{%- assign product_form_id = 'product-form-' | append: section.id | append: '-' | append: product.id -%}
+{%- assign variant_picker_block = section.blocks | where: 'type', 'variant_picker' | first -%}
+{%- capture option_id -%}sticky-form-option-{{ section.id }}-{{ product.id }}-{{ forloop.index }}{%- endcapture -%}
 
-  <product-rerender id="product-sticky-form-{{ product.id }}-{{ section.id }}" observe-form="{{ section.settings.make_visible_from_id }}">
+  <style>
+    @media screen and (min-width: 1000px) {
+      :root {
+        --anchor-offset: 140px; /* When the sticky form is activate, every scroll must be offset by an extra value */
+      }
+    }
+  </style>
+
+
+{%- form 'product', product, is: 'product-form', id: product_form_id -%}
+  <input type="hidden" disabled name="id" value="{{ product.selected_or_first_available_variant.id }}">
+{%- endform -%}
+
+
+  <product-rerender id="product-sticky-form-{{ product.id }}-{{ section.id }}" observe-form="{{ section.settings.make_visible_from_id }}" class="scroll-element--product-bar">
 
     {%- assign customVariants = true -%}
 
-      <product-sticky-form form-id="{{ product_form_id }}" hidden class="product-sticky-form product-sticky-form--custom-variants">
+      <product-sticky-form form-id="{{ product_form_id }}" hidden class="product-sticky-form product-sticky-form--custom-variants {% unless outerIndex == "1" or outerIndex == 1 %}hide{% endunless %}" data-index="{{ outerIndex }}">
         <div class="container">
           <div class="product-sticky-form__inner">
             <div class="product-sticky-form__content-wrapper hidden-pocket">
@@ -18,11 +37,13 @@
                   <span class="product-sticky-form__title">{{ product.title }}</span>
                   <span class="square-separator square-separator--subdued"></span>
                   <span class="product-sticky-form__price">
+                    <strong>
                     {%- if settings.currency_code_enabled -%}
-                      {{- product.selected_or_first_available_variant.price | money_with_currency -}}
+                      {{- product.selected_or_first_available_variant.price | money_with_currency | remove: ".00" | remove: ",00" -}}
                     {%- else -%}
-                      {{- product.selected_or_first_available_variant.price | money -}}
+                      {{- product.selected_or_first_available_variant.price | money | remove: ".00" | remove: ",00" -}}
                     {%- endif -%}
+                    </strong>
                   </span>
 
                   <div class="product-sticky-form__unit-price text--xsmall text--subdued" {% unless product.selected_or_first_available_variant.unit_price_measurement %}style="display: none"{% endunless %}>
@@ -44,10 +65,10 @@
             {%- comment -%}This form is a simplified representation of the main form, and therefore uses its own code path{%- endcomment -%}
             <div class="product-sticky-form__form">
               {%- unless product.has_only_default_variant -%}
-                <div class="product-sticky-form__variants hidden-pocket">
+                <div class="product-sticky-form__variants">
                   {%- for option in product.options_with_values -%}
                     {%- assign option_downcase = option.name | downcase -%}
-                    {%- capture option_id -%}sticky-form-option-{{ section.id }}-{{ forloop.index }}{%- endcapture -%}
+                    {%- capture option_id -%}sticky-form-option-{{ section.id }}-{{ product.id }}-{{ forloop.index }}{%- endcapture -%}
                     {%- assign color_swatch_config = settings.color_swatch_config | newline_to_br | split: '<br />' -%}
 
                     <div class="select-wrapper" data-selector-type="dropdown">
@@ -91,7 +112,7 @@
                         </select>
                       </combo-box>
 
-                      <button type="button" is="toggle-button" class="select" aria-expanded="false" aria-haspopup="listbox" aria-controls="{{ option_id }}-combo-box">
+                      <button class="open-combo-box" type="button" is="toggle-button" class="select" aria-expanded="false" aria-haspopup="listbox" aria-controls="{{ option_id }}-combo-box">
                         <span class="select__selected-value">
                           {%- if color_label_list contains option_downcase -%}
                             {%- assign downcase_value = option.selected_value | downcase -%}
@@ -109,7 +130,7 @@
               {%- endunless -%}
 
 
-                <div class="product-sticky-form__variants  product-sticky-form__variants-custom hidden-pocket">
+                <div class="product-sticky-form__variants  product-sticky-form__variants-custom">
     
                 
                     <div class="select-wrapper variants-custom" data-selector-type="dropdown">
@@ -132,7 +153,11 @@
                             {%- assign related_product = all_products[related_product_object] -%}
                             {%- assign related_product_title = related_product.metafields.gts_theme.alternate_title | default: related_product.title -%}
 
-                            <a href="{{ related_product.url }}" type="button" role="option" class="combo-box__option-item" aria-selected="{% if related_product.handle == product.handle %}true{% else %}false{% endif %}">
+                          {% if related_product.handle == product.handle %}
+                            {%- assign outer_related_product_title = related_product.metafields.gts_theme.alternate_title | default: related_product.title -%}
+                          {% endif %}
+
+                            <button type="button" role="option" class="combo-box__option-item change-custom-variant {% if related_product.handle == product.handle %}selected{% endif %}" data-product="{{ related_product_object.id }}" aria-selected="{% if related_product.handle == product.handle %}true{% else %}false{% endif %}" data-index="{{ forloop.index }}">
                               {{ related_product | image_url: width: related_product.width | image_tag: loading: 'lazy', sizes: '270px', sizes: '270,540,810', class: "image-variant" }}
                               <span class="text">
                                 <span class="heading title">
@@ -157,15 +182,15 @@
                                   <span class="description">{{ related_product.metafields.custom.product_subtitle__description }}</span>
                                 {%- endif -%}
                               </span>
-                            </a>
+                            </button>
                           {%- endfor -%}
                         </div>
 
                       </combo-box>
 
-                      <button type="button" is="toggle-button" class="select" aria-expanded="false" aria-haspopup="listbox" aria-controls="{{ option_id }}-combo-box">
+                      <button class="open-combo-box select" type="button" is="toggle-button" aria-expanded="false" aria-haspopup="listbox" aria-controls="{{ option_id }}-combo-box">
                         <span class="select__selected-value">
-                          {{- related_product_title -}}
+                          {{- outer_related_product_title -}}
                         </span>
 
                         {%- render 'icon' with 'chevron' -%}

@@ -328,6 +328,17 @@
     ]
   },
   {
+    "name": "🟪 Blog Tags (Go-To)",
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "blog_tags_go-to",
+        "label": "Blog Tags",
+        "info": "An Array of article tags seperated by a comma."
+      }
+    ]
+  },
+  {
     "name": "🟥 Colors (Bro-To)",
     "settings": [
       {
@@ -638,6 +649,17 @@
     ]
   },
   {
+    "name": "🟥 Blog Tags (Bro-To)",
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "blog_tags_bro-to",
+        "label": "Blog Tags",
+        "info": "An Array of article tags seperated by a comma."
+      }
+    ]
+  },
+  {
     "name": "🟩 Colors (Gro-To)",
     "settings": [
       {
@@ -944,6 +966,17 @@
         "type": "text",
         "id": "groto_social_spotify",
         "label": "Spotify"
+      }
+    ]
+  },
+  {
+    "name": "🟩 Blog Tags (Gro-To)",
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "blog_tags_gro-to",
+        "label": "Blog Tags",
+        "info": "An Array of article tags seperated by a comma."
       }
     ]
   },

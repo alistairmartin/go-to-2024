@@ -1,3 +1,5 @@
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+
 {%- liquid
   assign has_collection = false
 
@@ -120,7 +122,12 @@
 
                 <ul class="article__tags-list list--unstyled" role="list">
 
-                  {%- assign acceptedTags = "The Zo Down,Extras,In Her Skin,Wellness,Routines,Skin School" -%}
+                  {%- if brand == "gro-to" -%}
+                    {%- assign acceptedTags = settings.blog_tags_gro-to -%}
+                  {% else %}
+                    {%- assign acceptedTags = settings.blog_tags_go-to -%}
+                  {%- endif -%}
+
                   {%- for tag in article.tags -%}
                       {%- if acceptedTags contains tag -%}
                         <li class="article__tags-item" role="listitem">

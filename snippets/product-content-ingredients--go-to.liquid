@@ -8,9 +8,12 @@
       {%- endif -%}
       
       {%- if vimeoVideoId != blank -%}
-        {%- assign video_url_transform = 'https://player.vimeo.com/video/' | append: vimeoVideoId | append: '?autoplay=1&loop=1&background=1&muted=1&portrait=0&byline=0' -%}
-        <iframe src="{{ video_url_transform }}" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen>
-        </iframe>
+        <div class="product-content-ingredients--video">
+          {%- assign video_url_transform = 'https://player.vimeo.com/video/' | append: vimeoVideoId | append: '?autoplay=1&loop=1&background=1&muted=1&portrait=0&byline=0' -%}
+          <iframe src="{{ video_url_transform }}" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen>
+          </iframe>
+        </div>
+    
       {%- else -%}
         {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_key_ingredients__image_desktop, src_mobile: product.metafields.custom.product_key_ingredients__image_mobile %}
       {%- endif -%}
@@ -18,7 +21,7 @@
     
     <div class="product-content-ingredients--text">
       <h3 class="heading h3 text--bold hide-mobile">{{ section.settings.title }}</h3>
-      <div class="hidden-phone hidden-tablet">
+      <div class="hide-mobile">
         {%- assign glossaryMetaobjects = product.metafields.custom.ingredients_featured.value  -%}
         {% for metaobject in glossaryMetaobjects %}
           <div class="product-content-ingredients--text-item">

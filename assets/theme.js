@@ -4733,6 +4733,7 @@ var DrawerContent = class extends OpenableElement {
     switch (name) {
       case "open":
         document.documentElement.classList.toggle("lock-all", this.open);
+        document.documentElement.classList.toggle("draw--opened", this.open);
     }
   }
   _checkReverseOpeningDirection(match) {

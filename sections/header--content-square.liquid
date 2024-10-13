@@ -1,0 +1,58 @@
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function(event) {
+    {% for block in section.blocks %}
+        {% if block.type == "quiz" %}
+        $('button[data-content-square="{{ block.settings.button_id }}"]').on('click', function(event) {
+            console.log("CS -- Open Quiz: {{ block.settings.title }}")
+            window._uxa.push(['setQuery', location.search + (location.search ? '&' : '?') + 'cs-popin-quiz-{{ block.settings.title | handle }}']);
+            window._uxa.push(['trackPageview', window.location.pathname + window.location.hash.replace('#', '?__')]);
+            window._uxa.push(['setQuery', location.search]);
+        });
+        {% endif %}
+    {% endfor %}
+}); 
+</script>
+
+
+
+{% schema %}
+  {
+    "name": "Content Square",
+    "blocks": [
+      {
+        "type": "quiz",
+        "name": "Quiz",
+        "settings": [
+            {
+              "type": "text",
+              "id": "button_id",
+              "label": "Button ID",
+              "info": "Add the 'Content Square ID' from custom layout button."
+            },
+            {
+              "type": "text",
+              "id": "title",
+              "label": "Quiz Name",
+              "info": "Add the quiz name. This is the value that is passed to Content Square."
+            }
+        ]
+      },
+      {
+      "type": "note",
+      "name": "📝 Block Note",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Note",
+          "info": "Only Admin Will See This.",
+          "default": "🟪 --- Go-To ---"
+        }
+      ]
+    }
+    ]
+  }
+{% endschema %}

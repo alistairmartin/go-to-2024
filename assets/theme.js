@@ -1,3 +1,7 @@
+Shopify.handleize = function (str) {
+  return str.toLowerCase().replace(/[^\w\u00C0-\u024f]+/g, "-").replace(/^-+|-+$/g, "");
+};
+
 var __defProp = Object.defineProperty;
 var __typeError = (msg) => {
   throw TypeError(msg);
@@ -2653,6 +2657,14 @@ var ModalContent = class extends OpenableElement {
         document.documentElement.classList.toggle("lock-all", this.open);
         if (this.open) {
           localStorage.setItem("theme:popup-appeared", true);
+        } else {
+          const contentSquare = this.getAttribute("data-content-square");
+          if (contentSquare) {
+            console.log("CS -- Closed Modal:", contentSquare);
+            window._uxa.push(['setQuery', location.search + (location.search ? '&' : '?') + `cs-popin-quiz-close-${ Shopify.handleize(contentSquare) }`]);
+            window._uxa.push(['trackPageview', window.location.pathname + window.location.hash.replace('#', '?__')]);
+            window._uxa.push(['setQuery', location.search]);
+          }
         }
     }
   }
@@ -6167,6 +6179,11 @@ var CartDrawer = class extends DrawerContent {
     switch (name) {
       case "open":
         if (this.open) {
+          console.log('--- OPENED')
+          window._uxa.push(['setQuery', location.search + (location.search ? '&' : '?') + 'cs-popin-open-cart']);
+          window._uxa.push(['trackPageview', window.location.pathname + window.location.hash.replace('#', '?__')]);
+          window._uxa.push(['setQuery', location.search]);
+
           this.querySelector(".drawer__content").scrollTop = 0;
           if (!MediaFeatures.prefersReducedMotion()) {
             const lineItems = Array.from(this.querySelectorAll(".line-item")), recommendationsInner = this.querySelector(".mini-cart__recommendations-inner"), bottomBar = this.querySelector(".drawer__footer"), effects = [];
@@ -6209,6 +6226,10 @@ var CartDrawer = class extends DrawerContent {
             let animation = new CustomAnimation(new ParallelEffect(effects));
             animation.play();
           }
+        } else {
+          console.log("--- CLOSED");
+          window._uxa.push(['setQuery', location.search]);
+          window._uxa.push(['trackPageview', window.location.pathname + window.location.hash.replace('#', '?__')]);
         }
     }
   }

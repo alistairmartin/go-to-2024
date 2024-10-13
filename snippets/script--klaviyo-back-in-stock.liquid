@@ -71,6 +71,8 @@ document.addEventListener("DOMContentLoaded", function () {
           $("#back-in-stock-form").addClass("hide");
           $("#back-in-stock-form-container").addClass("hide");
           $("#back-in-stock-success").removeClass("hide");
+
+          window._uxa.push(["trackDynamicVariable", {key: "waitlist_submitted", value: "true"}]);
         }
       })
       .catch(error => {

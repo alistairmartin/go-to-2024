@@ -1,0 +1,27 @@
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+
+<script type="text/javascript">
+  window._uxa = window._uxa || [];
+  window._uxa.push(['setCustomVariable', 10, "brand", "{{ brand }}"]);
+
+  {% if customer %}
+  {% for tag in customer.tags %}
+    {% if tag contains 'swell_vip_' %}
+      {% assign account_loyalty_level_tag = tag %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+    {%- for loyalty_tiers in shop.metaobjects['loyalty_tiers'].values -%}
+    {%- capture loyalty_level -%}{{ loyalty_tiers.loyalty_level.value }}{%- endcapture -%}
+    {%- assign loyalty_level = loyalty_level | remove: "Tier " | times: 1 -%}
+    {%- if account_loyalty_level_tag == loyalty_tiers.customer_tag.value -%}
+      {%- assign customerLoyaltyLevel = loyalty_level -%}
+      window._uxa.push(["trackDynamicVariable", {key: "loyalty_tier", value: "{{ customerLoyaltyLevel }}"}]);
+      {% break %}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {% endif %}
+
+</script>

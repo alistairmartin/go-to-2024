@@ -10,7 +10,7 @@
     });
   </script>
 
-<modal-content section="{{ modalId }}" id="{{ modalId }}-modal" class="modal modal-custom">
+<modal-content section="{{ modalId }}" id="{{ modalId }}-modal" class="modal modal-custom" {% if content_square_id != blank %}data-content-square="{{ content_square_id }}"{% endif %}>
   <div class="modal__overlay"></div>
 
   <div class="modal__content">

@@ -13408,3 +13408,7 @@ product-rerender {
 .timeline__item {
   scroll-snap-align: center;
 }
+
+#admin-bar-iframe {
+  display: none !important;
+}

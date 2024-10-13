@@ -47,7 +47,8 @@
     {%- if block.type == "button" and block.settings.modal_content != blank -%}
       {%- assign modalId = block.settings.button_text | handle -%}
       {%- assign buttonId = block.id | prepend: "block-" -%}
-      {%- render 'modal', modalId: modalId, content: block.settings.modal_content, buttonId: buttonId -%}
+      {%- assign content_square_id = block.settings.content_square_id -%}
+      {%- render 'modal', modalId: modalId, content: block.settings.modal_content, buttonId: buttonId, content_square_id:content_square_id -%}
     {%- endif -%}
   {%- endfor -%}
   {%- comment -%} Button Modals --- START  {%- endcomment -%}
@@ -1821,6 +1822,12 @@
       "type": "button",
       "name": "✅ Button",
       "settings": [
+        {
+          "type": "text",
+          "id": "content_square_id",
+          "label": "Content Square Button ID",
+          "info": "Must match the 'Content Square' section in the header."
+        },
         {
             "type": "text",
             "id": "button_text",

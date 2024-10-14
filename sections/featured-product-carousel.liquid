@@ -94,7 +94,7 @@
               <h3 class="subtitle">{{ block.settings.subtitle }}</h3>
               <h3 class="subtitle2">{{ block.settings.subtitle2 }}</h3>
               {% capture button_text %} <span class="divider">|</span><span class="product-price">{{ product.price | money | remove: ".00" | remove: ",00" }}</span>{% endcapture %}
-              {%- render 'product-item--ATC' product: product, button_text_atc: "CHOOSE YOUR SPF", button_text: button_text, button_class: "button button--primary button--full" -%}
+              {%- render 'product-item--ATC' product: product, button_text_atc: "ADD TO CART", button_text: button_text, button_class: "button button--primary button--full" -%}
             </div>
           </a>
       {%- endfor -%}
@@ -131,7 +131,7 @@
               </a>
               
             {% capture button_text %} <span class="divider">|</span><span class="product-price">{{ product.price | money | remove: ".00" | remove: ",00" }}</span>{% endcapture %}
-              {%- render 'product-item--ATC' product: product,  button_text_atc: "CHOOSE YOUR SPF", button_text: button_text,  button_class: "button button--full button--primary" -%}
+              {%- render 'product-item--ATC' product: product,  button_text_atc: "ADD TO CART", button_text: button_text,  button_class: "button button--full button--primary" -%}
             </div>
           </div>
         </label>

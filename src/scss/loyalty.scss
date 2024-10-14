@@ -141,8 +141,12 @@
 
   .heading {
     margin: 16px 0;
-
     min-width: 95px;
+    text-align: center;
+
+    @include media-query($small) {
+      font-size: 12px;
+    }
   }
 
   .dot {

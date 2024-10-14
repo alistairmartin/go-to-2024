@@ -574,9 +574,9 @@
       height: 100%;
       width: 100%;
       background: var(--color-secondary);
+      border-radius: var(--image-border-radius);
 
       @include media-query($medium-up) {
-        border-radius: 10px;
         overflow: hidden;
       }
 

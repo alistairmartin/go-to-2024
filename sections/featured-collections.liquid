@@ -153,7 +153,7 @@
                     {%- assign smallest_image_aspect_ratio = smallest_image_aspect_ratio | at_least: product.featured_media.aspect_ratio -%}
                   {%- endif -%}
 
-                  {%- render 'product-item', product: product, collection: collection, reduced_content: true, show_cta: section.settings.show_cta, block: block, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, section_name: "featured-collections", outerCollectionHandle: outerCollectionHandle -%}
+                  {%- render 'product-item', product: product, collection: collection, reduced_content: true, show_cta: section.settings.show_cta, block: block, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, section_name: "featured-collections", outerCollectionHandle: outerCollectionHandle, enable_byo_bundle: block.settings.enable_byo_bundle -%}
 
                   {%- include 'featured-collections--grid-images', validCollectionForImages: validCollectionForImages, reveal: settings.stagger_products_apparition -%}
                 {%- else -%}
@@ -223,6 +223,12 @@
           "type": "collection",
           "id": "collection",
           "label": "Collection"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_byo_bundle",
+          "label": "Enable BYO Bundle",
+          "info": "If on the BYO bundle page, and is part of the BYO Bundle offers."
         },
         {
           "type": "text",

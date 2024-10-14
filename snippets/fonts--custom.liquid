@@ -1,6 +1,9 @@
 {%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
 
 <style>
+
+{%- if brand == "go-to" and template.suffix contains "go-to-spf-" -%}
+
 {%- if brand == "go-to" and template.suffix == "go-to-spf-landing" -%}
   @font-face {
     font-family: 'Recoleta';

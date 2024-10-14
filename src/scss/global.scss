@@ -2053,7 +2053,7 @@ store-header.background-blur {
       }
 
       h2 {
-        font-size: 40px;
+        font-size: 30px;
         margin-bottom: 0;
         position: relative;
         z-index: 1;
@@ -3405,6 +3405,11 @@ product-rerender {
 .page-header {
   .page-header__text-wrapper {
     text-align: var(--page-header-text-align);
+
+
+    @include media-query($medium-up) {
+      margin-bottom: 40px;
+    }
 
     .heading {
       text-align: var(--page-header-text-align) !important;
@@ -4764,3 +4769,12 @@ product-rerender {
   }
 }
 
+
+
+#ReCharge {
+margin: 20px;
+
+  .row {
+    justify-content: center;
+  }
+}

@@ -374,7 +374,7 @@
         {%- endfor -%}
       {%- endif -%}
     </div>
-    {%- if outerCollectionHandle == "build-your-routine" and section_name == "featured-collections" -%}
+    {%- if outerCollectionHandle == "build-your-routine" and section_name == "featured-collections" and enable_byo_bundle == true -%}
       {% render "product-item--ATC-BYO", product: product %}
     {%- elsif product.available and reduced_content or show_cta -%}
       <div class="product-item__cta-wrapper">

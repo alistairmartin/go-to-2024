@@ -14,12 +14,14 @@
           </li>
 
           <li class="link-bar__link-item">
+            <a href="https://gotoskincare.com/tools/recurring/login" class="link-bar__link link--animated " data-no-instant>Manage Subscriptions</a>
+          </li> 
+
+          <li class="link-bar__link-item">
             <a href="{{ routes.account_logout_url }}" class="link-bar__link link--animated " data-no-instant>{{ 'customer.logout.title' | t }}</a>
           </li>
 
-          {% comment %} <li class="link-bar__link-item">
-            <a href="https://gotoskincare.com/tools/recurring/login" class="link-bar__link link--animated " data-no-instant>Subscriptions</a>
-          </li> {% endcomment %}
+    
         </ul>
       </div>
     </div>
@@ -49,6 +51,10 @@
         <a href="{{ routes.account_addresses_url }}" class="popover__choice-item">
           <span class="popover__choice-label">{{ 'customer.addresses.title' | t }}</span>
         </a>
+
+        <a href="https://gotoskincare.com/tools/recurring/login" class="popover__choice-item">
+        <span class="popover__choice-label" aria-current="true">Manage Subscription</span>
+      </a>
 
         <a href="{{ routes.account_logout_url }}" class="popover__choice-item " data-no-instant>
           <span class="popover__choice-label">{{ 'customer.logout.title' | t }}</span>

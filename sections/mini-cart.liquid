@@ -404,7 +404,7 @@
       {%- endif -%}
 
       {%- if section.settings.show_checkout_button -%}
-        {%- if cart.total_price > 2500 -%}
+        {%- if cart.total_price >= 2500 -%}
         <button form="mini-cart-form" type="submit" class="checkout-button button button--primary button--full" name="checkout">
           {% comment %} <span class="checkout-button__lock">{%- render 'icon' with 'lock' -%}</span> {% endcomment %}
           {{- 'cart.general.checkout' | t -}}

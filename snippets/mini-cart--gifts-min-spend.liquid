@@ -1,23 +1,15 @@
-{% assign buyProductInCart = false -%}
-{% assign buyProductTag = block.settings.buy_tag -%}
+{%- assign minSpend = block.settings.min_spend | times: 100 -%}
 
 {% assign getProductInCart = false %}
-{% assign getProductTag = block.settings.get_tag %}
 {% assign getProduct = block.settings.get_product %}
 
-
-
 {%- for item in cart.items -%}
-  {% if getProduct.handle == item.product.handle %}
-    {% assign getProductInCart = true %}
-  {%- endif -%}
-
-  {%- if item.product.tags contains buyProductTag -%}
-    {% assign buyProductInCart = true -%}
+  {%- if item.product.handle == getProduct.handle -%}
+    {% assign getProductInCart = true -%}{% break %}
   {%- endif -%}
 {%- endfor -%}
 
-{%- if buyProductInCart == true and getProductInCart == false -%}
+{%- if cart.total_price >= minSpend and getProductInCart == false -%}
   {% if getProduct.available == true %}
       <div class="mini-cart-gift">
       <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title }}</div>
@@ -25,3 +17,4 @@
       </div>
   {%- endif -%}
 {%- endif -%}
+

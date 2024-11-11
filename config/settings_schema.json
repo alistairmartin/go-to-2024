@@ -8,6 +8,49 @@
     "theme_support_url": "https:\/\/support.maestrooo.com\/article\/203-contact-us"
   },
   {
+    "name": "🔒 VIP Access",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Any template that has a suffix of 'vip-access' will be locked down unless the customer is logged in and has the corect loyalty tag." 
+      },
+      {
+        "type": "header",
+        "content": "Enable Access For..."
+      },
+      {
+        "type": "checkbox",
+        "id": "vip_access_tier1",
+        "label": "Tier 1 (Mate)"
+      },
+      {
+        "type": "checkbox",
+        "id": "vip_access_tier2",
+        "label": "Tier 2 (Friend)"
+      },
+      {
+        "type": "checkbox",
+        "id": "vip_access_tier3",
+        "label": "Tier 3 (Bestie)"
+      },
+      {
+        "type": "checkbox",
+        "id": "vip_access_tier4",
+        "label": "Tier 4 (BFF)"
+      },
+      {
+        "type": "checkbox",
+        "id": "vip_access_tier5",
+        "label": "Tier 5 (Peach)"
+      },
+      {
+        "type": "checkbox",
+        "id": "vip_access_staff",
+        "label": "Staff"
+      }
+    ]
+  },
+  {
     "name": "👨‍💻 Custom Features",
     "settings": [
       {

@@ -10,7 +10,7 @@
 
 
 
-<section class="{% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %}">
+<section  {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %} class="{% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %}">
 <div class="{% if section.settings.enable_container %}container{% endif %}">
   <div class="page-header">
     <link-bar class="link-bar {% if section.settings.reduce_padding %}reduce-padding{% endif %}">
@@ -23,8 +23,9 @@
 
           <div class="link-bar__scroller hide-scrollbar">
             <ul class="link-bar__linklist list--unstyled" role="list">
+              {%- assign canonical_url_updated = canonical_url | remove: shop.url  -%}
               {%- for block in section.blocks -%}
-                <li class="link-bar__link-item {% if canonical_url contains block.settings.url %}link-bar__link-item--selected text--underlined{% endif %}">
+                <li class="link-bar__link-item {% if canonical_url_updated contains block.settings.url %}link-bar__link-item--selected text--underlined{% endif %}">
                   <a href="{{ block.settings.url }}">
                     <strong>{{ block.settings.text }}</strong>
                   </a>
@@ -45,6 +46,12 @@
     "name": "Custom Navigation",
     "class": "shopify-section--custom-navigation",
     "settings": [
+      {
+      "type": "text",
+      "id": "id",
+      "label": "ID",
+      "info": "Optional. Used with in-page navigation."
+      },
       {
         "type": "checkbox",
         "id": "hide_mobile",

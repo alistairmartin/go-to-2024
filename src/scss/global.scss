@@ -1569,8 +1569,8 @@ store-header.background-blur {
       @include media-query($medium-up) {
       position: absolute;
       left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
+      top: 0%;
+      transform: translate(-50%, 0%);
       z-index: 3;
       }
     }
@@ -1578,7 +1578,8 @@ store-header.background-blur {
     &.absolute-top_right--desktop {
       @include media-query($medium-up) {
       position: absolute;
-      left: 0%;
+      left: unset;
+      right: 0;
       top: 0%;
       transform: translate(-50%, -50%);
       z-index: 3;

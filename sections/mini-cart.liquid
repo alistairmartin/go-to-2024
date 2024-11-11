@@ -454,6 +454,58 @@
       ]
     },  
     {
+      "type": "min_spend",
+      "name": "Min Spend Get Y",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Admin Title",
+          "info": "Only Admin Will See This."
+        },
+        {
+          "type": "header",
+          "content": "Buy Condition"
+        },
+        {
+          "type": "text",
+          "id": "min_spend",
+          "label": "Min Spend (Dollar Value)",
+          "info": "e.g. 40 = $40"
+        },
+        {
+          "type": "header",
+          "content": "Get Product"
+        },
+        {
+          "type": "product",
+          "id": "get_product",
+          "label": "Get Product",
+          "info": "This will be added to cart."
+        },
+        {
+          "type": "header",
+          "content": "Text"
+        },
+        {
+          "type": "textarea",
+          "id": "gwp_title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "gwp_description",
+          "label": "Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "gwp_image",
+          "label": "Image",
+          "info": "Optional. Will use product image as default."
+        }
+      ]
+    },
+    {
       "type": "buy_x_get_y",
       "name": "Buy X Get Y",
       "settings": [

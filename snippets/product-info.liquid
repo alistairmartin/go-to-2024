@@ -119,7 +119,6 @@
             {% assign noWaitlist = false %}
             {%- if product.tags contains 'no-waitlist' -%}
               {% assign noWaitlist = true %}
-              {% break %}
             {%- endif -%}
 
             <span class="label label--label-custom label--waitlist {% if noWaitlist == true %}hide{% endif %}">{{ 'product.labels.waitlist' | t }}</span>

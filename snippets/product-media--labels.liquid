@@ -1,0 +1,44 @@
+
+
+<div class="product-media--labels">
+
+
+{%- if product.template_suffix == 'coming-soon' -%}
+    <span class="label label--label-custom label--coming-soon">{{ 'product.labels.coming_soon' | t }}</span>
+  {%-  elsif product.available == false -%}
+    {% comment %} {%- if product.metafields.custom.waitlist == true -%}
+      <span class="label label--label-custom label--waitlist">{{ 'product.labels.waitlist' | t }}</span>
+    {%- else -%}
+      <span class="label label--label-custom label--soldout">{{ 'product.labels.soldout' | t }}</span>
+    {%- endif -%} {% endcomment %}
+
+    {% assign noWaitlist = false %}
+    {%- if product.tags contains 'no-waitlist' -%}
+      {% assign noWaitlist = true %}
+    {%- endif -%}
+
+    <span class="label label--label-custom label--waitlist {% if noWaitlist == true %}hide{% endif %}">{{ 'product.labels.waitlist' | t }}</span>
+    <span class="label label--label-custom label--soldout {% if noWaitlist == false %}hide{% endif %}">{{ 'product.labels.sold_out' | t }}</span>
+  {%-  elsif product.metafields.gts_theme.label != blank -%}
+    <span class="label label--label-custom label--{{ product.metafields.gts_theme.label | handle }}">{{ product.metafields.gts_theme.label }}</span>
+  {%- endif  -%}
+
+  {%- if product.metafields.gts_theme.label2 != blank -%}
+    <span class="label label--label-custom label--{{ product.metafields.gts_theme.label2 | handle }}">{{ product.metafields.gts_theme.label2 }}</span>
+  {%- endif  -%}
+
+  {% comment %} --- END - Go-To Tags --- {% endcomment %}
+  
+  {%- if product.metafields.custom.badges != blank -%}
+    {%- for custom_badge in product.metafields.custom.badges.value -%}
+      <span class="label {% if forloop.index == 1 %}label--custom{% else %}label--custom2{% endif %}">{{ custom_badge }}</span>
+    {%- endfor -%}
+  {%- endif -%}
+
+  {%- for tag in product.tags -%}
+    {%- if tag contains '__label' -%}
+      <span class="label label--label-custom label--{{ tag | split: ':' | last | handle }}">{{ tag | split: ':' | last }}</span>
+    {%- endif -%}
+  {%- endfor -%}
+
+  </div>

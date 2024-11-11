@@ -1,7 +1,4 @@
 
-
-
-
     {%- assign outerForloop = forloop.index -%}
 
     {%- for i in (1..3) -%}
@@ -12,7 +9,6 @@
     {% capture mobileSpanSettings %}mobile_span_{{ i }}{% endcapture %}
 
     {%- assign mobilePosition = block.settings[mobilePositionSettings] | times: 1  -%}
-
     {%- assign mobileSpan = block.settings[mobileSpanSettings] | times: 1 -%}
 
     {% capture desktopImageSettings %}desktop_image_{{ i }}{% endcapture %}
@@ -25,6 +21,15 @@
     {%- assign desktopLink = block.settings[desktopLinkSettings]  -%}
     {%- assign desktopSpan = block.settings[desktopSpanSettings] | times: 1 -%}
 
+    {% capture linkTypeSetting %}link_type{{ i }}{% endcapture %}
+    {% capture popupSetting %}popup{{ i }}{% endcapture %}
+
+    {%- assign popupId = block.id -%}
+    {%- assign popupIdMobile = block.id | append: "mobile" -%}
+
+    {%- assign linkType = block.settings[linkTypeSetting] -%}
+    {%- assign popup = block.settings[popupSetting] -%}
+
     {%- if block.settings[mobileImageSettings] == blank -%}
     {%- assign mobileImage = block.settings[desktopImageSettings] -%}
     {%- else -%}
@@ -35,15 +40,25 @@
     {%- assign mobileLink = block.settings[desktopLinkSettings] -%}
     {%- else -%}
     {%- assign mobileLink = block.settings[mobileLinkSettings]  -%}
+    {%- endif -%}   
+
+    {%- if popup != blank -%}
+        {%- render 'modal', modalId: popupId, content: popup , buttonId: popupId -%} 
+        {%- render 'modal', modalId: popupIdMobile, content: popup , buttonId: popupIdMobile -%} 
     {%- endif -%}
+
+  
 
     {% if outerForloop == desktopPosition  %}
 
     <product-item class="product-item product-item__grid-image hide-mobile" {% if reveal %}reveal{% endif %} style="grid-column: span {{ desktopSpan }} !important;">
-    {%- if desktopLink != blank -%}
-    <a  href="{{ desktopLink }}" class="product-item__grid-image--link"> 
+
+    {%- if linkType == "popup" -%}
+        <button class="product-item__grid-image--link" id="{{ popupId }}"> 
+    {%- elsif desktopLink != blank -%}
+        <a href="{{ desktopLink }}" class="product-item__grid-image--link"> 
     {% else %}
-    <div class="product-item__grid-image--link">
+         <div class="product-item__grid-image--link">
     {%- endif -%}
 
         <div class="product-item__grid-image--image">
@@ -57,12 +72,15 @@
             {{ desktopImage | image_url: width: 600 | image_tag }}
             {%- endif -%}
         </div>
-    
-    {%- if desktopLink != blank -%}
-        </a>
-    {% else %}
-        </div>
-    {%- endif -%}
+
+
+        {%- if linkType == "popup" -%}
+            </button> 
+        {%- elsif desktopLink != blank %}
+            </a> 
+        {% else %}
+            </div>
+        {% endif %}
 
     </product-item>
     {% endif %}
@@ -70,12 +88,16 @@
     {% if outerForloop == mobilePosition  %}
     <product-item class="product-item product-item__grid-image hide-desktop" {% if reveal %}reveal{% endif %} style="grid-column: span {{ mobileSpan }} !important;" >
     
-    {%- if mobileLink != blank -%}
-    <a  href="{{ mobileLink }}" class="product-item__grid-image--link hide-desktop">
+
+
+    {%- if linkType == "popup" -%}
+        <button class="product-item__grid-image--link hide-desktop" id="{{ popupIdMobile }}"> 
+    {%- elsif mobileLink != blank %}
+        <a href="{{ mobileLink }}" class="product-item__grid-image--link hide-desktop"> 
     {% else %}
-    <div class="product-item__grid-image--link hide-desktop">
+        <div class="product-item__grid-image--link hide-desktop">
     {%- endif -%}
-    
+
         <div class="product-item__grid-image--image">
             {%- if mobileSpan == 2 -%}
             {{ mobileImage | image_url: width: 500 | image_tag }}
@@ -84,14 +106,22 @@
             {%- endif -%}
         </div>
     
-    {%- if mobileLink != blank -%}
-        </a>
-    {% else %}
-        </div>
-    {%- endif -%}
+        {%- if linkType == "popup" -%}
+            </button> 
+        {%- elsif mobileLink != blank %}
+            </a> 
+        {% else %}
+            </div>
+        {%- endif -%}
 
     </product-item>
     {% endif %}  
 
 
+
     {%- endfor -%}
+
+
+
+
+

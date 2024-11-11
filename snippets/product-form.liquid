@@ -4,9 +4,6 @@
 
 <div class="product-form">
 
-
-
-
   {%- for block in section.blocks -%}
     {%- case block.type -%}
       {%- comment -%}
@@ -486,7 +483,6 @@
 
                 {%- if product.tags contains 'no-waitlist' -%}
                   {% assign noWaitlist = true %}
-                  {% break %}
                 {%- endif -%}
 
                 {% if noWaitlist != true and product.selected_or_first_available_variant.available != true %}
@@ -520,7 +516,11 @@
                     </style>
                   {%- endunless -%}
                 {%- endif -%}
+
+
+           
               </product-payment-container>
+
             {%- endform -%}
           </div>
         {%- endif -%}

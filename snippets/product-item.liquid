@@ -26,6 +26,15 @@
   {%- assign hideProduct = false -%}
 {%- endif -%}
 
+{%- if template.suffix contains "vip-access" -%}
+    {%- capture vipCustomer -%}
+      {% render "vip-access--validator", variable: true %}
+    {%- endcapture -%}
+
+  {%- if vipCustomer contains "true" -%}
+    {%- assign hideProduct = false -%}
+  {%- endif -%}
+{%- endif -%}
 
 {%- unless hideProduct -%}
 <product-item class="product-item product-brand--{{ productBrand | handle }}  product-item--{{ product.template_suffix | handle }} {% unless product.available %}product-item--sold-out{% endunless %} {% if horizontal %}product-item--horizontal{% endif %}" {% if reveal %}reveal{% endif %}>
@@ -48,7 +57,6 @@
       {% assign noWaitlist = false %}
       {%- if product.tags contains 'no-waitlist' -%}
         {% assign noWaitlist = true %}
-        {% break %}
       {%- endif -%}
 
       <span class="label label--label-custom label--waitlist {% if noWaitlist == true %}hide{% endif %}">{{ 'product.labels.waitlist' | t }}</span>
@@ -416,12 +424,11 @@
 
       {%- if product.tags contains 'no-waitlist' -%}
         {% assign noWaitlist = true %}
-        {% break %}
       {%- endif -%}
 
       <div class="product-item__cta-wrapper">
         {%- if noWaitlist -%}
-          {{ 'collection.product.sold_out' | t }}
+          {% comment %} {{ 'collection.product.sold_out' | t }} {% endcomment %}
         {% else  %}
           <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')"  class="link link--primary back-in-stock">WAITLIST ME</button>
         {%- endif -%}

@@ -93,8 +93,8 @@
           {%- endif -%}
         </div>
       {%- elsif reduced_content -%}
-        <div class="product-item__cta-wrapper">
+        {% comment %} <div class="product-item__cta-wrapper">
           <span class="product-item__link text--subdued">{{ 'collection.product.sold_out' | t }}</span>
-        </div>
+        </div> {% endcomment %}
       {%- endif -%}
 </product-item>

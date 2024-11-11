@@ -1,0 +1,43 @@
+<section class="section--flush-bottom">
+  <div class="section__color-wrapper">
+    <div class="empty-state">
+      <span class="empty-state__background-text">{{ section.settings.background_text }}</span>
+
+      <div class="text-container">
+        <h3 class="heading h3">{{ section.settings.title }}</h3>
+        <p>{{ section.settings.description }}</p>
+
+        <div class="button-wrapper">
+          <a href="{{ routes.root_url }}" class="button button--primary">{{ '404.general.back_to_home' | t }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "VIP Access (Unsuccessful)",
+  "class": "shopify-section--404",
+  "settings": [
+      {
+        "type": "text",
+        "id": "background_text",
+        "label": "Background Text",
+        "default": "Sorry"
+      },
+      {
+        "type": "textarea",
+        "id": "title",
+        "label": "Title",
+        "default": "You can't access this page"
+      },
+      {
+        "type": "textarea",
+        "id": "description",
+        "label": "Description",
+        "default": "Continue shopping"
+      },
+  ]
+}
+{% endschema %}

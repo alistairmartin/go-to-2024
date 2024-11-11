@@ -1,0 +1,30 @@
+{%- for tag in customer.tags -%}
+    {%- if tag contains "swell_vip_mate" and settings.vip_access_tier1 -%}
+      {%- assign validVIPCustomer = true -%}{% break %}
+    {%- endif -%}
+
+    {%- if tag contains "swell_vip_friend" and settings.vip_access_tier2 -%}
+        {%- assign validVIPCustomer = true -%}{% break %}
+      {%- endif -%}
+
+      {%- if tag contains "swell_vip_bestie" and settings.vip_access_tier3 -%}
+        {%- assign validVIPCustomer = true -%}{% break %}
+      {%- endif -%}
+
+      {%- if tag contains "swell_vip_bff" and settings.vip_access_tier4 -%}
+        {%- assign validVIPCustomer = true -%}{% break %}
+      {%- endif -%}
+
+      {%- if tag contains "swell_vip_peach" and settings.vip_access_tier5 -%}
+        {%- assign validVIPCustomer = true -%}{% break %}
+      {%- endif -%}
+
+      {%- if tag == "staff" and settings.vip_access_staff -%}
+        {%- assign validVIPCustomer = true -%}{% break %}
+      {%- endif -%}
+{%- endfor -%}
+
+
+{%- if variable -%}
+  {{ validVIPCustomer }}
+{%- endif -%}

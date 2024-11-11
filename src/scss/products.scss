@@ -173,6 +173,10 @@
         margin-bottom: 12px;
         overflow: hidden;
         position: relative;
+
+        li {
+          line-height: 1.5;
+        }
       
         &[aria-revealed=false] {
           display: block;
@@ -1509,3 +1513,25 @@
     font-family: var(----text-font-family) !important;
     text-transform: uppercase;
   } 
+
+
+  .product-media--labels {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    z-index: 4;
+
+    @include media-query($medium-up) {
+      left: 20px;
+      top: 20px;
+    }
+
+
+    .label {
+      font-size: 12px;
+        
+      @include media-query($medium-up) {
+        font-size: 14px;
+      }
+    }
+  }

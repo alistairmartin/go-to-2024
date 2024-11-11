@@ -16,7 +16,12 @@
   {% endfor %}
 {%- endif -%}
 
+{%- for tag in product.tags -%}
+  {%- if tag == 'hidden' -%}
+    {%- assign hiddenProduct = true -%}
+  {%- endif -%}
+{%- endfor -%}
 
-{%- if template.suffix contains 'hidden' -%}
+{%- if template.suffix contains 'hidden' or hiddenProduct or template.suffix contains 'vip-access'-%}
   <meta name="robots" content="noindex, nofollow" />
 {%- endif -%}

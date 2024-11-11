@@ -81,6 +81,8 @@
                       {%- assign should_reveal = true -%}
                       {%- assign loading = 'eager' -%}
 
+                      {%- render 'product-media--labels' product: product -%}
+
                       {{- media | image_url: width: media.width | image_tag: loading: loading, sizes: '(max-width: 999px) calc(100vw - 48px), 640px', widths: '400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800', reveal: true -}}
                     </div>
                   {% endcase %}
@@ -118,6 +120,8 @@
                 <div class="product__media-image-wrapper aspect-ratio aspect-ratio--natural" style="padding-bottom: {{ 100.0 | divided_by: media.aspect_ratio }}%; --aspect-ratio: {{ media.aspect_ratio }}">
                   {%- assign should_reveal = false -%}
                   {%- assign loading = 'eager' -%}
+
+                
 
                   {%- if settings.reveal_product_media and selected_media.id == media.id and featured_selected_image == 0 -%}
                     {%- assign should_reveal = true -%}

@@ -1,0 +1,11 @@
+<script>window.cartGWP= []</script>
+
+{%- for block in section.blocks -%}
+    {%- if block.type == "buy_x_get_y" -%}
+      {% comment %} {%- render 'mini-cart--gifts-buy-x-get-y', block: block, javascriptCode: true -%} {% endcomment %}
+    {%- elsif block.type == "min_spend" -%}
+      {%- render 'mini-cart--gifts-min-spend', block: block, javascriptCode: true  -%}
+    {%- elsif block.type == "subscription_gift" -%}
+      {% comment %} {%- render 'mini-cart--gifts-subscription-gift', block: block, javascriptCode: true  -%} {% endcomment %}
+    {%- endif -%}
+  {%- endfor -%}

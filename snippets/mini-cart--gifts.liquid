@@ -1,9 +1,9 @@
 {%- for block in section.blocks -%}
     {%- if block.type == "buy_x_get_y" -%}
-      {%- render 'mini-cart--gifts-buy-x-get-y', block: block -%}
+      {%- render 'mini-cart--gifts-buy-x-get-y', block: block,  javascriptCode: false -%}
     {%- elsif block.type == "min_spend" -%}
-      {%- render 'mini-cart--gifts-min-spend', block: block -%}
+      {%- render 'mini-cart--gifts-min-spend', block: block, javascriptCode: false -%}
     {%- elsif block.type == "subscription_gift" -%}
-      {%- render 'mini-cart--gifts-subscription-gift', block: block -%}
+      {%- render 'mini-cart--gifts-subscription-gift', block: block, javascriptCode: false -%}
     {%- endif -%}
   {%- endfor -%}

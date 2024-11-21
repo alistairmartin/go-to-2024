@@ -2942,7 +2942,7 @@ footer {
     .product-item {
       background: #fff !important;
       border-radius: var(--image-border-radius) !important;
-      box-shadow: 1px 1px 1px #9b9b9b49;
+      box-shadow: 1px 1px 1px #9b9b9b49, -1px -1px 1px #9b9b9b24;
       // border: 1px solid #f9f9f9;
 
       &:hover {

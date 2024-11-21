@@ -1,3 +1,4 @@
+{%- render 'mini-cart--gifts-automatic' -%}
 
 {%- if section.settings.enable_custom_message -%}
   <style>
@@ -15,11 +16,11 @@
   <span class="drawer__overlay"></span>
 
   {%- if section.settings.enable_custom_message -%}
-  <header class="drawer__header">
+  <header class="drawer__header custom-cart-message">
     <p class="drawer__title heading h6">
 
       {%- if section.settings.enable_custom_message -%}
-      <div>
+      <div class="custom-cart-message--inner">
         {{ section.settings.custom_message }}
       </div>
       {% else %}
@@ -121,8 +122,9 @@
       <form id="mini-cart-form" action="{{ routes.cart_url }}" novalidate method="post">
         <input type="hidden" name="checkout">
 
+
         {%- for line_item in cart.items -%}
-          <line-item class="line-item line-item--type__{{ line_item.product.type | handle }}">
+          <line-item class="line-item line-item--type__{{ line_item.product.type | handle }}" data-properties="{%- for property in line_item.properties -%}{{ property.first }}:{{ property.last }},{% endfor %}">
             <div class="line-item__content-wrapper">
 
               <div class="line-item__content-wrapper--left">
@@ -213,6 +215,15 @@
                       <span class="product-item-meta__property text--subdued text--xsmall">{{ line_item.selling_plan_allocation.selling_plan.name }}</span>
                     {%- endif -%}
 
+                    {%- for block in section.blocks -%}
+                      {%- if block.settings.get_product == line_item.product.handle -%}
+                          {%- if block.settings.gwp_item_message != blank -%}
+                            {%- capture gwp_item_message -%}{{ block.settings.gwp_item_message }}{%- endcapture -%}
+                            {% break %}
+                          {%- endif -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+
                     {%- unless line_item.properties == blank -%}
                       <ul class="product-item-meta__property list--unstyled text--subdued text--xsmall" role="list">
                         {%- for property in line_item.properties -%}
@@ -222,7 +233,17 @@
                             {%- continue -%}
                           {%- endif -%}
 
-                          <li class="property--{{ property.first | handle }}"><span class="key">{{ property.first }}</span> <span class="value">{{ property.last }}</span></li>
+                          <li class="property--{{ property.first | handle }}">
+                            <span class="key">{{ property.first }}:</span> 
+                            <span class="value">
+                              {%- if gwp_item_message != blank and property.first == "Promo" -%}
+                                {{ gwp_item_message }}
+                              {% else %}
+                              {{ property.last }}
+                              {%- endif -%}
+                           
+                            </span>
+                          </li>
                         {%- endfor -%}
                       </ul>
                     {%- endunless -%}
@@ -464,6 +485,11 @@
           "info": "Only Admin Will See This."
         },
         {
+          "type": "checkbox",
+          "id": "automatically_add",
+          "label": "Automatically Add?"
+        },
+        {
           "type": "header",
           "content": "Buy Condition"
         },
@@ -502,6 +528,12 @@
           "id": "gwp_image",
           "label": "Image",
           "info": "Optional. Will use product image as default."
+        },
+        {
+          "type": "richtext",
+          "id": "gwp_item_message",
+          "label": "Item Message",
+          "info": "Spend $250 Get A Free Bag"
         }
       ]
     },

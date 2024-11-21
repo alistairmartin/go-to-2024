@@ -9,12 +9,37 @@
   {%- endif -%}
 {%- endfor -%}
 
-{%- if cart.total_price >= minSpend and getProductInCart == false -%}
-  {% if getProduct.available == true %}
-      <div class="mini-cart-gift">
-      <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title }}</div>
-      {%- render 'product-item--gift', product: getProduct, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true, description: block.settings.gwp_description -%}
-      </div>
-  {%- endif -%}
-{%- endif -%}
 
+
+
+{%- if javascriptCode == true -%}
+
+    {%- if block.settings.automatically_add and getProduct.available -%}
+    <script>
+      let cartGWP = {
+        type: "min-spend",
+        minSpend: {{ minSpend }},
+        gwp_item_message: "{{ block.settings.gwp_item_message | strip_html }}",
+        getProduct: {
+          available: {{ getProduct.available }},
+          variantId: {{ getProduct.selected_or_first_available_variant.id }},
+          handle: "{{ getProduct.handle }}"
+        }
+      }
+
+      window.cartGWP.push(cartGWP);
+    </script>
+    {%- endif -%}
+{%- elsif javascriptCode == false -%}
+
+
+  {%- if cart.total_price >= minSpend and getProductInCart == false and block.settings.automatically_add == false -%}
+      {% if getProduct.available == true %}
+          <div class="mini-cart-gift">
+          <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title }}</div>
+          {%- render 'product-item--gift', product: getProduct, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true, description: block.settings.gwp_description -%}
+          </div>
+      {%- endif -%}
+    {%- endif -%}
+    
+{%- endif -%}

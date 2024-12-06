@@ -1,5 +1,5 @@
 {% assign gwpInCart = false %}
-{% assign gwpProduct = block.settings.get_product %}
+{% assign getProduct = block.settings.get_product %}
 
 {% assign buyProductInCart = false -%}
 
@@ -9,7 +9,7 @@
 
 
 {%- for item in cart.items -%}
-  {% if gwpProduct.handle == item.product.handle %}
+  {% if getProduct.handle == item.product.handle %}
       {% assign gwpInCart = true %}
   {%- endif -%}
 
@@ -19,20 +19,31 @@
 {%- endfor -%}
 
 
-{%- if buyProductInCart == true and gwpInCart == false -%}
-  {% if gwpProduct.available == true %}
-      <div class="mini-cart-gift">
-      <div class="heading h6 mini-cart-gift--title">{{ block.settings.gwp_title }}</div>
-      {%- render 'product-item--gift', product: gwpProduct, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true -%}
-      </div>
-  {%- endif -%}
-{%- endif -%}
+{%- if javascriptCode == true -%}
+  {%- if block.settings.automatically_add == true and getProduct.available == true -%}
+    <script>
+      var cartGWPItem = {
+        type: "subscription",
+        gwp_item_message: "{{ block.settings.gwp_item_message | strip_html }}",
+        getProduct: {
+          available: {{ getProduct.available }},
+          variantId: {{ getProduct.selected_or_first_available_variant.id }},
+          handle: "{{ getProduct.handle }}"
+        }
+      }
+      window.cartGWP.push(cartGWPItem);
+    </script>
+    {%- endif -%}
 
-{% comment %} {%- capture tests -%}
-  gwpInCart: {{ gwpInCart }}<br>
-  gwpHandle: {{ gwpHandle }}<br>
-  getProductHandle: {{ getProductHandle }}<br>
-  buyProductHandle: {{ buyProductHandle }}<br>
-  <hr>
-  {%- endcapture -%}
-{{ tests }} {% endcomment %}
+{%- elsif javascriptCode == false -%}
+
+  {%- if buyProductInCart == true and gwpInCart == false and block.settings.automatically_add == false -%}
+    {% if getProduct.available == true %}
+        <div class="mini-cart-gift">
+        <div class="heading h6 mini-cart-gift--title">{{ block.settings.gwp_title }}</div>
+        {%- render 'product-item--gift', product: getProduct, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true -%}
+        </div>
+    {%- endif -%}
+  {%- endif -%}
+
+{%- endif -%}

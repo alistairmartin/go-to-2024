@@ -212,6 +212,7 @@
                           {%- form 'product', product, id: form_id, is: 'product-form' -%}
                             <input type="hidden" name="quantity" value="1">
                             <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
+                            <input type="hidden" name="properties[_tags]" value="{% for tag in product.tags %}{{ tag }},{% endfor %}">
                             <button type="submit" class="shop-the-look__product-link link text--subdued">{{ 'collection.product.add_to_cart' | t }}</button>
                           {%- endform -%}
                         {%- else -%}

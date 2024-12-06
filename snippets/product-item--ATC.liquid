@@ -25,7 +25,7 @@
           {%- form 'product', product, is: 'product-form', id: form_id, class: 'product-item__quick-form-alt' -%}
             <input type="hidden" name="quantity" value="1">
             <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
-      
+            <input type="hidden" name="properties[_tags]" value="{% for tag in product.tags %}{{ tag }},{% endfor %}">
             <button is="loader-button" type="submit" class="{{ button_class }}">{{ addToCartText }}{% if button_text != blank %}{{ button_text }}{% endif %}</button>
             {% comment %} <button type="submit" class="product-item__quick-buy-button hidden-no-touch">
               <span class="visually-hidden">{{ 'collection.product.add_to_cart_short' | t }}</span>
@@ -71,6 +71,7 @@
             {%- form 'product', product, is: 'product-form', id: form_id -%}
               <input type="hidden" name="quantity" value="1">
               <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
+              <input type="hidden" name="properties[_tags]" value="{% for tag in product.tags %}{{ tag }},{% endfor %}">
               <button type="submit" {% if show_cta %}is="loader-button"{% endif %} class="{% if reduced_content %}product-item__link link text--subdued{% else %}product-item__cta button button--primary{% endif %}">{{ addToCartText }}{% if button_text != blank %}{{ button_text }}{% endif %}</button>
             {%- endform -%}
           {%- else -%}

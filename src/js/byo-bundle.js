@@ -56,7 +56,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
                   quantity: 1,
                   id: $(obj).data("id"),
                   properties: {
-                    'BYO Bundle': 'Select four or more unique products. Then we’ll knock off 10%.'
+                    'BYO Bundle': 'Select four or more unique products. Then we’ll knock off 10%.',
+                    '_tags': `${$(obj).data("tags")}`
                   }
                 }
                 items[index] = newObject;

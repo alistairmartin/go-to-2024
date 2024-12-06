@@ -1,0 +1,27 @@
+{%- assign blockCheckout = false -%}
+{%- for block in section.blocks -%}
+    {%- if block.type == "buy_x_get_y" -%}
+        {%- if block.settings.can_block_checkout -%}
+            {%- include 'mini-cart--gifts-buy-x-get-y', block: block,  javascriptCode: false, checkoutValidator: true -%}
+        {%- endif -%}
+    {%- elsif block.type == "min_spend" -%}
+        {% comment %} {%- render 'mini-cart--gifts-min-spend', block: block, javascriptCode: false -%} {% endcomment %}
+    {%- elsif block.type == "min_spend_buy_x" -%}
+        {% comment %} {%- render 'mini-cart--gifts-min-spend-plus-buy-x', block: block, javascriptCode: false  -%} {% endcomment %}
+    {%- elsif block.type == "subscription_gift" -%}
+        {% comment %} {%- render 'mini-cart--gifts-subscription-gift', block: block, javascriptCode: false -%} {% endcomment %}
+    {%- endif -%}
+{%- endfor -%}
+
+
+<button form="mini-cart-form" type="submit" class="checkout-button button button--primary button--full {% if blockCheckout == "true" %}block-checkout button--ternary{% else %}button--primary{% endif %}" name="checkout" {%- if blockCheckout == "true" -%}disabled{% endif %}>
+    {%- if blockCheckout == "true" -%}
+        Please Choose A Gift Above
+        {% comment %} <small>You need to select a gift above before checking out</small> {% endcomment %}
+    {% else %}
+        {{- 'cart.general.checkout' | t -}}
+        <span class="square-separator"></span>
+        {{- cart.total_price | money_with_currency | remove: ".00" | remove: ",00" -}}
+    {%- endif -%}
+</button>
+

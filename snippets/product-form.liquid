@@ -477,6 +477,9 @@
 
               <input type="hidden" disabled name="id" value="{{ product.selected_or_first_available_variant.id }}">
 
+
+              <input type="hidden" name="properties[_tags]" value="{% for tag in product.tags %}{{ tag }},{% endfor %}">
+
               <product-payment-container {% if update_url %}id="MainPaymentContainer"{% endif %} class="product-form__payment-container" {{ block.shopify_attributes }}>
 
                 {%- assign showBackInStock = false -%}
@@ -507,6 +510,7 @@
 
                 {%- if block.settings.show_payment_button and recipient_feature_active == false and template.suffix != 'quick-buy-popover' -%}
                   {{ form | payment_button }}
+
 
                   {%- unless product.selected_or_first_available_variant.available -%}
                     <style>

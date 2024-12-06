@@ -1,13 +1,13 @@
 /*
-* ------------------------------------------------------------
-* IMPORTANT: The contents of this file are auto-generated.
-*
-* This file may be updated by the Shopify admin language editor
-* or related systems. Please exercise caution as any changes
-* made to this file may be overwritten.
-* ------------------------------------------------------------
-*/
-{
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+ {
   "general": {
     "meta": {
       "page": "Page {{ page }}"
@@ -73,13 +73,13 @@
       "account": "Account",
       "cart": "Cart",
       "language": "Language",
-      "country": "Country\/region"
+      "country": "Country/region"
     }
   },
   "footer": {
     "general": {
       "language": "Language",
-      "country": "Country\/region",
+      "country": "Country/region",
       "we_accept": "We accept"
     },
     "newsletter": {
@@ -99,6 +99,12 @@
       "start_shopping": "Start shopping",
       "free_shipping": "You are eligible for free shipping!",
       "free_shipping_remaining_html": "Spend {{ remaining_amount }} more and get free shipping!",
+      "free_shipping_NZ": "You are eligible for free shipping!",
+      "free_shipping_remaining_html_NZ": "Spend {{ remaining_amount }} more and get free shipping!",
+      "free_shipping_GB": "You are eligible for free shipping!",
+      "free_shipping_remaining_html_GB": "Spend {{ remaining_amount }} more and get free shipping!",
+      "free_shipping_US": "You are eligible for free shipping!",
+      "free_shipping_remaining_html_US": "Spend {{ remaining_amount }} more and get free shipping!",
       "free": "Free!",
       "no_more_stock": "No more stock",
       "shipping_tax_note": "Shipping & taxes calculated at checkout",
@@ -169,7 +175,7 @@
       "from_price_html": "From {{ price_min }}",
       "add_to_cart": "+ Add to cart",
       "add_to_cart_short": "+ Add to cart",
-      "quick_view": "Select A Size",
+      "quick_view": "Select {{ quick_view_title }}",
       "available_colors_count": {
         "one": "{{ count }} color available",
         "other": "{{ count }} colors available"
@@ -188,7 +194,7 @@
     },
     "general": {
       "read_more": "Read more",
-      "show_less": "Show less",
+      "show_less": "Read less",
       "read_more_reviews": "Read more reviews",
       "description": "Description",
       "reviews": "Reviews ({{ rating_count }})",
@@ -202,7 +208,7 @@
       "need_help": "Need help?",
       "view_details": "View details",
       "include_taxes": "Tax included.",
-      "shipping_policy_html": "<a href=\"{{ link }}\" class=\"link link--accented\">Shipping calculated<\/a> at checkout",
+      "shipping_policy_html": "<a href=\"{{ link }}\" class=\"link link--accented\">Shipping calculated</a> at checkout",
       "reviews_count": {
         "zero": "No reviews",
         "one": "{{ count }} review",
@@ -303,7 +309,7 @@
     },
     "login": {
       "title": "Login",
-      "instructions": "Please enter your e-mail and password:",
+      "instructions": "Login to check in on your Go-To Gang account and prove to your friends that you can remember passwords.",
       "email": "E-mail",
       "password": "Password",
       "submit": "Login",
@@ -337,7 +343,7 @@
     },
     "register": {
       "title": "Register",
-      "instructions": "Please fill in the fields below:",
+      "instructions": "Sign up to join our loyalty program and you’ll be rewarded with free treats, new product launches, annual birthday gifts, and a permanent position in Go-To’s good books.",
       "first_name": "First name",
       "last_name": "Last name",
       "email": "E-mail",
@@ -346,7 +352,8 @@
       "already_have_account": "Already have an account?",
       "login": "Login",
       "marketing_checkbox": "Oh, yes. I want to receive emails about skincare stuff, new products, and cute goat pics.",
-      "marketing_disclaimer": "By joining the Go-To Gang, you consent to receiving emails about your account."
+      "marketing_disclaimer": "By joining the Go-To Gang, you consent to receiving emails about your account.",
+      "marketing_error": "You must subscribe to Marketing to register an account"
     },
     "orders": {
       "title": "Orders",
@@ -360,12 +367,12 @@
       "fulfillment_status": "Fulfillment status",
       "view_details": "View order details",
       "cancelled_at": "Cancelled at: {{date}}. Reason: {{reason}}",
-      "fulfillment_with_url_and_number_html": "All products have been sent on {{date}}. Track the shipment with number {{tracking_number}} or by <a href=\"{{tracking_url}}\" target=\"_blank\">clicking here<\/a>.",
-      "fulfillment_with_url_html": "All products have been sent on {{date}}. Track the shipment by <a href=\"{{tracking_url}}\" target=\"_blank\">clicking here<\/a>.",
+      "fulfillment_with_url_and_number_html": "All products have been sent on {{date}}. Track the shipment with number {{tracking_number}} or by <a href=\"{{tracking_url}}\" target=\"_blank\">clicking here</a>.",
+      "fulfillment_with_url_html": "All products have been sent on {{date}}. Track the shipment by <a href=\"{{tracking_url}}\" target=\"_blank\">clicking here</a>.",
       "fulfillment_with_number_html": "All products have been sent on {{date}}. Track the shipment with number {{tracking_number}}.",
       "fulfillment_html": "All products have been sent on {{date}}.",
-      "line_fulfillment_with_url_and_number_html": "This product has been sent on {{date}}. Track the shipment with number {{tracking_number}} or by <a href=\"{{tracking_url}}\" target=\"_blank\">clicking here<\/a>.",
-      "line_fulfillment_with_url_html": "This product has been sent on {{date}}. Track the shipment by <a href=\"{{tracking_url}}\" target=\"_blank\">clicking here<\/a>.",
+      "line_fulfillment_with_url_and_number_html": "This product has been sent on {{date}}. Track the shipment with number {{tracking_number}} or by <a href=\"{{tracking_url}}\" target=\"_blank\">clicking here</a>.",
+      "line_fulfillment_with_url_html": "This product has been sent on {{date}}. Track the shipment by <a href=\"{{tracking_url}}\" target=\"_blank\">clicking here</a>.",
       "line_fulfillment_with_number_html": "This product has been sent on {{date}}. Track the shipment with number {{tracking_number}}.",
       "line_fulfillment_html": "This product has been sent on {{date}}.",
       "total": "Total",
@@ -390,7 +397,7 @@
       "save": "Save",
       "default_address": "Default address",
       "address_count": "Address {{count}}",
-      "fill_address": "Please fill in the fields below:",
+      "fill_address": "Sign up to join our loyalty program and you’ll be rewarded with free treats, new product launches, annual birthday gifts, and a permanent position in Go-To’s good books.",
       "first_name": "First name",
       "last_name": "Last name",
       "company": "Company",
@@ -417,7 +424,7 @@
       "view_all_results": "View all results",
       "products": "Products",
       "queries": "Suggestions",
-      "articles": "Journal",
+      "articles": "Go-To Guide",
       "pages": "Pages",
       "collections": "Collections"
     }
@@ -433,7 +440,7 @@
   },
   "gift_card": {
     "issued_legacy": {
-      "subtext": "Your e-Gift Card! It's here! On this very page!",
+      "subtext": "Your e-Gift Card! It's <i>Here!</i> On this very page!",
       "illustration_alt": "Gift card illustration",
       "disabled": "Your gift card is disabled.",
       "expired": "Shucks! Your gift card expired on {{ expiry }}.",
@@ -441,10 +448,10 @@
       "redeem_html": "Use this very fancy code at checkout to redeem your gift card.",
       "shop_link": "I'm ready to shop!",
       "print": "print",
-      "initial_amount_html": "Gift Card Amount: {{initial_amount}}",
+      "initial_amount_html": "Gift Card Amount: ",
       "remaining_balance_html": "Balance left: {{balance}}",
       "add_to_apple_wallet": "Add to Apple Wallet",
-      "gift_card_code_html": "E-Gift card code: <strong>{{ gift_card_code }}<\/strong>"
+      "gift_card_code_html": "E-Gift card code: <strong>{{ gift_card_code }}</strong>"
     },
     "issued": {
       "subtext": "Here's your gift card!",
@@ -462,9 +469,9 @@
     "recipient": {
       "checkbox": "I want to send this as a gift",
       "email_label": "Recipient email",
-      "name_label": "Recipient name (optional)",
+      "name_label": "Recipient name",
       "send_on_label": "Send on (optional)",
-      "message_label": "Message (optional)"
+      "message_label": "Message"
     }
   },
   "password": {
@@ -501,6 +508,13 @@
       "email_placeholder": "cutehead@gotoskincare.com",
       "order_number": "Order number",
       "order_number_placeholder": "e.g. GT77777"
+    }
+  },
+  "shopify": {
+    "checkout": {
+      "order_summary": {
+        "higher_value_discount_applied": "<strong style=\"text-transform:uppercase\">{{ code }}</strong> can't be used! Only one promo code per order. "
+      }
     }
   }
 }

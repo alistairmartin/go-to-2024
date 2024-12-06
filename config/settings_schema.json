@@ -1311,18 +1311,88 @@
         "default": "shopping_bag"
       },
       {
+        "type": "header",
+        "content": "Shipping Motivator (AU 🇦🇺)"
+      },
+      {
         "type": "checkbox",
-        "id": "cart_show_free_shipping_threshold",
-        "label": "Show free shipping minimum amount",
-        "info": "Make sure that you have properly configured your [shipping rates](\/admin\/settings\/shipping).",
-        "default": false
+        "id": "shipping_motivator_AU",
+        "label": "Show For Australia?"
       },
       {
         "type": "text",
         "id": "cart_free_shipping_threshold",
         "label": "Free shipping minimum amount",
-        "info": "Enter amount using number only. If using multiple currencies, separate each currency code with its amount (eg.: USD:50,EUR:60,JPY:9000)",
         "default": "50"
+      },
+      {
+        "type": "header",
+        "content": "Shipping Motivator (NZ 🇳🇿)"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_motivator_NZ",
+        "label": "Show For New Zealand?"
+      },
+      {
+        "type": "text",
+        "id": "cart_free_shipping_threshold_NZ",
+        "label": "Free shipping minimum amount",
+        "default": "50"
+      },
+      {
+        "type": "header",
+        "content": "Shipping Motivator (UK 🇬🇧)"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_motivator_GB",
+        "label": "Show For United Kingdom?"
+      },
+      {
+        "type": "text",
+        "id": "cart_free_shipping_threshold_GB",
+        "label": "Free shipping minimum amount",
+        "default": "50"
+      },
+      {
+        "type": "header",
+        "content": "Shipping Motivator (US 🇺🇸)"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_motivator_US",
+        "label": "Show For United States?"
+      },
+      {
+        "type": "text",
+        "id": "cart_free_shipping_threshold_US",
+        "label": "Free shipping minimum amount",
+        "default": "50"
+      },
+      {
+        "type": "header",
+        "content": "Shipping Motivator (Text Size)"
+      },
+      {
+        "type": "range",
+        "id": "shipping_motivator_size_mobile",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Font Size (Mobile)",
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "shipping_motivator_size_desktop",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Font Size (Desktop)",
+        "default": 14
       }
     ]
   },

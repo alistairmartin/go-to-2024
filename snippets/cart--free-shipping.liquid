@@ -1,0 +1,21 @@
+<style>
+.shipping-bar-custom .shipping-bar__text {
+    font-size: {{ settings.shipping_motivator_size_mobile }}px;
+}
+
+@media screen and (min-width: 768px) {
+    .shipping-bar-custom .shipping-bar__text {
+        font-size: {{ settings.shipping_motivator_size_desktop }}px;
+    }
+}
+</style>
+
+{%- if localization.market.handle == 'au' -%}
+    {%- render 'cart--free-shipping-AU' -%}
+{%- elsif localization.market.handle == 'nz' -%}
+    {%- render 'cart--free-shipping-NZ' -%}
+{%- elsif localization.market.handle == 'gb' -%}
+    {%- render 'cart--free-shipping-GB' -%}
+{%- elsif localization.market.handle == 'us' -%}
+    {%- render 'cart--free-shipping-US' -%}
+{%- endif -%}

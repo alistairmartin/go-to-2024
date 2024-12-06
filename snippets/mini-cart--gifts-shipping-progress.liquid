@@ -1,0 +1,13 @@
+
+
+{%- if blockType == "min-spend" -%}
+    {%- assign calculated_total_price = currentSpend -%}
+    {%- assign threshold_in_cents = minSpend -%}
+{%- endif -%}
+
+<free-shipping-bar id="{{ progressTitle |  strip_html | handle }}" threshold="{{ threshold_in_cents }}" class="shipping-bar shipping-bar--gifts" style="--progress: {{ calculated_total_price | times: 1.0 | divided_by: threshold_in_cents | at_most: 1 }}; background:{{ block.settings.background }};">
+    {%- capture remaining_amount -%}{{ calculated_total_price | minus: threshold_in_cents | abs | money | remove: ".00" | remove: ",00" }}{%- endcapture -%}
+    <span class="shipping-bar__text text--xxsmall hide-desktop" style="font-size:{{ progressTitleSizeMobile }}px;">{{ progressTitle | replace: "[gift]", product.title | replace: "[remaining_amount]", remaining_amount }}</span>
+    <span class="shipping-bar__text text--xxsmall hide-mobile" style="font-size:{{ progressTitleSizeDesktop }}px;">{{ progressTitle | replace: "[gift]", product.title | replace: "[remaining_amount]", remaining_amount }}</span>
+    <span class="shipping-bar__progress"></span>
+</free-shipping-bar>

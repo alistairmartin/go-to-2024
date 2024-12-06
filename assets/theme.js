@@ -5829,8 +5829,17 @@ var _VariantPicker = class _VariantPicker extends HTMLElement {
     const previousVariant = this.selectedVariant;
     const newContent = document.createRange().createContextualFragment(await __privateMethod(this, _VariantPicker_instances, renderForCombination_fn).call(this, optionValues));
     if (!productChange) {
+
       const newVariantPicker = deepQuerySelector(newContent, `${this.tagName}[form-id="${this.getAttribute("form-id")}"]`);
+      
+      console.log("newVariantPicker")
+
+      console.log(`${this.tagName}[form-id="${this.getAttribute("form-id")}"]`)
+      console.log(newVariantPicker)
+
       const newVariant = JSON.parse(newVariantPicker.querySelector("script[data-variant]")?.textContent || "{}");
+
+
       __privateSet(this, _selectedVariant, newVariant);
       __privateGet(this, _form).id.value = __privateGet(this, _selectedVariant)?.id;
       __privateGet(this, _form).id.dispatchEvent(new Event("change", { bubbles: true }));
@@ -6145,9 +6154,11 @@ var CartDrawer = class extends DrawerContent {
     console.log('--- _rerenderCart')
     console.log(event);
 
-
+    
     if(event !== null && event.detail !== null) {
       console.log(event.detail.cart);
+
+      // REMOVE GWP
       function removeFromCart(lineItemKey) {
         fetch('/cart/change.js', {
             method: 'POST',
@@ -6171,6 +6182,7 @@ var CartDrawer = class extends DrawerContent {
         });
     }
     
+    // ADD GWP
     function addToCart(variantId, quantity, gwp_item_message) {
       fetch('/cart/add.js', {
           method: 'POST',
@@ -6195,10 +6207,12 @@ var CartDrawer = class extends DrawerContent {
       .catch(error => {
           console.error('Error adding product:', error);
       });
-  }  
+    }
 
 
     const cartObject = event.detail.cart;
+
+    console.log(window.cartGWP);
 
     for (const cartGWP of window.cartGWP) {
         console.log("Type:", cartGWP.type);
@@ -6208,18 +6222,86 @@ var CartDrawer = class extends DrawerContent {
           const cartGWPHandle = cartGWP.getProduct.handle; 
           const matchingItem = cartObject.items.find(item => item.handle === cartGWPHandle);
 
-          console.log("matchingItem")
-          console.log(matchingItem)
-
-          console.log(cartGWP.minSpend)
-          console.log(cartObject.total_price)
-
           if(cartObject.total_price >= cartGWP.minSpend && !matchingItem) {
-            console.log("test 1")
             addToCart(cartGWP.getProduct.variantId,1,cartGWP.gwp_item_message);
           } else if(cartObject.total_price < cartGWP.minSpend && matchingItem) {
-            console.log("test 2")
 
+            const itemKey = matchingItem.key;
+            removeFromCart(itemKey);
+          }
+        }
+
+        if(cartGWP.type === "min-spend-plus-buy-x") {
+
+          const cartGWPHandle = cartGWP.getProduct.handle; 
+          const matchingItem = cartObject.items.find(item => item.handle === cartGWPHandle);
+          let minsSpendBuyX = 0;
+
+          console.log("cartGWP.buyXTag " + cartGWP.buyXTag)
+          cartObject.items.forEach(item => {
+            const itemTags = item.properties?._tags ? item.properties._tags.split(",") : [];
+            if (itemTags.includes(cartGWP.buyXTag)) {
+                console.log(itemTags)
+                minsSpendBuyX += item.line_price;
+            }
+          });
+          console.log("minsSpendBuyX")
+          console.log(minsSpendBuyX)
+
+          if(minsSpendBuyX >= cartGWP.minSpend && !matchingItem) {
+            console.log('test1')
+            addToCart(cartGWP.getProduct.variantId,1,cartGWP.gwp_item_message);
+          } else if(minsSpendBuyX < cartGWP.minSpend && matchingItem) {
+            console.log('test2')
+            const itemKey = matchingItem.key;
+            removeFromCart(itemKey);
+          }
+        }
+
+
+        if(cartGWP.type === "buy-x-get-y") {
+
+          const cartGWPHandle = cartGWP.getProduct.handle; 
+          const matchingItem = cartObject.items.find(item => item.handle === cartGWPHandle);
+          let hasBuyTag = false;
+
+          cartObject.items.forEach(item => {
+            const itemTags = item.properties?._tags ? item.properties._tags.split(",") : [];
+            if (itemTags.includes(cartGWP.buyXTag)) {
+              hasBuyTag = true;
+            }
+          });
+
+          console.log(hasBuyTag)
+          console.log(matchingItem)
+
+          if(hasBuyTag === true && !matchingItem) {
+            console.log("test1")
+            addToCart(cartGWP.getProduct.variantId,1,cartGWP.gwp_item_message);
+          } else if(hasBuyTag === false && matchingItem) {
+            console.log("test2")
+            const itemKey = matchingItem.key;
+            removeFromCart(itemKey);
+          }
+        }
+
+
+        if(cartGWP.type === "subscription") {
+
+          const cartGWPHandle = cartGWP.getProduct.handle; 
+          const matchingItem = cartObject.items.find(item => item.handle === cartGWPHandle);
+          let hasSubscription = false;
+
+
+          cartObject.items.forEach(item => {
+            if (item.selling_plan_allocation) {
+              hasSubscription = true;
+            }
+          });
+
+          if(hasSubscription === true && !matchingItem) {
+            addToCart(cartGWP.getProduct.variantId,1,cartGWP.gwp_item_message);
+          } else if(hasSubscription === false && matchingItem) {
             const itemKey = matchingItem.key;
             removeFromCart(itemKey);
           }

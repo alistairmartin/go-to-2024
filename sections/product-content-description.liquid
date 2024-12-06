@@ -48,7 +48,6 @@
               {%- endif -%}
             {%- endcapture -%}
 
-
             
             {%- assign productCallOutModal = product.metafields.accentuate.product_gwp__modal_content -%}
 
@@ -58,7 +57,15 @@
                 </button>
                 {%- render 'modal', modalId: "open-product-quiz", buttonId: "open-product-quiz" content: productCallOutModal -%}
             {% elsif callout_image != blank %}
+
+              {%- if product.metafields.custom.product_gwp__link != blank -%}
+                <a href="{{ product.metafields.custom.product_gwp__link }}">
+                  {{ callout_image }}
+                </a>
+              {% else %}
               {{ callout_image }}
+              {%- endif -%}
+
             {% endif %}
             
             {% comment %}             

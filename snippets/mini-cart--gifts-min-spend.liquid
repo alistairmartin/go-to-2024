@@ -16,7 +16,7 @@
 
     {%- if block.settings.automatically_add and getProduct.available -%}
     <script>
-      let cartGWP = {
+      var cartGWPItem = {
         type: "min-spend",
         minSpend: {{ minSpend }},
         gwp_item_message: "{{ block.settings.gwp_item_message | strip_html }}",
@@ -27,19 +27,26 @@
         }
       }
 
-      window.cartGWP.push(cartGWP);
+      window.cartGWP.push(cartGWPItem);
     </script>
     {%- endif -%}
 {%- elsif javascriptCode == false -%}
 
 
   {%- if cart.total_price >= minSpend and getProductInCart == false and block.settings.automatically_add == false -%}
-      {% if getProduct.available == true %}
-          <div class="mini-cart-gift">
-          <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title }}</div>
-          {%- render 'product-item--gift', product: getProduct, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true, description: block.settings.gwp_description -%}
-          </div>
-      {%- endif -%}
+        {% if getProduct.available == true %}
+            <div class="mini-cart-gift">
+            <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title }}</div>
+            {%- render 'product-item--gift', product: getProduct, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true, description: block.settings.gwp_description -%}
+            </div>
+        {%- endif -%}
+    {%- elsif cart.total_price < minSpend and getProductInCart == false and getProduct.available == true and block.settings.show_progress_bar -%} 
+      {%- render 'mini-cart--gifts-shipping-progress', blockType: "min-spend", product: getProduct, currentSpend: cart.total_price, minSpend: minSpend, progressTitle: block.settings.progress_bar_title, progressTitleSizeMobile: block.settings.progress_bar_size_mobile, progressTitleSizeDesktop: block.settings.progress_bar_size_desktop, block: block -%}
     {%- endif -%}
+
+    {%- if getProductInCart == false and getProduct.available == false -%}
+      {%- render 'mini-cart--gifts-error', product: getProduct -%}
+    {%- endif -%}
+  
     
 {%- endif -%}

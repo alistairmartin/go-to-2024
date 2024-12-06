@@ -20,8 +20,27 @@
     <p class="drawer__title heading h6">
 
       {%- if section.settings.enable_custom_message -%}
+      <style>
+      .custom-cart-message--inner p {
+          font-size: {{ section.settings.custom_message_size_mobile }}px;
+      }
+      
+      @media screen and (min-width: 768px) {
+          .custom-cart-message--inner p {
+              font-size: {{ section.settings.custom_message_size_desktop }}px;
+          }
+      }
+      </style>
       <div class="custom-cart-message--inner">
-        {{ section.settings.custom_message }}
+        {%- if localization.market.handle == 'au' -%}
+          {{ section.settings.custom_message }}
+        {%- elsif localization.market.handle == 'nz' -%}
+          {{ section.settings.custom_message_NZ }}
+        {%- elsif localization.market.handle == 'gb' -%}
+          {{ section.settings.custom_message_GB }}
+        {%- elsif localization.market.handle == 'us' -%}
+          {{ section.settings.custom_message_US }}
+        {%- endif -%}
       </div>
       {% else %}
         {%- case settings.cart_icon -%}
@@ -64,59 +83,7 @@
     </div>
   {%- else -%}
     <div class="drawer__content">
-      {%- if settings.cart_show_free_shipping_threshold and settings.cart_free_shipping_threshold != '' and cart.requires_shipping -%}
-        {%- assign free_shipping_thresholds = settings.cart_free_shipping_threshold | remove: ' ' | split: ',' -%}
-        {%- assign has_found_matching_threshold = false -%}
-
-        {%- if free_shipping_thresholds.size > 1 -%}
-          {%- for threshold in free_shipping_thresholds -%}
-            {%- assign threshold_parts = threshold | split: ':' -%}
-            {%- assign currency_code = threshold_parts | first | upcase -%}
-
-            {%- if currency_code == cart.currency.iso_code -%}
-              {%- assign free_shipping_calculated_threshold = threshold_parts | last -%}
-              {%- assign has_found_matching_threshold = true -%}
-              {%- break -%}
-            {%- endif -%}
-          {%- endfor -%}
-        {%- else -%}
-          {%- assign free_shipping_calculated_threshold = free_shipping_thresholds | last -%}
-          {%- assign has_found_matching_threshold = true -%}
-        {%- endif -%}
-
-        {%- if has_found_matching_threshold -%}
-          {%- assign threshold_in_cents = free_shipping_calculated_threshold | times: 100.0 -%}
-
-          {%- assign calculated_total_price = 0 -%}
-
-          {%- for line_item in cart.items -%}
-            {%- if line_item.requires_shipping -%}
-              {%- assign calculated_total_price = calculated_total_price | plus: line_item.final_line_price -%}
-            {%- endif -%}
-          {%- endfor -%}
-
-          {% comment %}We have to remove the cart level discount from the calculated amount{% endcomment %}
-          {%- assign total_cart_discount = 0 -%}
-
-          {%- for discount_application in cart.cart_level_discount_applications -%}
-            {%- assign total_cart_discount = total_cart_discount | plus: discount_application.total_allocated_amount -%}
-          {%- endfor -%}
-
-          {%- assign calculated_total_price = calculated_total_price | minus: total_cart_discount -%}
-
-          <free-shipping-bar threshold="{{ threshold_in_cents }}" class="shipping-bar" style="--progress: {{ calculated_total_price | times: 1.0 | divided_by: threshold_in_cents | at_most: 1 }}">
-            {%- if calculated_total_price >= threshold_in_cents -%}
-              <span class="shipping-bar__text text--xxsmall">{{ 'cart.general.free_shipping' | t }}</span>
-            {%- else -%}
-              {%- capture remaining_amount -%}{{ calculated_total_price | minus: threshold_in_cents | abs | money | remove: ".00" | remove: ",00" }}{%- endcapture -%}
-              <span class="shipping-bar__text text--xxsmall">{{ 'cart.general.free_shipping_remaining_html' | t: remaining_amount: remaining_amount }}</span>
-            {%- endif -%}
-
-            <span class="shipping-bar__progress"></span>
-          </free-shipping-bar>
-        {%- endif -%}
-      {%- endif -%}
-
+      {%- render 'cart--free-shipping' -%}
       {%- render 'mini-cart--gifts' -%}
 
       <form id="mini-cart-form" action="{{ routes.cart_url }}" novalidate method="post">
@@ -424,14 +391,13 @@
         </div>
       {%- endif -%}
 
+      
+
       {%- if section.settings.show_checkout_button -%}
         {%- if cart.total_price >= 2500 -%}
-        <button form="mini-cart-form" type="submit" class="checkout-button button button--primary button--full" name="checkout">
-          {% comment %} <span class="checkout-button__lock">{%- render 'icon' with 'lock' -%}</span> {% endcomment %}
-          {{- 'cart.general.checkout' | t -}}
-          <span class="square-separator"></span>
-          {{- cart.total_price | money_with_currency | remove: ".00" | remove: ",00" -}}
-        </button>
+
+          {%- include 'mini-cart--checkout-button' -%}
+
         {%- else - %}
         <p>The total items in your cart are below the minimum order value of $25. Please add more very good skin care to proceed. Go on, get shopping.</p>
         <a href="/collections/shop-all" class="button button--ternary button--full" data-no-instant>Continue Shopping</a>
@@ -487,7 +453,7 @@
         {
           "type": "checkbox",
           "id": "automatically_add",
-          "label": "Automatically Add?"
+          "label": "Automatically Add Gift?"
         },
         {
           "type": "header",
@@ -511,6 +477,58 @@
         },
         {
           "type": "header",
+          "content": "Cart Message"
+        },
+        {
+          "type": "richtext",
+          "id": "gwp_item_message",
+          "label": "Item Message",
+          "info": "Spend $250 Get A Free Bag"
+        },
+        {
+          "type": "header",
+          "content": "Progress Bar"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_progress_bar",
+          "label": "Show Progress Bar"
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "Background",
+          "default": "#FDE4DB"
+        },
+        {
+          "type": "range",
+          "id": "progress_bar_size_mobile",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size (Mobile)",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "progress_bar_size_desktop",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size (Desktop)",
+          "default": 14
+        },
+        {
+          "type": "richtext",
+          "id": "progress_bar_title",
+          "label": "Progress Bar Title",
+          "info": "Use '[gift]' to display the product title of the gift. Also [remaining_amount]",
+          "default": "<p>Spend [remaining_amount] more and get [gift] for FREE</p>"
+        }, 
+        {
+          "type": "header",
           "content": "Text"
         },
         {
@@ -528,12 +546,121 @@
           "id": "gwp_image",
           "label": "Image",
           "info": "Optional. Will use product image as default."
+        }
+      ]
+    },
+    {
+      "type": "min_spend_buy_x",
+      "name": "Min Spend from Buy X",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Admin Title",
+          "info": "Only Admin Will See This."
+        },
+        {
+          "type": "checkbox",
+          "id": "automatically_add",
+          "label": "Automatically Add Gift?"
+        },
+        {
+          "type": "header",
+          "content": "Buy Condition"
+        },
+        {
+          "type": "text",
+          "id": "buy_tag",
+          "label": "BUY Tag",
+          "info": "Product Tag"
+        },
+        {
+          "type": "text",
+          "id": "min_spend",
+          "label": "Min Spend (Dollar Value)",
+          "info": "e.g. 40 = $40"
+        },
+        {
+          "type": "header",
+          "content": "Get Product"
+        },
+        {
+          "type": "product",
+          "id": "get_product",
+          "label": "Get Product",
+          "info": "This will be added to cart."
+        },
+        {
+          "type": "header",
+          "content": "Cart Message"
         },
         {
           "type": "richtext",
           "id": "gwp_item_message",
           "label": "Item Message",
           "info": "Spend $250 Get A Free Bag"
+        },
+        {
+          "type": "header",
+          "content": "Progress Bar"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_progress_bar",
+          "label": "Show Progress Bar"
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "Background",
+          "default": "#FDE4DB"
+        },
+        {
+          "type": "range",
+          "id": "progress_bar_size_mobile",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size (Mobile)",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "progress_bar_size_desktop",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size (Desktop)",
+          "default": 14
+        },
+        {
+          "type": "richtext",
+          "id": "progress_bar_title",
+          "label": "Progress Bar Title",
+          "info": "Use '[gift]' to display the product title of the gift. Also [remaining_amount]",
+          "default": "<p>Spend [remaining_amount] more and get [gift] for FREE</p>"
+        },        
+        {
+          "type": "header",
+          "content": "Text"
+        },
+        {
+          "type": "textarea",
+          "id": "gwp_title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "gwp_description",
+          "label": "Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "gwp_image",
+          "label": "Image",
+          "info": "Optional. Will use product image as default."
         }
       ]
     },
@@ -546,6 +673,17 @@
           "id": "title",
           "label": "Admin Title",
           "info": "Only Admin Will See This."
+        },
+        {
+          "type": "checkbox",
+          "id": "can_block_checkout",
+          "label": "Can Block Checkout",
+          "info": "Customers will need to select a gift before checking out. Only for gifts that have options."
+        },
+        {
+          "type": "checkbox",
+          "id": "automatically_add",
+          "label": "Automatically Add Gift?"
         },
         {
           "type": "header",
@@ -572,6 +710,16 @@
           "id": "get_product",
           "label": "Get Product",
           "info": "This will be added to cart."
+        },
+        {
+          "type": "header",
+          "content": "Cart Message"
+        },
+        {
+          "type": "richtext",
+          "id": "gwp_item_message",
+          "label": "Item Message",
+          "info": "Spend $250 Get A Free Bag"
         },
         {
           "type": "header",
@@ -606,6 +754,11 @@
           "info": "Only Admin Will See This."
         },
         {
+          "type": "checkbox",
+          "id": "automatically_add",
+          "label": "Automatically Add Gift?"
+        },
+        {
           "type": "header",
           "content": "Buy Product"
         },
@@ -622,6 +775,16 @@
           "id": "get_product",
           "label": "Get Product",
           "info": "Product Tag"
+        },
+        {
+          "type": "header",
+          "content": "Cart Message"
+        },
+        {
+          "type": "richtext",
+          "id": "gwp_item_message",
+          "label": "Item Message",
+          "info": "Spend $250 Get A Free Bag"
         },
         {
           "type": "header",
@@ -698,7 +861,22 @@
     {
       "type": "richtext",
       "id": "custom_message",
-      "label": "Custom Message"
+      "label": "Custom Message (AU 🇦🇺)"
+    },
+    {
+      "type": "richtext",
+      "id": "custom_message_NZ",
+      "label": "Custom Message (NZ 🇳🇿)"
+    },
+    {
+      "type": "richtext",
+      "id": "custom_message_GB",
+      "label": "Custom Message (UK 🇬🇧)"
+    },
+    {
+      "type": "richtext",
+      "id": "custom_message_US",
+      "label": "Custom Message (US 🇺🇸)"
     },
     {
       "type": "color",
@@ -709,7 +887,27 @@
       "type": "color",
       "id": "custom_message_color_background",
       "label": "Background Colour"
-    }
+    },
+    {
+        "type": "range",
+        "id": "custom_message_size_mobile",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Font Size (Mobile)",
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "custom_message_size_desktop",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Font Size (Desktop)",
+        "default": 14
+      }
   ]
 }
 {% endschema %}

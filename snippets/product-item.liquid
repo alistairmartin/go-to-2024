@@ -26,6 +26,8 @@
   {%- assign hideProduct = false -%}
 {%- endif -%}
 
+{%- assign hideProduct = false -%}
+
 {%- if template.suffix contains "vip-access" -%}
     {%- capture vipCustomer -%}
       {% render "vip-access--validator", variable: true %}
@@ -144,6 +146,7 @@
         {%- form 'product', product, is: 'product-form', id: form_id, class: 'product-item__quick-form' -%}
           <input type="hidden" name="quantity" value="1">
           <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
+          <input type="hidden" name="properties[_tags]" value="{% for tag in product.tags %}{{ tag }},{% endfor %}">
           <button is="loader-button" type="submit" class="button button--outline button--text button--full {% if section.settings.desktop_products_per_row >= 5 %}button--small{% endif %} hidden-touch">{{ 'collection.product.add_to_cart_short' | t }}</button>
           <button type="submit" class="product-item__quick-buy-button hidden-no-touch">
             <span class="visually-hidden">{{ 'collection.product.add_to_cart_short' | t }}</span>
@@ -391,6 +394,7 @@
           {%- form 'product', product, is: 'product-form', id: form_id -%}
             <input type="hidden" name="quantity" value="1">
             <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
+            <input type="hidden" name="properties[_tags]" value="{% for tag in product.tags %}{{ tag }},{% endfor %}">
             <button type="submit" {% if show_cta %}is="loader-button"{% endif %} class="{% if reduced_content %}product-item__link link--animated link link--primary{% else %}product-item__cta button button--primary{% endif %}">{{ 'collection.product.add_to_cart_short' | t }}</button>
           {%- endform -%}
         {%- else -%}

@@ -1,7 +1,7 @@
 {%- if product.available == true -%}
   <div class="product-item--BYO-ATC__container">
     {%- if product.variants.size == 1 -%}
-      <div class="product-item--BYO-ATC" data-id="{{ product.selected_or_first_available_variant.id }}" data-price="{{ product.selected_or_first_available_variant.price }}" data-image="{{ product |  image_url: width: 50  }}">
+      <div class="product-item--BYO-ATC" data-id="{{ product.selected_or_first_available_variant.id }}" data-price="{{ product.selected_or_first_available_variant.price }}" data-image="{{ product |  image_url: width: 50  }}" data-tags="{% for tag in product.tags %}{{ tag }},{% endfor %}">
         <button class="link--animated link link--primary" aria-pressed="false">
           <span class="add">+ ADD TO BUNDLE</span>
           <span class="remove">REMOVE</span>
@@ -10,7 +10,7 @@
     {%- else -%}
       {%- for variant in product.variants -%}
         {%- if variant.available -%}
-          <div class="product-item--BYO-ATC-variant" data-id="{{ variant.id }}" data-price="{{ variant.price }}" data-image="{{ variant.image |  image_url: width: 50  }}">
+          <div class="product-item--BYO-ATC-variant" data-id="{{ variant.id }}" data-price="{{ variant.price }}" data-image="{{ variant.image |  image_url: width: 50  }}" data-tags="{% for tag in product.tags %}{{ tag }},{% endfor %}">
             <button class="link--animated link link--primary" aria-pressed="false">
               <span class="add">+ {{ variant.title }}</span>
               <span class="remove">REMOVE {{ variant.title }}</span>

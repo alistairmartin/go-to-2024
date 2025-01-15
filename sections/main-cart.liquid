@@ -89,9 +89,16 @@
                     <td class="line-item__product">
                       <div class="line-item__content-wrapper">
                         {%- if line_item.image != blank -%}
+
+                          {%- if line_item.product.type == "GWP" -%}
+                          <div class="line-item__image-wrapper" tabindex="-1" aria-hidden="true">
+                            {{- line_item.image | image_url: width: line_item.image.width | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 80px, 92px', widths: '80,92,160,184,240,276', class: 'line-item__image' -}}
+                          </div>
+                          {% else  %}
                           <a href="{{ line_item.url }}" class="line-item__image-wrapper" tabindex="-1" aria-hidden="true">
                             {{- line_item.image | image_url: width: line_item.image.width | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 80px, 92px', widths: '80,92,160,184,240,276', class: 'line-item__image' -}}
                           </a>
+                          {%- endif -%}
                         {%- endif -%}
 
                         {%- capture unit_price -%}
@@ -160,8 +167,14 @@
                               {%- endunless -%}
                             {%- endif -%}
 
-                            <a href="{{ line_item.url }}" class="product-item-meta__title text--small hidden-tablet-and-up">{{ line_item.product.title }}</a>
-                            <a href="{{ line_item.url }}" class="product-item-meta__title hidden-phone">{{ line_item.product.title }}</a>
+                            {%- if line_item.product.type == "GWP" -%}
+                              <div class="product-item-meta__title text--small hidden-tablet-and-up">{{ line_item.product.title }}</div>
+                              <div class="product-item-meta__title hidden-phone">{{ line_item.product.title }}</div>
+                            {%- else -%}
+                              <a href="{{ line_item.url }}" class="product-item-meta__title text--small hidden-tablet-and-up">{{ line_item.product.title }}</a>
+                              <a href="{{ line_item.url }}" class="product-item-meta__title hidden-phone">{{ line_item.product.title }}</a>
+                            {%- endif -%}
+                       
 
                             {%- capture line_item_properties -%}
                               {%- unless line_item.product.has_only_default_variant -%}
@@ -226,7 +239,7 @@
 
                           {%- capture quantity_selector_inner -%}
 
-                            {%- unless line_item.product.type == "Gift" -%}
+                            {%- unless line_item.product.type == "Gift" or line_item.product.type == "GWP" -%}
                             <div class="quantity-selector quantity-selector--small">
                               <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
                                 {% render 'icon' with 'minus' %}

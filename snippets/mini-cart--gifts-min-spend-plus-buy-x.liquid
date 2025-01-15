@@ -9,13 +9,21 @@
     {% assign getProductInCart = true -%}{% break %}
   {%- endif -%}
 
-  {%- for tag in item.product.tags -%}
+
+  {%- if block.settings.buy_brand contains item.product.vendor -%}
+    {%- assign lineItemSpend = item.price | times: item.quantity -%}
+    {%- assign minSpendFromX = minSpendFromX | plus: lineItemSpend -%}
+  {% else %}
+    {%- for tag in item.product.tags -%}
       {%- if tag == block.settings.buy_tag -%}
 
         {%- assign lineItemSpend = item.price | times: item.quantity -%}
         {%- assign minSpendFromX = minSpendFromX | plus: lineItemSpend -%}
       {%- endif -%}
-  {%- endfor -%}
+    {%- endfor -%}
+  {%- endif -%}
+
+
 {%- endfor -%}
 
 {% comment %} min-spend: {{ minSpendFromX | money }} {% endcomment %}
@@ -27,6 +35,7 @@
       var cartGWPItem = {
         type: "min-spend-plus-buy-x",
         minSpend: {{ minSpend }},
+        buyBrand: "{{ block.settings.buy_brand }}",
         buyXTag: "{{ block.settings.buy_tag }}",
         gwp_item_message: "{{ block.settings.gwp_item_message | strip_html }}",
         getProduct: {

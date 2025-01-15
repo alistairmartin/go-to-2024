@@ -71,10 +71,24 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 dataType: 'json'
               })
               .done(function(data) {
-                document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
-                    bubbles: true
-                }));
-                document.getElementById('mini-cart').open = true;
+           
+                async function refreshCart() {
+                    try {
+                        const response = await fetch(`${window.themeVariables.routes.cartUrl}.js`, { cache: 'reload' });
+                        if (!response.ok) {
+                            throw new Error(`Failed to fetch cart data: ${response.status} ${response.statusText}`);
+                        }
+                        const cartContent = await response.json();
+                        document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', { detail: { cart: cartContent } }));
+                        document.getElementById('mini-cart').open = true;
+                    } catch (error) {
+                        console.error('Error refreshing cart:', error);
+                    }
+                }
+                
+                refreshCart();
+
+                // document.getElementById('mini-cart').open = true;
                 console.log(data);
                 byoBundleCounterPrice = 0;
                 byoBundleCounterItems = 0;

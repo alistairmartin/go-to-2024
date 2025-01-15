@@ -5,63 +5,93 @@
 {% assign getProductTag = block.settings.get_tag %}
 {% assign getProduct = block.settings.get_product %}
 
-{%- for item in cart.items -%}
-  {% if getProduct.handle == item.product.handle %}
-    {% assign getProductInCart = true %}
-  {%- endif -%}
 
-  {%- if item.product.tags contains buyProductTag -%}
-    {% assign buyProductInCart = true -%}
+{%- for attribute in cart.attributes -%}
+  {%- if attribute.first == "_last-visited-brand" -%}
+  {%- capture brand -%}{{ attribute.last }}{%- endcapture -%}
   {%- endif -%}
 {%- endfor -%}
 
-{%- if javascriptCode == true -%}
+{%- if block.settings.go-to and brand == "go-to" -%}
+  {%- assign enable_for_go-to = true -%}
+{%- endif -%}
 
-  {%- if block.settings.automatically_add == true and getProduct.available == true -%}
-    <script>
-      var cartGWPItem = {
-        type: "buy-x-get-y",
-        gwp_item_message: "{{ block.settings.gwp_item_message | strip_html }}",
-        buyXTag: "{{ buyProductTag }}",
-        getProduct: {
-          available: {{ getProduct.available }},
-          variantId: {{ getProduct.selected_or_first_available_variant.id }},
-          handle: "{{ getProduct.handle }}"
+{%- if block.settings.bro-to and brand == "bro-to" -%}
+  {%- assign enable_for_bro-to = true -%}
+{%- endif -%}
+
+{%- if block.settings.gro-to and brand == "gro-to" -%}
+  {%- assign enable_for_gro-to = true -%}
+{%- endif -%}
+
+{% comment %} {{ page.handle }} || {% endcomment %}
+
+
+{%- if enable_for_go-to or enable_for_bro-to or enable_for_gro-to -%}
+  
+  {%- for item in cart.items -%}
+    {% if getProduct.handle == item.product.handle %}
+      {% assign getProductInCart = true %}
+    {%- endif -%}
+
+    {%- if item.product.tags contains buyProductTag -%}
+      {% assign buyProductInCart = true -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if javascriptCode == true -%}
+
+    {%- if block.settings.automatically_add == true and getProduct.available == true -%}
+      <script>
+        var cartGWPItem = {
+          type: "buy-x-get-y",
+          gwp_item_message: "{{ block.settings.gwp_item_message | strip_html }}",
+          buyXTag: "{{ buyProductTag }}",
+          getProduct: {
+            available: {{ getProduct.available }},
+            variantId: {{ getProduct.selected_or_first_available_variant.id }},
+            handle: "{{ getProduct.handle }}"
+          }
         }
-      }
-      window.cartGWP.push(cartGWPItem);
-    </script>
-    {%- endif -%}
-
-{%- elsif javascriptCode == false or checkoutValidator == true -%}
-
-
-
-    {%- if checkoutValidator == true -%}
-
-      {%- if buyProductInCart == true and getProductInCart == false and getProduct.available == true -%}
-            {%- capture blockCheckout -%}true{%- endcapture -%}
-      {%- endif -%}
-      
-    {%- else -%}
-
-      {%- if buyProductInCart == true and getProductInCart == false and block.settings.automatically_add == false -%}
-        {% if getProduct.available == true %}
-            <div class="mini-cart-gift">
-            <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title }}</div>
-            {% comment %} {%- render 'product-item--gift', product: getProduct, reveal: false, show_cta: true, reduced_content: false, showHiddenProduct: true, description: block.settings.gwp_description -%} {% endcomment %}
-            {%- render 'product-item--ATC', product: getProduct, reveal: false, show_cta: true, reduced_content: false, showHiddenProduct: true, description: block.settings.gwp_description -%}
-
-            {% comment %} {%- render 'product-item', product: getProduct, reduced_content: false, reduced_font_size: true, hide_secondary_image: true, sizes_attribute: '(max-width: 740px) 65px, 92px', horizontal_layout: false -%} {% endcomment %}
-
-            </div>
-        {%- endif -%}
-
-        {%- if getProductInCart == false and getProduct.available == false -%}
-          {%- render 'mini-cart--gifts-error', product: getProduct -%}
-        {%- endif -%}
+        window.cartGWP.push(cartGWPItem);
+      </script>
       {%- endif -%}
 
-    {%- endif -%}
+  {%- elsif javascriptCode == false or checkoutValidator == true -%}
 
-{% endif %}
+
+
+      {%- if checkoutValidator == true -%}
+
+        {%- if buyProductInCart == true and getProductInCart == false and getProduct.available == true -%}
+              {%- capture blockCheckout -%}true{%- endcapture -%}
+              {%- capture blockCheckoutText -%}{{ block.settings.block_checkout_button }}{%- endcapture -%}
+              {%- capture blockCheckoutTextNoThanks -%}{{ block.settings.block_checkout_button_no }}{%- endcapture -%}
+        {%- endif -%}
+
+       
+        
+      {%- else -%}
+
+        {%- if buyProductInCart == true and getProductInCart == false and block.settings.automatically_add == false -%}
+          {% if getProduct.available == true %}
+              <div class="mini-cart-gift">
+              <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title }}</div>
+              {%- render 'product-item--gift', product: getProduct, reveal: false, show_cta: true, reduced_content: false, showHiddenProduct: true, description: block.settings.gwp_description, QuickViewTitle: block.settings.gwp_button -%}
+              {% comment %} {%- render 'product-item--ATC', product: getProduct, reveal: false, show_cta: true, reduced_content: false, showHiddenProduct: true, description: block.settings.gwp_description -%} {% endcomment %}
+            
+              {% comment %} {%- render 'product-item--theme', product: getProduct, reduced_content: false, reduced_font_size: true, hide_secondary_image: true, sizes_attribute: '(max-width: 740px) 65px, 92px', horizontal_layout: false -%} {% endcomment %}
+
+              </div>
+          {%- endif -%}
+
+          {%- if getProductInCart == false and getProduct.available == false -%}
+            {%- render 'mini-cart--gifts-error', product: getProduct -%}
+          {%- endif -%}
+        {%- endif -%}
+
+      {%- endif -%}
+
+  {% endif %}
+
+{%- endif -%}

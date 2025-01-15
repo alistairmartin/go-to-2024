@@ -62,13 +62,28 @@
 
 <section>
   {%- if search.performed -%}
+
+
+
     {%- assign first_matching_type = search.results.first.object_type -%}
     {%- assign complete_for = '' -%}
+
+    {%- assign totalProducts = 0 -%}
+    {%- paginate search.results by section.settings.products_per_page -%}
+      {%- assign filtered_results = search.results | where: 'object_type', first_matching_type -%}
+      {%- if first_matching_type == 'product' -%}
+        {%- for product in filtered_results -%}
+          {%- unless product.template_suffix == "hidden" or product.tags contains "hidden" -%}
+              {%- assign totalProducts = totalProducts | plus: 1 -%}
+          {% endunless %}
+        {%- endfor -%}
+      {% endif %}
+    {%- endpaginate -%}
 
     {%- capture label -%}
       {%- case first_matching_type -%}
         {%- when 'product' -%}
-          {{ 'search.general.products' | t }} ({{ search.results_count }})
+          {{ 'search.general.products' | t }} ({{ totalProducts }})
           {%- assign complete_for = 'article,page' -%}
         {%- when 'article' -%}
           {{ 'search.general.articles' | t }} ({{ search.results_count }})
@@ -176,7 +191,16 @@
                             </button>
                           {%- endif -%}
 
-                          <span class="product-facet__meta-bar-item product-facet__meta-bar-item--count" role="status">{{ 'collection.general.products_count' | t: count: search.results_count }}</span>
+                          {%- assign totalProducts = 0 -%}
+                          {%- paginate search.results by section.settings.products_per_page -%}
+                            {%- for product in filtered_results -%}
+                              {%- unless product.template_suffix == "hidden" or product.tags contains "hidden" -%}
+                                  {%- assign totalProducts = totalProducts | plus: 1 -%}
+                              {% endunless %}
+                            {%- endfor -%}
+                          {%- endpaginate -%}
+
+                          <span class="product-facet__meta-bar-item product-facet__meta-bar-item--count" role="status">{{ 'collection.general.products_count' | t: count: totalProducts }}</span>
 
                           {%- if section.settings.show_sort_by -%}
                             <div class="product-facet__meta-bar-item product-facet__meta-bar-item--sort">

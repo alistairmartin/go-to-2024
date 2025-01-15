@@ -1,9 +1,49 @@
+
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+<script>
+function updateCartAttributes(attributes) {
+  fetch('/cart/update.js', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({ attributes }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Cart updated:', data);
+    })
+    .catch(error => {
+      console.error('Error updating cart attributes:', error);
+    });
+}
+const cartAttributes = {
+  "_last-visited-brand": "{{ brand }}"
+};
+console.log("--- {{ brand }}");
+updateCartAttributes(cartAttributes);
+</script>
+
+
 {%- render 'mini-cart--gifts-automatic' -%}
 
 {%- if section.settings.enable_custom_message -%}
+  {%- for attribute in cart.attributes -%}
+    {%- if attribute.first == "_last-visited-brand" -%}
+    {%- capture brand -%}{{ attribute.last }}{%- endcapture -%}
+    {%- endif -%}
+  {%- endfor -%}
+
   <style>
   #mini-cart .drawer__header {
-    background: {{ section.settings.custom_message_color_background }} !important;
+    {%- if brand == "go-to" -%}
+      background: {{ section.settings.custom_message_color_background }} !important;
+    {%- elsif brand == "bro-to" -%}
+      background: {{ section.settings.custom_message_color_background_bro }} !important;
+    {%- elsif brand == "gro-to" -%} 
+      background: {{ section.settings.custom_message_color_background_gro }} !important;
+    {%- endif -%}
   }
 
   #mini-cart .drawer__title,  #mini-cart .drawer__close-button {
@@ -12,10 +52,22 @@
 </style>
 {%- endif -%}
 
+
 <cart-drawer section="{{ section.id }}" id="mini-cart" class="mini-cart drawer drawer--large">
   <span class="drawer__overlay"></span>
 
-  {%- if section.settings.enable_custom_message -%}
+  {%- assign showCustomMessage = false -%}
+    {%- if localization.market.handle == 'au' and section.settings.custom_message != blank -%}
+      {%- assign showCustomMessage = true -%}
+    {%- elsif localization.market.handle == 'nz' and section.settings.custom_message_NZ != blank -%}
+      {%- assign showCustomMessage = true -%}
+    {%- elsif localization.market.handle == 'gb' and section.settings.custom_message_GB != blank -%}
+      {%- assign showCustomMessage = true -%}
+    {%- elsif localization.market.handle == 'us' and section.settings.custom_message_US != blank -%}
+      {%- assign showCustomMessage = true -%}
+    {%- endif -%}
+
+  {%- if section.settings.enable_custom_message and showCustomMessage == true -%}
   <header class="drawer__header custom-cart-message">
     <p class="drawer__title heading h6">
 
@@ -31,17 +83,28 @@
           }
       }
       </style>
+
+      {%- assign showCustomMessage = false -%}
       <div class="custom-cart-message--inner">
-        {%- if localization.market.handle == 'au' -%}
+        {%- if localization.market.handle == 'au' and section.settings.custom_message != blank -%}
           {{ section.settings.custom_message }}
-        {%- elsif localization.market.handle == 'nz' -%}
+          {%- assign showCustomMessage = true -%}
+
+        {%- elsif localization.market.handle == 'nz' and section.settings.custom_message_NZ != blank -%}
           {{ section.settings.custom_message_NZ }}
-        {%- elsif localization.market.handle == 'gb' -%}
+          {%- assign showCustomMessage = true -%}
+
+        {%- elsif localization.market.handle == 'gb' and section.settings.custom_message_GB != blank -%}
           {{ section.settings.custom_message_GB }}
-        {%- elsif localization.market.handle == 'us' -%}
+          {%- assign showCustomMessage = true -%}
+
+        {%- elsif localization.market.handle == 'us' and section.settings.custom_message_US != blank -%}
           {{ section.settings.custom_message_US }}
+          {%- assign showCustomMessage = true -%}
+
         {%- endif -%}
       </div>
+
       {% else %}
         {%- case settings.cart_icon -%}
           {%- when 'shopping_bag' -%}
@@ -95,7 +158,14 @@
             <div class="line-item__content-wrapper">
 
               <div class="line-item__content-wrapper--left">
-              <a href="{{ line_item.url }}" class="line-item__image-wrapper" tabindex="-1" aria-hidden="true">
+
+
+              {%- if line_item.product.type == "GWP" -%}
+                <div href="{{ line_item.url }}" class="line-item__image-wrapper" tabindex="-1" aria-hidden="true">
+              {%- else -%}
+                <a href="{{ line_item.url }}" class="line-item__image-wrapper" tabindex="-1" aria-hidden="true">
+              {%- endif -%}
+            
                 <span class="line-item__loader" hidden>
                   <span class="line-item__loader-spinner spinner" hidden>{% render 'icon' with 'spinner', width: 16, height: 16, stroke_width: 6 %}</span>
                   <span class="line-item__loader-mark" hidden>{% render 'icon' with 'check', width: 20, height: 20 %}</span>
@@ -104,7 +174,13 @@
                 {%- if line_item.image != blank -%}
                   {{- line_item.image | image_url: width: line_item.image.width | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 80px, 92px', widths: '80,92,160,184,240,276', class: 'line-item__image' -}}
                 {%- endif -%}
-              </a>
+              
+
+              {%- if line_item.product.type == "GWP" -%}
+                </div>
+              {%- else -%}
+                </a>
+              {%- endif -%}
 
               {%- capture unit_price -%}
                 {%- if line_item.unit_price_measurement -%}
@@ -165,11 +241,21 @@
                     {%- endunless -%}
                   {%- endif -%}
 
-                  <a href="{{ line_item.url }}" class="product-item-meta__title text--small heading heading--secondary">{{ line_item.product.title | remove: "Bro-To " | remove: "Gro-To " }}</a>
+                  {%- if line_item.product.type == "GWP" -%}
+                    <div class="product-item-meta__title text--small heading heading--secondary">{{ line_item.product.title | remove: "Bro-To " | remove: "Gro-To " }}</div>
 
-                  {%- if line_item.product.metafields.custom.product_subtitle__description != blank -%}
-                    <a href="{{ line_item.url }}" class="product-item-meta__subtitle text--xxsmall">{{ line_item.product.metafields.custom.product_subtitle__description }}</a>
+                    {%- if line_item.product.metafields.custom.product_subtitle__description != blank -%}
+                      <div href="{{ line_item.url }}" class="product-item-meta__subtitle text--xxsmall">{{ line_item.product.metafields.custom.product_subtitle__description }}</div>
+                    {%- endif -%}
+  
+                  {%- else -%}
+                    <a href="{{ line_item.url }}" class="product-item-meta__title text--small heading heading--secondary">{{ line_item.product.title | remove: "Bro-To " | remove: "Gro-To " }}</a>
+
+                    {%- if line_item.product.metafields.custom.product_subtitle__description != blank -%}
+                      <a href="{{ line_item.url }}" class="product-item-meta__subtitle text--xxsmall">{{ line_item.product.metafields.custom.product_subtitle__description }}</a>
+                    {%- endif -%}
                   {%- endif -%}
+                 
 
                  
 
@@ -201,7 +287,9 @@
                           {%- endif -%}
 
                           <li class="property--{{ property.first | handle }}">
-                            <span class="key">{{ property.first }}:</span> 
+                            <span class="key">
+                            {{ property.first }}{% unless property.first == "BYO Bundle" %}:{% endunless %}
+                            </span> 
                             <span class="value">
                               {%- if gwp_item_message != blank and property.first == "Promo" -%}
                                 {{ gwp_item_message }}
@@ -256,7 +344,7 @@
 
                 <line-item-quantity class="line-item__quantity">
 
-                  {%- unless line_item.product.type == "Gift" -%}
+                  {%- unless line_item.product.type == "Gift" or line_item.product.type == "GWP" -%}
                   <div class="quantity-selector quantity-selector--small">
                     <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
                       {%- render 'icon' with 'minus' -%}
@@ -457,6 +545,25 @@
         },
         {
           "type": "header",
+          "content": "Enable For Brand's Cart"
+        },
+        {
+          "type": "checkbox",
+          "id": "go-to",
+          "label": "🟪 Go-To"
+        },
+        {
+          "type": "checkbox",
+          "id": "bro-to",
+          "label": "🟥 Bro-To"
+        },
+        {
+          "type": "checkbox",
+          "id": "gro-to",
+          "label": "🟩 Gro-To"
+        },
+        {
+          "type": "header",
           "content": "Buy Condition"
         },
         {
@@ -566,6 +673,25 @@
         },
         {
           "type": "header",
+          "content": "Enable For Brand's Cart"
+        },
+        {
+          "type": "checkbox",
+          "id": "go-to",
+          "label": "🟪 Go-To"
+        },
+        {
+          "type": "checkbox",
+          "id": "bro-to",
+          "label": "🟥 Bro-To"
+        },
+        {
+          "type": "checkbox",
+          "id": "gro-to",
+          "label": "🟩 Gro-To"
+        },
+        {
+          "type": "header",
           "content": "Buy Condition"
         },
         {
@@ -573,6 +699,20 @@
           "id": "buy_tag",
           "label": "BUY Tag",
           "info": "Product Tag"
+        },
+        {
+          "type": "paragraph",
+          "content": "OR"
+        },
+        {
+          "type": "text",
+          "id": "buy_brand",
+          "label": "BUY Brand",
+          "info": "Go-To Skincare,Bro-To Skincare,Gro-To Skincare. Can Use An Array of Brands."
+        },
+        {
+          "type": "paragraph",
+          "content": "AND"
         },
         {
           "type": "text",
@@ -674,16 +814,30 @@
           "label": "Admin Title",
           "info": "Only Admin Will See This."
         },
-        {
-          "type": "checkbox",
-          "id": "can_block_checkout",
-          "label": "Can Block Checkout",
-          "info": "Customers will need to select a gift before checking out. Only for gifts that have options."
-        },
+    
         {
           "type": "checkbox",
           "id": "automatically_add",
           "label": "Automatically Add Gift?"
+        },
+        {
+          "type": "header",
+          "content": "Enable For Brand's Cart"
+        },
+        {
+          "type": "checkbox",
+          "id": "go-to",
+          "label": "🟪 Go-To"
+        },
+        {
+          "type": "checkbox",
+          "id": "bro-to",
+          "label": "🟥 Bro-To"
+        },
+        {
+          "type": "checkbox",
+          "id": "gro-to",
+          "label": "🟩 Gro-To"
         },
         {
           "type": "header",
@@ -723,7 +877,7 @@
         },
         {
           "type": "header",
-          "content": "Text"
+          "content": "Text (For Non-Automatic Adding)"
         },
         {
           "type": "textarea",
@@ -736,10 +890,36 @@
           "label": "Description"
         },
         {
+          "type": "text",
+          "id": "gwp_button",
+          "label": "Button",
+          "default": "Add Your FREE Gift"
+        },
+        {
           "type": "image_picker",
           "id": "gwp_image",
           "label": "Image",
           "info": "Optional. Will use product image as default."
+        },
+        {
+          "type": "header",
+          "content": "Block Checkout"
+        },
+        {
+          "type": "checkbox",
+          "id": "can_block_checkout",
+          "label": "Can Block Checkout",
+          "info": "Customers will need to select a gift before checking out. Only for gifts that have options."
+        },
+        {
+          "type": "text",
+          "id": "block_checkout_button",
+          "label": "Checkout Button Text"
+        },
+        {
+          "type": "text",
+          "id": "block_checkout_button_no",
+          "label": "No Thank You Button"
         }
       ]
     },
@@ -886,7 +1066,17 @@
     {
       "type": "color",
       "id": "custom_message_color_background",
-      "label": "Background Colour"
+      "label": "Background Colour (Go-To 🟪)"
+    },
+    {
+      "type": "color",
+      "id": "custom_message_color_background_bro",
+      "label": "Background Colour (Bro-To 🟥)"
+    },
+    {
+      "type": "color",
+      "id": "custom_message_color_background_gro",
+      "label": "Background Colour (Gro-To 🟩)"
     },
     {
         "type": "range",
@@ -907,6 +1097,29 @@
         "unit": "px",
         "label": "Font Size (Desktop)",
         "default": 14
+      },
+      {
+      "type": "header",
+      "content": "Do Not Change Below"
+    },
+      {
+        "type": "radio",
+        "id": "brand",
+        "label": "Brand",
+        "options": [
+          {
+            "value": "go-to",
+            "label": "🟪 Go-To"
+          },
+          {
+            "value": "bro-to",
+            "label": "🟥 Bro-To"
+          },
+          {
+            "value": "gro-to",
+            "label": "🟩 Gro-To"
+          }
+        ]
       }
   ]
 }

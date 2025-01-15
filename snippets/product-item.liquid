@@ -26,8 +26,6 @@
   {%- assign hideProduct = false -%}
 {%- endif -%}
 
-{%- assign hideProduct = false -%}
-
 {%- if template.suffix contains "vip-access" -%}
     {%- capture vipCustomer -%}
       {% render "vip-access--validator", variable: true %}
@@ -39,7 +37,7 @@
 {%- endif -%}
 
 {%- unless hideProduct -%}
-<product-item class="product-item product-brand--{{ productBrand | handle }}  product-item--{{ product.template_suffix | handle }} {% unless product.available %}product-item--sold-out{% endunless %} {% if horizontal %}product-item--horizontal{% endif %}" {% if reveal %}reveal{% endif %}>
+<product-item class="product-item product-brand--{{ productBrand | handle }}  product-item--{{ product.template_suffix | handle }} {% unless product.available %}product-item--sold-out{% endunless %} {% if horizontal %}product-item--horizontal{% endif %}" {% if reveal %}reveal{% endif %} data-title="{{ product.title }}">
   {%- capture product_labels -%}  
 
 

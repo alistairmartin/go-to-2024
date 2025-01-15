@@ -43,7 +43,7 @@
             {%- if filterInner.param_name == "filter.p.tag" -%}
                 {%- for filter_value in filterInner.values -%}
                   {%- if filter_value.label contains filter_prefix  -%}
-                  <div class="checkbox-container">
+                  <div class="checkbox-container" data-title="{{ filter_value.label | remove: filter_prefix | replace: "-", " " }}">
                     <input class="checkbox" type="checkbox" name="{{ filter_value.param_name }}" id="{{ filter_value.param_name | escape }}-{{ forloop.index }}-{{ outerCounter }}" value="{{ filter_value.value | escape }}" {% if filter_value.active %}checked="checked"{% endif %} {% if filter_value.count == 0 %}disabled{% endif %}>
                     <label for="{{ filter_value.param_name | escape }}-{{ forloop.index }}-{{ outerCounter }}">{{ filter_value.label | remove: filter_prefix | replace: "-", " " }} ({{ filter_value.count}})&lrm;</label>
                   </div>

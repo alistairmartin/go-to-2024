@@ -83,8 +83,17 @@ body.bro-to {
         min-width: 120px;
       }
     }
+  }
 
-  
+
+  .mini-cart-gift {
+    .mini-cart-gift--title {
+      color: white !important;
+    } 
+
+    .description {
+      color: $brotoBlue !important;
+    }
   }
 
 }

@@ -5342,7 +5342,7 @@ var ProductRerender = class extends HTMLElement {
     if (!this.id || !this.hasAttribute("observe-form")) {
       console.warn('The <product-rerender> requires an ID to identify the element to re-render, and an "observe-form" attribute referencing to the form to monitor.');
     }
-    document.forms[this.getAttribute("observe-form")].addEventListener("product:rerender", __privateMethod(this, _ProductRerender_instances, onRerender_fn).bind(this), { signal: __privateGet(this, _abortController).signal });
+    document.forms[this.getAttribute("observe-form")]?.addEventListener("product:rerender", __privateMethod(this, _ProductRerender_instances, onRerender_fn).bind(this), { signal: __privateGet(this, _abortController).signal });
   }
   disconnectedCallback() {
     __privateGet(this, _abortController).abort();
@@ -5826,6 +5826,9 @@ var _VariantPicker = class _VariantPicker extends HTMLElement {
    * in the case of a combination that does not exist
    */
   async selectCombination({ optionValues, productChange }) {
+
+    console.log(optionValues)
+    console.log(productChange)
     const previousVariant = this.selectedVariant;
     const newContent = document.createRange().createContextualFragment(await __privateMethod(this, _VariantPicker_instances, renderForCombination_fn).call(this, optionValues));
     if (!productChange) {
@@ -6153,7 +6156,6 @@ var CartDrawer = class extends DrawerContent {
   async _rerenderCart(event) {
     console.log('--- _rerenderCart')
     console.log(event);
-
     
     if(event !== null && event.detail !== null) {
       console.log(event.detail.cart);
@@ -6173,9 +6175,13 @@ var CartDrawer = class extends DrawerContent {
         .then(response => response.json())
         .then(cart => {
             console.log('Product removed successfully:', cart);
-            document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
-              bubbles: true
-            }));
+
+            setTimeout(function () {
+              document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+                bubbles: true
+              }));
+            }, 250);
+         
         })
         .catch(error => {
             console.error('Error removing product:', error);
@@ -6200,9 +6206,11 @@ var CartDrawer = class extends DrawerContent {
       .then(response => response.json())
       .then(cart => {
           console.log('Product added successfully:', cart);
+          setTimeout(function () {
            document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
              bubbles: true
            }));
+          },250);
       })
       .catch(error => {
           console.error('Error adding product:', error);
@@ -6237,14 +6245,29 @@ var CartDrawer = class extends DrawerContent {
           const matchingItem = cartObject.items.find(item => item.handle === cartGWPHandle);
           let minsSpendBuyX = 0;
 
-          console.log("cartGWP.buyXTag " + cartGWP.buyXTag)
-          cartObject.items.forEach(item => {
-            const itemTags = item.properties?._tags ? item.properties._tags.split(",") : [];
-            if (itemTags.includes(cartGWP.buyXTag)) {
-                console.log(itemTags)
+          console.log("cartGWP.buyXTag " + cartGWP.buyXTag);
+          console.log("cartGWP.buyBrand " + cartGWP.buyBrand);
+
+          if(cartGWP.buyBrand !== "") {
+          const buyBrandArray = cartGWP.buyBrand.split(',');
+          cartObject.items.some(item => {
+            console.log(buyBrandArray);
+            console.log(item.vendor);
+              if(buyBrandArray.includes(item.vendor)) {
                 minsSpendBuyX += item.line_price;
-            }
-          });
+              }
+            });
+          } else if (cartGWP.buyXTag !== "") {
+            cartObject.items.forEach(item => {
+              const itemTags = item.properties?._tags ? item.properties._tags.split(",") : [];
+              if (itemTags.includes(cartGWP.buyXTag)) {
+                  console.log(itemTags)
+                  minsSpendBuyX += item.line_price;
+              }
+            });
+          }
+
+     
           console.log("minsSpendBuyX")
           console.log(minsSpendBuyX)
 
@@ -6626,7 +6649,7 @@ var CartNotification = class extends CustomHTMLElement {
               <div class="cart-notification__text-wrapper">
                 <span class="cart-notification__heading heading hidden-phone">${window.themeVariables.strings.cartItemAdded}</span>
                 <span class="cart-notification__heading heading hidden-tablet-and-up">${window.themeVariables.strings.cartItemAddedShort}</span>
-                <a href="${window.themeVariables.routes.cartUrl}" class="cart-notification__view-cart link" data-no-instant>${window.themeVariables.strings.cartViewCart}</a>
+                <a href="${window.themeVariables.routes.cartUrl}" class="cart-notification__view-cart link hide" data-no-instant>${window.themeVariables.strings.cartViewCart}</a>
               </div>
               
               ${closeButtonHtml}
@@ -6939,3 +6962,5 @@ focus-trap/dist/focus-trap.esm.js:
   * @license MIT, https://github.com/focus-trap/focus-trap/blob/master/LICENSE
   *)
 */
+
+

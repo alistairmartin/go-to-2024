@@ -3127,6 +3127,17 @@ footer {
 
 
 product-rerender {
+
+  .quick-buy-product--type-gwp {
+    .view-details {
+      display: none;
+    }
+
+    .product-meta__reference {
+      display: none;
+    }
+  }
+
   .quick-buy-product--below-content {
     .who-is-it-for, .perfect-for {
       display: block;
@@ -3232,6 +3243,10 @@ product-rerender {
   }
 }
 
+
+.checkbox-container[data-title="GWP"] {
+  display: none !important;
+}
 
 
 .blocks--video {
@@ -4778,5 +4793,15 @@ margin: 20px;
 
   .row {
     justify-content: center;
+  }
+}
+
+.block-swatch__item[title="Want to size up? Face Hero Extra is here."] {
+  background: #ce91c2 !important;
+}
+
+product-item[data-title="Face Hero"] {
+  .variant-option {
+    display: none !important;
   }
 }

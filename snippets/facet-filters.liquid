@@ -152,7 +152,7 @@ Code that create the faceted search for the collection and search pages. It curr
                         </div>
                       {%- else -%}
                         {%- for filter_value in filter.values -%}
-                          <div class="checkbox-container">
+                          <div class="checkbox-container" data-title="{{ filter_value.label }}">
                             <input class="checkbox" type="checkbox" name="{{ filter_value.param_name }}" id="{{ filter_value.param_name | escape }}-{{ forloop.index }}" value="{{ filter_value.value | escape }}" {% if filter_value.active %}checked="checked"{% endif %} {% if filter_value.count == 0 %}disabled{% endif %}>
                             <label for="{{ filter_value.param_name | escape }}-{{ forloop.index }}">{{ filter_value.label }} ({{ filter_value.count}})&lrm;</label>
                           </div>

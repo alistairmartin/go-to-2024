@@ -1,3 +1,4 @@
+
 {%- assign blockCheckout = false -%}
 {%- for block in section.blocks -%}
     {%- if block.type == "buy_x_get_y" -%}
@@ -16,7 +17,7 @@
 
 <button form="mini-cart-form" type="submit" class="checkout-button button button--primary button--full {% if blockCheckout == "true" %}block-checkout button--ternary{% else %}button--primary{% endif %}" name="checkout" {%- if blockCheckout == "true" -%}disabled{% endif %}>
     {%- if blockCheckout == "true" -%}
-        Please Choose A Gift Above
+        {{ blockCheckoutText }}
         {% comment %} <small>You need to select a gift above before checking out</small> {% endcomment %}
     {% else %}
         {{- 'cart.general.checkout' | t -}}
@@ -25,3 +26,8 @@
     {%- endif -%}
 </button>
 
+{% if blockCheckout == "true" %}
+<button form="mini-cart-form" type="submit" class="checkout-button--no-thanks link" name="checkout">
+    {{ blockCheckoutTextNoThanks }}
+</button>
+{% endif %}

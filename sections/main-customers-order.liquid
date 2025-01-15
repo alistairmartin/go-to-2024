@@ -227,8 +227,14 @@
                                       {%- endunless -%}
                                     {%- endif -%}
 
-                                    <a href="{{ line_item.url }}" class="product-item-meta__title text--small hidden-tablet-and-up">{{ line_item.product.title | default: line_item.title }}</a>
-                                    <a href="{{ line_item.url }}" class="product-item-meta__title hidden-phone">{{ line_item.product.title | default: line_item.title }}</a>
+                                    {%- if line_item.product.type == "GWP" -%}
+                                      <div href="{{ line_item.url }}" class="product-item-meta__title text--small hidden-tablet-and-up">{{ line_item.product.title | default: line_item.title }}</div>
+                                      <div href="{{ line_item.url }}" class="product-item-meta__title hidden-phone">{{ line_item.product.title | default: line_item.title }}</div>
+                                    {%- else -%}
+                                      <a href="{{ line_item.url }}" class="product-item-meta__title text--small hidden-tablet-and-up">{{ line_item.product.title | default: line_item.title }}</a>
+                                      <a href="{{ line_item.url }}" class="product-item-meta__title hidden-phone">{{ line_item.product.title | default: line_item.title }}</a>
+                                    {%- endif -%}
+           
 
                                     {%- capture line_item_properties -%}
                                       {%- unless line_item.product.has_only_default_variant -%}

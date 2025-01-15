@@ -1,6 +1,6 @@
 development:
   password: shptka_5ade013fd92c76168c566da7e72001db
-  theme_id: 128543260806
+  theme_id: 128835944582
   store: go-to-skincare.myshopify.com
   ignore_files:
       - config/settings_data.json

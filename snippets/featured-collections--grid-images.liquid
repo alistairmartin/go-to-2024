@@ -51,6 +51,8 @@
 
     {% if outerForloop == desktopPosition  %}
 
+        {%- assign gridImagesCounter = gridImagesCounter | plus: 1 -%}
+
     <product-item class="product-item product-item__grid-image hide-mobile" {% if reveal %}reveal{% endif %} style="grid-column: span {{ desktopSpan }} !important;">
 
     {%- if linkType == "popup" -%}

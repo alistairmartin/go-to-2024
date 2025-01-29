@@ -72,6 +72,13 @@
         {{- article.excerpt -}}
       </div>
     {%- endif -%}
+
+
+      {%- if section.settings.show_author -%}
+        <span class="article__meta-item article__author">{{ 'article.general.written_by' | t: author: article.author }}</span>
+      {%- endif -%}
+
+
   </div>
 </blog-post-header>
 
@@ -80,6 +87,12 @@
   "name": "Blog post header",
   "class": "shopify-section--blog-post-banner",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": true
+    },
     {
       "type": "checkbox",
       "id": "show_category",

@@ -150,3 +150,26 @@
         font-weight: normal !important;
     }
 }
+
+.shopify-section--blog-post-banner {
+    .article__author {
+        margin-top: 15px;
+        display: block;
+    }
+
+    .article__title {
+        @include media-query($small) {
+            font-size: 30px;
+            line-height: 1;
+        }
+    }
+
+    .article__excerpt {
+        * {
+            @include media-query($small) {
+                line-height: 1;
+            }
+        }
+
+    }
+}

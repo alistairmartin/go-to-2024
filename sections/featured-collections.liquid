@@ -2,6 +2,8 @@
   {%- assign outerCollectionHandle = collection.handle -%}
 {%- endif -%}
 
+{%- assign gridImagesCounter = 0 -%}
+
 {%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
   {%- assign blends_with_background = false -%}
 {%- else -%}
@@ -171,7 +173,7 @@
               {%- if collection.products_count == 0 -%}
                 {%- assign products_shown = section.settings.products_count -%}
               {%- else -%}
-                {%- assign products_shown = collection.products_count | default: section.settings.products_count | at_most: section.settings.products_count -%}
+                {%- assign products_shown = collection.products_count | default: section.settings.products_count | at_most: section.settings.products_count | plus: gridImagesCounter -%}
               {%- endif -%}
 
               {%- if products_shown > section.settings.products_per_row -%}

@@ -91,11 +91,26 @@
       </link-bar>
     {%- endif -%}
 
+
+
+
+
+      {%- for tag in blog.all_tags -%}
+        {% if current_tags contains tag %}
+          <h2 class="main-blog--subtitle text-center">
+            {{ tag }}
+          </h2>
+          {%- endif -%}
+      {%- endfor -%}
+  
+
     <div class="vertical-breather vertical-breather--margin vertical-breather--extra-tight">
       <div class="container">
         {%- paginate blog.articles by section.settings.articles_per_page -%}
     
         <article-list {% if settings.stagger_blog_posts_apparition %}stagger-apparition{% endif %} class="article-list article-list--stacked">
+
+            {%- if section.settings.staggered_layout -%}
             {%- for article in blog.articles -%}
     
                 {%- assign currentIndex = forloop.index0 -%}
@@ -103,10 +118,10 @@
                 {%- assign moduloIndex = currentIndex | modulo: 6 -%}
     
                 {%- if moduloIndex == 0 -%}
-                    <!-- Start wrapping every 6 items -->
-                    <div class="inner-container">
+                    {% comment %} <!-- Start wrapping every 6 items --> {% endcomment %}
+                    <div class="inner-container staggered">
                 {%- endif -%}
-    
+                
                 {%- if moduloIndex == 0 -%}
                     {%- capture style -%}grid-area: 1 / 1 / 4 / 2;{%- endcapture -%}
                 {%- elsif moduloIndex == 1 -%}
@@ -124,11 +139,18 @@
                 {%- render 'article-item', article: article, heading_size: 'h5', style: style -%}
     
                 {%- if moduloIndex == 5 or forloop.last -%}
-                    <!-- Close wrapping after every 6 items or the last item -->
+                    {% comment %} <!-- Close wrapping after every 6 items or the last item --> {% endcomment %}
                     </div>
                 {%- endif -%}
     
             {%- endfor -%}
+          {% else %}
+            <div class="inner-container">
+            {%- for article in blog.articles -%}
+              {%- render 'article-item', article: article, heading_size: 'h5', style: style -%}
+            {%- endfor -%}
+            </div>
+          {%- endif -%}
         </article-list>
     
         {%- render 'pagination', paginate: paginate -%}

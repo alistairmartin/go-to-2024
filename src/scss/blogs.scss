@@ -238,6 +238,11 @@ store-header {
 
 .shopify-section--main-blog {
 
+    .main-blog--subtitle {
+        text-align: center;
+        margin: -40px 0 0 !important;
+    }
+
     .container {
         @include media-query($small) {
           padding: 0;
@@ -248,16 +253,23 @@ store-header {
         display: flex;
         flex-direction: column;
 
-      .inner-container {
-        display: grid;
-        gap: 8px;
-        grid-template-columns: 1fr !important;
-    
-        @include media-query($medium-up) {
-          grid-template-columns: repeat(3,1fr) !important;
-          grid-template-rows: repeat(8,100px) !important;
+        .inner-container {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: 1fr !important;
+        
+            @include media-query($medium-up) {
+                grid-template-columns: repeat(3,1fr) !important;
+            }
+
+            &.staggered {
+                @include media-query($medium-up) {
+                  grid-template-rows: repeat(8,100px) !important;
+                }
+            }
         }
-      }
+
+
   
       .article-item {
         display: flex;
@@ -336,4 +348,6 @@ store-header {
         display: grid;
     }
 }
+
+
 

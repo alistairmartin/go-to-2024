@@ -32,9 +32,15 @@
 
 {%- assign categories = section.blocks | where: 'type', 'category' -%}
 
-<section class="section {% if section.settings.enable_full_width %}section-faq--full-width{% endif %} {% if template.name == 'page' and template.suffix contains 'faq' %}section--tight{% endif %} {% unless blends_with_background %}section--flush{% endunless %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
+<div class="container">
+
+
+
+<div class="section-faq-with-image">
+
+<section class="section section-faq--full-width" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
   <div class="section__color-wrapper">
-    <div class="container">
+    <div class="">
       <div class="{% unless blends_with_background %}vertical-breather{% endunless %}">
         {%- if section.settings.title != blank or section.settings.content != blank -%}
           <header class="section__header {% if section.settings.content != blank %}section__header--tight{% endif %} text-container text-align--{{ section.settings.text_alignment }}">
@@ -131,13 +137,13 @@
                 </div>
 
                 {%- when 'question' -%}
-                  <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-                    <button is="toggle-button" class="collapsible-toggle text--strong heading heading--{{ section.settings.font_family }}" aria-controls="block-{{ section.id }}-{{ block.id }}" aria-expanded="false" itemprop="name">
+                  <div class="faq__item {% if forloop.first %}active{% endif %}" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" data-index="{{ forloop.index }}">
+                    <button is="toggle-button" class="collapsible-toggle text--strong heading heading--{{ section.settings.font_family }}" aria-controls="block-{{ section.id }}-{{ block.id }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" itemprop="name">
                       {{- block.settings.title -}}
                       <span class="animated-plus"></span>
                     </button>
 
-                    <collapsible-content id="block-{{ section.id }}-{{ block.id }}" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" {{ block.shopify_attributes }}>
+                    <collapsible-content id="block-{{ section.id }}-{{ block.id }}" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" {{ block.shopify_attributes }}  {% if forloop.first %}style="overflow: visible;" open{% endif %}>
                       <div class="collapsible__content text-container" itemprop="text">
                         {{ block.settings.answer }}
                       </div>
@@ -152,10 +158,75 @@
   </div>
 </section>
 
+<section class="section-faq-with-image--images">
+
+{%- for block in section.blocks -%}
+  <div class="section-faq-with-image--image {% if forloop.first %}active{% endif %}" data-index="{{ forloop.index }}">
+  {%- capture class_attribute -%}{% if block.settings.mobile_image != blank %}hide-mobile{% endif %}{%- endcapture -%}
+  {%- capture sizes_attribute -%}(max-width: 999px) 100vw, 100vw{%- endcapture -%}
+  {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: class_attribute }}
+
+  {%- if block.settings.mobile_image != blank -%}
+    {%- capture class_attribute -%}hide-desktop{%- endcapture -%}
+    {%- capture sizes_attribute -%}(max-width: 999px) 100vw, 100vw{%- endcapture -%}
+      {{ block.settings.mobile_image | image_url: width: block.settings.mobile_image.width | image_tag: loading: 'lazy', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400', class: class_attribute }}
+  {%- endif -%}
+
+  </div>
+
+{%- endfor -%}
+</section>
+</div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const faqItems = document.querySelectorAll("#shopify-section-{{ section.id }} .faq__item");
+  const images = document.querySelectorAll("#shopify-section-{{ section.id }} .section-faq-with-image--image");
+  const contents = document.querySelectorAll("#shopify-section-{{ section.id }} .collapsible");
+
+  faqItems.forEach((item) => {
+    const button = item.querySelector(".collapsible-toggle");
+    const selectedContent = item.querySelector(".collapsible");
+
+    button.addEventListener("click", () => {
+      const index = item.dataset.index;
+      const isContentOpen = selectedContent.hasAttribute("open");
+
+      faqItems.forEach((faq) => faq.classList.remove("active"));
+        images.forEach((img) => img.classList.remove("active"));
+
+        item.classList.add("active");
+        const imageToShow = document.querySelector(
+          `.section-faq-with-image--image[data-index="${index}"]`
+        );
+
+        if (imageToShow) {
+          imageToShow.classList.add("active");
+        }
+
+      setTimeout(() => {
+        contents.forEach((otherContent) => {
+          const otherButton = otherContent.previousElementSibling; // Get the corresponding button for the content
+
+          // Check if the content is open and if it is not the clicked one
+          if (otherContent.hasAttribute("open") && otherContent !== selectedContent) {
+            otherContent.removeAttribute("open");
+            otherContent.style.overflow = "hidden";
+            otherButton.setAttribute("aria-expanded", "false");
+          }
+        });
+      }, 50);
+
+    });
+  });
+});
+</script>
+
 {% schema %}
 {
-  "name": "FAQ",
-  "class": "shopify-section--faq",
+  "name": "FAQ with Images",
+  "class": "shopify-section--faq shopify-section--faq-images",
   "disabled_on": {
     "templates": ["password"],
     "groups": ["header", "custom.overlay"]
@@ -166,22 +237,6 @@
       "id": "id",
       "label": "ID",
       "info": "Optional. Used with in-page navigation."
-    },
-    {
-      "type": "header",
-      "content": "Section"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_full_width",
-      "label": "Enable Full Width?",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "show_navigation",
-      "label": "Show Navigation?",
-      "default": false
     },
     {
       "type": "header",
@@ -329,6 +384,17 @@
           "id": "answer",
           "label": "Answer",
           "default": "<p>Write content to help your customers to better understand your products or policies.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image",
+          "info": "Optional"
         }
       ]
     },
@@ -425,42 +491,7 @@
   ],
   "presets": [
     {
-      "name": "FAQ",
-      "blocks": [
-        {
-          "type": "category",
-          "settings": {
-            "title": "Shipping"
-          }
-        },
-        {
-          "type": "question",
-          "settings": {
-            "title": "Do you ship overseas?",
-            "answer": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>"
-          }
-        },
-        {
-          "type": "question",
-          "settings": {
-            "title": "How long will it take to get my order?",
-            "answer": "<p>It depends on where you are. Orders processed here will take 5-7 business days to arrive. Overseas deliveries can take anywhere from 7-16 days. Delivery details will be provided in your confirmation email.</p>"
-          }
-        },
-        {
-          "type": "category",
-          "settings": {
-            "title": "Other"
-          }
-        },
-        {
-          "type": "question",
-          "settings": {
-            "title": "Any question?",
-            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>"
-          }
-        }
-      ]
+      "name": "FAQ with Images"
     }
   ]
 }

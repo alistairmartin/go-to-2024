@@ -174,3 +174,23 @@ function miniCartRecommendationsRight() {
 }
 
 
+function blockTextReadMore(blockId, buttonText) {
+
+  console.log(blockId)
+  const button = document.querySelector(`#${blockId} button`);
+  const buttonInner = document.querySelector(`#${blockId} .button-text`);
+  const content = document.querySelector(`#${blockId} .blocks--button-read-more`);
+
+  if(button.classList.contains('active')) {
+    button.classList.remove('active');
+    content.classList.add('hide');
+    buttonInner.textContent = buttonText;
+
+  } else {
+    button.classList.add('active');
+    content.classList.remove('hide');
+    buttonInner.textContent = "Show Less";
+  }
+}
+
+

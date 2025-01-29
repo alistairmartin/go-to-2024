@@ -1279,8 +1279,10 @@
  
 
 .BeforeAfter {
+  margin: var(--container-gutter);
   @include media-query($medium-up) {
-    background: #f7f7f7;
+    // background: #f7f7f7;
+    margin: 0;
     padding: 24px 0;
   }
 
@@ -1295,6 +1297,7 @@
     position: relative;
     overflow: hidden;
     margin: 0 -16px;
+    border-radius: var(--image-border-radius);
     
     @include media-query($medium-up) {
       margin: 0;
@@ -1308,7 +1311,7 @@
     padding: 24px 16px 32px;
     
     @include media-query($medium-up) {
-      padding: 0 40px;
+      padding: 24px 40px;
     }
   }
   
@@ -1327,12 +1330,10 @@
   }
   
   .BeforeAfter__Description {
-    font-size: 18px;
-    line-height: 28px;
+    font-size: 16px;
   
     @include media-query($medium-up) {
-      font-size: 24px;
-      line-height: 32px;
+      font-size: 18px;
     }
 
     .link {
@@ -1417,11 +1418,17 @@
   
   .BeforeAfter__SliderWrapper {
     flex: 1 1 50%;
-    margin: 0 -16px;
-    border-radius: var(--image-border-radius);
-  
+    padding: 0px; 
+
     @include media-query($medium-up) {
-      margin: 0 auto;
+      padding: 30px 20px 20px 30px; 
+    }
+
+    img {
+      @include media-query($small) {
+        border-bottom-right-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+      }
     }
   }
   

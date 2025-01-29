@@ -62,6 +62,14 @@
       --section-products-per-row: {{ section.settings.products_per_row }};
     }
   }
+
+  {%- for loyalty_tiers in shop.metaobjects['loyalty_tiers'].values limit: 5 -%}
+  #loyalty-tier-{{ forloop.index }}{
+    --loyalty-color: {{ loyalty_tiers.tier_colour.value }};
+    --loyalty-color-shadow: {{ loyalty_tiers.tier_colour.value | color_darken: 10 }};
+  }
+  {%- endfor -%}
+
 </style>
 
 <section class="section {% unless blends_with_background %}section--flush{% endunless %}">
@@ -100,12 +108,12 @@
            
                   {%- for loyalty_tiers in shop.metaobjects['loyalty_tiers'].values limit: 5 -%}
 
-                    <style>
+                    {% comment %} <style>
                       #loyalty-tier-{{ forloop.index }}{
                         --loyalty-color: {{ loyalty_tiers.tier_colour.value }};
                         --loyalty-color-shadow: {{ loyalty_tiers.tier_colour.value | color_darken: 10 }};
                       }
-                      </style>
+                      </style> {% endcomment %}
 
                     <product-item reveal class="loyalty-tier-landing" id="loyalty-tier-{{ forloop.index }}">
 

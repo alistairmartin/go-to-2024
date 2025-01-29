@@ -30,6 +30,11 @@
 
     --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
   }
+  {%- if template.suffix == "go-to-spf-landing" -%}
+  #shopify-section-{{ section.id }}  .featured-carousel-product--text-inner .title {
+    font-family: Recoleta, TT Commons;
+  }
+  {% endif %}
   
   {%- for block in section.blocks -%}
   #shopify-section-{{ section.id }} .product-{{ forloop.index }} {
@@ -60,15 +65,19 @@
         {%- endif -%}
 
         {%- if block.settings.button_text != blank -%}
-          <div class="button-wrapper">
+          <div class="button-wrapper">  
 
-            {%- assign blockId = block.settings.button_text | append: "-" | append: forloop.index | handle -%}
-            <button class="link link--secondary" id="{{ blockId }}">
-              {{ block.settings.button_text }}
-            </button>
-            {%- render 'modal', modalId: blockId, buttonId: blockId, content: block.settings.modal_content, class: "modal-padding" -%}
+            {%- if block.settings.link_type == "modal" -%}
 
-            {% comment %} <a href="{{ block.settings.button_link }}" class="link link--tierary"><strong>{{ block.settings.button_text | escape }}</strong></a> {% endcomment %}
+              {%- assign blockId = block.settings.button_text | append: "-" | append: forloop.index | handle -%}
+              <button class="link link--secondary" id="{{ blockId }}">
+                {{ block.settings.button_text }}
+              </button>
+              {%- render 'modal', modalId: blockId, buttonId: blockId, content: block.settings.modal_content, class: "modal-padding" -%}
+            {% else %}
+                <a href="{{ block.settings.button_link }}" class="link link--primary"><strong>{{ block.settings.button_text | escape }}</strong></a>
+            {%- endif -%}
+
           </div>
         {%- endif -%}
     </div>
@@ -186,14 +195,38 @@
         "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
         },
         {
-        "type": "text",
-        "id": "button_text",
-        "label": "Button text"
+            "type": "header",
+            "content": "Button"
+          },
+          {
+          "type": "radio",
+          "id": "link_type",
+          "label": "Link Type",
+          "options": [
+            {
+              "value": "link",
+              "label": "Link"
+            },
+            {
+              "value": "modal",
+              "label": "Modal"
+            } 
+          ]
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Link"
         },
         {
           "type": "richtext",
           "id": "modal_content",
           "label": "Modal Content"
+        },
+        {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button text"
         },
           {
             "type": "header",

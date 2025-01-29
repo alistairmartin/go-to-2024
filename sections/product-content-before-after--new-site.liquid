@@ -1,0 +1,242 @@
+{%- unless product.metafields.custom.product_trials__before == blank or product.metafields.custom.product_trials__after == blank -%}
+  <section class="section BeforeAfter {% unless product.metafields.custom.product_trials.size < 2 %}BeforeAfter--hasTabs{% endunless %}" data-section-id="{{ section.id }}" data-section-type="before-after">
+    <div class="container">
+      {%- unless product.metafields.custom.product_trials__trial_title.size < 2 -%}
+        <div class="BeforeAfter__TabButtonsContainer">
+          <ul>
+            {%- for block in product.metafields.custom.product_trials__trial_title -%}
+              <li><button type="button" data-action="tab" data-target="tab-{{ block | handleize }}" class="BeforeAfter__TabButton {% if forloop.first %}active{% endif %}">{{ block }}</button></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endunless -%}
+      <div class="BeforeAfter__Container">
+        <div class="BeforeAfter__SliderWrapper">
+          {%- for block in product.metafields.custom.product_trials__trial_title -%}
+            {%- assign before = product.metafields.custom.product_trials__before[forloop.index0] -%}
+            {%- assign after = product.metafields.custom.product_trials__after[forloop.index0] -%}
+
+            <div id="tab-{{ block | handleize }}" class="BeforeAfter__SliderContainer {% if forloop.first %}active{% endif %}" style="{% unless forloop.first %}display:none;{% endunless %}max-width: {{ after[0].width }}px; --aspect-ratio: {{ after[0].aspect_ratio }}">
+              <div class="BeforeAfter__Image BeforeAfter__Image--after" style="background-image: url({{ after[0].src }}); {% if before == blank %}background-size: contain{% endif %}"></div>
+
+              {%- unless before == blank -%}
+                <div class="BeforeAfter__Image BeforeAfter__Image--before" style="background-image: url({{ before[0].src }});"></div>
+                <input type="range" min="0" max="100" value="50" class="BeforeAfter__Slider" data-action="slider">
+                <button type="button" class="BeforeAfter__SliderButton">
+              {%- endunless -%}
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="BeforeAfter__TextContainer">
+          <h2 class="BeforeAfter__Title">{{ product.metafields.custom.product_trials__title }}</h2>
+          <div class="BeforeAfter__Description">
+            {{ product.metafields.custom.product_trials__description }}
+            {%- unless product.metafields.custom.product_trials__modal_button_text == blank -%}
+              <button class="link link--primary" id="open-trials">
+                {{ product.metafields.custom.product_trials__modal_button_text }}
+              </button>
+
+              {%- capture modalContent -%}
+                <div class="rte ">
+                  {{ product.metafields.custom.product_trials__modal_content }}
+                </div>
+              {%- endcapture -%}
+              {%- render 'modal', modalId: "open-trials", buttonId: "open-trials" content: modalContent -%}
+            {%- endunless -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{%- endunless -%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    background: {{ section.settings.section_background }};
+  }
+
+  #shopify-section-{{ section.id }} .BeforeAfter__Container {
+    background: {{ section.settings.text_background }};
+  }
+  
+  #shopify-section-{{ section.id }} .BeforeAfter__Title {
+    font-size: {{ section.settings.title_font_size-mobile }}px;
+  }
+
+  #shopify-section-{{ section.id }} .BeforeAfter__Description {
+    font-size: {{ section.settings.description_font_size-mobile }}px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .BeforeAfter__Title {
+      font-size: {{ section.settings.title_font_size-desktop }}px;
+    }
+  
+    #shopify-section-{{ section.id }} .BeforeAfter__Description {
+      font-size: {{ section.settings.description_font_size-desktop }}px;
+    }
+  }
+</style>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function(event) {
+
+var BeforeAfterSliderSection = function (element) {
+    this.element = $(element);
+    this._build();
+    this._attachListeners();
+};
+
+BeforeAfterSliderSection.prototype._attachListeners = function () {
+    var self = this;
+
+    this.element.on('click', '[data-action=tab]', function (e) {
+        self._switchTab(e, $(this));
+    });
+
+    this.element.on('change input', '[data-action=slider]', function (e) {
+        self._slide(e, $(this));
+    });
+
+    $(document).on('breakpoint:changed', function () {
+        self._build();
+    });
+};
+
+BeforeAfterSliderSection.prototype._onUnload = function () {
+    this.element.off();
+    $(document).off('breakpoint:changed');
+};
+
+BeforeAfterSliderSection.prototype._switchTab = function (e, target) {
+    this.element.find('.BeforeAfter__SliderContainer').hide().removeClass('active');
+    this.element.find('.BeforeAfter__TabButton').removeClass('active');
+
+    var targetTab = target.data('target'),
+        activeTab = this.element.find('#' + targetTab);
+
+    activeTab.show().addClass('active');
+    target.addClass('active');
+
+    this._build();
+};
+
+BeforeAfterSliderSection.prototype._build = function () {
+    var sliderContainer = this.element.find('.BeforeAfter__SliderContainer.active'),
+        slider = sliderContainer.find('[data-action=slider]'),
+        containerHeight = sliderContainer.height(),
+        containerWidth = sliderContainer.width();
+
+    if (slider.length) {
+        slider.css('height', containerHeight);
+    }
+
+    this.sliderButton = sliderContainer.find('.BeforeAfter__SliderButton');
+    this.imageWrapper = sliderContainer.find('.BeforeAfter__Image--before');
+
+    this.element.find('.BeforeAfter__Image').each(function () {
+        $(this).css({
+            'height': containerHeight + 'px',
+            'background-size': containerWidth + 'px 100%'
+        });
+    });
+
+    this.element.find('style').remove();
+
+    var tempCSS = '<style>[data-action=slider]::-webkit-slider-thumb { height: ' + containerHeight + 'px } [data-action=slider]::-moz-range-thumb { height: ' + containerHeight + 'px }</style>';
+    this.element.prepend(tempCSS);
+};
+
+BeforeAfterSliderSection.prototype._slide = function (event, target) {
+    var sliderValue = target.val();
+    this.imageWrapper.css('width', sliderValue + '%');
+    this.sliderButton.css('left', 'calc(' + sliderValue + '% - 15px)');
+};
+
+// Initialize the section
+$(document).ready(function() {
+    $('.BeforeAfter').each(function() {
+        new BeforeAfterSliderSection(this);
+    });
+});
+
+  });
+</script>
+
+{% schema %}
+  {
+    "name": "Prod. Con: Before / After",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "This section uses a \"before\" image as the foreground and an \"after\" image as background. The overall width of the section is determined by the width of the \"after\" image."
+      },
+      {
+        "type": "header",
+        "content": "Font sizes"
+      },
+      {
+        "type": "range",
+        "id": "title_font_size-mobile",
+        "min": 30,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Title - mobile",
+        "default": 36
+      },
+      {
+        "type": "range",
+        "id": "description_font_size-mobile",
+        "min": 14,
+        "max": 36,
+        "step": 1,
+        "unit": "px",
+        "label": "Description - mobile",
+        "default": 18
+      },
+      {
+        "type": "range",
+        "id": "title_font_size-desktop",
+        "min": 30,
+        "max": 70,
+        "step": 1,
+        "unit": "px",
+        "label": "Title - desktop",
+        "default": 56
+      },
+      {
+        "type": "range",
+        "id": "description_font_size-desktop",
+        "min": 18,
+        "max": 40,
+        "step": 1,
+        "unit": "px",
+        "label": "Description - desktop",
+        "default": 24
+      },
+      {
+        "type": "header",
+        "content": "Colours"
+      },
+      {
+        "type": "color",
+        "id": "text_background",
+        "label": "Text background colour",
+        "default": "#FDE4DB"
+      },
+      {
+        "type": "color",
+        "id": "section_background",
+        "label": "Section background colour"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Prod. Con: Before / After",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}

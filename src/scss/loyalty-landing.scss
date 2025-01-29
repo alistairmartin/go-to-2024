@@ -131,7 +131,7 @@
     filter: drop-shadow(5px 5px 0px #5887d590);
     @include media-query($small) {
       max-width: 300px;
-      margin: 0 auto;
+      margin: 0 auto !important;
     }
   }
 }
@@ -144,6 +144,8 @@
   width: calc(100% - 5px);
   overflow: hidden;
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
 
   @include media-query($medium-up) {
     width: calc(100% - 20px);
@@ -182,6 +184,9 @@
     background: $gotoPink;
     height: 100%;
     padding: 24px 12px;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
 
     @include media-query($medium-up) {
       padding: 32px;

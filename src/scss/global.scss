@@ -757,6 +757,24 @@ section {
     }
   }
 
+  .product-no-variants {
+    opacity: 0;
+    transform: translateY(100%) !important;
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  }
+
+
+  &.in-view {
+    .product-no-variants {
+      opacity: 1;
+      transform: translateY(0) !important;
+      z-index: 20;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  }
+
 
 }
 
@@ -1411,6 +1429,7 @@ store-header.background-blur {
     .product-sticky-form {
       @include media-query($medium-up) {
         z-index: 2;
+        transform: translateY(100%) !important;
       }
     }
   }
@@ -1843,7 +1862,7 @@ store-header.background-blur {
     }
   }
 
-  .blocks--text {
+  .blocks--text, .blocks--button-read-more {
     width: 100%;
     font-family: var(--font-family-mobile);
     text-align: var(--font-alignment-mobile);
@@ -1874,6 +1893,25 @@ store-header.background-blur {
       }
     }
   }
+
+  .blocks--button-read-more-outer {
+
+    .blocks--button {
+      line-height: 1;
+      font-size: 17px !important;
+    }
+
+    .button-text {
+      line-height: 1;
+      font-size: 17px !important;
+    } 
+  }
+
+  .blocks--button-read-more {
+    padding-top: 15px;
+  }
+
+
 
 
   .blocks--product-item {
@@ -1930,6 +1968,8 @@ store-header.background-blur {
           border-color: var(--button-color-text-desktop);
         }
       }
+
+
   }
 }
 
@@ -2389,6 +2429,9 @@ store-header.background-blur {
   .modal__content-inner {
     // background: var(--color-secondary);
     background: #fff;
+    overflow: auto;
+    height: 100%;
+    padding: 40px;
   }
 
   .modal-padding {
@@ -2697,11 +2740,27 @@ footer {
   }
 }
 
-.shopify-section--faq .collapsible-toggle {
-  background: unset !important;
+.shopify-section--faq {
+  .collapsible-toggle {
+    background: unset !important;
 
-  &[aria-expanded='true'] {
-    background: var(--color-secondary) !important;
+    &[aria-expanded='true'] {
+      background: var(--color-secondary) !important;
+    }
+  }
+
+  .text-align--left {
+    @include media-query($large-up) {
+      // padding-left: 10px;
+    }
+  }
+}
+
+
+.section-faq--full-width {
+  .faq__wrapper {
+    max-width: unset;
+    width: unset;
   }
 }
 
@@ -3611,7 +3670,7 @@ product-rerender {
       display: none;
       position: relative;
       z-index: 3;
-      padding: 16px 32px 32px;
+      padding: 16px 16px 32px;
 
       @include media-query($large-up) {
         padding: 0;
@@ -3619,7 +3678,7 @@ product-rerender {
       }
 
       h3 {
-        font-size: 42px;
+        font-size: 36px;
 
         @include media-query($large-up) {
           font-size: 48px;
@@ -3826,7 +3885,7 @@ product-rerender {
     text-align: center;
 
     .title {
-      font-family: Recoleta, TT Commons;
+      font-family: TT Commons;
     }
   }
   
@@ -3875,6 +3934,10 @@ product-rerender {
 
   .link--secondary {
     // color: #fff;
+  }
+
+  .button-wrapper {
+    display: flex;
   }
 }
 
@@ -4648,6 +4711,18 @@ product-rerender {
 }
 
 
+.section-product-bar {
+  .product-has-variants {
+
+  }
+
+  .product-no-variants {
+    .product-sticky-form__payment-container {
+      width: 100%;
+    }
+  }
+}
+
 
 .product-sticky-form--custom-variants {
 
@@ -4804,4 +4879,145 @@ product-item[data-title="Face Hero"] {
   .variant-option {
     display: none !important;
   }
+}
+
+.section-faq-with-image {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 10px;
+
+  @include media-query($medium-up) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .section-faq--full-width {
+    margin: 0;
+    display: flex;
+    // justify-content: center;
+    // align-items: center;
+    width: 100%;
+
+    .section__color-wrapper {
+      width: 100%;
+    }
+  }
+
+  .section-faq-with-image--images {
+    .section-faq-with-image--image {
+      display: none;
+      &.active {
+        display: block;
+      }
+
+      img {
+        border-radius: var(--image-border-radius);
+      }
+    }
+  }
+}
+
+
+
+
+.custom-carousel {
+
+  .carousel-cell {
+    width: 100%;
+    counter-increment: carousel-cell;
+    min-height: 260px;
+
+    @include media-query($medium-up) {
+      min-height: 360px;
+    }
+
+    @include media-query($large-up) {
+      min-height: 460px;
+    }
+
+    img {
+      border-radius: var(--image-border-radius);
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .flickity-page-dots {
+    position: absolute;
+    width: 100%;
+    bottom: -5px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+    line-height: 1;
+
+    .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin: 0 8px;
+      background: transparent;
+      border-radius: 50%;
+      opacity: 0.8;
+      cursor: pointer;
+      border: 2px solid var(--color-black);
+      transition: 200ms all;
+
+      &.is-selected {
+        border: 2px solid var(--color-primary);
+        background: var(--color-primary);
+      }
+    }
+  }
+}
+
+
+// $galleryOuterWidth: calc(var(--container-max-width) - (var(--container-gutter)) * 4);
+
+.shopify-section--gallery {
+  video { 
+    border-radius: var(--image-border-radius);
+  }
+
+  .no-container {
+    margin-left: var(--container-gutter);
+  }
+
+  .container-header {
+    padding: 0;
+    padding-bottom: var(--vertical-breather);
+  }
+
+  @include media-query($medium-up) {
+    .gallery__progress-bar-wrapper {
+      max-width: calc(100% - 150px);
+      margin: 0;
+    }
+
+    .gallery__item:not(:first-child) {
+      margin-inline-start: calc(var(--container-gutter) / 2);
+    }
+    
+    prev-next-buttons {
+      bottom: -25px;
+      top: unset;
+      display: flex;
+      gap: 10px;
+      right: var(--container-gutter) !important;
+
+      .gallery__arrow {
+        border-radius: 100% !important;
+        border: 1px solid rgba(28, 28, 28, 0.15) !important;
+        color: var(--prev-next-button-color);
+        background: none !important;
+      }
+    }
+  }
+
+
+  // .gallery__list-wrapper.is-scrollable .gallery__list:after {
+  //   flex: 0 0 var($galleryOuterWidth);
+  // }
 }

@@ -1,20 +1,38 @@
-<div class="product-bar--observer"></div>
+<style>
+  #gorgias-chat-container iframe {
+      right: 10px !important;
+      bottom: 76px !important;
+  }
+
+  @media only screen and (min-width: 740px){
+    #gorgias-chat-container iframe {
+      right: 10px !important;
+      bottom: 96px !important;
+    }
+  }
+</style>
+
+
+<div class="product-bar--observer">
+</div>
 
 {%- if section.blocks.size > 1 -%}
 
-
+  <div class="product-has-variants">
     {%- for block in section.blocks -%}
       {%- assign product = all_products[block.settings.product] -%}
       {%- assign outerIndex = forloop.index -%}
       {%- render 'product-sticky-form--product-bar-variants', product: product, outerIndex: outerIndex -%}
     {%- endfor -%}
-
+    </div>
 
 {% else %}
   {%- assign product = all_products[section.settings.product] -%}
-  {%- render 'product-sticky-form--product-bar', product: product -%}
-{%- endif -%}
+  <div class="product-no-variants">
+    {%- render 'product-sticky-form--product-bar', product: product -%}
+  </div>
 
+{%- endif -%}
 
 
 <script>

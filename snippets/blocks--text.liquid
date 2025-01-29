@@ -4,7 +4,7 @@
 
     {%- capture styles -%}
     <style>
-    #block-{{ block.id }} {
+    #block-{{ block.id }}, #block-{{ block.id }}-read-more {
 
     --margin-top-desktop: {{ block.settings.margin_top_desktop }}px;
     --margin-bottom-desktop: {{ block.settings.margin_bottom_desktop }}px;
@@ -20,6 +20,11 @@
 
     --font-weight-mobile: {{ block.settings.font_weight_mobile }};
     --font-weight-desktop: {{ block.settings.font_weight_desktop }};
+
+    {%- if block.settings.read_more_button_style == "button--outline" -%}
+      --button-color-text-mobile: {{ block.settings.button_color_mobile }};
+      --button-color-text-desktop: {{ block.settings.button_color_desktop }};
+    {%- endif -%}
 
       {% if block.settings.preset_heading_styles == "unset" %}
   
@@ -83,9 +88,27 @@
     </style>
      {%- endcapture -%}
      {{- styles | strip_newlines | remove:" " | strip -}}
-    
+
+     {%- if block.settings.read_more -%}
+      <div id="block-{{ block.id }}-outer">
+     {%- endif -%}
+
     <{{ block.settings.heading_html }} class="blocks--text {% unless block.settings.preset_heading_styles == "unset" %}{{ block.settings.preset_heading_styles }}{% else %}blocks--text-custom{% endunless %} {% if block.settings.hide_desktop %}hide-desktop{% endif %} {% if block.settings.hide_mobile %}hide-mobile{% endif %}" {{ blockId }}>
-        {{ block.settings.text }}
+        {%- if block.settings.read_more -%}
+        <button class="blocks--button blocks--button-read-more-outer {% if block.settings.read_more_button_style contains "link" %}link--{% if section.settings.read_more_button_style == 'link-with-arrow-white' %}secondary{% else %}primary{% endif %}{% else %}button {{ block.settings.read_more_button_style }}{% endif %}" onclick="blockTextReadMore('block-{{ block.id }}-outer','{{ block.settings.read_more_button_text }}')"><span class="button-text">{{ block.settings.read_more_button_text }}</span> {% if block.settings.read_more_button_style == "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</button>
+
+          <p class="blocks--button-read-more hide" id="block-{{ block.id }}-read-more">
+            {{ block.settings.text }}
+          </p>
+
+        {%- else -%}
+          {{ block.settings.text }}
+        {%- endif -%}
+   
     </{{ block.settings.heading_html }}>
+
+    {%- if block.settings.read_more -%}
+      </div>
+    {%- endif -%}
     
 {%- endif -%}

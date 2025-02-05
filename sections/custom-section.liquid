@@ -1,0 +1,22 @@
+<div class="custom-section">
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Custom section",
+  "class": "shopify-section--custom-layout",
+  "blocks": [
+    { "type": "@theme" }, 
+    { "type": "@app" }
+  ],
+  "settings": [
+
+  ],
+  "presets": [
+    {
+      "name": "Custom section"
+    }
+  ]
+}
+{% endschema %}

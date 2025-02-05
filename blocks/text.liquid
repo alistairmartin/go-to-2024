@@ -1,0 +1,634 @@
+
+
+    {%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+
+    {%- capture styles -%}
+    <style>
+    #block-{{ block.id }}, #block-{{ block.id }}-read-more {
+
+    --margin-top-desktop: {{ block.settings.margin_top_desktop }}px;
+    --margin-bottom-desktop: {{ block.settings.margin_bottom_desktop }}px;
+
+    --margin-top-mobile: {{ block.settings.margin_top_mobile }}px;
+    --margin-bottom-mobile: {{ block.settings.margin_bottom_mobile }}px;
+    
+    --font-color-mobile: {{ block.settings.font_color_mobile }};
+    --font-color-desktop: {{ block.settings.font_color_desktop }};
+
+    --font-alignment-desktop: {{ block.settings.font_alignment_desktop }};
+    --font-alignment-mobile: {{ block.settings.font_alignment_mobile }};
+
+    --font-weight-mobile: {{ block.settings.font_weight_mobile }};
+    --font-weight-desktop: {{ block.settings.font_weight_desktop }};
+
+    {%- if block.settings.read_more_button_style == "button--outline" -%}
+      --button-color-text-mobile: {{ block.settings.button_color_mobile }};
+      --button-color-text-desktop: {{ block.settings.button_color_desktop }};
+    {%- endif -%}
+
+      {% if block.settings.preset_heading_styles == "unset" %}
+  
+      --font-style-desktop: {{ block.settings.font_style_desktop }};
+      --font-size-desktop: {{ block.settings.font_size_desktop }}px;
+      --font-line-height-desktop: {{ block.settings.font_line_height_desktop }};
+      --font-letter-spacing-desktop: {{ block.settings.font_letter_spacing_desktop }};
+     
+      --font-style-mobile: {{ block.settings.font_style_mobile }};
+      --font-size-mobile: {{ block.settings.font_size_mobile }}px;
+      --font-line-height-mobile: {{ block.settings.font_line_height_mobile }};
+      --font-letter-spacing-mobile: {{ block.settings.font_letter_spacing_mobile }};
+
+      {% endif %}
+
+      {%- if brand == "go-to" -%}
+        {%- if block.settings.font_family_desktop == "primary" -%}
+            --font-family-desktop: "ModernoFB";
+        {%- elsif block.settings.font_family_desktop == "secondary" -%}
+            --font-family-desktop: "TTCommons";
+        {%- endif -%}
+
+        {%- if block.settings.font_family_mobile == "primary" -%}
+          --font-family-mobile: "ModernoFB";
+        {%- elsif block.settings.font_family_mobile == "secondary" -%}
+          --font-family-mobile: "TTCommons";
+        {%- endif -%}
+
+      {%- elsif brand == "bro-to" -%}
+
+        {%- if block.settings.font_family_desktop == "primary" -%}
+            --font-family-desktop: "MillerDisplay";
+        {%- elsif block.settings.font_family_desktop == "secondary" -%}
+            --font-family-desktop: "FFMarkWebPro";
+        {%- endif -%}
+
+        {%- if block.settings.font_family_mobile == "primary" -%}
+          --font-family-mobile: "MillerDisplay";
+        {%- elsif block.settings.font_family_mobile == "secondary" -%}
+          --font-family-mobile: "FFMarkWebPro";
+        {%- endif -%}
+
+      {%- elsif brand == "gro-to" -%}
+
+        {%- if block.settings.font_family_desktop == "primary" -%}
+            --font-family-desktop: "ProximaNova";
+        {%- elsif block.settings.font_family_desktop == "secondary" -%}
+            --font-family-desktop: "SofiaProSoft";
+        {%- endif -%}
+
+        {%- if block.settings.font_family_mobile == "primary" -%}
+          --font-family-mobile: "ProximaNova";
+        {%- elsif block.settings.font_family_mobile == "secondary" -%}
+          --font-family-mobile: "SofiaProSoft";
+        {%- endif -%}
+
+        
+      {%- endif -%}
+     
+    }
+    </style>
+     {%- endcapture -%}
+     {{- styles | strip_newlines | remove:" " | strip -}}
+
+     {%- if block.settings.read_more -%}
+      <div id="block-{{ block.id }}-outer">
+     {%- endif -%}
+
+    <{{ block.settings.heading_html }} class="blocks--text {% unless block.settings.preset_heading_styles == "unset" %}{{ block.settings.preset_heading_styles }}{% else %}blocks--text-custom{% endunless %} {% if block.settings.hide_desktop %}hide-desktop{% endif %} {% if block.settings.hide_mobile %}hide-mobile{% endif %}" id="block-{{ block.id }}">
+        {%- if block.settings.read_more -%}
+        <button class="blocks--button blocks--button-read-more-outer {% if block.settings.read_more_button_style contains "link" %}link--{% if block.settings.read_more_button_style == 'link-with-arrow-white' %}secondary{% else %}primary{% endif %}{% else %}button {{ block.settings.read_more_button_style }}{% endif %}" onclick="blockTextReadMore('block-{{ block.id }}-outer','{{ block.settings.read_more_button_text }}')"><span class="button-text">{{ block.settings.read_more_button_text }}</span> {% if block.settings.read_more_button_style == "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</button>
+
+          <p class="blocks--button-read-more hide" id="block-{{ block.id }}-read-more">
+            {{ block.settings.text }}
+          </p>
+
+        {%- else -%}
+          {{ block.settings.text }}
+        {%- endif -%}
+   
+    </{{ block.settings.heading_html }}>
+
+    {%- if block.settings.read_more -%}
+      </div>
+    {%- endif -%}
+    
+
+
+
+{% schema %}
+  {
+    "name": "Text",
+    "settings": [
+
+    {
+          "type": "paragraph",
+          "content": "Text"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_mobile",
+          "label": "Hide Mobile?"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_desktop",
+          "label": "Hide Desktop?"
+        },
+        {
+        "type": "header",
+        "content": "Heading"
+        },
+        {
+          "type": "select",
+          "id": "heading_html",
+          "label": "Heading Type",
+          "info": "Important for SEO. (H1's should only be used if it's the page title)",
+          "options": [
+            {
+              "value": "p",
+              "label": "Paragraph (Default)"
+            },
+            {
+              "value": "h1",
+              "label": "H1"
+            },
+            {
+              "value": "h2",
+              "label": "H2"
+            },
+            {
+              "value": "h3",
+              "label": "H3"
+            },
+            {
+              "value": "h4",
+              "label": "H4"
+            },
+            {
+              "value": "h5",
+              "label": "H5"
+            },
+            {
+              "value": "h6",
+              "label": "H6"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "preset_heading_styles",
+          "label": "Preset Heading Styles",
+          "info": "Use 'Unset' to customize the font style below. 'Font Family' & 'Font Alignment' can be used with any option.",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "heading h1",
+              "label": "H1"
+            },
+            {
+              "value": "heading h2",
+              "label": "H2"
+            },
+            {
+              "value": "heading h3",
+              "label": "H3"
+            },
+            {
+              "value": "heading h4",
+              "label": "H4"
+            },
+            {
+              "value": "heading h5",
+              "label": "H5"
+            },
+            {
+              "value": "heading h6",
+              "label": "H6"
+            },
+            {
+              "value": "heading heading--xsmall",
+              "label": "Heading (Extra Small)"
+            },
+            {
+              "value": "heading heading--small",
+              "label": "Heading (Small)"
+            },
+            {
+              "value": "heading heading--large",
+              "label": "Heading (Large)"
+            },
+            {
+              "value": "text text--xsmall",
+              "label": "Text (Extra Small)"
+            },
+            {
+              "value": "text text--small",
+              "label": "Text (Small)"
+            },
+            {
+              "value": "text text--large",
+              "label": "Text (Large)"
+            }
+          ]
+        },
+        {
+        "type": "header",
+        "content": "🌫️ Read More"
+        },
+        {
+          "type": "checkbox",
+          "id": "read_more",
+          "label": "Enable Read More"
+        },
+        {
+            "type": "text",
+            "id": "read_more_button_text",
+            "label": "Button text"
+        },
+        {
+            "type": "radio",
+            "id": "read_more_button_style",
+            "label": "Button Style",
+            "options": [
+              {
+              "value": "button--primary",
+              "label": "Button"
+            },
+            {
+                "value": "button--secondary",
+                "label": "Button (Secondary)"
+            },
+            {
+                "value": "button--ternary",
+                "label": "Button (Ternary)"
+            },
+            {
+                "value": "button--ternary-white",
+                "label": "Button (Ternary - White)"
+            },
+            {
+                "value": "button--outline",
+                "label": "Button (Outline)"
+            },
+            {
+                "value": "link",
+                "label": "Link"
+            },
+            {
+                "value": "link-with-arrow",
+                "label": "Link (With Arrow)"
+            },
+            {
+            "value": "link-with-arrow-white",
+            "label": "White Link (With Arrow)"
+            }
+            ],
+            "default": "button--primary"
+        },
+        {
+        "type": "header",
+        "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---"
+        },
+        {
+        "type": "header",
+        "content": "🖥️ Colour (Desktop)"
+        },
+        {
+          "type": "paragraph",
+          "content": "🟪 Go-To | Pink: #f9c6b9; Light Pink: #FDE4DB; Black: #181818; Grey: #DCE0E4; Light Grey: #F2F2F2; Learn More - View the Style Guide Template in the theme editor."
+        },
+        {
+          "type": "paragraph",
+          "content": "🟥 Bro-To | Red: #ef3534; Dark Blue: #192a42; Light Blue: #0DA9C5; Grey: #f0f0f5; Light Grey: #F9F9F9; Learn More - View the Style Guide Template in the theme editor."
+        },
+        {
+          "type": "paragraph",
+          "content": "🟩 Gro-To | Blue: #00bce7; Navy: #002DAC; Light Blue: #0DA9C5; Yellow: #f9cf63; Purple: #b493c4; Pink: #f06098; Red: #ff0001; Green: #59C160; Orange: #F48120;"
+        },
+        {
+          "type": "paragraph",
+          "content": "❔View Full Style Guide - Go to the template 'styleguide' in the theme editor."
+        },
+        {
+          "type": "color",
+          "id": "font_color_desktop",
+          "label": "Colour",
+          "default": "#181818"
+        },
+        {
+        "type": "header",
+        "content": "🖥️ Margins (Desktop)"
+        },
+        {
+        "type": "range",
+        "id": "margin_top_desktop",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 0,
+        "label": "⬆ Margin Top"
+        },
+        {
+        "type": "range",
+        "id": "margin_bottom_desktop",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 0,
+        "label": "⬇ Margin Bottom"
+        },
+        {
+        "type": "header",
+        "content": "🖥️ Fonts (Desktop)"
+        },
+        {
+          "type": "select",
+          "id": "font_alignment_desktop",
+          "label": "Font Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "font_family_desktop",
+          "label": "Font Family",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primary"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary"
+            }
+          ],
+          "default": "primary"
+        },
+        {
+          "type": "select",
+          "id": "font_style_desktop",
+          "label": "Font Style",
+          "options": [
+            {
+              "value": "normal",
+              "label": "Normal"
+            },
+            {
+              "value": "italic",
+              "label": "Italic"
+            }
+          ],
+          "default": "normal"
+        },
+        {
+          "type": "select",
+          "id": "font_weight_desktop",
+          "label": "Font Weight",
+          "options": [
+            {
+              "value": "300",
+              "label": "Light (300)"
+            },
+            {
+              "value": "400",
+              "label": "Normal (400)"
+            },
+            {
+              "value": "500",
+              "label": "Medium (500)"
+            },
+            {
+              "value": "600",
+              "label": "Semi-Bold (600)"
+            },
+            {
+              "value": "700",
+              "label": "Bold (700)"
+            }
+          ],
+          "default": "400"
+        },
+        {
+        "type": "range",
+        "id": "font_size_desktop",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 16,
+        "label": "Font Size"
+        },
+        {
+        "type": "range",
+        "id": "font_line_height_desktop",
+        "min": 0,
+        "max": 5,
+        "step": 0.1,
+        "default": 1,
+        "label": "Line Height"
+        },
+        {
+        "type": "range",
+        "id": "font_letter_spacing_desktop",
+        "min": 0,
+        "max": 5,
+        "step": 0.1,
+        "default": 1,
+        "label": "Letter Spacing"
+        },
+        {
+          "type": "header",
+          "content": "--- 📱 MOBILE SETTINGS 📱 ---"
+        },
+        {
+        "type": "header",
+        "content": "📱 Colour (Mobile)"
+        },
+        {
+          "type": "paragraph",
+          "content": "🟪 Go-To | Pink: #f9c6b9; Light Pink: #FDE4DB; Black: #181818; Grey: #DCE0E4; Light Grey: #F2F2F2; Learn More - View the Style Guide Template in the theme editor."
+        },
+        {
+          "type": "paragraph",
+          "content": "🟥 Bro-To | Red: #ef3534; Dark Blue: #192a42; Light Blue: #0DA9C5; Grey: #f0f0f5; Light Grey: #F9F9F9; Learn More - View the Style Guide Template in the theme editor."
+        },
+        {
+          "type": "paragraph",
+          "content": "🟩 Gro-To | Blue: #00bce7; Navy: #002DAC; Light Blue: #0DA9C5; Yellow: #f9cf63; Purple: #b493c4; Pink: #f06098; Red: #ff0001; Green: #59C160; Orange: #F48120;"
+        },
+        {
+          "type": "paragraph",
+          "content": "❔View Full Style Guide - Go to the template 'styleguide' in the theme editor."
+        },
+        {
+          "type": "color",
+          "id": "font_color_mobile",
+          "label": "Colour",
+          "default": "#181818"
+        },
+        {
+        "type": "header",
+        "content": "📱 Margins (Mobile)"
+        },
+        {
+        "type": "range",
+        "id": "margin_top_mobile",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 0,
+        "label": "⬆ Margin Top"
+        },
+        {
+        "type": "range",
+        "id": "margin_bottom_mobile",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 0,
+        "label": "⬇ Margin Bottom"
+        },
+        {
+        "type": "header",
+        "content": "📱 Fonts (Mobile)"
+        },
+        {
+          "type": "select",
+          "id": "font_alignment_mobile",
+          "label": "Font Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "font_family_mobile",
+          "label": "Font Family",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Primary"
+            },
+            {
+              "value": "secondary",
+              "label": "Secondary"
+            }
+          ],
+          "default": "primary"
+        },
+        {
+          "type": "select",
+          "id": "font_style_mobile",
+          "label": "Font Style",
+          "options": [
+            {
+              "value": "normal",
+              "label": "Normal"
+            },
+            {
+              "value": "italic",
+              "label": "Italic"
+            }
+          ],
+          "default": "normal"
+        },
+        {
+          "type": "select",
+          "id": "font_weight_mobile",
+          "label": "Font Weight",
+          "options": [
+            {
+              "value": "300",
+              "label": "Light (300)"
+            },
+            {
+              "value": "400",
+              "label": "Normal (400)"
+            },
+            {
+              "value": "500",
+              "label": "Medium (500)"
+            },
+            {
+              "value": "600",
+              "label": "Semi-Bold (600)"
+            },
+            {
+              "value": "700",
+              "label": "Bold (700)"
+            }
+          ],
+          "default": "400"
+        },
+        {
+        "type": "range",
+        "id": "font_size_mobile",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "default": 16,
+        "label": "Font Size"
+        },
+        {
+        "type": "range",
+        "id": "font_line_height_mobile",
+        "min": 0,
+        "max": 5,
+        "step": 0.1,
+        "default": 1,
+        "label": "Line Height"
+        },
+        {
+        "type": "range",
+        "id": "font_letter_spacing_mobile",
+        "min": 0,
+        "max": 5,
+        "step": 0.1,
+        "default": 1,
+        "label": "Letter Spacing"
+        }
+
+    ],
+    "presets": [
+      { "name": "Text" }
+    ]
+  }
+  {% endschema %}
+  

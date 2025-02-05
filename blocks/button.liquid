@@ -1,0 +1,234 @@
+
+    {%- capture styles -%}
+      <style>
+          #shopify-block-{{ block.id }} {
+            --margin-top-desktop: {{ block.settings.margin_top_desktop }}px;
+            --margin-bottom-desktop: {{ block.settings.margin_bottom_desktop }}px;
+  
+            --margin-top-mobile: {{ block.settings.margin_top_mobile }}px;
+            --margin-bottom-mobile: {{ block.settings.margin_bottom_mobile }}px;
+  
+            --flex-justify-content-mobile: {{ block.settings.flex_justify_content_mobile }};
+            --flex-justify-content-desktop: {{ block.settings.flex_justify_content_desktop }};
+  
+            {%- if block.settings.button_style == "button--outline" -%}
+              --button-color-text-mobile: {{ block.settings.button_color_mobile }};
+              --button-color-text-desktop: {{ block.settings.button_color_desktop }};
+            {%- endif -%}
+          }
+      </style>
+      {%- endcapture -%}
+      {{- styles | strip_newlines | remove:" " | strip -}}
+  
+      {%- assign classes = "" -%}
+  
+      {%- unless block.settings.flex_justify_content_mobile == "unset" -%}
+          {%- assign classes = classes | append: " flex-content--mobile" -%}
+      {%- endunless -%}
+  
+      {%- unless block.settings.flex_justify_content_desktop == "unset" -%}
+          {%- assign classes = classes | append: " flex-content--desktop" -%}
+      {%- endunless -%}
+  
+      {%- if block.settings.modal_content != blank -%}
+        <button class="blocks--button {{ classes }} {% if block.settings.button_style contains "link" %}link--{% if section.settings.button_style == 'link-with-arrow-white' %}secondary{% else %}primary{% endif %}{% else %}button {{ block.settings.button_style }}{% endif %}" id="block-{{ block.id }}" {% if  block.settings.content_square_id %}data-content-square="{{ block.settings.content_square_id }}"{% endif %}>{{ block.settings.button_text }} {% if block.settings.button_style == "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</button>
+      {%- else -%}
+        <a class="blocks--button {{ classes }} {% if block.settings.button_style contains "link" %}link--{% if section.settings.button_style == 'link-with-arrow-white' %}secondary{% else %}primary{% endif %}{% else %}button {{ block.settings.button_style }}{% endif %}" href="{{ block.settings.button_link }}" id="block-{{ block.id }}">{{ block.settings.button_text }} {% if block.settings.button_style contains "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</a>
+      {%- endif -%}
+
+
+      {% schema %}
+        {
+          "name": "Button",
+
+          "settings": [
+            {
+            "type": "text",
+            "id": "content_square_id",
+            "label": "Content Square Button ID",
+            "info": "Must match the 'Content Square' section in the header."
+          },
+          {
+              "type": "text",
+              "id": "button_text",
+              "label": "Button text"
+          },
+          {
+              "type": "url",
+              "id": "button_link",
+              "label": "Button link"
+          },
+          {
+              "type": "radio",
+              "id": "button_style",
+              "label": "Button Style",
+              "options": [
+                {
+                "value": "button--primary",
+                "label": "Button"
+              },
+              {
+                  "value": "button--secondary",
+                  "label": "Button (Secondary)"
+              },
+              {
+                  "value": "button--ternary",
+                  "label": "Button (Ternary)"
+              },
+              {
+                  "value": "button--ternary-white",
+                  "label": "Button (Ternary - White)"
+              },
+              {
+                  "value": "button--outline",
+                  "label": "Button (Outline)"
+              },
+              {
+                  "value": "link",
+                  "label": "Link"
+              },
+              {
+                  "value": "link-with-arrow",
+                  "label": "Link (With Arrow)"
+              },
+              {
+              "value": "link-with-arrow-white",
+              "label": "White Link (With Arrow)"
+              }
+              ],
+              "default": "button--primary"
+          },
+          {
+          "type": "header",
+          "content": "🌫️ Modal"
+          },
+          {
+            "type": "liquid",
+            "id": "modal_content",
+            "label": "Modal Content"
+          },
+          {
+          "type": "header",
+          "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---",
+          },
+          {
+              "type": "header",
+              "content": "Margins"
+          },
+          {
+              "type": "range",
+              "id": "margin_top_desktop",
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "unit": "px",
+              "default": 0,
+              "label": "⬆ Margin Top"
+          },
+          {
+              "type": "range",
+              "id": "margin_bottom_desktop",
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "unit": "px",
+              "default": 0,
+              "label": "⬇ Margin Bottom"
+          },
+          {
+            "type": "select",
+            "id": "flex_justify_content_desktop",
+            "label": "Position",
+            "info": "Position the button (Left, Center, Right)",
+            "default": "unset",
+            "options": [
+              {
+                "value": "unset",
+                "label": "Unset"
+              },
+              {
+                "value": "flex-start",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "flex-end",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "color",
+            "id": "button_color_desktop",
+            "label": "Button Colour",
+            "default": "#000000",
+            "info": "Only works with button 'Outline' option"
+          },
+          {
+              "type": "header",
+              "content": "--- 📱 MOBILE SETTINGS 📱 ---"
+          },
+          {
+              "type": "range",
+              "id": "margin_top_mobile",
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "unit": "px",
+              "default": 0,
+              "label": "⬆ Margin Top"
+          },
+          {
+              "type": "range",
+              "id": "margin_bottom_mobile",
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "unit": "px",
+              "default": 0,
+              "label": "⬇ Margin Bottom"
+          },
+          {
+            "type": "select",
+            "id": "flex_justify_content_mobile",
+            "label": "Button Position",
+            "info": "Position the button (Left, Center, Right)", 
+            "default": "unset",
+            "options": [
+              {
+                "value": "unset",
+                "label": "Unset"
+              },
+              {
+                "value": "flex-start",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "flex-end",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "color",
+            "id": "button_color_mobile",
+            "label": "Button Colour",
+            "default": "#000000",
+            "info": "Only works with button 'Outline' option"
+          }
+      
+      
+          ],
+          "presets": [
+            { "name": "Button" }
+          ]
+        }
+        {% endschema %}
+        

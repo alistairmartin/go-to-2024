@@ -1,0 +1,106 @@
+{%- if block.type == "product-ATC" -%}
+{%- capture styles -%}
+<style>
+    #block-{{ block.id }} {
+      --margin-top-desktop: {{ block.settings.margin_top_desktop }}px;
+      --margin-bottom-desktop: {{ block.settings.margin_bottom_desktop }}px;
+    }
+</style>
+{%- endcapture -%}
+{{- styles | strip_newlines | remove:" " | strip -}}
+
+{%- assign product = all_products[block.settings.product] -%}
+
+<div class="blocks--product-ATC" {{ blockId }}>
+
+{%- assign quick_buy_icon_name = 'quick-buy-' | append: settings.cart_icon | replace: '_', '-' -%}
+
+{%- if product.url contains '?' -%}
+  {%- assign product_url_contains_query = true -%}
+{%- else -%}
+  {%- assign product_url_contains_query = false -%}
+{%- endif -%}
+
+<product-item class="product-item {% if horizontal == true %}horizontal{% endif %} {{ classes }} {% unless product.available %}product-item--sold-out{% endunless %}" {% if reveal %}reveal{% endif %}>
+      {%- if request.page_type != 'password' and settings.product_add_to_cart and product.available and reduced_content != true and show_cta != true -%}
+        {%- if product.variants.size == 1 -%}
+          {%- capture form_id -%}product_form_{{ section.id }}_{{ block.id }}_{{ product.id }}_{% increment product_form_index %}{%- endcapture -%}
+          {%- form 'product', product, is: 'product-form', id: form_id, class: 'product-item__quick-form-alt' -%}
+            <input type="hidden" name="quantity" value="1">
+            <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
+      
+            <button is="loader-button" type="submit" class="link--animated link link--primary">{{ 'collection.product.add_to_cart_short' | t }}</button>
+            {% comment %} <button type="submit" class="product-item__quick-buy-button hidden-no-touch">
+              <span class="visually-hidden">{{ 'collection.product.add_to_cart_short' | t }}</span>
+              {%- render 'icon' with quick_buy_icon_name -%}
+            </button> {% endcomment %}
+            
+          {%- endform -%}
+        {%- else -%}
+          {%- comment -%}
+          IMPLEMENTATION NOTE: Depending on the device we show a different icon or open a different mode (either popover or drawer)
+          {%- endcomment -%}
+
+          {%- capture QuickViewTitle -%}
+            {% if product.options.size > 0 %}
+              {% assign quick_view_variant_title = product.options.first %}
+              {{ 'collection.product.quick_view' | t: quick_view_title: quick_view_variant_title }}
+            {% else %}
+              {{ 'collection.product.quick_view' | t: quick_view_title: 'A Size' }}
+            {% endif %}
+          {%- endcapture -%}
+      
+          <div class="product-item__quick-form-alt">
+            <button is="toggle-button" loader aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" aria-expanded="false" class="link--animated link link--primary">{{ QuickViewTitle }}</button>
+            {% comment %} <button is="toggle-button" aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" aria-expanded="false" class="product-item__quick-buy-button hidden-no-touch hidden-phone">
+              <span class="visually-hidden">{{ QuickViewTitle }}</span>
+              {%- render 'icon' with quick_buy_icon_name -%}
+            </button> {% endcomment %}
+      
+            {% comment %} <button is="toggle-button" aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-popover" aria-expanded="false" class="product-item__quick-buy-button hidden-tablet-and-up">
+              <span class="visually-hidden">{{ QuickViewTitle }}</span>
+              {%- render 'icon' with quick_buy_icon_name -%}
+            </button> {% endcomment %}
+          </div>
+      
+          <quick-buy-popover id="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-popover" href="{{ product.url }}{% if product_url_contains_query %}&{% else %}?{% endif %}view=quick-buy-popover" class="popover popover--quick-buy hidden-tablet-and-up"></quick-buy-popover>
+          <quick-buy-drawer id="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" href="{{ product.url }}{% if product_url_contains_query %}&{% else %}?{% endif %}view=quick-buy-drawer" class="drawer drawer--large drawer--quick-buy hidden-phone"></quick-buy-drawer>
+        {%- endif -%}
+      {%- endif -%}
+      
+      {%- if product.available and reduced_content or show_cta -%}
+        <div class="product-item__cta-wrapper">
+          {%- if product.variants.size == 1 -%}
+            {%- capture form_id -%}product_form_{{ section.id }}_{{ block.id }}_{{ product.id }}_{% increment product_form_index %}{%- endcapture -%}
+            {%- form 'product', product, is: 'product-form', id: form_id -%}
+              <input type="hidden" name="quantity" value="1">
+              <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
+              <button type="submit" {% if show_cta %}is="loader-button"{% endif %} class="{% if reduced_content %}product-item__link link text--subdued{% else %}product-item__cta button button--primary{% endif %}">{{ 'collection.product.add_to_cart_short' | t }}</button>
+            {%- endform -%}
+          {%- else -%}
+
+          {%- capture QuickViewTitle -%}
+            {% if product.options.size > 0 %}
+              {% assign quick_view_variant_title = product.options.first %}
+              {{ 'collection.product.quick_view' | t: quick_view_title: quick_view_variant_title }}
+            {% else %}
+              {{ 'collection.product.quick_view' | t: quick_view_title: 'A Size' }}
+            {% endif %}
+          {%- endcapture -%}
+
+            <button type="button" {% if show_cta %}loader{% endif %} is="toggle-button" aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" aria-expanded="false" class="{% if reduced_content %}product-item__link link text--subdued{% else %}product-item__cta button button--primary{% endif %} hidden-phone">{{ QuickViewTitle }}</button>
+            <button type="button" {% if show_cta %}loader{% endif %} is="toggle-button" aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-popover" aria-expanded="false" class="{% if reduced_content %}product-item__link link text--subdued{% else %}product-item__cta button button--primary{% endif %} hidden-tablet-and-up">{{ QuickViewTitle }}</button>
+      
+            <quick-buy-popover id="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-popover" href="{{ product.url }}{% if product_url_contains_query %}&{% else %}?{% endif %}view=quick-buy-popover" class="popover popover--quick-buy hidden-tablet-and-up"></quick-buy-popover>
+            <quick-buy-drawer id="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" href="{{ product.url }}{% if product_url_contains_query %}&{% else %}?{% endif %}view=quick-buy-drawer" class="drawer drawer--large drawer--quick-buy hidden-phone"></quick-buy-drawer>
+          {%- endif -%}
+        </div>
+      {%- elsif reduced_content -%}
+        <div class="product-item__cta-wrapper">
+          <span class="product-item__link text--subdued">{{ 'collection.product.sold_out' | t }}</span>
+        </div>
+      {%- endif -%}
+</product-item>
+
+</div>
+{%- endif -%}

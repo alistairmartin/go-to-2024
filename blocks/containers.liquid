@@ -1,0 +1,721 @@
+
+
+
+    {%- capture styles -%}
+    <style>
+    #shopify-block-{{ block.id }} {
+      --background-mobile: {{ block.settings.background_mobile }};
+      --background-desktop: {{ block.settings.background_desktop }};
+
+      --gridMobile: {{ block.settings.mobile_grid }};
+
+      --gridGapVerticalMobile: {{ block.settings.grid_gap_vertical_mobile }}px;
+      --gridGapHorizontalMobile: {{ block.settings.grid_gap_horizontal_mobile }}px;
+
+      --paddingVerticalMobile: {{ block.settings.padding_vertical_mobile }}px;
+      --paddingHorizontalMobile: {{ block.settings.padding_horizontal_mobile }}px;
+
+      --gridDesktop: {{ block.settings.desktop_grid }};
+      
+      --gridGapVerticalDesktop: {{ block.settings.grid_gap_vertical_desktop }}px;
+      --gridGapHorizontalDesktop: {{ block.settings.grid_gap_horizontal_desktop }}px;
+
+      --paddingVerticalDesktop: {{ block.settings.padding_vertical_desktop }}px;
+      --paddingHorizontalDesktop: {{ block.settings.padding_horizontal_desktop }}px;
+
+      --flex-justify-content-mobile: {{ block.settings.flex_justify_content_mobile }};
+      --flex-justify-content-desktop: {{ block.settings.flex_justify_content_desktop }};
+
+      --flex-align-items-mobile: {{ block.settings.flex_justify_content_mobile }};
+      --flex-align-items-desktop: {{ block.settings.flex_align_items_desktop }};
+
+      --position-desktop: {{ block.settings.position_desktop }};
+      --position-mobile: {{ block.settings.position_mobile }};
+
+      {%- if block.settings.max_width_enabled_mobile == "enabled" -%}
+        --max-width-mobile: {{ block.settings.max_width_value_mobile }}px;
+      {% else %}
+        --max-width-mobile: unset;
+      {%- endif -%}
+
+
+      {%- if block.settings.max_width_enabled_desktop == "enabled" -%}
+        --max-width-desktop: {{ block.settings.max_width_value_desktop }}px;
+      {% elsif block.settings.page_width == "large"  %}
+        --max-width-desktop: 1360px;
+      {% elsif block.settings.page_width == "medium" %}
+            --max-width-desktop: 670px;
+      {% elsif block.settings.page_width == "small" %}
+        --max-width-desktop: 670px;
+        {% else %}
+        --max-width-desktop: unset;
+      {%- endif -%}
+    }
+    </style>
+    {%- endcapture -%}
+    {{- styles | strip_newlines | remove:" " | strip -}}
+
+    {%- assign classes = "" -%}
+
+    {%- unless block.settings.flex_justify_content_mobile == "unset" -%}
+        {%- assign classes = classes | append: " flex-content--mobile" -%}
+    {%- endunless -%}
+
+    {%- unless block.settings.flex_justify_content_desktop == "unset" -%}
+        {%- assign classes = classes | append: " flex-content--desktop" -%}
+    {%- endunless -%}
+
+    {%- unless block.settings.flex_align_items_mobile == "unset" -%}
+        {%- assign classes = classes | append: " flex-align--mobile" -%}
+    {%- endunless -%}
+
+    {%- unless block.settings.flex_align_items_desktop == "unset" -%}
+        {%- assign classes = classes | append: " flex-align--desktop" -%}
+    {%- endunless -%}
+
+    {%- if block.settings.desktop_grid == "flex-grid" -%}
+        {% assign classes = classes | append: " flex-grid--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.desktop_grid == "flex-grid-wrap" -%}
+        {% assign classes = classes | append: " flex-grid-wrap--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.desktop_grid == "flex-column" -%}
+        {% assign classes = classes | append: " flex-column--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.desktop_grid == "flex-column-reverse" -%}
+        {% assign classes = classes | append: " flex-column-reverse--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.mobile_grid contains "flex-grid" -%}
+        {% assign classes = classes | append: " flex-grid--mobile" %}
+    {%- endif -%}
+
+    {%- if block.settings.mobile_grid == "flex-grid-wrap" -%}
+        {% assign classes = classes | append: " flex-grid-wrap--mobile" %}
+    {%- endif -%}
+
+
+    {%- if block.settings.mobile_grid == "flex-column" -%}
+      {% assign classes = classes | append: " flex-column--mobile" %}
+  {%- endif -%}
+
+    {%- if block.settings.mobile_grid == "flex-column-reverse" -%}
+        {% assign classes = classes | append: " flex-column-reverse--mobile" %}
+    {%- endif -%}
+
+
+      {% comment %} MOBILE --- Positioning {% endcomment %}
+
+    {%- if block.settings.position_absolute_mobile == "top" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-top--mobile" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_mobile == "center" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-center--mobile" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_mobile == "bottom" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-bottom--mobile" %}
+    {%- endif -%}
+
+    {% comment %} DESKTOP --- Positioning {% endcomment %}
+
+    {%- if block.settings.position_absolute_desktop == "top_left" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-top_left--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "top_center" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-top_center--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "top_right" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-top_right--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "middle_left" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-middle_left--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "middle_center" and block.settings.position_desktop == "absolute"  -%}
+      {% assign classes = classes | append: " absolute-middle_center--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "middle_right" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-middle_right--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "bottom_left" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-bottom_left--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "bottom_center" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-bottom_center--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_absolute_desktop == "bottom_right" and block.settings.position_desktop == "absolute" -%}
+      {% assign classes = classes | append: " absolute-bottom_right--desktop" %}
+    {%- endif -%}
+
+    <div class="container-custom container-custom--{{ block.settings.page_width }} {{ classes }}" id="block-{{ block.id }}">
+    {% content_for 'blocks' %}
+  </div>
+
+
+
+
+{% schema %}
+  {
+    "name": "Containers",
+    "blocks": [{ "type": "@theme" }, { "type": "@app" }],
+    "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block Note",
+          "info": "Only Admin Will See This.",
+          "default": "⏹️⏹️ Container - START"
+        },
+        {
+          "type": "select",
+          "id": "page_width",
+          "label": "Container Width",
+          "info": "Will Overwrite the 'Container Width' settings below.",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            }
+          ],
+          "default": "unset"
+        },
+        {
+          "type": "header",
+          "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---"
+        },
+        {
+        "type": "color",
+        "id": "background_desktop",
+        "label": "Background",
+        "default": "rgba(0,0,0,0)"
+        },
+        {
+          "type": "header",
+          "content": "🈁 🖥️ Grid (Desktop)"
+        },
+        {
+          "type": "select",
+          "id": "desktop_grid",
+          "label": "Grid",
+          "info": "Use 'Flex Grid' to choose custom widths for blocks inside this container.", 
+          "default": "1",
+          "options": [
+            {
+              "value": "1",
+              "label": "One"
+            },
+            {
+              "value": "2",
+              "label": "Two"
+            },
+            {
+              "value": "3",
+              "label": "Three"
+            },
+            {
+              "value": "4",
+              "label": "Four"
+            },
+            {
+              "value": "5",
+              "label": "Five"
+            },
+            {
+              "value": "6",
+              "label": "Six"
+            },
+            {
+              "value": "flex-grid",
+              "label": "Flex Grid (One Row)"
+            },
+            {
+              "value": "flex-grid-wrap",
+              "label": "Flex Grid (Multi Row)"
+            },
+            {
+              "value": "flex-column",
+              "label": "Flex Column"
+            },
+            {
+              "value": "flex-column-reverse",
+              "label": "Flex Column (Reverse)"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "flex_justify_content_desktop",
+          "label": "Justify Content",
+          "info": "Use 'Flex Grid' or 'Flex Column' to choose the block alignment inside this container.", 
+          "default": "unset",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "flex-start",
+              "label": "Start"
+            },
+            {
+              "value": "flex-end",
+              "label": "End"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "space-around",
+              "label": "Space Around"
+            },
+            {
+              "value": "space-between",
+              "label": "Space Between"
+            },
+            {
+              "value": "space-evenly",
+              "label": "Space evenly"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "flex_align_items_desktop",
+          "label": "Align Items",
+          "info": "Use 'Flex Grid' or 'Flex Column' to choose the block alignment inside this container.", 
+          "default": "unset",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "flex-start",
+              "label": "Start"
+            },
+            {
+              "value": "flex-end",
+              "label": "End"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "⏹️ Container Padding (Desktop)",
+          "info": "Space around the container. Use values that are multiples of 8. E.g. 8. 16, 32. Can use have half values. E.g. 4,12."
+        },
+        {
+          "type": "range",
+          "id": "padding_vertical_desktop",
+          "min": 0,
+          "max": 500,
+          "step": 5,
+          "unit": "px",
+          "default": 0,
+          "label": "↕️ Top/Bottom"
+        },
+        {
+          "type": "range",
+          "id": "padding_horizontal_desktop",
+          "min": 0,
+          "max": 500,
+          "step": 5,
+          "unit": "px",
+          "default": 0,
+          "label": "↔️ Left/Right"
+        },
+        {
+          "type": "header",
+          "content": "⏸️ Item Spacing (Desktop)",
+          "info": "Space between Items"
+        },
+        {
+          "type": "range",
+          "id": "grid_gap_vertical_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↕️ Top/Bottom"
+        },
+        {
+          "type": "range",
+          "id": "grid_gap_horizontal_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↔️ Left/Right"
+        },
+        {
+          "type": "header",
+          "content": "📏 Max Width (Desktop)"
+        },
+        {
+          "type": "select",
+          "id": "max_width_enabled_desktop",
+          "label": "Enable Max Width?",
+          "default": "disabled",
+          "options": [
+            {
+              "value": "disabled",
+              "label": "Disabled"
+            },
+            {
+              "value": "enabled",
+              "label": "Custom Width"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "max_width_value_desktop",
+          "min": 100,
+          "max": 2000,
+          "step": 20,
+          "unit": "px",
+          "default": 400,
+          "label": "Max Width (Pixels)"
+        },
+        {
+          "type": "select",
+          "id": "position_desktop",
+          "label": "Position",
+          "info": "Keep as relative. If wanting to overlay an element, the parent is 'Relative', and the child is 'Absolute'.",
+          "options": [
+            {
+              "value": "relative",
+              "label": "Relative"
+            },
+            {
+              "value": "absolute",
+              "label": "Absolute"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "position_absolute_desktop",
+          "label": "Absolute Position",
+          "options": [
+            {
+              "value": "top_left",
+              "label": "Top left"
+            },
+            {
+              "value": "top_center",
+              "label": "Top center"
+            },
+            {
+              "value": "top_right",
+              "label": "Top right"
+            },
+            {
+              "value": "middle_left",
+              "label": "Middle left"
+            },
+            {
+              "value": "middle_center",
+              "label": "Middle center"
+            },
+            {
+              "value": "middle_right",
+              "label": "Middle right"
+            },
+            {
+              "value": "bottom_left",
+              "label": "Bottom left"
+            },
+            {
+              "value": "bottom_center",
+              "label": "Bottom center"
+            },
+            {
+              "value": "bottom_right",
+              "label": "Bottom right"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "--- 📱 MOBILE SETTINGS 📱 ---"
+        },
+        {
+        "type": "color",
+        "id": "background_mobile",
+        "label": "Background",
+        "default": "rgba(0,0,0,0)"
+        },
+        {
+          "type": "header",
+          "content": "🈁 📱 Grid (Mobile)"
+        },
+        {
+          "type": "select",
+          "id": "mobile_grid",
+          "label": "Grid",
+          "info": "Use 'Flex Grid' to choose custom widths for blocks inside this container.", 
+          "default": "1",
+          "options": [
+            {
+              "value": "1",
+              "label": "One"
+            },
+            {
+              "value": "2",
+              "label": "Two"
+            },
+            {
+              "value": "3",
+              "label": "Three"
+            },
+            {
+              "value": "4",
+              "label": "Four"
+            },
+            {
+              "value": "5",
+              "label": "Five"
+            },
+            {
+              "value": "6",
+              "label": "Six"
+            },
+            {
+              "value": "flex-grid",
+              "label": "Flex Grid (One Row)"
+            },
+            {
+              "value": "flex-grid-wrap",
+              "label": "Flex Grid (Multi Row)"
+            },
+            {
+              "value": "flex-column",
+              "label": "Flex Column"
+            },
+            {
+              "value": "flex-column-reverse",
+              "label": "Flex Column (Reverse)"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "flex_justify_content_mobile",
+          "label": "Justify Content",
+          "info": "Use 'Flex Grid' or 'Flex Column' to choose the block alignment inside this container.", 
+          "default": "unset",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "flex-start",
+              "label": "Start"
+            },
+            {
+              "value": "flex-end",
+              "label": "End"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "space-around",
+              "label": "Space Around"
+            },
+            {
+              "value": "space-between",
+              "label": "Space Between"
+            },
+            {
+              "value": "space-evenly",
+              "label": "Space evenly"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "flex_align_items_mobile",
+          "label": "Align Items",
+          "info": "Use 'Flex Grid' or 'Flex Column' to choose the block alignment inside this container.", 
+          "default": "unset",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "flex-start",
+              "label": "Start"
+            },
+            {
+              "value": "flex-end",
+              "label": "End"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "⏹️ Container Padding (Mobile)",
+          "info": "Space around the container. Use values that are multiples of 8. E.g. 8. 16, 32. Can use have half values. E.g. 4,12."
+        },
+        {
+          "type": "range",
+          "id": "padding_vertical_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↕️ Top/Bottom"
+        },
+        {
+          "type": "range",
+          "id": "padding_horizontal_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↔️ Left/Right"
+        },
+        {
+          "type": "header",
+          "content": "⏸️ Item Spacing (Mobile)",
+          "info": "Space between Items"
+        },
+        {
+          "type": "range",
+          "id": "grid_gap_vertical_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↕️ Top/Bottom"
+        },
+        {
+          "type": "range",
+          "id": "grid_gap_horizontal_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "default": 0,
+          "label": "↔️ Left/Right"
+        },
+        {
+          "type": "header",
+          "content": "📏 Max Width (Mobile)"
+        },
+        {
+          "type": "select",
+          "id": "max_width_enabled_mobile",
+          "label": "Enable Max Width?",
+          "default": "disabled",
+          "options": [
+            {
+              "value": "disabled",
+              "label": "Disabled"
+            },
+            {
+              "value": "enabled",
+              "label": "Custom Width"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "max_width_value_mobile",
+          "min": 0,
+          "max": 500,
+          "step": 10,
+          "unit": "px",
+          "default": 100,
+          "label": "Max Width (Pixels)"
+        },
+        {
+          "type": "select",
+          "id": "position_mobile",
+          "label": "Position",
+          "info": "Keep as relative. If wanting to overlay an element, the parent is 'Relative', and the child is 'Absolute'.",
+          "options": [
+            {
+              "value": "relative",
+              "label": "Relative"
+            },
+            {
+              "value": "absolute",
+              "label": "Absolute"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "position_absolute_mobile",
+          "label": "Absolute Position",
+          "options": [
+            {
+              "value": "unset",
+              "label": "Unset"
+            },
+            {
+              "value": "top",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
+          ]
+        }
+
+    ],
+    "presets": [
+      { "name": "Containers" }
+    ]
+  }
+  {% endschema %}
+  

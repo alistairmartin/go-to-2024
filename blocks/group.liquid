@@ -1,0 +1,35 @@
+<div class="group-block color-{{ block.settings.color_scheme }}">
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Group",
+  "blocks": [{ "type": "@theme" }, { "type": "@app" }],
+  "settings": [
+
+  ],
+  "presets": [
+    {
+      "name": "Group"
+    },
+    {
+      "name": "Column",
+      "blocks": [
+        {
+          "type": "text",
+          "settings": {
+            "text": "<h3>Hello, world!</h3>"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "<p>How's it going?<\/p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,20 @@
+{%- if block.type == "spacer" -%}
+<div class="spacer" {{ blockId }}></div>
+{%- capture styles -%}
+<style>
+#block-{{ block.id }} {
+  height: {{ block.settings.height_mobile }}px;
+  background: {{ block.settings.color_mobile }};
+}
+@media screen and (min-width: 1139px) {
+    #block-{{ block.id }} {
+      background: {{ block.settings.color_desktop }};
+      height: {{ block.settings.height_desktop }}px;
+    }
+  }
+</style>
+{%- endcapture -%}
+{{- styles | strip_newlines | strip -}}
+
+
+{% endif %}

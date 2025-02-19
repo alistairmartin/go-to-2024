@@ -1,0 +1,50 @@
+{%- assign outerForloop = forloop.index -%}
+
+{%- for block in section.blocks -%}
+    {%- if block.type == "tolstoy_videos" -%}
+
+  {%- for i in (1..6) -%}
+
+    {%- capture publishIdSetting -%}publish_id{{ i }}{%- endcapture -%}
+    {%- assign publish_id = block.settings[publishIdSetting] -%}
+
+    {% capture mobilePositionSettings %}position_mobile_{{ i }}{% endcapture %}
+    {%- assign mobilePosition = block.settings[mobilePositionSettings] | times: 1 -%}
+
+    {%- assign mobileSpan = 1 -%}
+
+    {% capture desktopPositionSettings %}position_desktop_{{ i }}{% endcapture %}
+    {%- assign desktopPosition = block.settings[desktopPositionSettings] | times: 1 -%}
+
+    {%- assign desktopSpan = 1 -%}
+
+
+    {%- if publish_id != blank -%}
+
+            {% if outerForloop == desktopPosition %}
+            <product-item
+                class="product-item product-item__grid-image hide-mobile"
+                {% if reveal %}reveal{% endif %}
+            >
+                        {% comment %} <tolstoy-collectionPageTile data-tags="{% for tag in product.tags -%}{{ tag }},{%- endfor %}" class="tolstoy-collectionPageTile" data-publish-id="{{ publish_id }}" data-product-id="{{ product.id }}"> </tolstoy-collectionPageTile> {% endcomment %}
+
+                        <tolstoy-collection-page-tile style="display: none;" class="tolstoy-collection-page-tile" data-publish-id="{{ publish_id }}" data-collection-id="{{ collection.id }}"></tolstoy-collection-page-tile>
+            </product-item>
+            {% endif %}
+
+            {% if outerForloop == mobilePosition %}
+            <product-item
+                class="product-item product-item__grid-image hide-desktop"
+                {% if reveal %}
+                reveal
+                {% endif %}
+            >
+                {% comment %} <tolstoy-collectionPageTile data-tags="{% for tag in product.tags -%}{{ tag }},{%- endfor %}" class="tolstoy-collectionPageTile" data-publish-id="{{ publish_id }}" data-product-id="{{ product.id }}"> </tolstoy-collectionPageTile> {% endcomment %}
+                <tolstoy-collection-page-tile style="display: none;" class="tolstoy-collection-page-tile" data-publish-id="{{ publish_id }}" data-collection-id="{{ collection.id }}"></tolstoy-collection-page-tile>
+            </product-item>
+            {% endif %}
+
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+{%- endfor -%}

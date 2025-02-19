@@ -29,12 +29,12 @@
       {% if block.settings.preset_heading_styles == "unset" %}
   
       --font-style-desktop: {{ block.settings.font_style_desktop }};
-      --font-size-desktop: {{ block.settings.font_size_desktop }}px;
+      --font-size-desktop: {{ block.settings.font_size_desktop }}vw;
       --font-line-height-desktop: {{ block.settings.font_line_height_desktop }};
       --font-letter-spacing-desktop: {{ block.settings.font_letter_spacing_desktop }};
      
       --font-style-mobile: {{ block.settings.font_style_mobile }};
-      --font-size-mobile: {{ block.settings.font_size_mobile }}px;
+      --font-size-mobile: {{ block.settings.font_size_mobile }}vw;
       --font-line-height-mobile: {{ block.settings.font_line_height_mobile }};
       --font-letter-spacing-mobile: {{ block.settings.font_letter_spacing_mobile }};
 
@@ -240,60 +240,6 @@
         },
         {
         "type": "header",
-        "content": "🌫️ Read More"
-        },
-        {
-          "type": "checkbox",
-          "id": "read_more",
-          "label": "Enable Read More"
-        },
-        {
-            "type": "text",
-            "id": "read_more_button_text",
-            "label": "Button text"
-        },
-        {
-            "type": "radio",
-            "id": "read_more_button_style",
-            "label": "Button Style",
-            "options": [
-              {
-              "value": "button--primary",
-              "label": "Button"
-            },
-            {
-                "value": "button--secondary",
-                "label": "Button (Secondary)"
-            },
-            {
-                "value": "button--ternary",
-                "label": "Button (Ternary)"
-            },
-            {
-                "value": "button--ternary-white",
-                "label": "Button (Ternary - White)"
-            },
-            {
-                "value": "button--outline",
-                "label": "Button (Outline)"
-            },
-            {
-                "value": "link",
-                "label": "Link"
-            },
-            {
-                "value": "link-with-arrow",
-                "label": "Link (With Arrow)"
-            },
-            {
-            "value": "link-with-arrow-white",
-            "label": "White Link (With Arrow)"
-            }
-            ],
-            "default": "button--primary"
-        },
-        {
-        "type": "header",
         "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---"
         },
         {
@@ -434,10 +380,10 @@
         "type": "range",
         "id": "font_size_desktop",
         "min": 0,
-        "max": 100,
-        "step": 1,
-        "unit": "px",
-        "default": 16,
+        "max": 20,
+        "step": 0.2,
+        "unit": "vw",
+        "default": 1,
         "label": "Font Size"
         },
         {
@@ -600,10 +546,10 @@
         "type": "range",
         "id": "font_size_mobile",
         "min": 0,
-        "max": 100,
-        "step": 1,
-        "unit": "px",
-        "default": 16,
+        "max": 20,
+        "step": 0.2,
+        "unit": "vw",
+        "default": 1,
         "label": "Font Size"
         },
         {
@@ -623,6 +569,60 @@
         "step": 0.1,
         "default": 1,
         "label": "Letter Spacing"
+        },
+        {
+        "type": "header",
+        "content": "🌫️ Read More"
+        },
+        {
+          "type": "checkbox",
+          "id": "read_more",
+          "label": "Enable Read More"
+        },
+        {
+            "type": "text",
+            "id": "read_more_button_text",
+            "label": "Button text"
+        },
+        {
+            "type": "radio",
+            "id": "read_more_button_style",
+            "label": "Button Style",
+            "options": [
+              {
+              "value": "button--primary",
+              "label": "Button"
+            },
+            {
+                "value": "button--secondary",
+                "label": "Button (Secondary)"
+            },
+            {
+                "value": "button--ternary",
+                "label": "Button (Ternary)"
+            },
+            {
+                "value": "button--ternary-white",
+                "label": "Button (Ternary - White)"
+            },
+            {
+                "value": "button--outline",
+                "label": "Button (Outline)"
+            },
+            {
+                "value": "link",
+                "label": "Link"
+            },
+            {
+                "value": "link-with-arrow",
+                "label": "Link (With Arrow)"
+            },
+            {
+            "value": "link-with-arrow-white",
+            "label": "White Link (With Arrow)"
+            }
+            ],
+            "default": "button--primary"
         }
 
     ],

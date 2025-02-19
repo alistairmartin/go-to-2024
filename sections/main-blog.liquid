@@ -92,18 +92,6 @@
     {%- endif -%}
 
 
-
-
-
-      {%- for tag in blog.all_tags -%}
-        {% if current_tags contains tag %}
-          <h2 class="main-blog--subtitle text-center">
-            {{ tag }}
-          </h2>
-          {%- endif -%}
-      {%- endfor -%}
-  
-
     <div class="vertical-breather vertical-breather--margin vertical-breather--extra-tight">
       <div class="container">
         {%- paginate blog.articles by section.settings.articles_per_page -%}

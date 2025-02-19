@@ -2,6 +2,8 @@
 {%- assign outerForloop = forloop.index -%}
 
 {%- for block in section.blocks -%}
+
+    {%- if block.type == "grid_image" -%}
 {%- for i in (1..9) -%}
 
 {% capture mobileImageSettings %}mobile_image_{{ i }}{% endcapture %}
@@ -119,6 +121,8 @@
 {% endif %}  
 
 {%- endfor -%}
+
+{%- endif -%}
 {%- endfor -%}
 
 

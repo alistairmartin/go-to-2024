@@ -1,6 +1,11 @@
 @import "components/media-queries";
 @import "components/variables";
 @import "components/animations";
+@import "sections/custom-slideshow";
+
+
+@import "blocks/text";
+
 @import "cart.scss";
 
 // #preview-bar-iframe {
@@ -1862,37 +1867,7 @@ store-header.background-blur {
     }
   }
 
-  .blocks--text, .blocks--button-read-more {
-    width: 100%;
-    font-family: var(--font-family-mobile);
-    text-align: var(--font-alignment-mobile);
-    margin-top: var(--margin-top-mobile) !important;
-    margin-bottom: var(--margin-bottom-mobile) !important;
-    color: var(--font-color-mobile);
-    font-weight: var(--font-weight-mobile) !important;
 
-    @include media-query($medium-up) {
-      font-family: var(--font-family-desktop);
-      text-align: var(--font-alignment-desktop);
-      margin-top: var(--margin-top-desktop) !important;
-      margin-bottom: var(--margin-bottom-desktop) !important;
-      color: var(--font-color-desktop);
-      font-weight: var(--font-weight-desktop)  !important;
-    }
-
-    &.blocks--text-custom {
-      font-style: var(--font-style-mobile);
-      font-size: var(--font-size-mobile);
-      line-height: var(--font-line-height-mobile);
-      letter-spacing: var(--font-letter-spacing-mobile);
-      @include media-query($medium-up) {
-        font-style: var(--font-style-desktop);
-        font-size: var(--font-size-desktop);
-        line-height: var(--font-line-height-desktop);
-        letter-spacing: var(--font-letter-spacing-desktop);
-      }
-    }
-  }
 
   .blocks--button-read-more-outer {
 
@@ -4974,8 +4949,6 @@ product-item[data-title="Face Hero"] {
 }
 
 
-// $galleryOuterWidth: calc(var(--container-max-width) - (var(--container-gutter)) * 4);
-
 .shopify-section--gallery {
   video { 
     border-radius: var(--image-border-radius);
@@ -5015,9 +4988,12 @@ product-item[data-title="Face Hero"] {
       }
     }
   }
+}
 
-
-  // .gallery__list-wrapper.is-scrollable .gallery__list:after {
-  //   flex: 0 0 var($galleryOuterWidth);
-  // }
+.shopify-section--slideshow {
+  .button-wrapper {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
 }

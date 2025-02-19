@@ -1,20 +1,23 @@
-{%- unless product.metafields.custom.product_trials__before == blank or product.metafields.custom.product_trials__after == blank -%}
+{%- if product.metafields.custom.product_trials__side-by-side.size >= 1 -%}
   <section class="section BeforeAfter {% unless product.metafields.custom.product_trials.size < 2 %}BeforeAfter--hasTabs{% endunless %}" data-section-id="{{ section.id }}" data-section-type="before-after" id="before-after">
     <div class="container">
       <div class="BeforeAfter__Container">
         <div class="BeforeAfter__SliderWrapper">
-   
+
+
+
+          {%- if product.metafields.custom.product_trials__side-by-side.size == 1 -%}
+            {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_trials__side-by-side[0] , src_mobile: product.metafields.custom.product_trials__side-by-side[0], reveal: false, %}
+          {% else %}
             <div class="custom-carousel carousel" data-flickity='{ "cellSelector": ".carousel-cell", "prevNextButtons": true, "wrapAround": true, "autoPlay": true, "resize": true, "lazyLoad": true, "draggable": ">1"  }'>
-              
               {%- for block in product.metafields.custom.product_trials__trial_title -%}
                 <div class="carousel-cell">
                   {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_trials__side-by-side[forloop.index0] , src_mobile: product.metafields.custom.product_trials__side-by-side[forloop.index0], reveal: false, %}
                 </div>
               {%- endfor -%}
-    
             </div>
-
-
+          {%- endif -%}
+      
 
         </div>
         <div class="BeforeAfter__TextContainer">
@@ -38,7 +41,7 @@
       </div>
     </div>
   </section>
-{%- endunless -%}
+
 
 <style>
   #shopify-section-{{ section.id }} {
@@ -68,6 +71,7 @@
   }
 </style>
 
+{%- if product.metafields.custom.product_trials__side-by-side.size > 1 -%}
 <script>
 window.onload = function() {
   const beforeAndAfter = document.querySelector(".custom-carousel");
@@ -76,7 +80,9 @@ window.onload = function() {
   }
 };
 </script>
+{%- endif -%}
 
+{%- endif -%}
 
 {% schema %}
   {

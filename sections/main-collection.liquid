@@ -3,15 +3,26 @@
 {%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
   
 {% for block in section.blocks %}
-  {% assign collectionHandles = block.settings.array_of_collections %}
 
-  {% for item in collectionHandles %}
-    {% if item.handle == collection.handle %}
-      {%- assign validCollectionForImages = true -%}
-      {% break %}
-    {% endif %}
-  {% endfor %}
-{% endfor %}
+  {%- if block.type == "grid_image" -%}
+    {% assign collectionHandles = block.settings.array_of_collections %}
+
+    {% for item in collectionHandles %}
+      {% if item.handle == collection.handle %}
+        {%- assign validCollectionForImages = true -%}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+  {%- elsif block.type == "tolstoy_videos" -%}
+    {% for item in collectionHandles %}
+      {% if item.handle == collection.handle %}
+        {%- assign validCollectionForVideos = true -%}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+  {%- endif -%}
+
+{% endfor %} 
 
 {%- assign collection_sort_by = collection.sort_by | default: collection.default_sort_by -%}
 {%- assign active_filters_count = 0 -%}
@@ -303,8 +314,13 @@
                   {%- endif -%} {% endcomment %}
 
                   {%- render 'product-item', product: product, collection: collection, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, show_cta: true, reduced_content: true -%}
+                  
 
-                  {%- include 'collection--grid-images', validCollectionForImages: validCollectionForImages, reveal: settings.stagger_products_apparition, blockId: forloop.index -%}
+                    {%- include 'collection--grid-images', validCollectionForImages: validCollectionForImages, reveal: settings.stagger_products_apparition, blockId: forloop.index -%}                    
+
+
+
+                    {%- include 'collection--grid-tolstoy-videos', validCollectionForVideos: validCollectionForVideos, reveal: settings.stagger_products_apparition, blockId: forloop.index -%}
 
 
                 {%- endfor -%}
@@ -482,6 +498,123 @@
         }
       ]
     },
+    {
+        "type": "tolstoy_videos",
+        "name": "Tolstoy Videos",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Publish ID #1"
+          },
+          {
+            "type": "text",
+            "id": "publish_id1",
+            "label": "Publish Id",
+            "default": "du8dqmcngwzsr"
+          },
+          {
+            "type": "text",
+            "id": "position_mobile_1",
+            "label": "Position (Mobile)",
+            "info": "Position In The Collection"
+          }, {
+            "type": "text",
+            "id": "position_desktop_1",
+            "label": "Position (Desktop)",
+            "info": "Position In The Collection"
+          }, {
+            "type": "header",
+            "content": "Publish ID #2"
+          }, {
+            "type": "text",
+            "id": "publish_id2",
+            "label": "Publish Id",
+            "default": "blyo29s1sleio"
+          }, {
+            "type": "text",
+            "id": "position_mobile_2",
+            "label": "Position (Mobile)",
+            "info": "Position In The Collection"
+          }, {
+            "type": "text",
+            "id": "position_desktop_2",
+            "label": "Position (Desktop)",
+            "info": "Position In The Collection"
+          }, {
+            "type": "header",
+            "content": "Publish ID #3"
+          }, {
+            "type": "text",
+            "id": "publish_id3",
+            "label": "Publish Id",
+            "default": "qeihro2b9tk5v"
+          }, {
+            "type": "text",
+            "id": "position_mobile_3",
+            "label": "Position (Mobile)",
+            "info": "Position In The Collection"
+          }, {
+            "type": "text",
+            "id": "position_desktop_3",
+            "label": "Position (Desktop)",
+            "info": "Position In The Collection"
+          }, {
+            "type": "header",
+            "content": "Publish ID #4"
+          }, {
+            "type": "text",
+            "id": "publish_id4",
+            "label": "Publish Id",
+            "default": "qeihro2b9tk5v"
+          }, {
+            "type": "text",
+            "id": "position_mobile_4",
+            "label": "Position (Mobile)",
+            "info": "Position In The Collection"
+          }, {
+            "type": "text",
+            "id": "position_desktop_4",
+            "label": "Position (Desktop)",
+            "info": "Position In The Collection"
+          }, {
+            "type": "header",
+            "content": "Publish ID #5"
+          }, {
+            "type": "text",
+            "id": "publish_id5",
+            "label": "Publish Id",
+            "default": "qeihro2b9tk5v"
+          }, {
+            "type": "text",
+            "id": "position_mobile_5",
+            "label": "Position (Mobile)",
+            "info": "Position In The Collection"
+          }, {
+            "type": "text",
+            "id": "position_desktop_5",
+            "label": "Position (Desktop)",
+            "info": "Position In The Collection"
+          }, {
+            "type": "header",
+            "content": "Publish ID #6"
+          }, {
+            "type": "text",
+            "id": "publish_id6",
+            "label": "Publish Id",
+            "default": "qeihro2b9tk5v"
+          }, {
+            "type": "text",
+            "id": "position_mobile_6",
+            "label": "Position (Mobile)",
+            "info": "Position In The Collection"
+          }, {
+            "type": "text",
+            "id": "position_desktop_6",
+            "label": "Position (Desktop)",
+            "info": "Position In The Collection"
+          }
+        ]
+      },
     {
   "type": "grid_image",
   "name": "Grid Image",

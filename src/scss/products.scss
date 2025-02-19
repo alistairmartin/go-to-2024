@@ -1304,6 +1304,10 @@
       align-items: center;
       display: flex;
     }
+
+    #open-trials {
+      margin-top: 10px;
+    }
   }
   
   .BeforeAfter__TextContainer {
@@ -1319,12 +1323,11 @@
     font-size: 36px;
     font-family: var(--heading-font-family);
     font-weight: 700;
-    line-height: 40px;
     margin-bottom: 4px;
-    
+    line-height: 1.1;
+
     @include media-query($medium-up) {
       font-size: 56px;
-      line-height: 64px;
       margin-bottom: 12px;
     }
   }
@@ -1425,6 +1428,7 @@
     }
 
     img {
+      border-radius: var(--image-border-radius);
       @include media-query($small) {
         border-bottom-right-radius: 0 !important;
         border-bottom-left-radius: 0 !important;

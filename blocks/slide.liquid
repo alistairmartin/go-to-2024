@@ -1,27 +1,194 @@
 
+{%- assign classes = "" -%}
+
+{%- capture styles -%}
+  <style>
+  #shopify-block-{{ block.id }} {
+    --background-mobile: {{ block.settings.background_mobile }};
+    --background-desktop: {{ block.settings.background_desktop }};
+
+    --background-text-mobile: {{ block.settings.background_text_mobile }};
+    --background-text-desktop: {{ block.settings.background_text_desktop }};
+
+    --gridGapVerticalMobile: {{ block.settings.grid_gap_vertical_mobile }}vw;
+    --gridGapVerticalDesktop: {{ block.settings.grid_gap_vertical_desktop }}vw;
+
+    --paddingVerticalMobile: {{ block.settings.padding_vertical_mobile }}vw;
+    --paddingHorizontalMobile: {{ block.settings.padding_horizontal_mobile }}vw;
+    
+    --paddingVerticalDesktop: {{ block.settings.padding_vertical_desktop }}vw;
+    --paddingHorizontalDesktop: {{ block.settings.padding_horizontal_desktop }}vw;
+
+    --position-desktop: {{ block.settings.position_desktop }};
+    --position-mobile: {{ block.settings.position_mobile }};
+
+    --item-alignment-mobile: {{ block.settings.item_alignment_mobile }};
+    --item-alignment-desktop: {{ block.settings.item_alignment_desktop }};
+
+    --max-width-mobile: {{ block.settings.max_width_value_mobile }}%;
+    --max-width-desktop: {{ block.settings.max_width_value_desktop }}%;
+
+    --video-aspect-ratio-mobile: {{ block.settings.video_aspect_ratio_mobile | times: 100.000 }}%;
+    --video-aspect-ratio-desktop: {{ block.settings.video_aspect_ratio_desktop | times: 100.000 }}%;
+  }
+
+  
+
+  
+</style>
+{%- endcapture -%}
+{{- styles | strip_newlines | remove:" " | strip -}}
+
+{%- assign classes = "" -%}
+
+{% comment %} {%- if block.settings.max_width_enabled_desktop == "enabled" -%}
+     
+  {% elsif block.settings.page_width == "large"  %}
+    --max-width-desktop: 1360px;
+  {% elsif block.settings.page_width == "medium" %}
+        --max-width-desktop: 670px;
+  {% elsif block.settings.page_width == "small" %}
+    --max-width-desktop: 670px;
+    {% else %}
+    --max-width-desktop: unset;
+  {%- endif -%} {% endcomment %}
 
 
+    {% comment %} MOBILE --- Positioning {% endcomment %}
 
+    {%- if block.settings.position_mobile == "top"  -%}
+      {% assign classes = classes | append: " absolute-top--mobile" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_mobile == "center"  -%}
+      {% assign classes = classes | append: " absolute-center--mobile" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_mobile == "bottom"  -%}
+      {% assign classes = classes | append: " absolute-bottom--mobile" %}
+    {%- endif -%}
+
+    {% comment %} DESKTOP --- Positioning {% endcomment %}
+
+    {%- if block.settings.position_desktop == "top_left"  -%}
+      {% assign classes = classes | append: " absolute-top_left--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_desktop == "top_center"  -%}
+      {% assign classes = classes | append: " absolute-top_center--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_desktop == "top_right"  -%}
+      {% assign classes = classes | append: " absolute-top_right--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_desktop == "middle_left"  -%}
+      {% assign classes = classes | append: " absolute-middle_left--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_desktop == "middle_center"   -%}
+      {% assign classes = classes | append: " absolute-middle_center--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_desktop == "middle_right"  -%}
+      {% assign classes = classes | append: " absolute-middle_right--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_desktop == "bottom_left"  -%}
+      {% assign classes = classes | append: " absolute-bottom_left--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_desktop == "bottom_center"  -%}
+      {% assign classes = classes | append: " absolute-bottom_center--desktop" %}
+    {%- endif -%}
+
+    {%- if block.settings.position_desktop == "bottom_right"  -%}
+      {% assign classes = classes | append: " absolute-bottom_right--desktop" %}
+    {%- endif -%}
 
 <div class="custom-slideshow--slide">
-
-    <div class="slide-group">
+  
+    <div class="slide-group {{ classes }}">
     {% content_for 'blocks' %}
     </div>
 
-    {%- capture class_attribute -%}{% if block.settings.mobile_image != blank %}hide-mobile{% endif %}{%- endcapture -%}
-    {%- capture sizes_attribute -%}(max-width: 999px) 100vw, 100vw{%- endcapture -%}
-    {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: class_attribute }}
 
-    {%- if block.settings.mobile_image != blank -%}
-    {%- capture class_attribute -%}hide-desktop{%- endcapture -%}
-    {%- capture sizes_attribute -%}(max-width: 999px) 100vw, 100vw{%- endcapture -%}
-        {{ block.settings.mobile_image | image_url: width: block.settings.mobile_image.width | image_tag: loading: 'lazy', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400', class: class_attribute }}
-    {%- endif -%}
+    <a href="{{ block.settings.url }}">
+      {%- if block.settings.background_media == "video" -%}
+        <div class="custom-slideshow--slide-video" id="video-container-{{ block.id }}">
+          <div class="video-poster-overlay" id="poster-{{ block.id }}"></div>
+          <div id="video-{{ block.id }}"></div>
+        </div>
+      {% else %}
+  
+        {%- capture class_attribute -%}{% if block.settings.mobile_image != blank %}hide-mobile{% endif %}{%- endcapture -%}
+        {%- capture sizes_attribute -%}(max-width: 999px) 100vw, 100vw{%- endcapture -%}
+        {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: class_attribute }}
+  
+        {%- if block.settings.mobile_image != blank -%}
+        {%- capture class_attribute -%}hide-desktop{%- endcapture -%}
+        {%- capture sizes_attribute -%}(max-width: 999px) 100vw, 100vw{%- endcapture -%}
+            {{ block.settings.mobile_image | image_url: width: block.settings.mobile_image.width | image_tag: loading: 'lazy', sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400', class: class_attribute }}
+        {%- endif -%}
+  
+      {%- endif -%}
+    </a>
 
 </div>
 
+  {%- if block.settings.background_media == "video" -%}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var videoId = "{{ block.settings.video_url_desktop | remove: 'https://vimeo.com/' }}";
+      var vimeoEmbedUrl = `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId}`;
 
+      if (window.innerWidth > 469) {
+        var videoId = "{{ block.settings.video_url_desktop | remove: 'https://vimeo.com/' }}";
+        var vimeoEmbedUrl = `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId}`;
+
+      } else {
+        var videoId = "{{ block.settings.video_url_mobile | remove: 'https://vimeo.com/' }}";
+        var vimeoEmbedUrl = `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId}`;
+
+      }
+
+      fetch(vimeoEmbedUrl)
+        .then(response => response.json())
+        .then(data => {
+          let thumbnailUrl = data.thumbnail_url;
+          var posterOverlay = document.getElementById('poster-{{ block.id }}');
+
+          if (window.innerWidth > 469) {
+            let parts = thumbnailUrl.split("_");
+            let lastPart = parts.pop(); 
+            let updatedThumbnailUrl = parts.join("_") + "_252x108." + lastPart.split(".").pop();
+            posterOverlay.style.backgroundImage = `url('${updatedThumbnailUrl}')`;
+          } else {
+            let parts = thumbnailUrl.split("_");
+            let lastPart = parts.pop(); 
+            let updatedThumbnailUrl = parts.join("_") + "_250x250." + lastPart.split(".").pop();
+            posterOverlay.style.backgroundImage = `url('${updatedThumbnailUrl}')`;
+          }
+
+        })
+        .catch(err => console.error('Error fetching thumbnail:', err));
+
+
+      var playerOptions = {
+        id: videoId,
+        background: true,
+        loop: true,
+        autoplay: true,
+        muted: true
+      };
+
+      var player = new Vimeo.Player('video-{{ block.id }}', playerOptions);
+      player.on('play', function() {
+        document.getElementById('poster-{{ block.id }}').classList.add('hide-poster');
+      });
+    });
+  </script>
+  {%- endif -%}
 
 {% schema %}
 {
@@ -35,56 +202,133 @@
           "info": "Only Admin Will See This.",
           "default": "⏹️⏹️ Container - START"
         },
+
         {
           "type": "header",
-          "content": "--- IMAGES  ---"
+          "content": "--- 🔗 LINK  ---"
         },
-    {
-        "type": "image_picker",
-        "id": "image",
-        "label": "Image"
-    },
-    {
-        "type": "image_picker",
-        "id": "mobile_image",
-        "label": "Mobile image",
-        "info": "Optional"
-    },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+
+        {
+          "type": "header",
+          "content": "--- 📹 MEDIA TYPE ---"
+        },
+        {
+          "type": "select",
+          "id": "background_media",
+          "label": "Background Media",
+          "default": "image",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "video",
+              "label": "Video"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "--- 🌠 IMAGE  ---"
+        },
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+        },
+        {
+            "type": "image_picker",
+            "id": "mobile_image",
+            "label": "Mobile image",
+            "info": "Optional"
+        },
+        {
+          "type": "header",
+          "content": "--- 🎥 VIDEO  ---"
+        },
+        {
+          "type": "video_url",
+          "id": "video_url_desktop",
+          "label": "Video (Desktop)",
+          "accept": [
+            "vimeo"
+          ]
+        },
+        {
+          "type": "select",
+          "id": "video_aspect_ratio_desktop",
+          "label": "Video aspect ratio (Desktop)",
+          "options": [
+            {
+              "value": "1",
+              "label": "Square (1:1)"
+            },
+            {
+              "value": "1.3333333",
+              "label": "Normal (4:3)"
+            },
+            {
+              "value": "0.5625",
+              "label": "Cinematic (16:9)"
+            },
+            {
+              "value": "0.4285714286",
+              "label": "Wide (21:9)"
+            }
+          ]
+        },
+        {
+          "type": "video_url",
+          "id": "video_url_mobile",
+          "label": "Video (Mobile)",
+          "accept": [
+            "vimeo"
+          ]
+        },
+        {
+          "type": "select",
+          "id": "video_aspect_ratio_mobile",
+          "label": "Video aspect ratio (Mobile)",
+          "options": [
+            {
+              "value": "1",
+              "label": "Square (1:1)"
+            },
+            {
+              "value": "1.3333333",
+              "label": "Normal (4:3)"
+            },
+            {
+              "value": "1.7777778",
+              "label": "Cinematic (16:9)"
+            },
+            {
+              "value": "2.3333333",
+              "label": "Wide (21:9)"
+            }
+          ]
+        },
         {
           "type": "header",
           "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---"
         },
-
         {
-          "type": "select",
-          "id": "page_width",
-          "label": "Inner Slide Width",
-          "info": "Will Overwrite the 'Container Width' settings below.",
-          "options": [
-            {
-              "value": "unset",
-              "label": "Unset"
-            },
-            {
-              "value": "small",
-              "label": "Small"
-            },
-            {
-              "value": "medium",
-              "label": "Medium"
-            },
-            {
-              "value": "large",
-              "label": "Large"
-            }
-          ],
-          "default": "unset"
+          "type": "color",
+          "id": "background_desktop",
+          "label": "Background",
+          "default": "rgba(0,0,0,0)"
         },
         {
-        "type": "color",
-        "id": "background_desktop",
-        "label": "Background",
-        "default": "rgba(0,0,0,0)"
+          "type": "color",
+          "id": "background_text_desktop",
+          "label": "Background (Text)",
+          "default": "rgba(0,0,0,0)"
         },
         {
           "type": "header",
@@ -135,6 +379,26 @@
           ]
         },
         {
+          "type": "select",
+          "id": "item_alignment_desktop",
+          "label": "Align Items",
+          "default": "center",
+          "options": [
+            {
+              "value": "start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "end",
+              "label": "right"
+            }
+          ]
+        },
+        {
           "type": "header",
           "content": "⏹️ Slide Padding (Desktop)",
           "info": "Space around the container. Use values that are multiples of 8. E.g. 8. 16, 32. Can use have half values. E.g. 4,12."
@@ -143,11 +407,21 @@
           "type": "range",
           "id": "padding_vertical_desktop",
           "min": 0,
-          "max": 500,
-          "step": 5,
-          "unit": "px",
+          "max": 10,
+          "step": 0.1,
+          "unit": "vw",
           "default": 0,
           "label": "↕️ Top/Bottom"
+        },
+        {
+          "type": "range",
+          "id": "padding_horizontal_desktop",
+          "min": 0,
+          "max": 10,
+          "step": 0.1,
+          "unit": "vw",
+          "default": 0,
+          "label": "↔️ Left/Right"
         },
         {
           "type": "header",
@@ -158,51 +432,25 @@
           "type": "range",
           "id": "grid_gap_vertical_desktop",
           "min": 0,
-          "max": 100,
-          "step": 1,
-          "unit": "px",
+          "max": 5,
+          "step": 0.1,
+          "unit": "vw",
           "default": 0,
           "label": "↕️ Top/Bottom"
-        },
-        {
-          "type": "range",
-          "id": "grid_gap_horizontal_desktop",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "unit": "px",
-          "default": 0,
-          "label": "↔️ Left/Right"
         },
         {
           "type": "header",
           "content": "📏 Max Width (Desktop)"
         },
         {
-          "type": "select",
-          "id": "max_width_enabled_desktop",
-          "label": "Enable Max Width?",
-          "default": "disabled",
-          "options": [
-            {
-              "value": "disabled",
-              "label": "Disabled"
-            },
-            {
-              "value": "enabled",
-              "label": "Custom Width"
-            }
-          ]
-        },
-        {
           "type": "range",
           "id": "max_width_value_desktop",
-          "min": 100,
-          "max": 2000,
-          "step": 20,
-          "unit": "px",
-          "default": 400,
-          "label": "Max Width (Pixels)"
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 100,
+          "label": "Max Width (%)"
         },
         {
           "type": "header",
@@ -215,22 +463,24 @@
         "default": "rgba(0,0,0,0)"
         },
         {
+          "type": "color",
+          "id": "background_text_mobile",
+          "label": "Background (Text)",
+          "default": "rgba(0,0,0,0)"
+        },
+        {
           "type": "select",
           "id": "position_mobile",
           "label": "Position",
-          "default": "unset",
+          "default": "center",
           "options": [
             {
-              "value": "unset",
-              "label": "Unset"
+              "value": "top",
+              "label": "Top"
             },
             {
-              "value": "flex-start",
-              "label": "Start"
-            },
-            {
-              "value": "flex-end",
-              "label": "End"
+              "value": "bottom",
+              "label": "Bottom"
             },
             {
               "value": "center",
@@ -239,17 +489,37 @@
           ]
         },
         {
+          "type": "select",
+          "id": "item_alignment_mobile",
+          "label": "Align Items",
+          "default": "center",
+          "options": [
+            {
+              "value": "start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }, 
+            {
+              "value": "end",
+              "label": "right"
+            }
+          ]
+        },
+        {
           "type": "header",
-          "content": "⏹️ Container Padding (Mobile)",
+          "content": "⏹️ Slide Padding (Mobile)",
           "info": "Space around the container. Use values that are multiples of 8. E.g. 8. 16, 32. Can use have half values. E.g. 4,12."
         },
         {
           "type": "range",
           "id": "padding_vertical_mobile",
           "min": 0,
-          "max": 100,
-          "step": 1,
-          "unit": "px",
+          "max": 10,
+          "step": 0.1,
+          "unit": "vw",
           "default": 0,
           "label": "↕️ Top/Bottom"
         },
@@ -257,9 +527,9 @@
           "type": "range",
           "id": "padding_horizontal_mobile",
           "min": 0,
-          "max": 100,
-          "step": 1,
-          "unit": "px",
+          "max": 10,
+          "step": 0.1,
+          "unit": "vw",
           "default": 0,
           "label": "↔️ Left/Right"
         },
@@ -272,51 +542,25 @@
           "type": "range",
           "id": "grid_gap_vertical_mobile",
           "min": 0,
-          "max": 100,
-          "step": 1,
-          "unit": "px",
+          "max": 5,
+          "step": 0.1,
+          "unit": "vw",
           "default": 0,
           "label": "↕️ Top/Bottom"
-        },
-        {
-          "type": "range",
-          "id": "grid_gap_horizontal_mobile",
-          "min": 0,
-          "max": 100,
-          "step": 1,
-          "unit": "px",
-          "default": 0,
-          "label": "↔️ Left/Right"
         },
         {
           "type": "header",
           "content": "📏 Max Width (Mobile)"
         },
         {
-          "type": "select",
-          "id": "max_width_enabled_mobile",
-          "label": "Enable Max Width?",
-          "default": "disabled",
-          "options": [
-            {
-              "value": "disabled",
-              "label": "Disabled"
-            },
-            {
-              "value": "enabled",
-              "label": "Custom Width"
-            }
-          ]
-        },
-        {
           "type": "range",
           "id": "max_width_value_mobile",
-          "min": 0,
-          "max": 500,
-          "step": 10,
-          "unit": "px",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
           "default": 100,
-          "label": "Max Width (Pixels)"
+          "label": "Max Width (%)"
         }
   ],
   "presets": [

@@ -4,11 +4,227 @@
 
 .custom-slideshow--slide {
     position: relative;
-    .slide-group {
-        position: absolute;
+    width: 100%;
+    height: 100%;
+
+    background:var(--background-mobile);
+    // display: grid;
+    // grid-template-columns: repeat(var(--gridMobile), 1fr);
+    // gap: var(--gridGapVerticalMobile) var(--gridGapHorizontalMobile);
+    // padding: var(--paddingVerticalMobile) var(--paddingHorizontalMobile);
+    // background: var(--background-mobile);
+    // position: var(--position-mobile);
+
+    
+    @include media-query($medium-up) {
+        // grid-template-columns: repeat(var(--gridDesktop), 1fr);
+        // gap: var(--gridGapVerticalDesktop) var(--gridGapHorizontalDesktop);
+        // padding: var(--paddingVerticalDesktop) var(--paddingHorizontalDesktop);
+        // max-width: var(--max-width-desktop);
+        background: var(--background-desktop);
+        // position: var(--position-desktop);
+      }
+
+      .custom-slideshow--slide-video {
+        position: relative;
+        background-color: #000; // fallback while thumbnail loads
+      
+        .video-poster-overlay {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          background-size: contain;
+          background-position: center;
+          background-repeat: no-repeat;
+          transition: opacity 0.5s;
+          filter: blur(4px);
+        }
+      
+        .hide-poster {
+          opacity: 0;
+          pointer-events: none;
+        }
+      }
+
+
+      .custom-slideshow--slide-video {
+        position: relative;
+        padding-bottom: var(--video-aspect-ratio-mobile);
+        height: 0;
         width: 100%;
         height: 100%;
-        left: 0;
-        top: 0;
+        background: var(--primary-button-background);
+        border-radius: var(--rounded-video-corners-mobile);
+
+        
+    
+        @include media-query($medium-up) {
+          border-radius: var(--rounded-video-corners-desktop);
+          padding-bottom: var(--video-aspect-ratio-desktop);
+          overflow: hidden;
+        }
+    
+        iframe {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+    .slide-group {
+
+        position: absolute;
+        width: 100%;
+        // height: 100%;
+        // left: 0;
+        // top: 0;
+        display: flex;
+        flex-direction: column;
+        background: var(--background-text-mobile);
+        gap: var(--gridGapVerticalMobile) 0;
+        max-width: var(--max-width-mobile);
+        padding: var(--paddingVerticalMobile) var(--paddingHorizontalMobile);
+        align-items: var(--item-alignment-mobile);
+
+        @include media-query($medium-up) {
+          background: var(--background-text-desktop);
+          gap: var(--gridGapVerticalDesktop) 0;
+          max-width: var(--max-width-desktop);
+          padding: var(--paddingVerticalDesktop) var(--paddingHorizontalDesktop);
+          align-items: var(--item-alignment-desktop);
+        }
+
+        &.absolute-top--mobile {
+            @include media-query($small) {
+            position: absolute;
+            left: 50%;
+            top: 0%;
+            transform: translate(-50%, 0%);
+            z-index: 3;
+            }
+          }
+      
+          &.absolute-bottom--mobile {
+            @include media-query($small) {
+            position: absolute;
+            left: 50%;
+            top: unset;
+            bottom: 0%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            }
+          }
+        
+      
+          &.absolute-center--mobile {
+            @include media-query($small) {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            }
+          }
+        
+          &.absolute-top_left--desktop {
+            @include media-query($medium-up) {
+            position: absolute;
+            left: 0%;
+            top: 0%;
+            transform: translate(0%, 0%);
+            z-index: 3;
+            }
+          }
+      
+          &.absolute-top_center--desktop {
+            @include media-query($medium-up) {
+            position: absolute;
+            left: 50%;
+            top: 0%;
+            transform: translate(-50%, 0%);
+            z-index: 3;
+            }
+          }
+      
+          &.absolute-top_right--desktop {
+            @include media-query($medium-up) {
+            position: absolute;
+            left: unset;
+            right: 0;
+            top: 0%;
+            transform: translate(0%, 0%);
+            z-index: 3;
+            }
+          }
+      
+          &.absolute-middle_left--desktop {
+            @include media-query($medium-up) {
+            position: absolute;
+            left: 0%;
+            top: 50%;
+            transform: translate(0%, -50%);
+            z-index: 3;
+            }
+          }
+      
+          &.absolute-middle_center--desktop {
+            @include media-query($medium-up) {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            }
+          }
+      
+          &.absolute-middle_right--desktop {
+            @include media-query($medium-up) {
+            position: absolute;
+            right: 0%;
+            top: 50%;
+            transform: translate(0%, -50%);
+            z-index: 3;
+            }
+          }
+      
+      
+          &.absolute-bottom_left--desktop {
+            @include media-query($medium-up) {
+            position: absolute;
+            left: 0%;
+            bottom: 0%;
+            transform: translate(0%, 0%);
+            z-index: 3;
+            }
+          }
+      
+          &.absolute-bottom_center--desktop {
+            @include media-query($medium-up) {
+            position: absolute;
+            top: unset;
+            left: 50%;
+            bottom: 0%;
+            transform: translate(-50%, 0%);
+            z-index: 3;
+            }
+          }
+      
+          &.absolute-bottom_right--desktop {
+            @include media-query($medium-up) {
+            position: absolute;
+            left: unset;
+            right: 0;
+            bottom: 0;
+            top: unset;
+            transform: translate(0%, 0%);
+            z-index: 3;
+            }
+          }
     }
+
+
+
 }

@@ -1,20 +1,13 @@
-{%- assign showSection = false -%}
 
+{%- assign tagCounter = 0 -%}
 
 {%- for tag in blog.all_tags -%}
     {% if current_tags contains tag %}
         {%- assign currentTag = tag -%}
+        {%- assign tagCounter = tagCounter | plus: 1 -%}
       {%- endif -%}
 {%- endfor -%} 
 
-{%- for block in section.blocks -%}
-    {%- if currentTag == block.settings.article-tag -%}
-        {%- assign showSection = true -%}
-    {%- endif -%}
-{% endfor %}
-
-
-{%- if showSection == true -%}
 
 {%- if section.settings.background_type == 'boxed' -%}
     {%- assign is_boxed = true -%}
@@ -74,38 +67,60 @@
   
           <div class="content-box content-box--{{ section.settings.text_width }} content-box--text-{{ text_alignment }} content-box--{{ text_position }} text-container">
 
-                {%- for block in section.blocks -%}
+                {%- if tagCounter == 0 -%}
+                    {%- if section.settings.subheading != blank -%}
+                      <h2 class="heading heading--small">{{ section.settings.subheading | escape }}</h2>
+                    {%- endif -%}
+          
+                    {%- if section.settings.title != blank -%}
+                      <h3 class="heading h3">{{ section.settings.title | escape }}</h3>
+                    {%- endif -%}
+          
+                    {%- if section.settings.content != blank -%}
+                      {{- section.settings.content -}}
+                    {%- endif -%}
+          
+                    {%- if section.settings.button_text != blank -%}
+                      <div class="button-wrapper">
+                        <a href="{{ section.settings.button_link }}" class="button button--primary">{{ section.settings.button_text | escape }}</a>
+                      </div>
+                    {%- endif -%}
+                {% else %}
+
+                  {%- for block in section.blocks -%}
                     {%- if currentTag == block.settings.article-tag -%}
                         
-                        {%- if block.settings.subheading != blank -%}
-                            <h2 class="heading heading--small">{{ block.settings.subheading | escape }}</h2>
-                            {%- endif -%}
-                
-                            {%- if block.settings.title != blank -%}
-                            <h3 class="heading h3">{{ block.settings.title | escape }}</h3>
-                            {%- endif -%}
-                
-                            {%- if block.settings.content != blank -%}
-                            {{- block.settings.content -}}
-                            {%- endif -%}
-                
-                            {%- if block.settings.button_text != blank -%}
-                            <div class="button-wrapper">
-                                <a href="{{ block.settings.button_link }}" class="button button--primary">{{ block.settings.button_text | escape }}</a>
-                            </div>
-                            {%- endif -%}
+                            {%- if block.settings.subheading != blank -%}
+                                <h2 class="heading heading--small">{{ block.settings.subheading | escape }}</h2>
+                                {%- endif -%}
+                    
+                                {%- if block.settings.title != blank -%}
+                                <h3 class="heading h3">{{ block.settings.title | escape }}</h3>
+                                {%- endif -%}
+                    
+                                {%- if block.settings.content != blank -%}
+                                {{- block.settings.content -}}
+                                {%- endif -%}
+                    
+                                {%- if block.settings.button_text != blank -%}
+                                <div class="button-wrapper">
+                                    <a href="{{ block.settings.button_link }}" class="button button--primary">{{ block.settings.button_text | escape }}</a>
+                                </div>
+                                {%- endif -%}
 
-                        {% break %}
-                    {%- endif -%}
+                                {% break %}
+                            {%- endif -%}
+                    {%- endfor -%}
 
-             {%- endfor -%}
+                {%- endif -%}
+ 
+             
           </div>
         </div>
       </div>
     </div>
   </section>
 
-{%- endif -%}
   
   {% schema %}
   {
@@ -116,119 +131,147 @@
     },
     "settings": [
       {
+    "type": "text",
+    "id": "id",
+    "label": "ID",
+    "info": "Optional. Used with in-page navigation."
+    },
+    {
       "type": "text",
-      "id": "id",
-      "label": "ID",
-      "info": "Optional. Used with in-page navigation."
-      },
-      {
-        "type": "select",
-        "id": "background_type",
-        "label": "Background",
-        "options": [
-          {
-            "value": "full_width",
-            "label": "Full width"
-          },
-          {
-            "value": "boxed",
-            "label": "Boxed"
-          }
-        ],
-        "default": "full_width"
-      },
-      {
-        "type": "select",
-        "id": "text_width",
-        "label": "Text width",
-        "options": [
-          {
-            "value": "small",
-            "label": "Small"
-          },
-          {
-            "value": "medium",
-            "label": "Medium"
-          },
-          {
-            "value": "large",
-            "label": "Large"
-          },
-          {
-            "value": "fill",
-            "label": "Fill screen"
-          }
-        ],
-        "default": "medium"
-      },
-      {
-        "type": "select",
-        "id": "text_position",
-        "label": "Text position",
-        "options": [
-          {
-            "value": "left",
-            "label": "Left"
-          },
-          {
-            "value": "center",
-            "label": "Center"
-          },
-          {
-            "value": "right",
-            "label": "Right"
-          }
-        ],
-        "default": "center"
-      },
-      {
-        "type": "select",
-        "id": "text_alignment",
-        "label": "Text alignment",
-        "options": [
-          {
-            "value": "left",
-            "label": "Left"
-          },
-          {
-            "value": "center",
-            "label": "Center"
-          },
-          {
-            "value": "right",
-            "label": "Right"
-          }
-        ],
-        "default": "center"
-      },
-      {
-        "type": "header",
-        "content": "Colors"
-      },
-      {
-        "type": "color",
-        "id": "background",
-        "label": "Background",
-        "default": "rgba(0,0,0,0)"
-      },
-      {
-        "type": "color",
-        "id": "text_color",
-        "label": "Text color",
-        "default": "rgba(0,0,0,0)"
-      },
-      {
-        "type": "color",
-        "id": "button_background",
-        "label": "Button background",
-        "default": "rgba(0,0,0,0)"
-      },
-      {
-        "type": "color",
-        "id": "button_text_color",
-        "label": "Button text",
-        "default": "rgba(0,0,0,0)"
-      }
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Talk about your brand"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background",
+      "options": [
+        {
+          "value": "full_width",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "full_width"
+    },
+    {
+      "type": "select",
+      "id": "text_width",
+      "label": "Text width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "fill",
+          "label": "Fill screen"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Text position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "rgba(0,0,0,0)"
+    }
     ],
     "blocks": [
       {

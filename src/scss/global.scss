@@ -7,6 +7,7 @@
 @import "blocks/text";
 
 @import "cart.scss";
+@import "campaigns.scss";
 
 // #preview-bar-iframe {
 //   display: none !important;
@@ -3627,10 +3628,15 @@ product-rerender {
 
 .shopify-section--featured-product-carousel-text {
 
+
   padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .section__color-wrapper {
+    background: transparent;
+  }
 
   @include media-query($large-up) {
     padding: 40px 0;
@@ -3638,6 +3644,7 @@ product-rerender {
 
   section {
     width: 100%;
+    z-index: 3;
 
 
     .text-container {
@@ -3699,13 +3706,13 @@ product-rerender {
   }
 
   .section__color-wrapper {
-    min-height: 415px;
+    min-height: 40vh;
     position: relative;
   }
 
   .featured-carousel-product {
     width: 100%;
-    max-width: 800px;
+    // max-width: 800px;
     // max-height: 53vh;
     height: 100%;
     transform-style: preserve-3d;
@@ -3717,9 +3724,11 @@ product-rerender {
 
     @include media-query($large-up) {
       height: 100%;
-      width: 50%;
+      // width: 50%;
+      width: 100%;
       position: absolute;
-      top: -25%;
+      // top: -25%;
+      top: 0;
       right: 0;
     }
 
@@ -3732,7 +3741,7 @@ product-rerender {
     font-size: 18px;
     color: #000;
     cursor: pointer;
-    z-index: 2;
+    z-index: 3;
     width: 60px;
     height: 40px;
     background: #fff;
@@ -3745,7 +3754,7 @@ product-rerender {
     @include media-query($large-up) {
       width: 72px;
       height: 52px;
-      top: 75%;
+      top: 17vh;
     }
 
     &.left {
@@ -3756,7 +3765,7 @@ product-rerender {
       right: -20px;
 
       @include media-query($large-up) {
-        right: 0%;
+        right: 5%;
       }
     }
   }
@@ -3913,6 +3922,33 @@ product-rerender {
 
   .button-wrapper {
     display: flex;
+  }
+
+  .alt-mode {
+      .section__color-wrapper {
+        min-height: 415px;
+      }
+
+      .featured-carousel-product {
+        max-width: 800px;
+
+        @include media-query($large-up) {
+          top: -25%;
+        }
+      }
+
+      .featured-carousel-product--arrows {
+        @include media-query($large-up) {
+          top: 75%;
+        }
+
+
+      &.right {
+        @include media-query($large-up) {
+          right: 5%;
+        }
+      }
+    }
   }
 }
 

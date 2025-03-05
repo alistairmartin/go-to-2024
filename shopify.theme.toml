@@ -1,5 +1,5 @@
 [environments.au]
-theme = "129096679558"
+theme = "130355101830"
 store = "go-to-skincare"
 password  = "shptka_5ade013fd92c76168c566da7e72001db"
 ignore = ["sections/*.json","config/settings_data.json", "locales/en.default.json", "templates/*.json"]

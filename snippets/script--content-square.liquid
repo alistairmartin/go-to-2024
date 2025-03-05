@@ -6,7 +6,7 @@
 
   {% if customer %}
   {% for tag in customer.tags %}
-    {% if tag contains 'swell_vip_' %}
+    {% if tag contains 'Rivo VIP Tier: ' %}
       {% assign account_loyalty_level_tag = tag %}
       {% break %}
     {% endif %}

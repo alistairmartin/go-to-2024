@@ -1,5 +1,5 @@
-{% assign account_loyalty_level_tag = 'swell_vip_mate' %}
-{% assign secret_level_tag = 'swell_vip_' | append: settings.last_level_name | downcase %}
+{% assign account_loyalty_level_tag = 'Rivo VIP Tier: Mate' %}
+{% assign secret_level_tag = 'Rivo VIP Tier: ' | append: settings.last_level_name | downcase %}
 
 {% assign account_total_spend = 0 %}
 
@@ -10,7 +10,7 @@
 {% endfor %}
 
 {% for tag in customer.tags %}
-  {% if tag contains 'swell_vip_' %}
+  {% if tag contains 'Rivo VIP Tier: ' %}
     {% assign account_loyalty_level_tag = tag %}
   {% endif %}
 {% endfor %}

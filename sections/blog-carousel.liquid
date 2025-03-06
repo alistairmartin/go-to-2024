@@ -1,6 +1,14 @@
+{%- assign showSection = true -%}
 
+{%- if canonical_url contains "?page=" or canonical_url contains "/tagged/" -%}
+  {%- assign showSection = false -%}
+{%- endif -%}
 
+{%- if canonical_url contains "?page=1" -%}
+  {%- assign showSection = true -%}
+{%- endif -%}
 
+{%- if showSection == true -%}
 {%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
   {%- assign blends_with_background = false -%}
 {%- else -%}
@@ -136,7 +144,7 @@
 
                     {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: class_attribute }}
 
-                    <div class="heading h2">
+                    <div class="heading h4">
                       {{ block.settings.title }}
                     </div>
                      
@@ -175,11 +183,12 @@
     </div>
   </div>
 </section>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Blog Carousel",
-  "class": "shopify-section--featured-collections",
+  "class": "shopify-section--featured-collections blog-carousel",
   "disabled_on": {
     "templates": ["password"],
     "groups": ["header", "custom.overlay"]

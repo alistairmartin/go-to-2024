@@ -1314,7 +1314,7 @@ store-header.background-blur {
     }
 
     .article-item__image-container {
-      height: 100%;
+      // height: 100%;
       aspect-ratio: unset !important;
       margin: 0;
 
@@ -4620,7 +4620,7 @@ product-rerender {
 
     .article-item__image-container {
       margin: 0;
-      height: 100%;
+      // height: 100%;
 
       @include media-query($small) {
         border-radius: 0 !important;

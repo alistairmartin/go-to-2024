@@ -1,6 +1,8 @@
 
 
 {%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+{%- assign validCollectionForImages = false -%}
+{%- assign validCollectionForImages = false -%}
   
 {% for block in section.blocks %}
 
@@ -8,6 +10,7 @@
     {% assign collectionHandles = block.settings.array_of_collections %}
 
     {% for item in collectionHandles %}
+
       {% if item.handle == collection.handle %}
         {%- assign validCollectionForImages = true -%}
         {% break %}
@@ -315,13 +318,14 @@
 
                   {%- render 'product-item', product: product, collection: collection, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, show_cta: true, reduced_content: true -%}
                   
+                  {%- if validCollectionForImages == true -%}
+                    {%- include 'collection--grid-images', reveal: settings.stagger_products_apparition, blockId: forloop.index -%}                    
+                  {%- endif -%}
 
-                    {%- include 'collection--grid-images', validCollectionForImages: validCollectionForImages, reveal: settings.stagger_products_apparition, blockId: forloop.index -%}                    
 
-
-
-                    {%- include 'collection--grid-tolstoy-videos', validCollectionForVideos: validCollectionForVideos, reveal: settings.stagger_products_apparition, blockId: forloop.index -%}
-
+                  {%- if validCollectionForVideos == true -%}
+                    {%- include 'collection--grid-tolstoy-videos', reveal: settings.stagger_products_apparition, blockId: forloop.index -%}
+                  {%- endif -%}
 
                 {%- endfor -%}
               </div>

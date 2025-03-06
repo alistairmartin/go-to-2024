@@ -3,7 +3,20 @@
 
 {%- for block in section.blocks -%}
 
+    {%- assign collectionFound = false -%}
+
     {%- if block.type == "grid_image" -%}
+
+        {% assign collectionHandles = block.settings.array_of_collections %}
+        {% for item in collectionHandles %}
+            {% if item.handle == collection.handle %}
+            {%- assign collectionFound = true -%}
+            {% break %}
+            {% endif %}
+        {% endfor %}
+
+
+{%- if collectionFound == true -%}
 {%- for i in (1..9) -%}
 
 {% capture mobileImageSettings %}mobile_image_{{ i }}{% endcapture %}
@@ -121,6 +134,7 @@
 {% endif %}  
 
 {%- endfor -%}
+{%- endif -%}
 
 {%- endif -%}
 {%- endfor -%}

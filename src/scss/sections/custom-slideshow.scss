@@ -97,6 +97,10 @@
           align-items: var(--item-alignment-desktop);
         }
 
+        img {
+          width: 100%;
+        }
+
         &.absolute-top--mobile {
             @include media-query($small) {
             position: absolute;

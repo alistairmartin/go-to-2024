@@ -550,6 +550,7 @@
       }
 
       img {
+        object-fit: cover;
         border-radius: 10px;
         width: 100%;
         @include media-query($medium-up) {

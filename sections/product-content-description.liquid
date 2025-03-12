@@ -183,11 +183,40 @@
         </p>
      
 
-        {%- if product.metafields.custom.ingredients != blank -%}
+
+
+        {%- for tag in product.tags -%}
+          {%- if tag contains 'ing_' -%}
+            {%- assign ingredientFound = true -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+
+        {%- if product.metafields.custom.ingredients != blank and ingredientFound -%}
           <div class="popover-buttons">
             <button type="button" is="toggle-button" class="link link--primary hidden-phone" aria-controls="ingredients-glossary-drawer" aria-expanded="false">View All Ingredients {%- render 'icon' with "plus" -%}</button>
             <button type="button" is="toggle-button" class="link link--primary hidden-tablet-and-up" aria-controls="ingredients-glossary-popover" aria-expanded="false">View All Ingredients {%- render 'icon' with "plus" -%}</button>
           </div>
+        {% elsif product.metafields.custom.ingredients != blank %}
+          {%- capture glossaryContent -%}
+            {%- assign glossaryMetaobjects = product.metafields.custom.ingredients.value | sort: "title" -%}
+            <div class="ingredients-glossary">
+            <div class="ingredients-glossary--description ">
+            {% for metaobject in glossaryMetaobjects %}
+              <div class="ingredients-glossary--description-item">
+                <strong>{{ metaobject.title }}</strong>
+                <div>
+                  {{ metaobject.description | metafield_tag }}
+                </div>
+            </div>
+            {% endfor %}  
+            </div>
+            </div>
+          {%- endcapture -%}
+
+          {%- assign popoverTitle = "Ingredients For " | append: product.title -%}
+          {%- render 'popover', popoverId: "ingredients-glossary", popoverTitle: popoverTitle, popoverButton: "View All Ingredients", popoverContent: glossaryContent -%}
+  
         {%- endif -%}
 
    

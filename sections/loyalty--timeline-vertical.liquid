@@ -3,6 +3,7 @@
 
 #shopify-section-{{ section.id }}  {
     --background-color: {{ section.settings.background }};
+    background: {{ section.settings.background }} !important;
 }
 
 {% for block in section.blocks %}

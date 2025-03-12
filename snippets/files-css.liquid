@@ -32,6 +32,10 @@
     <link rel="stylesheet" href="{{ 'loyalty-landing.css' | asset_url }}">
 {%- endif -%}
 
+{%- if page.handle contains "loyalty" -%}
+    <link rel="stylesheet" href="{{ 'loyalty-landing.css' | asset_url }}">
+{%- endif -%}
+
 
 {%- if brand == "bro-to" -%}
     <link rel="stylesheet" href="{{ 'brand--bro-to.css' | asset_url }}">

@@ -12,7 +12,7 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "Any template that has a suffix of 'vip-access' will be locked down unless the customer is logged in and has the corect loyalty tag." 
+        "content": "Any template that has a suffix of 'vip-access' will be locked down unless the customer is logged in and has the corect loyalty tag."
       },
       {
         "type": "header",
@@ -60,7 +60,8 @@
         "default": true
       }
     ]
-  },{
+  },
+  {
     "name": "🟪 Colors (Go-To)",
     "settings": [
       {
@@ -225,7 +226,6 @@
         "type": "header",
         "content": "Headings"
       },
- 
       {
         "type": "select",
         "id": "heading_font_size",
@@ -546,7 +546,6 @@
         "type": "header",
         "content": "Headings"
       },
- 
       {
         "type": "select",
         "id": "broto_heading_font_size",
@@ -867,7 +866,6 @@
         "type": "header",
         "content": "Headings"
       },
- 
       {
         "type": "select",
         "id": "groto_heading_font_size",

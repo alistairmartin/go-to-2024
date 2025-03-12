@@ -69,17 +69,6 @@
   <div class="account account--order-list">
     <div class="container">
       {%- if customer.orders.size == 0 -%}
-        <div class="page-header page-header--small {% if section.blocks.size == 1 %}page-header--alone{% endif %}">
-          <div class="page-header__text-wrapper text-container text-align--left">
-            <h1 class="heading h4">{{ 'customer.orders.title' | t }} <span class="bubble-count bubble-count--top">{{ customer.orders.size }}</span></h1>
-            <p class="">{{ 'customer.orders.no_orders' | t }}</p>
-
-            <div class="button-wrapper">
-              <a href="{{ routes.all_products_collection_url }}" class="button button--primary">{{ 'customer.orders.start_shopping' | t }}</a>
-            </div>
-          </div>
-        </div>
-
         <div class="page-content page-content--fluid">
           <div class="account__block-list">
             {%- for block in section.blocks -%}
@@ -94,14 +83,20 @@
               </div>
             {%- endfor -%}
           </div>
-        </div>
-      {%- else -%}
-        <div class="page-header page-header--small">
-          <div class="page-header__text-wrapper text-container text-align--left">
-            <h1 class="heading h1">{{ 'customer.orders.title' | t }} <span class="bubble-count bubble-count--top">{{ customer.orders.size }}</span></h1>
+        </div>       
+        <div class="page-header page-header--small {% if section.blocks.size == 1 %}page-header--alone{% endif %}">
+          <div class="page-header__text-wrapper text-container text-align--left" style="max-width: none">
+            <h1 class="heading h4">{{ 'customer.orders.title' | t }} <span class="bubble-count bubble-count--top">{{ customer.orders.size }}</span></h1>
+            <p class="">{{ 'customer.orders.no_orders' | t }}</p>
+
+            <div class="button-wrapper">
+              <a href="{{ routes.all_products_collection_url }}" class="button button--primary">{{ 'customer.orders.start_shopping' | t }}</a>
+            </div>
           </div>
         </div>
 
+
+      {%- else -%}
         <div class="page-content page-content--fluid">
           <div class="account__block-list">
             {%- for block in section.blocks -%}
@@ -114,6 +109,11 @@
                     {{- block.settings.liquid -}}
 
                   {%- when 'orders' -%}
+                      <div class="page-header page-header--small">
+                      <div class="page-header__text-wrapper text-container text-align--left" style="max-width: none">
+                        <h1 class="heading h1">{{ 'customer.orders.title' | t }} <span class="bubble-count bubble-count--top">{{ customer.orders.size }}</span></h1>
+                      </div>
+                    </div>
                     {%- paginate customer.orders by 50 -%}
                       <table class="account__orders-table table table--bordered hidden-phone">
                         <thead>

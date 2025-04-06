@@ -543,7 +543,8 @@
 
       @include media-query($medium-up) {
         margin-bottom: 0;
-        padding-bottom: 56.25%;
+        // padding-bottom: 56.25%;
+        padding-bottom: 68%;
         overflow: hidden;
         min-height: 600px;
         max-height: 680px;

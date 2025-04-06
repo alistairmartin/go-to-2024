@@ -241,18 +241,25 @@ updateCartAttributes(cartAttributes);
                     {%- endunless -%}
                   {%- endif -%}
 
-                  {%- if line_item.product.type == "GWP" -%}
+                  {%- if line_item.product.handle == "lip-hero" -%}
+                    <a href="{{ line_item.url | remove: "-gwp" }}" class="product-item-meta__title text--small heading heading--secondary">{{ line_item.product.title | remove: "Bro-To " | remove: "Gro-To " }}</a>
+
+                    {%- if line_item.product.metafields.custom.product_subtitle__description != blank -%}
+                      <a href="{{ line_item.url | remove: "-gwp" }}" class="product-item-meta__subtitle text--xxsmall">{{ line_item.product.metafields.custom.product_subtitle__description }}</a>
+                    {%- endif -%}
+
+                  {%- elsif line_item.product.type == "GWP" -%}
                     <div class="product-item-meta__title text--small heading heading--secondary">{{ line_item.product.title | remove: "Bro-To " | remove: "Gro-To " }}</div>
 
                     {%- if line_item.product.metafields.custom.product_subtitle__description != blank -%}
-                      <div href="{{ line_item.url }}" class="product-item-meta__subtitle text--xxsmall">{{ line_item.product.metafields.custom.product_subtitle__description }}</div>
+                      <div href="{{ line_item.url | remove: "-gwp" }}" class="product-item-meta__subtitle text--xxsmall">{{ line_item.product.metafields.custom.product_subtitle__description }}</div>
                     {%- endif -%}
   
                   {%- else -%}
-                    <a href="{{ line_item.url }}" class="product-item-meta__title text--small heading heading--secondary">{{ line_item.product.title | remove: "Bro-To " | remove: "Gro-To " }}</a>
+                    <a href="{{ line_item.url | remove: "-gwp" }}" class="product-item-meta__title text--small heading heading--secondary">{{ line_item.product.title | remove: "Bro-To " | remove: "Gro-To " }}</a>
 
                     {%- if line_item.product.metafields.custom.product_subtitle__description != blank -%}
-                      <a href="{{ line_item.url }}" class="product-item-meta__subtitle text--xxsmall">{{ line_item.product.metafields.custom.product_subtitle__description }}</a>
+                      <a href="{{ line_item.url | remove: "-gwp" }}" class="product-item-meta__subtitle text--xxsmall">{{ line_item.product.metafields.custom.product_subtitle__description }}</a>
                     {%- endif -%}
                   {%- endif -%}
                  
@@ -801,6 +808,26 @@ updateCartAttributes(cartAttributes);
           "id": "gwp_image",
           "label": "Image",
           "info": "Optional. Will use product image as default."
+        },
+        {
+          "type": "header",
+          "content": "Block Checkout"
+        },
+        {
+          "type": "checkbox",
+          "id": "can_block_checkout",
+          "label": "Can Block Checkout",
+          "info": "Customers will need to select a gift before checking out. Only for gifts that have options."
+        },
+        {
+          "type": "text",
+          "id": "block_checkout_button",
+          "label": "Checkout Button Text"
+        },
+        {
+          "type": "text",
+          "id": "block_checkout_button_no",
+          "label": "No Thank You Button"
         }
       ]
     },

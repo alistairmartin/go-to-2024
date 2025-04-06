@@ -482,45 +482,57 @@
 
               <product-payment-container {% if update_url %}id="MainPaymentContainer"{% endif %} class="product-form__payment-container" {{ block.shopify_attributes }}>
 
-                {%- assign showBackInStock = false -%}
 
-                {%- if product.tags contains 'no-waitlist' -%}
-                  {% assign noWaitlist = true %}
-                {%- endif -%}
+                {% if template.suffix == "lip-hero-waitlist" %}
+                  <div class="klaviyo-form-VLMPFV"></div>
 
-                {% if noWaitlist != true and product.selected_or_first_available_variant.available != true %}
-                  {%- assign showBackInStock = true -%}
-                {% endif %}
+                {% elsif template.suffix == "lip-hero-back-to-shop" %}
+                  <a href="https://gotoskincare.com/collections/shop-all" class="button button--full button--primary">
+                    Back To Shop All
+                  </a>
 
-                <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')"  class="button button--primary back-in-stock {% if showBackInStock == false %}hide{% endif %}">WAITLIST ME</button>
+                {% else %}
 
-                <button id="AddToCart" type="submit" is="loader-button" {% unless block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}data-use-primary{% endunless %} data-product-add-to-cart-button data-button-content="{% if product.template_suffix == 'pre-order' %}{{ 'product.form.pre_order' | t | escape }}{% else %}{{ 'product.form.add_to_cart' | t | escape }}{% endif %}" class="product-form__add-button button {% if showBackInStock == true %}hide{% endif %} {% unless product.selected_or_first_available_variant.available %}button--ternary{% else %}{% if block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}button--secondary{% else %}button--primary{% endif %}{% endunless %} button--full" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
-                  {%- if product.selected_or_first_available_variant == nil -%}
-                    {{- 'product.form.unavailable' | t -}}
-                  {%- elsif product.selected_or_first_available_variant.available -%}
-                    {%- if product.template_suffix == 'pre-order' -%}
-                      {{- 'product.form.pre_order' | t -}}
-                    {%- else -%}
-                      {{- 'product.form.add_to_cart' | t -}}
-                    {%- endif -%}
-                  {%- else -%}
-                      {{- 'product.form.sold_out' | t -}}       
+                  {%- assign showBackInStock = false -%}
+
+                  {%- if product.tags contains 'no-waitlist' -%}
+                    {% assign noWaitlist = true %}
                   {%- endif -%}
-                </button>
 
-                {%- if block.settings.show_payment_button and recipient_feature_active == false and template.suffix != 'quick-buy-popover' -%}
-                  {{ form | payment_button }}
+                  {% if noWaitlist != true and product.selected_or_first_available_variant.available != true %}
+                    {%- assign showBackInStock = true -%}
+                  {% endif %}
+
+                  <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')"  class="button button--primary back-in-stock {% if showBackInStock == false %}hide{% endif %}">WAITLIST ME</button>
+
+                  <button id="AddToCart" type="submit" is="loader-button" {% unless block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}data-use-primary{% endunless %} data-product-add-to-cart-button data-button-content="{% if product.template_suffix == 'pre-order' %}{{ 'product.form.pre_order' | t | escape }}{% else %}{{ 'product.form.add_to_cart' | t | escape }}{% endif %}" class="product-form__add-button button {% if showBackInStock == true %}hide{% endif %} {% unless product.selected_or_first_available_variant.available %}button--ternary{% else %}{% if block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}button--secondary{% else %}button--primary{% endif %}{% endunless %} button--full" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+                    {%- if product.selected_or_first_available_variant == nil -%}
+                      {{- 'product.form.unavailable' | t -}}
+                    {%- elsif product.selected_or_first_available_variant.available -%}
+                      {%- if product.template_suffix == 'pre-order' -%}
+                        {{- 'product.form.pre_order' | t -}}
+                      {%- else -%}
+                        {{- 'product.form.add_to_cart' | t -}}
+                      {%- endif -%}
+                    {%- else -%}
+                        {{- 'product.form.sold_out' | t -}}       
+                    {%- endif -%}
+                  </button>
+
+                  {%- if block.settings.show_payment_button and recipient_feature_active == false and template.suffix != 'quick-buy-popover' -%}
+                    {{ form | payment_button }}
 
 
-                  {%- unless product.selected_or_first_available_variant.available -%}
-                    <style>
-                      #shopify-section-{{ section.id }} .shopify-payment-button {
-                        display: none;
-                      }
-                    </style>
-                  {%- endunless -%}
-                {%- endif -%}
+                    {%- unless product.selected_or_first_available_variant.available -%}
+                      <style>
+                        #shopify-section-{{ section.id }} .shopify-payment-button {
+                          display: none;
+                        }
+                      </style>
+                    {%- endunless -%}
+                  {%- endif -%}
 
+              {%- endif -%}
 
            
               </product-payment-container>

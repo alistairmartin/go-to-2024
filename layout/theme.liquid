@@ -168,9 +168,30 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
         {%- elsif template.suffix contains "vip-access" %}
           {%- section 'vip-access--login'  -%}
         {%- else -%}
+
+          {% comment %} {% if product and product.vendor contains "Go-To" %}
+            {% render "temp--birthday-banner" %}
+            {% assign showCountdown = true %}
+          {% endif %}
+
+          {% if collection %}
+            {%  unless collection.handle contains "bro-to" or collection.handle contains "gro-to"  %}  
+              {% render "temp--birthday-banner" %}
+              {% assign showCountdown = true %}
+
+            {% endunless %} 
+          {% endif %}
+
+          {% if showCountdown %}
+            {% section "countdown" %}
+          {% endif %} {% endcomment %}
+
           {{ content_for_layout }}
         {%- endif -%}
       </div>
+
+
+      {% include "temp--lip-hero-waitlist-drawer" %}
 
     </div>
 

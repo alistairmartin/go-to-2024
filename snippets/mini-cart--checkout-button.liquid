@@ -8,7 +8,7 @@
     {%- elsif block.type == "min_spend" -%}
         {% comment %} {%- render 'mini-cart--gifts-min-spend', block: block, javascriptCode: false -%} {% endcomment %}
     {%- elsif block.type == "min_spend_buy_x" -%}
-        {% comment %} {%- render 'mini-cart--gifts-min-spend-plus-buy-x', block: block, javascriptCode: false  -%} {% endcomment %}
+        {%- include 'mini-cart--gifts-min-spend-plus-buy-x', block: block, javascriptCode: false, checkoutValidator: true  -%}
     {%- elsif block.type == "subscription_gift" -%}
         {% comment %} {%- render 'mini-cart--gifts-subscription-gift', block: block, javascriptCode: false -%} {% endcomment %}
     {%- endif -%}

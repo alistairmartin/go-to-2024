@@ -40,6 +40,7 @@
     "Safari >= 10"
   ],
   "devDependencies": {
-    "chokidar-cli": "^3.0.0"
+    "chokidar-cli": "^3.0.0",
+    "postcss-cli": "^11.0.1"
   }
 }

@@ -25,6 +25,11 @@
         // position: var(--position-desktop);
       }
 
+      img {
+        width: 100%;
+      }
+
+
       .custom-slideshow--slide-video {
         position: relative;
         background-color: #000; // fallback while thumbnail loads
@@ -97,10 +102,7 @@
           align-items: var(--item-alignment-desktop);
         }
 
-        img {
-          width: 100%;
-        }
-
+   
         &.absolute-top--mobile {
             @include media-query($small) {
             position: absolute;

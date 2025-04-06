@@ -215,7 +215,7 @@
           {%- endcapture -%}
 
           {%- assign popoverTitle = "Ingredients For " | append: product.title -%}
-          {%- render 'popover', popoverId: "ingredients-glossary", popoverTitle: popoverTitle, popoverButton: "View All Ingredients", popoverContent: glossaryContent -%}
+          {%- render 'popover', popoverId: "ingredients-glossary-content", popoverTitle: popoverTitle, popoverButton: "View All Ingredients", popoverContent: glossaryContent -%}
   
         {%- endif -%}
 

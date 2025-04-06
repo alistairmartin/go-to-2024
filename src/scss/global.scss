@@ -192,7 +192,7 @@ section {
   text-decoration-color: rgb(var(--text-color));
   text-decoration-thickness: 5px;
   text-transform: uppercase;
-  font-weight: normal;
+  font-weight: bold;
 
   &:after {
     background: transparent;
@@ -1047,6 +1047,13 @@ store-header.background-blur {
       font-weight: normal;
     }
   }
+}
+
+.product-item--atc-search-variants {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
 }
 
 .gro-to {
@@ -5032,3 +5039,71 @@ product-item[data-title="Face Hero"] {
     align-items: center;
   }
 }
+
+
+
+
+.template-product--lip-hero-back-to-shop, .template-product--lip-hero-waitlist {
+  .product-meta__price-list-container {
+    display: none !important;
+  }
+
+  product-sticky-form {
+    display: none !important;
+  }
+}
+
+.countdown-bar {
+  text-align: center;
+  background: $gotoPinkLight;
+  color: #000;
+  padding: 20px 0;
+  font-size: 24px;
+
+  @include media-query($small) {
+    padding: 10px 0;
+    font-size: 20px;
+  }
+
+  #countdown-timer {
+    @include media-query($small) {
+      margin-top: 5px;
+      display: block;
+    }
+  }
+
+}
+
+.product-item  {
+ &[data-title="Lip Hero"] {
+  .product-item__cta-wrapper {
+
+  }
+
+  .link--tierary {
+    text-decoration-color: $gotoGrey;
+  }
+ }
+
+ .product-item-meta__price-list-container {
+  display: none;
+ }
+}
+
+.predictive-search__product-item {
+  &[data-title="Lip Hero"] {
+    .product-item__cta-wrapper {
+      display: none !important;
+    }
+
+    form {
+      display: none;
+     }
+  
+     .product-item-meta__price-list-container {
+      display: none;
+     }
+   }
+  
+}
+

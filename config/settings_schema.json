@@ -1428,7 +1428,7 @@
         "type": "text",
         "id": "show_confetti_on_template",
         "label": "Comma-separated template names where to show confetti",
-        "info": "E.g.: index, collection.christmas-landing, product.go-to-face-hero-extra etc"
+        "info": "E.g.: product.go-to-face-hero-extra. If want to show on homepage use 'index.'. Show on all product pages use 'product.'"
       },
       {
         "type": "header",
@@ -1444,7 +1444,7 @@
         "type": "text",
         "id": "show_glitter_on_template",
         "label": "Comma-separated template suffix names where to show glitter",
-        "info": "E.g.: index, collection.christmas-landing, product.go-to-face-hero-extra etc"
+        "info": "E.g.: product.go-to-face-hero-extra. If want to show on homepage use 'index.'. Show on all product pages use 'product.'"
       },
       {
         "type": "range",

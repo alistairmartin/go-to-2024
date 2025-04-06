@@ -72,7 +72,7 @@
               {% continue %}
             {%- endif -%}
 
-            <li class="predictive-search__product-item line-item line-item--centered product-brand--{{ product.vendor | handle | remove: "-skincare" }}">
+            <li class="predictive-search__product-item line-item line-item--centered product-brand--{{ product.vendor | handle | remove: "-skincare" }}" data-title="{{ product.title }}">
               <a href="{{ product.url }}" class="line-item__content-wrapper" data-instant>
                 {%- if product.featured_media -%}
                   <span class="line-item__image-wrapper">
@@ -105,10 +105,10 @@
                     <div class="product-item-meta__price-list-container text--small">
                       <div class="price-list">
                         {%- if product.compare_at_price_min > product.price_min -%}
-                          <span class="price price--highlight">{{ product.price_min | money | remove: ".00" }}</span>
+                          <span class="price price--highlight">From {{ product.price_min | money | remove: ".00" }}</span>
                           <span class="price price--compare">{{ product.compare_at_price_min | money | remove: ".00" }}</span>
                         {%- else -%}
-                          <span class="price">{{ product.price_min | money | remove: ".00" }}</span>
+                        <span class="price">{{ product.price_min | money | remove: ".00" }}</span>
                         {%- endif -%}
 
                         {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
@@ -132,8 +132,11 @@
 
                 {%- render 'icon' with 'nav-arrow-right', direction_aware: true -%}
               </a>
-
-              {%- render 'product-item--ATC', product: product -%}
+              {% if product.type == "Gift Cards" %}
+               {%- render 'product-item--ATC', product: product -%}
+              {% else %}
+                {%- render 'product-item--ATC-search', product: product -%}
+              {% endif %}
             </li>
           {%- endfor -%}
         </ul>

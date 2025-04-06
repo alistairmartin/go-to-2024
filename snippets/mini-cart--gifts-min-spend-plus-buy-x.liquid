@@ -4,6 +4,28 @@
 {% assign getProductInCart = false %}
 {% assign getProduct = block.settings.get_product %}
 
+
+
+{%- for attribute in cart.attributes -%}
+  {%- if attribute.first == "_last-visited-brand" -%}
+  {%- capture brand -%}{{ attribute.last }}{%- endcapture -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if block.settings.go-to and brand == "go-to" -%}
+  {%- assign enable_for_go-to = true -%}
+{%- endif -%}
+
+{%- if block.settings.bro-to and brand == "bro-to" -%}
+  {%- assign enable_for_bro-to = true -%}
+{%- endif -%}
+
+{%- if block.settings.gro-to and brand == "gro-to" -%}
+  {%- assign enable_for_gro-to = true -%}
+{%- endif -%}
+
+{%- if enable_for_go-to or enable_for_bro-to or enable_for_gro-to -%}
+
 {%- for item in cart.items -%}
   {%- if item.product.handle == getProduct.handle -%}
     {% assign getProductInCart = true -%}{% break %}
@@ -47,25 +69,35 @@
       window.cartGWP.push(cartGWPItem);
     </script>
     {%- endif -%}
-{%- elsif javascriptCode == false -%}
+{%- elsif javascriptCode == false or checkoutValidator == true  -%}
 
 
+  {%- if checkoutValidator == true -%}
 
+    {%- if minSpendFromX >= minSpend and getProductInCart == false and getProduct.available == true -%}
+          {%- capture blockCheckout -%}true{%- endcapture -%}
+          {%- capture blockCheckoutText -%}{{ block.settings.block_checkout_button }}{%- endcapture -%}
+          {%- capture blockCheckoutTextNoThanks -%}{{ block.settings.block_checkout_button_no }}{%- endcapture -%}
+    {%- endif -%}
+  
+  {% else %}
 
-  {%- if minSpendFromX >= minSpend and getProductInCart == false and block.settings.automatically_add == false -%}
-      {% if getProduct.available == true %}
-          <div class="mini-cart-gift">
-          <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title }}</div>
-          {%- render 'product-item--gift', product: getProduct, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true, description: block.settings.gwp_description -%}
-          </div>
-      {%- endif -%}
-  {%- elsif minSpendFromX < minSpend and getProductInCart == false and getProduct.available == true and block.settings.show_progress_bar -%} 
-    {%- render 'mini-cart--gifts-shipping-progress', blockType: "min-spend", product: getProduct, currentSpend: minSpendFromX, minSpend: minSpend, progressTitle: block.settings.progress_bar_title, progressTitleSizeMobile: block.settings.progress_bar_size_mobile, progressTitleSizeDesktop: block.settings.progress_bar_size_desktop, block: block -%}
+    {%- if minSpendFromX >= minSpend and getProductInCart == false and block.settings.automatically_add == false -%}
+        {% if getProduct.available == true %}
+            <div class="mini-cart-gift">
+            <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title }}</div>
+            {%- render 'product-item--gift', product: getProduct, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true, description: block.settings.gwp_description -%}
+            </div>
+        {%- endif -%}
+    {%- elsif minSpendFromX < minSpend and getProductInCart == false and getProduct.available == true and block.settings.show_progress_bar -%} 
+      {%- render 'mini-cart--gifts-shipping-progress', blockType: "min-spend", product: getProduct, currentSpend: minSpendFromX, minSpend: minSpend, progressTitle: block.settings.progress_bar_title, progressTitleSizeMobile: block.settings.progress_bar_size_mobile, progressTitleSizeDesktop: block.settings.progress_bar_size_desktop, block: block -%}
+    {%- endif -%}
+
+    {%- if getProductInCart == false and getProduct.available == false -%}
+      {%- render 'mini-cart--gifts-error', product: getProduct -%}
+    {%- endif -%}
   {%- endif -%}
-
-  {%- if getProductInCart == false and getProduct.available == false -%}
-    {%- render 'mini-cart--gifts-error', product: getProduct -%}
-  {%- endif -%}
-
     
+  {%- endif -%}
+
 {%- endif -%}

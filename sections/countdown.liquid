@@ -1,0 +1,172 @@
+{%- if section.settings.enable_countdown -%}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data-10-year-range.min.js"></script>
+
+<div class="countdown-bar">
+
+
+
+
+  <div class="after-countdown hide">
+    <button class="hb-live--countdown btn btn--primary">
+        <span>
+            {{ section.settings.text_after }}
+      </span>
+    </button>
+  </div>
+
+  <div class="before-countdown">
+
+    <a href="{{ section.settings.link }}">
+      <span>
+        <span class="title">
+            {{ section.settings.text_before }}
+        </span>
+
+        {%- if section.settings.enable_countdown_timer -%}
+          <strong id="countdown-timer"></strong>
+        {%- endif -%}
+      </span>
+    </a>
+
+
+    {%- if section.settings.enable_countdown_timer -%}
+      <script>
+
+        {%- assign city = "Australia/Sydney" -%}
+
+        const city = "{{ city }}";
+        const localEndTime = moment("{{ section.settings.countdown_date }}");
+        const endTime = localEndTime.tz(city, true);
+
+        function updateCountdown() {
+            const now = moment.tz(city);
+            const duration = moment.duration(endTime.diff(now));
+
+            if (duration.asSeconds() <= 0) {
+                clearInterval(intervalId);
+                document.getElementById("countdown-timer").innerHTML = "";
+                document.querySelector(".before-countdown").classList.add("hide");
+                document.querySelector(".after-countdown").classList.remove("hide");
+
+                if({{ section.settings.hide_after_countdown }}) {
+                  document.querySelector(".after-countdown").classList.add("hide");
+                }
+                return;
+            }
+
+            let remainingTime = "";
+
+            let days = duration.days();
+            let hours = duration.hours();
+            let minutes = duration.minutes();
+            let seconds = duration.seconds();
+
+            if (days > 0) {
+              if (days >= 2) {
+                remainingTime += days + " DAYS : "
+              } else {
+                remainingTime += days + " DAY : "
+              }
+            } 
+
+            if (hours > 0) {
+              if (hours === 1) {
+                remainingTime += hours + " HR : "
+              } else {
+                remainingTime += hours + " HRS : "
+              }
+            }  
+
+            if (minutes > 0) {
+              if (minutes === 1) {
+                remainingTime += minutes + " MIN : "
+              } else {
+                remainingTime += minutes + " MINS : "
+              }
+            }
+            remainingTime += seconds + " SECS"
+            document.getElementById('countdown-timer').innerHTML = remainingTime;
+        }
+
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+          updateCountdown();
+          const intervalId = setInterval(updateCountdown, 1000); 
+        });
+
+      </script>
+    {% endif %}
+
+  </div>
+  </div>
+
+{%- endif -%}
+
+
+{% schema %}
+  {
+    "name": "Countdown Bar",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_countdown",
+        "label": "Show Section"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_countdown_timer",
+        "label": "Enable Countdown Timer"
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_after_countdown",
+        "label": "Hide Section After Countdown"
+      },
+      {
+        "type": "header",
+        "content": "Link"
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": "Link",
+        "info": "If the 'Live Stream Link' and 'Countdown Timer' settings above are turned off, the link mode will become active."
+      },
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+        "type": "textarea",
+        "id": "text_before",
+        "label": "Text Before Date"
+      },
+      {
+        "type": "textarea",
+        "id": "text_after",
+        "label": "Text After Date)"
+      },
+      {
+        "type": "header",
+        "content": "Date"
+      },
+      {
+        "type": "text",
+        "id": "countdown_date",
+        "label": "Countdown Date & Time",
+        "default": "default",
+        "info": "The date entered must be in store local time. The date format is:Sep 21, 2024 15:30:00. E.g. Sydney = AU, UK = London, EU = France, US = LA."
+      }
+    ],
+    "presets": [
+      {
+        "name": "Countdown Bar"
+      }
+    ]
+  }
+{% endschema %}

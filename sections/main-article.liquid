@@ -89,7 +89,9 @@
                 {%- if authorArticle -%}
                   <div class="article-author">
                     <a href="{{ authorArticle.url }}">
-                      <span class="article-author--author">{{ 'article.general.written_by' | t: author: article.author }}</span>
+                      <span class="article-author--author">
+                        {{ 'article.general.written_by' | t: author: article.author }}
+                        </span>
                     </a>
 
                     <div class="article-author--description">
@@ -101,7 +103,14 @@
                   </div>
 
                 {%- else -%}
-                  <span class="article__meta-item article__author">{{ 'article.general.written_by' | t: author: article.author }}</span>
+                  <span class="article__meta-item article__author">
+                  {% if article.metafields.gts_theme.author != blank %}
+                    {{ 'article.general.written_by' | t: author: article.metafields.gts_theme.author }}
+                  {% else %}
+                   {{ 'article.general.written_by' | t: author: article.author }}
+                  {% endif %}
+                  </span>
+
                 {%- endif -%}
 
               {%- endif -%}

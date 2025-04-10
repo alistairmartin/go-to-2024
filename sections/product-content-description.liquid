@@ -283,7 +283,7 @@
       </div>
 
       {%- comment %} IMAGE {% endcomment -%}
-      <div class="product-content-description--image">
+      <div class="product-content-description--image {% if product.metafields.custom.product_main_information__whats_in_it_image_on_mobile %}product-content-description--image-on-mobile{% endif %}">
         {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_main_information__whats_in_it_image, src_mobile: product.metafields.custom.product_main_information__whats_in_it_image %}
       </div>
     </div>

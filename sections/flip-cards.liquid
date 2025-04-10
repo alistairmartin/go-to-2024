@@ -1,23 +1,37 @@
 <style>
-  .template-page--go-to-guardians-of-go-to #main {
-        background-image: url({{ "guardians-background-2.png" | asset_img_url: "400x" }});
-        background-repeat: repeat;
-        background-position: 0 0; 
-        background-size: auto;
+  /* .template-page--go-to-guardians-of-go-to #main {
+        background-image: url({{ "guardians-background-2.png" | asset_img_url: "700x" }});
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        background-attachment: fixed;
+        min-height: 100vh;
+        min-width: 100vw;
   }
-
+  
   @media screen and (min-width: 741px) {
           .template-page--go-to-guardians-of-go-to #main {
-          background-image: url({{ "guardians-background-2.png" | asset_img_url: "2000x" }});
-          background-repeat: repeat;
-          background-position: 0 0; 
-          background-size: auto;
-      }
+            background-image: url({{ "guardians-background-2.png" | asset_img_url: "2000x" }});
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            background-attachment: fixed;
+            min-height: 100vh;
+            min-width: 100vw;
+          }
+  } */
+
+  .rating__caption {
+    color: #000 !important;
   }
 
 
+  section.section .section__color-wrapper {
+    background: transparent !important;
+  }
 
-    body {
+
+    body, iframe, .custom-section {
       cursor: url({{ "color-pixels-wand-cursor.png" | asset_img_url: "32px" }}), default !important;
     }
 
@@ -67,12 +81,12 @@
     }
   
     #shopify-section-{{ section.id }}  video {
-      height: var(--gallery-image-height);
+      height: calc(var(--gallery-image-height) + 40px);
       width: auto;
     }
   </style>
   
-  <section class="section {% unless blends_with_background %}section--flush{% endunless %} {% if section.settings.arrow_bottom_right %}arrows-bottom-right{% endif %}">
+  <section id="guardians" class="section {% unless blends_with_background %}section--flush{% endunless %} {% if section.settings.arrow_bottom_right %}arrows-bottom-right{% endif %}">
     <div class="section__color-wrapper {% unless blends_with_background %}vertical-breather{% endunless %}">
   
      
@@ -132,6 +146,7 @@
                         {{- block.settings.caption -}}
                       </figcaption>
                     {%- endif -%}
+                    <a href="{{ block.settings.link }}" class="button button--outline">{{ block.settings.link_title }}</a>
                   </figure>
                 </gallery-item>
               {%- endfor -%}
@@ -191,6 +206,16 @@
             "type": "image_picker",
             "id": "image_flip",
             "label": "Image (Flip)"
+          },
+          {
+            "type": "text",
+            "id": "link_title",
+            "label": "Link Title"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
           }
         ]
       }

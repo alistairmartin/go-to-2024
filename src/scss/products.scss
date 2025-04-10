@@ -136,6 +136,14 @@
         width: 100%;
         border-radius: var(--image-border-radius);
       }
+
+      &.product-content-description--image-on-mobile {
+        display: block !important;
+
+        @include media-query($small) {
+          margin-top: 16px;
+        }
+      }
     }
 
     .product-reviews--item {

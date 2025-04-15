@@ -5079,15 +5079,15 @@ product-item[data-title="Face Hero"] {
   .product-item__cta-wrapper {
 
   }
-
   .link--tierary {
     text-decoration-color: $gotoGrey;
   }
+  .product-item-meta__price-list-container {
+    display: none;
+   }
  }
 
- .product-item-meta__price-list-container {
-  display: none;
- }
+
 }
 
 .predictive-search__product-item {

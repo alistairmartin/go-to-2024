@@ -12,7 +12,7 @@
 
 {% comment %} --- Get Customer Tag {% endcomment %}
 {% for tag in customer.tags %}
-  {% if tag contains 'Rivo VIP Tier:' %}
+  {% if tag contains 'Rivo VIP Tier: ' %}
     {% assign account_loyalty_level_tag = tag %}
     {% break %}
   {% endif %}
@@ -145,9 +145,11 @@
           {%- endfor -%}
         </div>
 
+        {% comment %}
         <div class="loyalty-birthday">
           <div class="yotpo-widget-instance" data-yotpo-instance-id="51344"></div>
         </div>
+        {% endcomment %}
 
       </div>
 

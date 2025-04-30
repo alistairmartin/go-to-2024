@@ -483,15 +483,7 @@
               <product-payment-container {% if update_url %}id="MainPaymentContainer"{% endif %} class="product-form__payment-container" {{ block.shopify_attributes }}>
 
 
-                {% if template.suffix == "lip-hero-waitlist" %}
-                  <div class="klaviyo-form-VLMPFV"></div>
-
-                {% elsif template.suffix == "lip-hero-back-to-shop" %}
-                  <a href="https://gotoskincare.com/collections/shop-all" class="button button--full button--primary">
-                    Back To Shop All
-                  </a>
-
-                {% else %}
+         
 
                   {%- assign showBackInStock = false -%}
 
@@ -532,7 +524,6 @@
                     {%- endunless -%}
                   {%- endif -%}
 
-              {%- endif -%}
 
            
               </product-payment-container>

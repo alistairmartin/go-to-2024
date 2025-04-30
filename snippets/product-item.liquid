@@ -388,12 +388,8 @@
     {%- elsif product.available and reduced_content or show_cta -%}
       <div class="product-item__cta-wrapper">
 
-        {%- if product.handle == "lip-hero" -%}
 
-            <button type="button" is="toggle-button" class="product-item__link link--animated link link--tierary hidden-phone" aria-controls="lip-hero-waitlist-drawer" aria-expanded="false">Waitlist Me</button>
-            <button type="button" is="toggle-button" class="product-item__link link--animated link link--tierary hidden-tablet-and-up" aria-controls="lip-hero-waitlist-popover" aria-expanded="false">Waitlist Me</button>
-    
-        {%- elsif product.variants.size == 1 -%}
+        {%- if product.variants.size == 1 -%}
           {%- capture form_id -%}product_form_{{ section.id }}_{{ block.id }}_{{ product.id }}_{% increment product_form_index %}{%- endcapture -%}
           {%- form 'product', product, is: 'product-form', id: form_id -%}
             <input type="hidden" name="quantity" value="1">

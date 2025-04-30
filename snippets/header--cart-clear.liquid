@@ -1,0 +1,39 @@
+{% unless request.design_mode %}
+{% if settings.clear_cart_on_first_visit %}
+    <script>
+      
+      document.addEventListener('DOMContentLoaded', function () {
+        console.log('Cart Clear!');
+        const KEY_NAME = 'cartClearedTimestamp';
+        const DAYS_VALID = {{ settings.clear_cart_on_first_days }};
+        const now = new Date().getTime();
+        const saved = localStorage.getItem(KEY_NAME);
+  
+        function isExpired(timestamp) {
+          const expiresInMs = DAYS_VALID * 24 * 60 * 60 * 1000;
+          return now - parseInt(timestamp, 10) > expiresInMs;
+        }
+  
+        if (!saved || isExpired(saved)) {
+          fetch('/cart/clear.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(() => {
+            localStorage.setItem(KEY_NAME, now.toString());
+            console.log('Cart cleared and localStorage flag set.');
+
+            document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+              bubbles: true
+            }));
+          })
+          .catch(console.error);
+        } else {
+          console.log('Cart was already cleared within 7 days.');
+        }
+      });
+    </script>
+  {% endif %}
+{% endunless %}

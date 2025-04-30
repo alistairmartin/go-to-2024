@@ -1,0 +1,39 @@
+
+{% assign byo_bundle_count = 0 %}
+{% for item in cart.items %}
+  {% if item.properties != blank %}
+    {% for property in item.properties %}
+      {% if property.first == "BYO Bundle" %}
+        {% assign byo_bundle_count = byo_bundle_count | plus: 1 %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endfor %}
+
+{% comment %} <button type="button" class="drawer__close-button tap-area no-custom-message" data-action="close" title="Close" aria-label="Close this option" data-uw-rm-empty-ctrl="" data-uw-cer-popup-close="" tabindex="0"><svg focusable="false" width="14" height="14" class="icon icon--close   " viewBox="0 0 14 14">
+        <path d="M13 13L1 1M13 1L1 13" stroke="currentColor" stroke-width="1.1" fill="none"></path>
+      </svg></button> {% endcomment %}
+
+
+  {%- if collection.handle == "build-your-routine" -%}
+    
+    {%- if byo_bundle_count == 3 -%}
+    <button  data-action="close" class="cart-message-BYO page">So close! One more unique product <br>and you’ll score 10% off.<span class="link link--tierary">Select Now</span></button>
+    {%- elsif byo_bundle_count == 2 -%}
+    <button  data-action="close" class="cart-message-BYO page">Add two more unique products. <br>Then we’ll knock 10% off.<span class="link link--tierary">Select Now</span></button>
+    {%- elsif byo_bundle_count == 1 -%}
+    <button  data-action="close" class="cart-message-BYO page">Add three more unique products. <br>Then we’ll knock 10% off.<span class="link link--tierary">Select Now</span></button>
+    {% endif %}
+
+  {%- else -%}
+
+    {%- if byo_bundle_count == 3 -%}
+      <a href="/pages/build-your-routine" class="cart-message-BYO">So close! One more product <br>and you'll score 10% off.<span class="link link--tierary">Head Here</span></a>
+    {%- elsif byo_bundle_count == 2 -%}
+      <a href="/pages/build-your-routine" class="cart-message-BYO">Add two more products. <br>Then we'll knock off 10%.<span class="link link--tierary">Head Here</span></a>
+    {%- elsif byo_bundle_count == 1 -%}
+      <a href="/pages/build-your-routine" class="cart-message-BYO">Select 3 more or more unique products. <br>Then we’ll knock off 10%.<span class="link link--tierary">Head Here</span></a>
+    {%- endif -%}
+    {% comment %} <a href="/pages/build-your-routine" class="Drawer__Title Text--medium u-h3 hidden Drawer__Title-BYO Drawer__Title-BYO-no-properties">Build your skincare bundle,<br> we’ll take off 10%.<span class="Button--link Button--link-primary">Head Here</span></a> {% endcomment %}
+  {%- endif -%}

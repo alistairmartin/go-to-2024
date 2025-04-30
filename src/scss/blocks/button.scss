@@ -1,0 +1,27 @@
+@import "../components/media-queries";
+
+.blocks--button {
+    display: flex;
+    align-items: center;
+    justify-content: var(--flex-justify-content-mobile);
+    margin-top: var(--margin-top-mobile);
+    margin-bottom: var(--margin-bottom-mobile);
+
+    @include media-query($medium-up) {
+      align-items: center;
+      justify-content: var(--flex-justify-content-mobile);
+      margin-top: var(--margin-top-desktop);
+      margin-bottom: var(--margin-bottom-desktop);
+    }
+
+    &.button--outline {
+      color: var(--button-color-text-mobile) !important;
+      border-color: var(--button-color-text-mobile) !important;
+      @include media-query($medium-up) {
+          color: var(--button-color-text-desktop) !important;
+          border-color: var(--button-color-text-desktop) !important;
+        }
+      }
+
+
+  }

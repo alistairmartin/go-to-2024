@@ -8,6 +8,26 @@
     "theme_support_url": "https:\/\/support.maestrooo.com\/article\/203-contact-us"
   },
   {
+    "name": "🛒 Cart Clear",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "clear_cart_on_first_visit",
+        "label": "Enable Cart Clear",
+        "info": "Clear cart on first visit"
+      },
+      {
+        "type": "range",
+        "id": "clear_cart_on_first_days",
+        "label": "Clear Every X Days",
+        "min": 1,
+        "max": 30,
+        "unit": "Day",
+        "default": 7
+      }
+    ]
+  },
+  {
     "name": "🔒 VIP Access",
     "settings": [
       {

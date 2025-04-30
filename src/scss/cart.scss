@@ -427,3 +427,17 @@
     display: none;
   }
 }
+
+.cart-message-BYO {
+  display: block;
+  width: 100%;
+  font-size: 14px;
+  padding: 10px 0;
+  text-align: center;
+  background: $gotoPink;
+
+  a, .link { 
+    margin-left: 5px;
+    display: inline-block;
+  }
+}

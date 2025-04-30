@@ -1,0 +1,148 @@
+<script type="text/javascript" src="{{ 'turn.min.js' | asset_url }}" defer></script>
+
+
+<style type="text/css">
+#magazine {
+  width: 100%;
+  max-width: 1152px;
+  aspect-ratio: 1.4 / 1;
+  height: auto;
+  margin: 0 auto;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+#magazine > div {
+  padding: 0;
+}
+#magazine img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 5px;
+}
+#magazine .turn-page{
+	background-color:#fff;
+	background-size:100% 100%;
+}
+
+.magazine-outer {
+    padding: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+@media screen and (min-width: 741px) {
+    .magazine-outer {
+        padding: 20px;
+    }
+}
+
+.magazine-starter {
+  position: absolute;
+  left: 25%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  max-width: 30vw;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+  display: block;
+}
+
+
+</style>
+
+<div class="magazine-outer">
+
+<img class="magazine-starter" src="{{ section.settings.image | image_url: width: 1200 }}" alt="Comic page" style="width: 100%; height: auto;" />
+
+<div id="magazine">
+    {%- for block in section.blocks -%}
+        <div><img src="{{ block.settings.image | image_url: width: 1200 }}" alt="Comic page" style="width: 100%; height: auto; display: block;" /></div>
+    {%- endfor -%}
+</div>
+</div>
+
+<script type="text/javascript">
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    document.querySelector('.magazine-starter').style.opacity = '1';
+    
+    $('#magazine').turn({
+        display: 'double',
+        acceleration: true,
+        gradients: !$.isTouch,
+        elevation:50,
+        autoCenter: true,
+        when: {
+            turned: function(e, page) {
+                const starter = document.querySelector('.magazine-starter');
+                if (page === 1) {
+                    starter.style.opacity = '1';
+                } else {
+                    starter.style.opacity = '0';
+                }
+            }
+        }
+    });
+	
+	$('#magazine').on('click', function(event) {
+      const offset = $(this).offset();
+      const width = $(this).width();
+      const clickX = event.pageX - offset.left;
+
+      if (clickX < width / 2) {
+          $(this).turn('previous');
+      } else {
+          $(this).turn('next');
+      }
+  });
+	
+	$(window).bind('keydown', function(e){
+		
+		if (e.keyCode==37)
+			$('#magazine').turn('previous');
+		else if (e.keyCode==39)
+			$('#magazine').turn('next');
+			
+	});
+});
+	
+
+</script>
+
+
+
+
+
+{% schema %}
+    {
+      "name": "📘 Comic",
+      "settings": [
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+      ],
+      "blocks": [
+      {
+        "name": "Image",
+        "type": "image",
+        "settings": [
+            {
+              "type": "image_picker",
+              "id": "image",
+              "label": "Image"
+            }
+        ]
+      }
+        ],
+      "presets": [
+      {
+        "name": "📘 Comic"
+      }
+      ]
+    }
+  {% endschema %}

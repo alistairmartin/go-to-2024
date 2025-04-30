@@ -1,0 +1,264 @@
+{% capture email_title %}Thank you for your purchase! {% endcapture %}
+
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <title>{{ email_title }}</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <style type="text/css">
+          body {font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif; font-size: 14px; padding: 0 18px; }
+          a { color: #F9C6B9; }
+          @media only screen and (max-width:420px) {
+            .top-nav {font-size:15px;}
+            .mobile-only { display: block; }
+            .desktop-only { display: none; }
+            .footer-link img { display: block; margin: 0 auto; }
+            .footer-link p { display: block; text-align: center; }
+          }
+          @media only screen and (max-width:320px) {
+            .top-nav {font-size:14px;}
+            .order-details {font-size:15px;}
+            .order-number {padding:15px;}
+          }
+          @media only screen and (max-width:480px) {
+            .main-body {width:100vw !important;width:100% !important;}
+            u + .full-wrap {width:100vw !important;width:100% !important;}
+          }
+          @media only screen and (min-width: 421px) {
+            .desktop-only { display: block; }
+            .mobile-only { display: none; }
+            .footer-link img { display: inline-block; }
+            .footer-link p { display: inline-block; }
+          }
+    
+        </style>
+      </head>
+      <body style="max-width:800px; margin: 20px auto;" class="main-body">
+        <div class="full-wrap">
+          <div style="max-width:600px;margin:0 auto">
+            <div style="text-align: center;">
+              <ul style="list-style:none;margin:0px;padding:0px;">
+                <li style="display:inline-block; width: 30%;margin:0px">
+                  <a href="{{ shop.url }}/pages/bro-to" style="display:block" title="Bro-To">
+                    <img src="https://cdn.shopify.com/s/files/1/0014/3232/2131/files/LOGO-BT-LAVA.png?v=1606777379" style="border:none;width:auto;max-width:65px;height:auto;vertical-align:middle">
+                  </a>
+                </li>
+    <li style="display:inline-block; width: 30%;margin:0px">
+                  <a href="{{ shop.url }}" style="display:block" title="Go-To">
+                    <img src="https://cdn.shopify.com/s/files/1/0014/3232/2131/files/LOGO-GT.png?v=1606777441" style="border:none;width:auto;max-width:65px;height:auto;vertical-align:middle">
+                  </a>
+                </li>
+                <li style="display:inline-block; width: 30%;margin:0px">
+                  <a href="{{ shop.url }}/pages/gro-to" style="display:block" title="Gro-To">
+                    <img src="https://cdn.shopify.com/s/files/1/0014/3232/2131/files/GRT_logo_blue.png?v=1606777380" style="border:none;width:auto;max-width:55px;height:auto;vertical-align:middle">
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div style="margin-top:16px;text-align:center;">
+              <img src="https://cdn.shopify.com/s/files/1/0014/3232/2131/files/0123_GT_Website_Flow_Updates.jpg?v=1719364603" width="100%">
+            </div>
+            <div style="margin-top:22px;text-align:center;">
+             <h1 style="font-size:22px;line-height:1.5;letter-spacing:0.1px;color:#f9c6b9">Well, it's not often we see an order this beautiful.</h1> 
+    <p style="font-size:16px;line-height:1.63;letter-spacing:0.3px">Oh sure, everyone told us you have incredible taste, but this, this is breathtaking.</p>
+            </div>
+            <div style="margin-top:30px;text-align:center;" class="order-details">
+              <p style="font-size:16px;font-weight:bold;line-height:2.36;letter-spacing:0.4px;background:#fce2dc;display:inline;padding:15px" class="order-number">ORDER NUMBER: {{ order_name }}</p>
+              <p style="font-size:16px;font-weight:normal;line-height:2;letter-spacing:0.5px;margin-top:10px">Order placed: {{ "today" | date: "%B %d, %Y" }}</p>
+            </div>
+          </div>
+    </div>
+          <div style="max-width:600px;margin:0 auto; margin-top:20px;background:#f4f4f4;font-size:16px">
+            <div style="padding:25px;">
+              <p style="font-size:16px;line-height:1.75;letter-spacing:0px;margin-top:0px;font-weight:bold">Look at it!</p>
+              <table width="100%" border="0" style="padding:0px;margin:0px" cellpadding="0" cellspacing="0">
+              {% for line in subtotal_line_items %}
+    
+                {% if line.product.title %}
+                  {% assign line_title = line.product.title %}
+                {% else %}
+                  {% assign line_title = line.title %}
+                {% endif %}
+    
+                {% if line.quantity < line.quantity %}
+                  {% capture line_display %} {{ line.quantity }} of {{ line.quantity }} {% endcapture %}
+                {% else %}
+                  {% assign line_display = line.quantity  %}
+                {% endif %}
+                <tr>
+                  <td style="padding-bottom:5px;" width="91">
+                    {% if line.image %}
+                    <img src="{{ line | img_url: 'compact_cropped' }}" width="77">
+                    {% endif %}
+                  </td>
+                  <td>
+                    {{ line_title }} {%- if line_title != 'Free Sample' -%} x {{ line_display }}{%- endif -%}
+                    <br>
+                    <p style="display: none !important" id="promo_value">
+                      {{- line.line_item.properties['_promo'] -}}
+                    </p>
+                    {% if line.line_item.properties['_promo'] != blank %}
+                      <span id="promo_text" style="font-size: 14px; color: #222">Enjoy your summer gift!</span>
+                    {% endif %}
+    
+    {% if line.vendor contains 'Bundle' %}
+                    <p style="font-size:14px;line-height:1.75;letter-spacing:0px;margin-top:8px;margin-bottom:0;">Bundle inclusion:</p>
+                    <ul style="list-style:none;padding:0;margin-top:0;margin-left:15px;">
+                      <li style="margin-left:0;font-size:14px">{{ line.properties.1 }}</li>
+                      <li style="margin-left:0;font-size:14px">{{ line.properties.2 }}</li>
+                      <li style="margin-left:0;font-size:14px">{{ line.properties.3 }}</li>
+                      <li style="margin-left:0;font-size:14px">{{ line.properties.4 }}</li>
+                    </ul>
+                    {% endif %}
+                  </td>
+                  <td width="50" style="text-align:right">
+                    {% if line.final_line_price > 0 %}
+                    {{ line.final_line_price | money }}
+    
+                    {% if line.line_item.discount_allocations %}
+                    {% for discount_allocation in line.line_item.discount_allocations %}
+                    {% if discount_allocation.discount_application.target_selection != 'all' %}
+                    <br>
+                    <p>
+                      <img src="{{ 'notifications/discounttag.png' | shopify_asset_url }}" width="12" height="12">
+                      <span style="font-size: 12px">
+                        {{ discount_allocation.discount_application.title | upcase }}
+                        (-{{ discount_allocation.amount | money }})
+                      </span>
+                    </p>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                    {% else %}
+                    Free
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+              <tr>
+                <td colspan="3">&nbsp;</td>
+              </tr>
+              <tr>
+                <td style="padding-bottom:5px;">Subtotal</td>
+                <td  colspan="2" style="text-align:right">{{ subtotal_price | money }}</td>
+              </tr>
+              {% if requires_shipping and shipping_address %}
+              <tr>
+                <td colspan="2" style="padding-bottom:5px;">{{ shipping_method.title }}</td>
+                <td style="text-align:right">{% if shipping_method.price == 0 %}FREE{% else %}{{ shipping_method.price | money }}{% endif %}</td>
+              </tr>
+              {% endif %}
+              <tr>
+                <td style="padding-bottom:5px;"><strong>Total</strong></td>
+                <td colspan="2" style="text-align:right">{{ total_price | money }}</td>
+              </tr>
+    
+              <tr>
+                <td colspan="3" style="padding-bottom:5px;">Payments / Refunds</td>
+              </tr>
+    
+              {% assign transaction_size = 0 %}
+              {% assign transaction_amount = 0 %}
+              {% for transaction in transactions %}
+                {% unless transaction.kind == "capture" or transaction.kind == "void" %}
+                  {% assign transaction_size = transaction_size | plus: 1 %}
+                  {% assign transaction_amount = transaction_amount | plus: transaction.amount %}
+                {% endunless %}
+              {% endfor %}
+    
+              {% if transaction_size >= 1 or transaction_amount < total_price %}
+    
+                {% for transaction in transactions %}
+                  {% if transaction.status == "success" and transaction.kind == "authorization" or transaction.kind == "sale" %}
+    
+                  {% if transaction.payment_details.credit_card_company %}
+                    {% capture transaction_name %}{{ transaction.payment_details.credit_card_company }} (ending in {{ transaction.payment_details.credit_card_last_four_digits }}){% endcapture %}
+                  {% else %}
+                    {% capture transaction_name %}{{ transaction.gateway | replace: "_", " " | capitalize }}{% endcapture %}
+                  {% endif %}
+    
+                  <tr>
+                  <td colspan="2" style="padding-left: 15px; font-size: 14px; font-style:italic; padding-bottom:5px;">{{ transaction_name }}</td>
+                  <td style="font-size: 14px; text-align:right">{{ transaction.amount | money }}</td>
+                  </tr>
+                  {% endif %}
+    
+                  {% if transaction.kind == 'refund' %}
+                    {% if transaction.payment_details.credit_card_company %}
+                      {% assign refund_method_title = transaction.payment_details.credit_card_company %}
+                    {% else %}
+                      {% assign refund_method_title = transaction.gateway %}
+                    {% endif %}
+                    <tr>
+                      <td colspan="2" style="padding-left: 15px; font-size: 14px; color: red; font-style:italic; padding-bottom:5px;">{{ refund_method_title }}</td>
+                      <td style="font-size: 14px; color: red; text-align:right">- {{ transaction.amount | money }}</td>
+                    </tr>
+                  {% endif %}
+                {% endfor %}
+    
+              {% endif %}
+            </table>
+          </div>
+        </div>
+        <div style="max-width:600px;margin:0 auto;margin-top:5px;background:#f4f4f4;">
+          <div style="padding:25px">
+            <div style="width:50%; float: left">
+              <p style="margin:0px;font-size:16px;line-height:1.75;letter-spacing:0px"><strong>Delivering to:</strong></p>
+              <p style="margin:0px;font-size:16px;line-height:1.75;letter-spacing:0px;max-width:340px">
+                {{ shipping_address | format_address }}
+              </p>
+            </div>
+            <div style="width:50%; float: left;">
+              <p style="margin:0px;font-size:16px;line-height:1.75;letter-spacing:0px"><strong>Billing address:</strong></p>
+              <p style="margin:0px;font-size:16px;line-height:1.75;letter-spacing:0px;max-width:340px">
+                {{ billing_address | format_address }}
+              </p>
+            </div>
+            <div style="clear:both"></div>
+          </div>
+        </div>
+              
+        <div style="max-width:600px;margin:27px auto;text-align:center;line-height:1.63;letter-spacing:0.28px;padding:0px 10px;font-size:16px">
+          <p>It's magnificent. Just how skin care orders should be done.</p>
+    
+          <p>You'll receive another email when your products have been shipped, and then, thanks to a stunning combination of witchcraft and bribery, they'll be on their way.</p>
+    
+    
+          <p>In admiration,<br>Go-To</p>
+        </div>
+    
+        {% if shipping_address.country_code == "AU" %}
+        <div style="max-width:600px;margin:27px auto;text-align:center;line-height:1.63;letter-spacing:0.28px;padding:0px 10px;font-size:12px">
+          <p>Our SPF50 products (Nifty Fifty) sold separately or in bundles are GST Free. Should you require a tax invoice please contact <a href="mailto:info@gotoskincare.com"><u>info@gotoskincare.com</u></a></p>
+        </div>
+        {% endif %}
+    
+    <div style="max-width:600px;margin:27px auto;text-align:center;line-height:1.63;letter-spacing:0.28px;padding:10px 10px;background:#fce2dc; font-size:16px;">
+    <a href="{{ shop.url }}/pages/refer-a-friend" style="display:block" title="Refer A Friend">
+      <p style="color: black"><b>Give $20, Get $20</b></p>
+      <p style="color: black">Let a mate know about Go-To (your favourite skin care in the galaxy) and they’ll score $20 off their first order with us. As soon as they place their order, you'll get your own $20 Go-To voucher to play with too. Nice. </p>
+      </a>
+    </div>
+        <div style="border-top: 1px solid #ccc; border-bottom: 1px solid #ccc;padding:25px 0px; max-width:600px;margin:0 auto">
+          <ul style="list-style:none;margin:0;padding:0;text-align:center">
+            <li style="display:inline-block;width:30%;margin:0px;">
+              <a href="{{ shop.url }}/pages/shipping" target="_blank" style="color:#000;text-decoration:none;border:0px" title="Free Shipping" class="footer-link">
+                <img src="https://cdn.shopify.com/s/files/1/0073/0192/2925/files/icon-freeship.png?v=1601601479" style="height:35px;vertical-align:middle;">
+                <p style="font-size:11px;letter-spacing:0.6px;font-weight:bold;margin:0;vertical-align:middle;">Free Shipping</p>
+              </a>
+            </li>
+            <li style="display:inline-block;width:30%;margin:0px 10px;">
+              <a href="{{ shop.url }}/pages/afterpay/" target="_blank" style="color:#000;text-decoration:none;border:0px" title="Afterpay" class="footer-link">
+                <img src="https://cdn.shopify.com/s/files/1/0073/0192/2925/files/icon-afterpay.png?v=1601601479" style="height:35px;vertical-align:middle;">
+                <p style="font-size:11px;letter-spacing:0.6px;font-weight:bold;margin:0;vertical-align:middle;">Afterpay</p>
+              </a>
+            </li>
+            <li style="display:inline-block;width:30%;margin:0px;">
+              <a href="{{ shop.url }}/pages/testimonials/" target="_blank" style="color:#000;text-decoration:none;border:0px" title="Reviews" class="footer-link">
+                <img src="https://cdn.shopify.com/s/files/1/0073/0192/2925/files/icon-review.png?v=1601601479" style="height:35px;vertical-align:middle;">
+                <p style="font-size:11px;letter-spacing:0.6px;font-weight:bold;margin:0;vertical-align: middle;">Reviews</p>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>

@@ -5,6 +5,8 @@
 
 
 @import "blocks/text";
+@import "blocks/button";
+
 
 @import "cart.scss";
 @import "campaigns.scss";
@@ -1927,32 +1929,6 @@ store-header.background-blur {
       margin-top: var(--margin-top-desktop);
       margin-bottom: var(--margin-bottom-desktop);
     }
-  }
-
-  .blocks--button {
-    display: flex;
-    align-items: center;
-    justify-content: var(--flex-justify-content-mobile);
-    margin-top: var(--margin-top-mobile);
-    margin-bottom: var(--margin-bottom-mobile);
-
-    @include media-query($medium-up) {
-      align-items: center;
-      justify-content: var(--flex-justify-content-mobile);
-      margin-top: var(--margin-top-desktop);
-      margin-bottom: var(--margin-bottom-desktop);
-    }
-
-    &.button--outline {
-      color: var(--button-color-text-mobile);
-      border-color: var(--button-color-text-mobile);
-      @include media-query($medium-up) {
-          color: var(--button-color-text-desktop);
-          border-color: var(--button-color-text-desktop);
-        }
-      }
-
-
   }
 }
 
@@ -5042,17 +5018,6 @@ product-item[data-title="Face Hero"] {
 
 
 
-
-.template-product--lip-hero-back-to-shop, .template-product--lip-hero-waitlist {
-  .product-meta__price-list-container {
-    display: none !important;
-  }
-
-  product-sticky-form {
-    display: none !important;
-  }
-}
-
 .countdown-bar {
   text-align: center;
   background: $gotoPinkLight;
@@ -5072,39 +5037,6 @@ product-item[data-title="Face Hero"] {
     }
   }
 
-}
-
-.product-item  {
- &[data-title="Lip Hero"] {
-  .product-item__cta-wrapper {
-
-  }
-  .link--tierary {
-    text-decoration-color: $gotoGrey;
-  }
-  .product-item-meta__price-list-container {
-    display: none;
-   }
- }
-
-
-}
-
-.predictive-search__product-item {
-  &[data-title="Lip Hero"] {
-    .product-item__cta-wrapper {
-      display: none !important;
-    }
-
-    form {
-      display: none;
-     }
-  
-     .product-item-meta__price-list-container {
-      display: none;
-     }
-   }
-  
 }
 
 
@@ -5226,5 +5158,26 @@ product-item[data-title="Face Hero"] {
         margin: 20px auto 0px;
       }
     }
+  }
+}
+
+.cc-btn {
+  border: 2px solid #000 !important;
+}
+
+@include media-query($small) {
+
+  .cc-link {
+    display: block !important;
+    text-align: right !important;
+  }
+
+  .cc-message {
+    font-size: 11px !important;
+    line-height: 1 !important;
+  }
+  
+  .pd-cookie-banner-window {
+    padding: 10px 20px !important;
   }
 }

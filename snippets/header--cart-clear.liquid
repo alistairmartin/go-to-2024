@@ -3,6 +3,7 @@
     <script>
       
       document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(function () {
         console.log('Cart Clear!');
         const KEY_NAME = 'cartClearedTimestamp';
         const DAYS_VALID = {{ settings.clear_cart_on_first_days }};
@@ -33,6 +34,8 @@
         } else {
           console.log('Cart was already cleared within 7 days.');
         }
+
+        }, 3000);
       });
     </script>
   {% endif %}

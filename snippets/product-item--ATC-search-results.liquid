@@ -13,9 +13,6 @@
 
 
 <product-item class="product-item {% if horizontal == true %}horizontal{% endif %} {{ classes }} {% unless product.available %}product-item--sold-out{% endunless %}" {% if reveal %}reveal{% endif %}>
-      {%- if request.page_type != 'password' and settings.product_add_to_cart and product.available and reduced_content != true and show_cta != true -%}
-
-      
       {%- if product.available and reduced_content or show_cta -%}
         <div class="product-item__cta-wrapper">
           {%- if product.variants.size == 1 -%}

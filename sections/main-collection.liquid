@@ -8,15 +8,14 @@
 
   {%- if block.type == "grid_image" -%}
     {% assign collectionHandles = block.settings.array_of_collections %}
-
     {% for item in collectionHandles %}
-
       {% if item.handle == collection.handle %}
         {%- assign validCollectionForImages = true -%}
         {% break %}
       {% endif %}
     {% endfor %}
   {%- elsif block.type == "tolstoy_videos" -%}
+    {% assign collectionHandles = block.settings.array_of_collections %}
     {% for item in collectionHandles %}
       {% if item.handle == collection.handle %}
         {%- assign validCollectionForVideos = true -%}
@@ -506,6 +505,11 @@
         "type": "tolstoy_videos",
         "name": "Tolstoy Videos",
         "settings": [
+          {
+            "type": "collection_list",
+            "id": "array_of_collections",
+            "label": "Collections"
+          },
           {
             "type": "header",
             "content": "Publish ID #1"

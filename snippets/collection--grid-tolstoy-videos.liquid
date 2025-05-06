@@ -18,6 +18,9 @@
 
     {%- assign desktopSpan = 1 -%}
 
+    {% capture linkSettingObject %}link_setting_{{ i }}{% endcapture %}
+    {%- assign linkSetting = block.settings[linkSettingObject] -%}
+
 
     {%- if publish_id != blank -%}
 
@@ -26,9 +29,15 @@
                 class="product-item product-item__grid-image hide-mobile"
                 {% if reveal %}reveal{% endif %}
             >
-                        {% comment %} <tolstoy-collectionPageTile data-tags="{% for tag in product.tags -%}{{ tag }},{%- endfor %}" class="tolstoy-collectionPageTile" data-publish-id="{{ publish_id }}" data-product-id="{{ product.id }}"> </tolstoy-collectionPageTile> {% endcomment %}
-
-                        <tolstoy-collection-page-tile style="display: none;" class="tolstoy-collection-page-tile" data-publish-id="{{ publish_id }}" data-collection-id="{{ collection.id }}"></tolstoy-collection-page-tile>
+            {%- if linkSetting != blank -%}
+              <a href="{{ linkSetting }}">
+            {%- endif -%}
+                  {% comment %} <tolstoy-collectionPageTile data-tags="{% for tag in product.tags -%}{{ tag }},{%- endfor %}" class="tolstoy-collectionPageTile" data-publish-id="{{ publish_id }}" data-product-id="{{ product.id }}"> </tolstoy-collectionPageTile> {% endcomment %}
+                  <tolstoy-collection-page-tile style="display: none;" class="tolstoy-collection-page-tile" data-publish-id="{{ publish_id }}" data-collection-id="{{ collection.id }}"></tolstoy-collection-page-tile>
+                  
+                {%- if linkSetting != blank -%}
+                  </a>
+                {%- endif -%}
             </product-item>
             {% endif %}
 
@@ -38,9 +47,18 @@
                 {% if reveal %}
                 reveal
                 {% endif %}
+                
             >
+
+                {%- if linkSetting != blank -%}
+                  <a href="{{ linkSetting }}">
+                {%- endif -%}
                 {% comment %} <tolstoy-collectionPageTile data-tags="{% for tag in product.tags -%}{{ tag }},{%- endfor %}" class="tolstoy-collectionPageTile" data-publish-id="{{ publish_id }}" data-product-id="{{ product.id }}"> </tolstoy-collectionPageTile> {% endcomment %}
                 <tolstoy-collection-page-tile style="display: none;" class="tolstoy-collection-page-tile" data-publish-id="{{ publish_id }}" data-collection-id="{{ collection.id }}"></tolstoy-collection-page-tile>
+
+                {%- if linkSetting != blank -%}
+                  </a>
+                {%- endif -%}
             </product-item>
             {% endif %}
 

@@ -3,7 +3,7 @@
   {%- if article.image -%}
   
     <a href="{{ article.url }}" class="article-item__image-container">
-      {{- article.image | image_url: width: 500, height: 500, crop: 'center' | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 81vw, (max-width: 999px) 37vw, 425px', sizes: '600,700,800,1000,1200,1400,1600,1800,2000', class: 'article-item__image' -}}
+      {{- article.image | image_url: width: 400, height: 400, crop: 'center' | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 81vw, (max-width: 999px) 37vw, 425px', sizes: '600,700,800,1000,1200,1400,1600,1800,2000', class: 'article-item__image' -}}
 
       {%- if use_featured_layout and is_first -%}
         <span class="article-item__arrow prev-next-button prev-next-button--next">{% render 'icon' with 'nav-arrow-right', direction_aware: true %}</span>

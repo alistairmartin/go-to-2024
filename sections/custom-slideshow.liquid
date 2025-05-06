@@ -1,6 +1,21 @@
+
+{%- assign showSection = true -%}
+
+{%- if blog -%}
+  {%- if canonical_url contains "?page=" or canonical_url contains "/tagged/" -%}
+    {%- assign showSection = false -%}
+  {%- endif -%}
+
+  {%- if canonical_url contains "?page=1" -%}
+    {%- assign showSection = true -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if showSection -%}
 <div class="custom-section">
   {% content_for 'blocks' %}
 </div>
+{% endif %}
 
 {% schema %}
 {

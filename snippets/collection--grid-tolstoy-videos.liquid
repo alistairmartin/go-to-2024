@@ -18,7 +18,7 @@
 
     {%- assign desktopSpan = 1 -%}
 
-    {% capture linkSettingObject %}link_setting_{{ i }}{% endcapture %}
+    {% capture linkSettingObject %}link_{{ i }}{% endcapture %}
     {%- assign linkSetting = block.settings[linkSettingObject] -%}
 
 
@@ -29,7 +29,9 @@
                 class="product-item product-item__grid-image hide-mobile"
                 {% if reveal %}reveal{% endif %}
             >
+
             {%- if linkSetting != blank -%}
+         
               <a href="{{ linkSetting }}">
             {%- endif -%}
                   {% comment %} <tolstoy-collectionPageTile data-tags="{% for tag in product.tags -%}{{ tag }},{%- endfor %}" class="tolstoy-collectionPageTile" data-publish-id="{{ publish_id }}" data-product-id="{{ product.id }}"> </tolstoy-collectionPageTile> {% endcomment %}

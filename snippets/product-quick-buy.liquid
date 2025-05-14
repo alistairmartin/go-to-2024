@@ -147,17 +147,21 @@
   {% assign skinTypeCounter = 0 %}
   {%- for tag in product.tags -%}
     {%- if tag contains "skintype_" -%}
+      {%- unless tag contains "jebbit" -%}
       {% assign skinTypeFound = true %}
       {%- assign skinTypeCounter = skinTypeCounter | plus: 1 -%}
+    {% endunless %}
     {%- endif -%}
   {%- endfor -%}
 
   {% assign badgeCounter = 0 %}
   {%- for tag in product.tags -%}
     {%- if tag contains "badge_" -%}
+      {%- unless tag contains "jebbit" -%}
       {% assign badgeFound = true %}
       {%- assign badgeCounter = badgeCounter | plus: 1 -%}
       {% break %}
+      {% endunless %}
     {%- endif -%}
   {%- endfor -%}
 
@@ -170,9 +174,11 @@
           <div class="perfect-for--container items-{{ skinTypeCounter }}">
             {%- for tag in product.tags -%}
               {%- if tag contains "skintype_" -%}
+                {%- unless tag contains "jebbit" -%}
                 {% assign skinTypeFound = true %}
                 {% assign icon = tag | remove: "skintype_" %}
                 {% render "product-content-icons--perfect-for", icon: icon %}
+              {% endunless %}
               {%- endif -%}
             {%- endfor -%}
           </div>
@@ -186,9 +192,11 @@
           <div class="who-is-it-for--container items-{{ badgeCounter }}">
             {%- for tag in product.tags -%}
               {%- if tag contains "badge_" -%}
+                {%- unless tag contains "jebbit" -%}
                 {% assign badgeFound = true %}
                 {% assign icon = tag | remove: "badge_" %}
                 {% render "product-content-icons--good-to-know", icon: icon %}
+              {% endunless %}
               {%- endif -%}
             {%- endfor -%}
           </div>

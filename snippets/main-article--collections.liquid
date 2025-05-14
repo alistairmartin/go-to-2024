@@ -103,7 +103,7 @@ Collections:
             {%- if product.featured_media -%}
                 {%- assign smallest_image_aspect_ratio = smallest_image_aspect_ratio | at_least: product.featured_media.aspect_ratio -%}
             {%- endif -%}
-            {%- render 'product-item', product: product, collection: article_collection, show_cta: false, sizes_attribute: sizes_attribute -%}
+            {%- render 'product-item', product: product, collection: collection, sizes_attribute: sizes_attribute, reveal: false, show_cta: true, reduced_content: true -%}
             {%- endfor -%}
         </div>
         </div>

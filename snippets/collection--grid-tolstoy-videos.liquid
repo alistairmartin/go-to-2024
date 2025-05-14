@@ -11,16 +11,16 @@
     {% capture mobilePositionSettings %}position_mobile_{{ i }}{% endcapture %}
     {%- assign mobilePosition = block.settings[mobilePositionSettings] | times: 1 -%}
 
-    {%- assign mobileSpan = 1 -%}
-
     {% capture desktopPositionSettings %}position_desktop_{{ i }}{% endcapture %}
     {%- assign desktopPosition = block.settings[desktopPositionSettings] | times: 1 -%}
 
-    {%- assign desktopSpan = 1 -%}
 
     {% capture linkSettingObject %}link_{{ i }}{% endcapture %}
     {%- assign linkSetting = block.settings[linkSettingObject] -%}
 
+
+    {% capture contentSquareSetting %}content_square_id_{{ i }}{% endcapture %}
+    {%- assign contentSquare = block.settings[contentSquareSetting] -%}
 
     {%- if publish_id != blank -%}
 
@@ -32,7 +32,7 @@
 
             {%- if linkSetting != blank -%}
          
-              <a href="{{ linkSetting }}">
+              <a href="{{ linkSetting }}" {% if contentSquare %}data-content-square="{{ contentSquare }}"{% endif %}>
             {%- endif -%}
                   {% comment %} <tolstoy-collectionPageTile data-tags="{% for tag in product.tags -%}{{ tag }},{%- endfor %}" class="tolstoy-collectionPageTile" data-publish-id="{{ publish_id }}" data-product-id="{{ product.id }}"> </tolstoy-collectionPageTile> {% endcomment %}
                   <tolstoy-collection-page-tile style="display: none;" class="tolstoy-collection-page-tile" data-publish-id="{{ publish_id }}" data-collection-id="{{ collection.id }}"></tolstoy-collection-page-tile>

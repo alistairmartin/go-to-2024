@@ -58,6 +58,9 @@
 {%- assign mobileLink = block.settings[mobileLinkSettings]  -%}
 {%- endif -%}   
 
+{% capture contentSquareSetting %}content_square_id_{{ i }}{% endcapture %}
+{%- assign contentSquare = block.settings[contentSquareSetting] -%}
+
 {%- if popup != blank -%}
     {%- render 'modal', modalId: popupId, content: popup , buttonId: popupId -%} 
     {%- render 'modal', modalId: popupIdMobile, content: popup , buttonId: popupIdMobile -%} 
@@ -70,9 +73,9 @@
 <product-item class="product-item product-item__grid-image hide-mobile" {% if reveal %}reveal{% endif %} style="grid-column: span {{ desktopSpan }} !important;">
 
 {%- if linkType == "popup" -%}
-    <button class="product-item__grid-image--link" id="{{ popupId }}"> 
+    <button class="product-item__grid-image--link" id="{{ popupId }}" {% if contentSquare %}data-content-square="{{ contentSquare }}"{% endif %}> 
 {%- elsif desktopLink != blank -%}
-    <a href="{{ desktopLink }}" class="product-item__grid-image--link"> 
+    <a href="{{ desktopLink }}" class="product-item__grid-image--link" {% if contentSquare %}data-content-square="{{ contentSquare }}"{% endif %}> 
 {% else %}
      <div class="product-item__grid-image--link">
 {%- endif -%}
@@ -107,9 +110,9 @@
 
 
 {%- if linkType == "popup" -%}
-    <button class="product-item__grid-image--link hide-desktop" id="{{ popupIdMobile }}"> 
+    <button class="product-item__grid-image--link hide-desktop" id="{{ popupIdMobile }}" {% if contentSquare %}data-content-square="{{ contentSquare }}"{% endif %}> 
 {%- elsif mobileLink != blank %}
-    <a href="{{ mobileLink }}" class="product-item__grid-image--link hide-desktop"> 
+    <a href="{{ mobileLink }}" class="product-item__grid-image--link hide-desktop" {% if contentSquare %}data-content-square="{{ contentSquare }}"{% endif %}>  
 {% else %}
     <div class="product-item__grid-image--link hide-desktop">
 {%- endif -%}

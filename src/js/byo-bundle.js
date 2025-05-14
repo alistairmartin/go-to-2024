@@ -1,42 +1,46 @@
-
+window.onerror = function(message, source, lineno, colno, error) {
+    console.log("JS Error:", message, source, lineno, colno, error);
+};  
 
 let byoBundleCounterItems = 0;
 let byoBundleCounterPrice = 0;
 
 document.addEventListener("DOMContentLoaded", function(event) {
     $(".product-item--BYO-ATC,.product-item--BYO-ATC-variant").on("click", function() {
-
-        if (!$(this).hasClass("disabled")) {
-
+        try {
+          if (!$(this).hasClass("disabled")) {
             const productId = $(this).data("id");
             const productImage = $(this).data("image");
-    
+            const price = Number($(this).data("price")) || 0;
+      
             if ($(this).hasClass("active")) {
-
-                $(this).removeClass("active");
-                byoBundleCounterPrice -= $(this).data("price");
-                byoBundleCounterItems -= 1;
-    
-                $(".build-your-build--selected-items img[data-id='" + productId + "']").remove();
+              $(this).removeClass("active");
+              byoBundleCounterPrice -= price;
+              byoBundleCounterItems -= 1;
+      
+              $(".build-your-build--selected-items img[data-id='" + productId + "']").remove();
             } else {
-                $(this).addClass("active");
-                byoBundleCounterPrice += $(this).data("price");
-                byoBundleCounterItems += 1;
-    
-                $(".build-your-build--selected-items").append(
-                    '<img src="' + productImage + '" data-id="' + productId + '" class="selected-item-image">'
-                );
+              $(this).addClass("active");
+              byoBundleCounterPrice += price;
+              byoBundleCounterItems += 1;
+      
+              $(".build-your-build--selected-items").append(
+                '<img src="' + productImage + '" data-id="' + productId + '" class="selected-item-image">'
+              );
             }
-    
-            $(".build-your-bundle--cost").text((byoBundleCounterPrice / 100));
-    
+      
+            $(".build-your-bundle--cost").text((byoBundleCounterPrice / 100).toFixed(2));
+      
             if (byoBundleCounterItems >= 4) {
-                $(".add-bundle-to-cart").removeClass("under").prop("disabled", false);
+              $(".add-bundle-to-cart").removeClass("under").prop("disabled", false);
             } else {
-                $(".add-bundle-to-cart").addClass("under").prop("disabled", true);
+              $(".add-bundle-to-cart").addClass("under").prop("disabled", true);
             }
+          }
+        } catch (err) {
+          console.error("Error in BYO click handler:", err);
         }
-    });
+      });
     
 
     $(".add-bundle-to-cart").on("click", function() {

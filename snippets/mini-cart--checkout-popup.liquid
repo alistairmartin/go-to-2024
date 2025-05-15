@@ -1,0 +1,24 @@
+
+{%- assign blockCheckout = false -%}
+{%- assign popupGiftCheckout = false -%}
+
+{%- for block in section.blocks -%}
+    {%- if block.type == "buy_x_get_y" -%}
+        {% comment %} {%- if block.settings.can_block_checkout == false   -%}
+            {%- include 'mini-cart--gifts-buy-x-get-y', block: block,  javascriptCode: false, checkoutValidator: true -%}
+        {%- endif -%} {% endcomment %}
+    {%- elsif block.type == "min_spend" -%}
+        {% comment %} {%- render 'mini-cart--gifts-min-spend', block: block, javascriptCode: false -%} {% endcomment %}
+    {%- elsif block.type == "min_spend_buy_x" -%}
+        {%- if block.settings.can_block_checkout == false and block.settings.enable_popup == true -%}
+            {%- include 'mini-cart--gifts-min-spend-plus-buy-x', block: block, javascriptCode: false, checkoutValidator: true, popupCode: true  -%}
+        {% endif %}
+    {%- elsif block.type == "subscription_gift" -%}
+        {% comment %} {%- render 'mini-cart--gifts-subscription-gift', block: block, javascriptCode: false -%} {% endcomment %}
+    {%- endif -%}
+{%- endfor -%}
+
+
+
+
+

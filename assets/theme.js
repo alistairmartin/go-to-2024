@@ -267,7 +267,9 @@ var InputBindingManager = class {
       if (target.tagName === "SELECT") {
         target = target.options[target.selectedIndex];
       }
-      boundElement.innerHTML = target.hasAttribute("title") ? target.getAttribute("title") : target.value;
+      setTimeout(() => {
+        boundElement.innerHTML = target.hasAttribute("title") ? target.getAttribute("title") : target.value;
+      }, 5000);
     }
   }
 };

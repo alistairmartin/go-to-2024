@@ -6,6 +6,8 @@ let byoBundleCounterItems = 0;
 let byoBundleCounterPrice = 0;
 
 document.addEventListener("DOMContentLoaded", function(event) {
+
+
     $(".product-item--BYO-ATC,.product-item--BYO-ATC-variant").on("click", function() {
         try {
           if (!$(this).hasClass("disabled")) {

@@ -4,6 +4,12 @@
 {% assign getProductInCart = false %}
 {% assign getProduct = block.settings.get_product %}
 
+{%- if block.settings.enable_popup -%}
+  {% assign getProduct2 = block.settings.get_product2 %}
+  {% assign getProduct3 = block.settings.get_product3 %}
+{%- endif -%}
+
+
 
 
 {%- for attribute in cart.attributes -%}
@@ -28,9 +34,20 @@
 
 {%- for item in cart.items -%}
   {%- if item.product.handle == getProduct.handle -%}
-    {% assign getProductInCart = true -%}{% break %}
+    {% assign getProductInCart = true -%}
   {%- endif -%}
 
+  {%- if block.settings.enable_popup -%}
+
+    {%- if item.product.handle == getProduct2.handle -%}
+      {% assign getProductInCart = true -%}
+    {%- endif -%}
+
+    {%- if item.product.handle == getProduct3.handle -%}
+      {% assign getProductInCart = true -%}
+    {%- endif -%}
+
+  {% endif %}
 
   {%- if block.settings.buy_brand contains item.product.vendor -%}
     {%- assign lineItemSpend = item.price | times: item.quantity -%}
@@ -50,6 +67,8 @@
 
 {% comment %} min-spend: {{ minSpendFromX | money }} {% endcomment %}
 
+
+
 {%- if javascriptCode == true -%}
 
     {%- if block.settings.automatically_add and getProduct.available -%}
@@ -64,7 +83,17 @@
           available: {{ getProduct.available }},
           variantId: {{ getProduct.selected_or_first_available_variant.id }},
           handle: "{{ getProduct.handle }}"
-        }
+        }{% if block.settings.enable_popup == true %},
+        getProduct2: {
+          available: {{ getProduct2.available | default: false }},
+          variantId: {{ getProduct2.selected_or_first_available_variant.id  | default: false }},
+          handle: "{{ getProduct2.handle  | default: false }}"
+        },
+        getProduct3: {
+          available: {{ getProduct3.available | default: false }},
+          variantId: {{ getProduct3.selected_or_first_available_variant.id | default: false }},
+          handle: "{{ getProduct3.handle | default: false }}"
+        }{% endif %}
       }
       window.cartGWP.push(cartGWPItem);
     </script>
@@ -74,15 +103,31 @@
 
   {%- if checkoutValidator == true -%}
 
-    {%- if minSpendFromX >= minSpend and getProductInCart == false and getProduct.available == true -%}
+    {%- if minSpendFromX >= minSpend and getProductInCart == false and getProduct.available == true and block.settings.can_block_checkout == true -%}
           {%- capture blockCheckout -%}true{%- endcapture -%}
           {%- capture blockCheckoutText -%}{{ block.settings.block_checkout_button }}{%- endcapture -%}
           {%- capture blockCheckoutTextNoThanks -%}{{ block.settings.block_checkout_button_no }}{%- endcapture -%}
     {%- endif -%}
+
+
+    {%- if minSpendFromX >= minSpend and getProductInCart == false and getProduct.available == true and block.settings.can_block_checkout == false and block.settings.enable_popup == true and popupCode != true -%}
+
+        {%- capture popupGiftCheckout -%}true{%- endcapture -%}
+        {%- capture popupCheckoutText -%}{{ block.settings.popup_checkout_button }}{%- endcapture -%}
+        {%- capture popupCheckoutTextNoThanks -%}{{ block.settings.popup_checkout_button_no }}{%- endcapture -%}
+
+        <button type="button" is="toggle-button" id="mini-cart-gwp-{{ block.id }}-toggle" class="button button--primary button--full" data-action="toggle-gwp" aria-controls="mini-cart-gwp-{{ block.id }}-element" aria-expanded="false">
+       {{ popupCheckoutText }}
+      </button>
+
+    {%- endif -%}
   
   {% else %}
 
-    {%- if minSpendFromX >= minSpend and getProductInCart == false and block.settings.automatically_add == false -%}
+  
+  {%- if minSpendFromX >= minSpend and getProductInCart == false and block.settings.automatically_add == false and block.settings.enable_popup == true -%}
+
+  {%- elsif minSpendFromX >= minSpend and getProductInCart == false and block.settings.automatically_add == false -%}
         {% if getProduct.available == true %}
             <div class="mini-cart-gift">
             <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title }}</div>
@@ -101,3 +146,38 @@
   {%- endif -%}
 
 {%- endif -%}
+
+
+
+{%- if popupCode == true -%}
+  
+  {%- if block.settings.enable_popup == true -%}
+
+     <openable-element id="mini-cart-gwp-{{ block.id }}-element" class="mini-cart__order-note">
+      <span class="openable__overlay"></span>
+
+          <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title }}</div>
+          {% if getProduct.available == true %}
+            <div class="mini-cart-gift"> 
+            {%- render 'product-item--gift', product: getProduct, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true, description: block.settings.gwp_description -%}
+            </div>
+        {%- endif -%}
+
+            {% if getProduct2.available == true %}
+            <div class="mini-cart-gift">
+
+            {%- render 'product-item--gift', product: getProduct2, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true, description: block.settings.gwp_description -%}
+            </div>
+        {%- endif -%}
+
+            {% if getProduct3.available == true %}
+            <div class="mini-cart-gift">
+            {%- render 'product-item--gift', product: getProduct3, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true, description: block.settings.gwp_description -%}
+            </div>
+        {%- endif -%}
+      <button type="button" data-action="close" class="form__submit form__submit--closer button button--secondary">Close</button>
+    </openable-element>
+
+{% endif %}
+
+{% endif %}

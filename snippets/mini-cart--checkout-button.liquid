@@ -1,5 +1,6 @@
 
 {%- assign blockCheckout = false -%}
+{%- assign popupGiftCheckout = false -%}
 {%- for block in section.blocks -%}
     {%- if block.type == "buy_x_get_y" -%}
         {%- if block.settings.can_block_checkout -%}
@@ -15,19 +16,29 @@
 {%- endfor -%}
 
 
-<button form="mini-cart-form" type="submit" class="checkout-button button button--primary button--full {% if blockCheckout == "true" %}block-checkout button--ternary{% else %}button--primary{% endif %}" name="checkout" {%- if blockCheckout == "true" -%}disabled{% endif %}>
-    {%- if blockCheckout == "true" -%}
-        {{ blockCheckoutText }}
-        {% comment %} <small>You need to select a gift above before checking out</small> {% endcomment %}
-    {% else %}
-        {{- 'cart.general.checkout' | t -}}
-        <span class="square-separator"></span>
-        {{- cart.total_price | money_with_currency | remove: ".00" | remove: ",00" -}}
-    {%- endif -%}
-</button>
 
-{% if blockCheckout == "true" %}
-<button form="mini-cart-form" type="submit" class="checkout-button--no-thanks link" name="checkout">
-    {{ blockCheckoutTextNoThanks }}
-</button>
-{% endif %}
+{% if popupGiftCheckout == "true" %}
+
+{% else  %}   
+
+
+    <button form="mini-cart-form" type="submit" class="checkout-button button button--primary button--full {% if blockCheckout == "true" %}block-checkout button--ternary{% else %}button--primary{% endif %}" name="checkout" {%- if blockCheckout == "true" -%}disabled{% endif %}>
+        {%- if blockCheckout == "true" -%}
+            {{ blockCheckoutText }}
+            {% comment %} <small>You need to select a gift above before checking out</small> {% endcomment %}
+        {% else %}
+            {{- 'cart.general.checkout' | t -}}
+            <span class="square-separator"></span>
+            {{- cart.total_price | money_with_currency | remove: ".00" | remove: ",00" -}}
+        {%- endif -%}
+    </button>
+
+    {% if blockCheckout == "true" %}
+    <button form="mini-cart-form" type="submit" class="checkout-button--no-thanks link" name="checkout">
+        {{ blockCheckoutTextNoThanks }}
+    </button>
+    {% endif %}
+
+
+{%- endif -%}
+

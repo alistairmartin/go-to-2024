@@ -502,6 +502,12 @@ updateCartAttributes(cartAttributes);
   {%- endif -%}
 
 
+     
+
+   {%- include 'mini-cart--checkout-popup' -%}
+
+
+
 
   {%- if section.settings.show_order_note -%}
     <openable-element id="mini-cart-note" class="mini-cart__order-note">
@@ -672,7 +678,8 @@ updateCartAttributes(cartAttributes);
         {
           "type": "checkbox",
           "id": "automatically_add",
-          "label": "Automatically Add Gift?"
+          "label": "Automatically Add Gift?",
+          "info": "Turn this off if using popup mode."
         },
         {
           "type": "header",
@@ -730,8 +737,41 @@ updateCartAttributes(cartAttributes);
         {
           "type": "product",
           "id": "get_product",
-          "label": "Get Product",
+          "label": "Get Product #1",
           "info": "This will be added to cart."
+        },
+        {
+          "type": "header",
+          "content": "Enable Product Popup"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_popup",
+          "label": "Enable Popup",
+          "info": "Will include the Product #1 above, and the two below. The user can only choose 1. Do not enable auto add.",
+          "default": false
+        },
+        {
+          "type": "product",
+          "id": "get_product2",
+          "label": "Get Product #2",
+          "info": "Must Enable Popup Mode"
+        },
+        {
+          "type": "product",
+          "id": "get_product3",
+          "label": "Get Product #2",
+          "info": "Must Enable Popup Mode"
+        },
+        {
+          "type": "text",
+          "id": "popup_checkout_button",
+          "label": "Checkout Button Text"
+        },
+        {
+          "type": "text",
+          "id": "popup_checkout_button_no",
+          "label": "No Thank You Button"
         },
         {
           "type": "header",

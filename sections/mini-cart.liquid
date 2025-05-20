@@ -539,7 +539,7 @@ updateCartAttributes(cartAttributes);
     },  
     {
       "type": "min_spend",
-      "name": "Min Spend Get Y",
+      "name": "(x) Min Spend Get Y",
       "settings": [
         {
           "type": "text",
@@ -741,6 +741,22 @@ updateCartAttributes(cartAttributes);
           "info": "This will be added to cart."
         },
         {
+          "type": "text",
+          "id": "gwp_title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "gwp_description",
+          "label": "Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "gwp_image",
+          "label": "Image",
+          "info": "Optional. Will use product image as default."
+        },
+        {
           "type": "header",
           "content": "Enable Product Popup"
         },
@@ -752,18 +768,6 @@ updateCartAttributes(cartAttributes);
           "default": false
         },
         {
-          "type": "product",
-          "id": "get_product2",
-          "label": "Get Product #2",
-          "info": "Must Enable Popup Mode"
-        },
-        {
-          "type": "product",
-          "id": "get_product3",
-          "label": "Get Product #2",
-          "info": "Must Enable Popup Mode"
-        },
-        {
           "type": "text",
           "id": "popup_checkout_button",
           "label": "Checkout Button Text"
@@ -772,6 +776,58 @@ updateCartAttributes(cartAttributes);
           "type": "text",
           "id": "popup_checkout_button_no",
           "label": "No Thank You Button"
+        },
+         {
+          "type": "paragraph",
+          "content": "--------"
+        },
+        {
+          "type": "product",
+          "id": "get_product2",
+          "label": "Get Product #2",
+          "info": "Must Enable Popup Mode"
+        },
+        {
+          "type": "text",
+          "id": "gwp_title2",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "gwp_description2",
+          "label": "Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "gwp_image2",
+          "label": "Image",
+          "info": "Optional. Will use product image as default."
+        },
+        {
+          "type": "paragraph",
+          "content": "--------"
+        },
+        {
+          "type": "product",
+          "id": "get_product3",
+          "label": "Get Product #3",
+          "info": "Must Enable Popup Mode"
+        },
+        {
+          "type": "text",
+          "id": "gwp_title3",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "gwp_description3",
+          "label": "Description"
+        },
+        {
+          "type": "image_picker",
+          "id": "gwp_image3",
+          "label": "Image",
+          "info": "Optional. Will use product image as default."
         },
         {
           "type": "header",
@@ -827,33 +883,13 @@ updateCartAttributes(cartAttributes);
         },        
         {
           "type": "header",
-          "content": "Text"
-        },
-        {
-          "type": "textarea",
-          "id": "gwp_title",
-          "label": "Title"
-        },
-        {
-          "type": "richtext",
-          "id": "gwp_description",
-          "label": "Description"
-        },
-        {
-          "type": "image_picker",
-          "id": "gwp_image",
-          "label": "Image",
-          "info": "Optional. Will use product image as default."
-        },
-        {
-          "type": "header",
           "content": "Block Checkout"
         },
         {
           "type": "checkbox",
           "id": "can_block_checkout",
           "label": "Can Block Checkout",
-          "info": "Customers will need to select a gift before checking out. Only for gifts that have options."
+          "info": "Customers will need to select a gift before checking out. Only for gifts that have options. Do not enable if 'Popup' is enabled."
         },
         {
           "type": "text",

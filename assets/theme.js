@@ -6241,21 +6241,20 @@ var CartDrawer = class extends DrawerContent {
           }
         }
 
-        if(cartGWP.type === "min-spend-plus-buy-x") {
-
-          const cartGWPHandle = cartGWP.getProduct.handle; 
+        if (cartGWP.type === "min-spend-plus-buy-x") {
+          const cartGWPHandle = cartGWP.getProduct.handle;
           const matchingItem = cartObject.items.find(item => item.handle === cartGWPHandle);
           let minsSpendBuyX = 0;
 
           console.log("cartGWP.buyXTag " + cartGWP.buyXTag);
           console.log("cartGWP.buyBrand " + cartGWP.buyBrand);
 
-          if(cartGWP.buyBrand !== "") {
-          const buyBrandArray = cartGWP.buyBrand.split(',');
-          cartObject.items.some(item => {
-            console.log(buyBrandArray);
-            console.log(item.vendor);
-              if(buyBrandArray.includes(item.vendor)) {
+          if (cartGWP.buyBrand !== "") {
+            const buyBrandArray = cartGWP.buyBrand.split(',');
+            cartObject.items.some(item => {
+              console.log(buyBrandArray);
+              console.log(item.vendor);
+              if (buyBrandArray.includes(item.vendor)) {
                 minsSpendBuyX += item.line_price;
               }
             });
@@ -6263,23 +6262,27 @@ var CartDrawer = class extends DrawerContent {
             cartObject.items.forEach(item => {
               const itemTags = item.properties?._tags ? item.properties._tags.split(",") : [];
               if (itemTags.includes(cartGWP.buyXTag)) {
-                  console.log(itemTags)
-                  minsSpendBuyX += item.line_price;
+                console.log(itemTags)
+                minsSpendBuyX += item.line_price;
               }
             });
           }
 
-     
-          console.log("minsSpendBuyX")
-          console.log(minsSpendBuyX)
-
-          if(minsSpendBuyX >= cartGWP.minSpend && !matchingItem) {
-            console.log('test1')
-            addToCart(cartGWP.getProduct.variantId,1,cartGWP.gwp_item_message);
-          } else if(minsSpendBuyX < cartGWP.minSpend && matchingItem) {
-            console.log('test2')
-            const itemKey = matchingItem.key;
-            removeFromCart(itemKey);
+          // New logic to handle getProduct2 and getProduct3
+          if (minsSpendBuyX >= cartGWP.minSpend && !matchingItem) {
+            addToCart(cartGWP.getProduct.variantId, 1, cartGWP.gwp_item_message);
+            if (cartGWP.getProduct2?.available) {
+              addToCart(cartGWP.getProduct2.variantId, 1, cartGWP.gwp_item_message);
+            }
+            if (cartGWP.getProduct3?.available) {
+              addToCart(cartGWP.getProduct3.variantId, 1, cartGWP.gwp_item_message);
+            }
+          } else if (minsSpendBuyX < cartGWP.minSpend && matchingItem) {
+            removeFromCart(matchingItem.key);
+            const matchingItem2 = cartObject.items.find(item => item.handle === cartGWP.getProduct2?.handle);
+            const matchingItem3 = cartObject.items.find(item => item.handle === cartGWP.getProduct3?.handle);
+            if (matchingItem2) removeFromCart(matchingItem2.key);
+            if (matchingItem3) removeFromCart(matchingItem3.key);
           }
         }
 

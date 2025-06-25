@@ -5187,3 +5187,29 @@ tolstoy-collection-page-tile {
   border-radius: var(--image-border-radius);
   overflow: hidden;
 }
+
+sort-by-popover {
+  z-index: 5 !important;
+}
+
+.product-list__arrow {
+  border-radius: 0 !important;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #f1f1f1;
+
+  rect {
+    fill: none;
+  }
+
+  &:hover {
+    background: var(--color-secondary);
+    border: 0;
+  }
+
+  // &.prev-next-button--next {
+  //   svg {
+  //     transform: rotate(270deg) !important;
+  //   }
+  // }
+}

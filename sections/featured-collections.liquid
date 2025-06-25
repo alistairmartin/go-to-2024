@@ -167,7 +167,10 @@
                   {%- endfor -%}
                 {%- endfor -%}
               </div>
-            </div>
+
+              <div class="product-list__dots" aria-hidden="true"></div>
+
+              </div>
 
             {%- unless section.settings.stack_products -%}
               {%- if collection.products_count == 0 -%}
@@ -184,12 +187,12 @@
                 <prev-next-buttons class="product-list__prev-next hidden-pocket" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
                   <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled>
                     <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
-                    {%- render 'icon' with 'nav-arrow-left', block: true, direction_aware: true -%}
+                    {%- render 'icon' with 'chevron-back', block: true, direction_aware: true -%}
                   </button>
 
                   <button class="product-list__arrow prev-next-button prev-next-button--next">
                     <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
-                    {%- render 'icon' with 'nav-arrow-right', block: true, direction_aware: true -%}
+                    {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
                   </button>
                 </prev-next-buttons>
               {%- endif -%}
@@ -206,6 +209,66 @@
     </div>
   </div>
 </section>
+
+ <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.product-list__inner--scroller').forEach((scroller) => {
+      const dotsContainer = scroller.parentElement.querySelector('.product-list__dots');
+      const totalItems = scroller.querySelectorAll('.product-item, .product-item-placeholder').length;
+      const itemsPerRow = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--section-products-per-row')) || 2;
+      const pageCount = Math.ceil(totalItems / itemsPerRow);
+
+      // Create dots
+      for (let i = 0; i < pageCount; i++) {
+        const dot = document.createElement('span');
+        dot.classList.add('dot');
+        if (i === 0) dot.classList.add('active');
+        dotsContainer.appendChild(dot);
+      }
+
+      const dots = dotsContainer.querySelectorAll('span');
+
+      scroller.addEventListener('scroll', () => {
+        const scrollLeft = scroller.scrollLeft;
+        const scrollWidth = scroller.scrollWidth - scroller.clientWidth;
+        const pageIndex = Math.round((scrollLeft / scrollWidth) * (pageCount - 1));
+
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === pageIndex);
+        });
+      });
+    });
+  });
+</script>
+
+
+
+<style>
+  .product-list__dots {
+    display: none;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .product-list__dots .dot {
+    display: block;
+    width: 8px;
+    height: 8px;
+    background: transparent;
+    border-radius: 50%;
+    border: 1px solid #000;
+  }
+  .product-list__dots .dot.active {
+    background: #f9c6b9;
+    border: 1px solid transparent;
+  }
+
+@media screen and (min-width: 999px) {
+    .product-list__dots {
+      display: flex;
+    }
+  }
+</style> 
 
 {% schema %}
 {

@@ -34,6 +34,48 @@
         font-weight: 600;
       }
   }
+
+    @include media-query($small) {
+      padding-bottom: 8px;
+
+      .product-meta__title {
+        line-height: 1;
+        font-size: 18px;
+        margin-bottom: 0;
+      }
+      .product-meta__subtitle {
+        line-height: 1;
+        p {
+            line-height: 1;
+        }
+      }
+
+      .product-meta__reference {
+        line-height: 1;
+        margin: 2px 0 10px;
+
+        .rating__caption {
+          font-size: 10px;
+          text-decoration-thickness: 1px !important;
+        }
+
+        .rating__stars {
+          column-gap: 1px;
+        }
+      }
+
+      .product-meta__price-list-container {
+        line-height: 1;
+
+        .price {
+          font-size: 14px;
+        }
+      }
+
+      .label {
+        padding: 6px 8px;
+      }
+    }
 }
 
 .product-form__payment-container {
@@ -59,34 +101,63 @@
 
 
   @include media-query($small) {
-    .product__media-nav {
-      margin: 0 -16px 32px;
-      width: calc(100% + 32px);
-    }
-  
-    .dots-nav {
-      width: 100%;
-      padding: 0;
-      margin: 0;
-  
-      .dots-nav__item {
-        margin: 0;
-        border-radius: 0;
-        flex: 1;
-        background: var(--color-primary);
-        border: 1px solid transparent;
 
-        &:before {
-          display: none !important;
-        }
-      }
-  
-      .dots-nav__item[aria-current=true] {
+  .product__media-nav {
+      margin: 6px -16px 12px;
+      width: calc(100% + 32px);
+      justify-content: center;
+      opacity: 0.7;
+  }
+
+  .dots-nav__item[aria-current=true] {
         background: var(--color-primary);
         box-shadow: 2px 2px 2px #d0d0d045;
         border: 1px solid #cececeb5;
-      }
-    }
+  }
+
+
+  .dots-nav__item {
+    // margin: 0;
+    // border-radius: 0;
+    // flex: 1;
+    background: none;
+    border: 1px solid #000;
+
+    // &:before {
+    //   display: none !important;
+    // }
+  }
+
+  // for line dots
+
+  //   .product__media-nav {
+  //     margin: 0 -16px 32px;
+  //     width: calc(100% + 32px);
+  //   }
+  
+  //   .dots-nav {
+  //     width: 100%;
+  //     padding: 0;
+  //     margin: 0;
+  
+  //     .dots-nav__item {
+  //       margin: 0;
+  //       border-radius: 0;
+  //       flex: 1;
+  //       background: var(--color-primary);
+  //       border: 1px solid transparent;
+
+  //       &:before {
+  //         display: none !important;
+  //       }
+  //     }
+  
+  //     .dots-nav__item[aria-current=true] {
+  //       background: var(--color-primary);
+  //       box-shadow: 2px 2px 2px #d0d0d045;
+  //       border: 1px solid #cececeb5;
+  //     }
+  //   }
   }
 
 }

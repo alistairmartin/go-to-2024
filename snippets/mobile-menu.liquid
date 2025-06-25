@@ -114,7 +114,7 @@
 
         <li class="mobile-nav__item" data-level="1">
           {%- if link.links.size > 0 or mega_menu_images != blank -%}
-            <button is="toggle-button" class="mobile-nav__link heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}" aria-controls="mobile-menu-{{ forloop.index }}" aria-expanded="false">
+            <button is="toggle-button" class="mobile-nav__link heading {% if settings.heading_text_transform == 'uppercase' %}h6{% else %}h5{% endif %}" aria-controls="mobile-menu-{{ forloop.index }}" aria-expanded="{% if forloop.index == 1 %}true{% else %}false{% endif %}">
 
             <a class="mobile-nav__image-container" href="{{ link.url }}">
               {%- for block in section.blocks -%}
@@ -137,7 +137,7 @@
             </button>
 
             {%- assign level2Loop = true -%}
-            <collapsible-content id="mobile-menu-{{ forloop.index }}" class="collapsible">
+            <collapsible-content id="mobile-menu-{{ forloop.index }}" class="collapsible" {% if forloop.index == 1 %}open style="overflow: visible;"{% endif %}>
               {%- if link.links.size > 0 -%}
                 <ul class="mobile-nav list--unstyled" role="list">
                   {%- for sub_link in link.links -%}

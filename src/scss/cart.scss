@@ -319,6 +319,16 @@
         line-height: 1;
       }
     }
+
+    .button--ternary:disabled {
+      background: $gotoGrey;
+      cursor: no-drop;
+
+      &:hover {
+        transform: unset !important;
+        box-shadow: 4px 4px var(--color-button-ternary-shadow) !important;
+      }
+    }
   }
 }
 
@@ -326,6 +336,11 @@
   .mini-cart-gift {
      margin: 0 0 20px;
   }
+}
+
+.mini-cart__gift-popup-inner {
+  overflow-y: scroll;
+  max-height: 90vh;
 }
 
 .cart-notification__wrapper {

@@ -49,17 +49,18 @@
 
   {% endif %}
 
-  {%- if block.settings.buy_brand contains item.product.vendor -%}
-    {%- assign lineItemSpend = item.price | times: item.quantity -%}
-    {%- assign minSpendFromX = minSpendFromX | plus: lineItemSpend -%}
-  {% else %}
-    {%- for tag in item.product.tags -%}
-      {%- if tag == block.settings.buy_tag -%}
-
-        {%- assign lineItemSpend = item.price | times: item.quantity -%}
-        {%- assign minSpendFromX = minSpendFromX | plus: lineItemSpend -%}
-      {%- endif -%}
-    {%- endfor -%}
+  {%- if item.product.type != "Gift Cards" -%}
+    {%- if block.settings.buy_brand contains item.product.vendor -%}
+      {%- assign lineItemSpend = item.price | times: item.quantity -%}
+      {%- assign minSpendFromX = minSpendFromX | plus: lineItemSpend -%}
+    {%- else %}
+      {%- for tag in item.product.tags -%}
+        {%- if tag == block.settings.buy_tag -%}
+          {%- assign lineItemSpend = item.price | times: item.quantity -%}
+          {%- assign minSpendFromX = minSpendFromX | plus: lineItemSpend -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
   {%- endif -%}
 
 
@@ -135,7 +136,7 @@
         {% if getProduct.available == true %}
             <div class="mini-cart-gift">
             <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title }}</div>
-            {%- render 'product-item--gift', product: getProduct, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true, description: block.settings.gwp_description -%}
+            {%- render 'product-item--gift', product: getProduct, reveal: false, show_cta: false, reduced_content: true, showHiddenProduct: true, description: block.settings.gwp_description -%}
             </div>
         {%- endif -%}
     {%- elsif minSpendFromX < minSpend and getProductInCart == false and getProduct.available == true and block.settings.show_progress_bar -%} 
@@ -161,26 +162,27 @@
       <span class="openable__overlay"></span>
 
           
-          {% if getProduct.available == true %}
+          <div class="mini-cart__gift-popup-inner">
             <div class="mini-cart-gift"> 
               <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title }}</div>
             {%- render 'product-item--gift', product: getProduct, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true, description: block.settings.gwp_description -%}
             </div>
-        {%- endif -%}
 
-            {% if getProduct2.available == true %}
+
+
             <div class="mini-cart-gift">
             <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title2 }}</div>
             {%- render 'product-item--gift', product: getProduct2, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true, description: block.settings.gwp_description2 -%}
             </div>
-        {%- endif -%}
 
-            {% if getProduct3.available == true %}
+
+
             <div class="mini-cart-gift">
               <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title3 }}</div>
             {%- render 'product-item--gift', product: getProduct3, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true, description: block.settings.gwp_description3 -%}
             </div>
-        {%- endif -%}
+          </div>
+
       {% comment %} <button type="button" data-action="close" class="form__submit form__submit--closer button button--secondary">Close</button> {% endcomment %}
     </openable-element>
 

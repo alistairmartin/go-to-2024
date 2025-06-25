@@ -296,7 +296,10 @@
       </div>
     {%- elsif reduced_content -%}
       <div class="product-item__cta-wrapper">
-        <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')"  class="link link--primary back-in-stock">WAITLIST ME</button>
+        <button disabled class="button button--ternary button--full">SOLD OUT</button>
+
+        {% comment %} <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')"  class="link link--primary back-in-stock">WAITLIST ME</button> {% endcomment %}
+
       </div>
     {%- endif -%}
   </div>

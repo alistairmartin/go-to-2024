@@ -1,4 +1,5 @@
 {%- assign minSpend = block.settings.min_spend | times: 100 -%}
+{% assign cartTotalExcludingGiftCards = 0 %}
 
 {% assign getProductInCart = false %}
 {% assign getProduct = block.settings.get_product %}
@@ -10,7 +11,12 @@
 {%- endfor -%}
 
 
-
+{% for item in cart.items %}
+  {% if item.product.type != "Gift Cards" %}
+    {% assign itemTotal = item.price | times: item.quantity %}
+    {% assign cartTotalExcludingGiftCards = cartTotalExcludingGiftCards | plus: itemTotal %}
+  {% endif %}
+{% endfor %}
 
 {%- if javascriptCode == true -%}
 
@@ -33,15 +39,15 @@
 {%- elsif javascriptCode == false -%}
 
 
-  {%- if cart.total_price >= minSpend and getProductInCart == false and block.settings.automatically_add == false -%}
+  {%- if cartTotalExcludingGiftCards >= minSpend and getProductInCart == false and block.settings.automatically_add == false -%}
         {% if getProduct.available == true %}
             <div class="mini-cart-gift">
             <div class="heading h6 mini-cart-gift--title heading--secondary">{{ block.settings.gwp_title }}</div>
             {%- render 'product-item--gift', product: getProduct, reveal: false, show_cta: true, reduced_content: true, showHiddenProduct: true, description: block.settings.gwp_description -%}
             </div>
         {%- endif -%}
-    {%- elsif cart.total_price < minSpend and getProductInCart == false and getProduct.available == true and block.settings.show_progress_bar -%} 
-      {%- render 'mini-cart--gifts-shipping-progress', blockType: "min-spend", product: getProduct, currentSpend: cart.total_price, minSpend: minSpend, progressTitle: block.settings.progress_bar_title, progressTitleSizeMobile: block.settings.progress_bar_size_mobile, progressTitleSizeDesktop: block.settings.progress_bar_size_desktop, block: block -%}
+    {%- elsif cartTotalExcludingGiftCards < minSpend and getProductInCart == false and getProduct.available == true and block.settings.show_progress_bar -%} 
+      {%- render 'mini-cart--gifts-shipping-progress', blockType: "min-spend", product: getProduct, currentSpend: cartTotalExcludingGiftCards, minSpend: minSpend, progressTitle: block.settings.progress_bar_title, progressTitleSizeMobile: block.settings.progress_bar_size_mobile, progressTitleSizeDesktop: block.settings.progress_bar_size_desktop, block: block -%}
     {%- endif -%}
 
     {%- if getProductInCart == false and getProduct.available == false -%}

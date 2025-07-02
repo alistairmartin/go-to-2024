@@ -4814,7 +4814,7 @@ var PredictiveSearchDrawer = class extends DrawerContent {
     }
   }
   async _doPredictiveSearch(term) {
-    const response = await fetch(`${window.themeVariables.routes.predictiveSearchUrl}?q=${encodeURIComponent(term)}&resources[limit]=10&resources[limit_scope]=each&section_id=predictive-search`, {
+    const response = await fetch(`${window.themeVariables.routes.predictiveSearchUrl}?q=${encodeURIComponent(term)}&resources[limit]=10&resources[options][fields]=body,product_type,tag,title,variants.sku,variants.title&resources[limit_scope]=each&section_id=predictive-search`, {
       signal: this.abortController.signal
     });
     const div = document.createElement("div");

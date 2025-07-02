@@ -5,6 +5,16 @@
   margin-top: 20px;
 }
 
+.shopify-section--main-product {
+  .product-sticky-form  {
+      @include media-query($medium-up) {
+        background: #ffffff9c !important;
+        -webkit-backdrop-filter: saturate(180%) blur(20px)!important;
+        backdrop-filter: saturate(180%) blur(20px) !important;
+      }
+  }
+}
+
 .product-meta {
     text-align: center;
     margin: 0;

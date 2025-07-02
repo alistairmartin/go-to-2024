@@ -75,17 +75,45 @@
 
 
       {%- if section.settings.show_author -%}
-        <span class="article__meta-item article__author">
 
-        {% if article.metafields.gts_theme.author != blank %}
-          {{ 'article.general.written_by' | t: author: article.metafields.gts_theme.author }}
-        {% else %}
-         {{ 'article.general.written_by' | t: author: article.author }}
-        {% endif %}
-        
-        </span>
-      {%- endif -%}
+                {% comment %} {% assign authorHandle = article.author | handle %}
 
+                {%- for article in blogs["authors"].articles -%}
+                  {%- if article.handle contains authorHandle -%}
+                    {% assign authorArticle = article %}
+                    {% break %}
+                  {%- endif -%}
+                {%- endfor -%}
+
+                {%- if authorArticle -%}
+                  <div class="article-author">
+                    <a href="{{ authorArticle.url }}">
+                      <span class="article-author--author">
+                        {{ 'article.general.written_by' | t: author: article.author }}
+                        </span>
+                    </a>
+
+                    <div class="article-author--description">
+                      {{ authorArticle.content | strip_html }}
+                    </div>
+                    <a href="{{ authorArticle.url }}">
+                      <img src="{{ authorArticle.image | img_url: "100x100", crop: "center" }}" alt="{{ authorArticle.title }}">
+                    </a>
+                  </div>
+
+                {%- else -%}
+                 {%- endif -%} {% endcomment %}
+                  <span class="article__meta-item article__author">
+                  {% if article.metafields.gts_theme.author != blank %}
+                    {{ 'article.general.written_by' | t: author: article.metafields.gts_theme.author }}
+                  {% else %}
+                   {{ 'article.general.written_by' | t: author: article.author }}
+                  {% endif %}
+                  </span>
+
+          {%- endif -%}
+
+             
 
   </div>
 </blog-post-header>

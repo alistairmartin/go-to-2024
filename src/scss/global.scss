@@ -1209,6 +1209,21 @@ store-header.background-blur {
 }
 
 
+
+.article-item {
+  .article__author {
+    font-size: 12px;
+    margin-top: -5px !important;
+    display: block;
+    color: #a5a5a5;
+
+     @include media-query($small) {
+      text-align: center;
+    }
+  }  
+}
+
+
 .shopify-section--blog-posts {
 
   .title--first {
@@ -5163,6 +5178,20 @@ product-item[data-title="Face Hero"] {
 
 .cc-btn {
   border: 2px solid #000 !important;
+}
+
+.cc-btn.cc-settings{
+  display: none !important;;
+}
+
+.cc-message {
+  line-height: 1;
+}
+
+.cc-window {
+  // background: var(--color-grey) !important;
+    background: rgba(217,217,217,0.15) !important;
+  backdrop-filter: saturate(180%) blur(20px) !important;
 }
 
 @include media-query($small) {

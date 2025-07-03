@@ -839,6 +839,18 @@ store-header.background-blur {
   }
 }
 
+.header__icon-list {
+  gap: 15px;  
+}
+
+.header__go-to-gang {
+  font-size: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
 .compact-mobile-header {
   @include media-query($small) {
 

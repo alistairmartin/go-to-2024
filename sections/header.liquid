@@ -293,6 +293,14 @@ IMPLEMENTATION NOTE: the header in Focal is pretty complex as it allows a lot of
             </a>
           {%- endif -%}
 
+          <a href="https://gotoskincare.com/pages/go-to-gang" class="header__icon-wrapper header__go-to-gang tap-area hidden-phone {% unless section.settings.show_icons %}hidden-desk{% endunless %}" aria-label="Go-To Gang">
+              {%- render 'icon' with 'go-to-peach' -%}
+
+              {%- unless customer -%}
+                <span><u>Join</u> the loyalty program</span>
+              {%- endunless -%}
+          </a>
+
           {%- if shop.customer_accounts_enabled -%}
             <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="header__icon-wrapper tap-area hidden-phone {% unless section.settings.show_icons %}hidden-desk{% endunless %}" aria-label="{% if customer %}{{ 'header.general.account' | t | escape }}{% else %}{{ 'header.general.login' | t | escape }}{% endif %}">
               {%- render 'icon' with 'header-customer' -%}
@@ -329,6 +337,7 @@ IMPLEMENTATION NOTE: the header in Focal is pretty complex as it allows a lot of
                 <a href="{{ routes.search_url }}" is="toggle-link" aria-controls="search-drawer" aria-expanded="false">{{ 'search.general.title' | t | escape }}</a>
               </li>
             {%- endif -%}
+            
 
             {%- if shop.customer_accounts_enabled -%}
               <li class="header__linklist-item">

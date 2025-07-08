@@ -168,8 +168,9 @@
                 {%- endfor -%}
               </div>
 
+              {%- if collection.products_count > 5 -%}
               <div class="product-list__dots" aria-hidden="true"></div>
-
+              {%- endif -%}
               </div>
 
             {%- unless section.settings.stack_products -%}
@@ -184,6 +185,8 @@
                   {%- assign smallest_image_aspect_ratio = 1 -%}
                 {%- endif -%}
 
+
+                {%- if collection.products_count > 5 -%}
                 <prev-next-buttons class="product-list__prev-next hidden-pocket" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
                   <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled>
                     <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
@@ -195,6 +198,7 @@
                     {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
                   </button>
                 </prev-next-buttons>
+                {%- endif -%}
               {%- endif -%}
             {%- endunless -%}
 
@@ -210,34 +214,38 @@
   </div>
 </section>
 
- <script>
+
+<script>
   document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.product-list__inner--scroller').forEach((scroller) => {
-      const dotsContainer = scroller.parentElement.querySelector('.product-list__dots');
-      const totalItems = scroller.querySelectorAll('.product-item, .product-item-placeholder').length;
-      const itemsPerRow = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--section-products-per-row')) || 2;
-      const pageCount = Math.ceil(totalItems / itemsPerRow);
+    document
+      .querySelectorAll('#shopify-section-{{ section.id }} .product-list__inner--scroller')
+      .forEach((scroller) => {
+        const dotsContainer = scroller.parentElement.querySelector('.product-list__dots');
+        if (!dotsContainer) return;
+        const totalItems = scroller.querySelectorAll('.product-item, .product-item-placeholder').length;
+        const itemsPerRow = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--section-products-per-row')) || 2;
+        const pageCount = Math.ceil(totalItems / itemsPerRow);
 
-      // Create dots
-      for (let i = 0; i < pageCount; i++) {
-        const dot = document.createElement('span');
-        dot.classList.add('dot');
-        if (i === 0) dot.classList.add('active');
-        dotsContainer.appendChild(dot);
-      }
+        // Create dots
+        for (let i = 0; i < pageCount; i++) {
+          const dot = document.createElement('span');
+          dot.classList.add('dot');
+          if (i === 0) dot.classList.add('active');
+          dotsContainer.appendChild(dot);
+        }
 
-      const dots = dotsContainer.querySelectorAll('span');
+        const dots = dotsContainer.querySelectorAll('span');
 
-      scroller.addEventListener('scroll', () => {
-        const scrollLeft = scroller.scrollLeft;
-        const scrollWidth = scroller.scrollWidth - scroller.clientWidth;
-        const pageIndex = Math.round((scrollLeft / scrollWidth) * (pageCount - 1));
+        scroller.addEventListener('scroll', () => {
+          const scrollLeft = scroller.scrollLeft;
+          const scrollWidth = scroller.scrollWidth - scroller.clientWidth;
+          const pageIndex = Math.round((scrollLeft / scrollWidth) * (pageCount - 1));
 
-        dots.forEach((dot, index) => {
-          dot.classList.toggle('active', index === pageIndex);
+          dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === pageIndex);
+          });
         });
       });
-    });
   });
 </script>
 

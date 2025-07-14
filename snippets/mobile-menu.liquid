@@ -215,7 +215,7 @@
       <div class="mobile-nav__footer">
         {%- if shop.customer_accounts_enabled -%}
           <a class="icon-text" href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}">
-            {%- render 'icon' with 'header-customer' -%}
+            {%- render 'icon' with 'go-to-peach' -%}
             <span>
             {% if customer %}
               {%- if customer.first_name -%}
@@ -231,7 +231,7 @@
         {%- endif -%}
 
         <a href="{% if customer %}{{ routes.account_url }}{% else %}/pages/go-to-gang{% endif %}" class="customer-accounts-login--loyalty" aria-label="{% if customer %}{{ 'header.general.account' | t | escape }}{% else %}{{ 'header.general.login' | t | escape }}{% endif %}">
-        <img src="{{ 'loyalty--go-to-gang.svg' | asset_url }}" alt="Go-To Gang">
+        <img src="{{ 'loyalty--go-to-gang-V2.svg' | asset_url }}" alt="Go-To Gang">
         </a>
 
         {%- if locale_selector or country_selector -%}

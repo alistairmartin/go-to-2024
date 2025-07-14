@@ -156,6 +156,10 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
 
       <div id="main-inner">
 
+     {% comment %} <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="header__icon-wrapper tap-area hidden-phone" aria-label="{% if customer %}{{ 'header.general.account' | t | escape }}{% else %}{{ 'header.general.login' | t | escape }}{% endif %}">
+            {%- render 'icon' with 'header-customer' -%} LOGIN
+          </a> {% endcomment %}
+
         {%- sections 'aside-group' -%}
 
         {%- if template.suffix contains "vip-access" and customer -%}

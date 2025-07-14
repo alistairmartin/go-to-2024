@@ -128,7 +128,8 @@
   }
 
   .loyalty-header-logo {
-    filter: drop-shadow(5px 5px 0px #5887d590);
+    // filter: drop-shadow(5px 5px 0px #5887d590);
+    margin: 34px auto !important;
     @include media-query($small) {
       max-width: 300px;
       margin: 0 auto !important;

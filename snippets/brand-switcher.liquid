@@ -1,0 +1,33 @@
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+
+    <div class="shopify-section--brand-switcher">
+
+<div class="brand-switcher--brands">
+
+{%- capture goToLink -%}
+<a href="https://gotoskincare.com/" class="brand-switcher--brand go-to">{%- render 'svg--logo-go-to' -%}</a>
+{%- endcapture -%}
+
+{%- capture broToLink -%}
+<a href="https://gotoskincare.com/pages/bro-to" class="brand-switcher--brand bro-to">{%- render 'svg--logo-bro-to' -%}</a>
+{%- endcapture -%}
+
+{%- capture groToLink -%}
+<a href="https://gotoskincare.com/pages/gro-to" class="brand-switcher--brand gro-to">{%- render 'svg--logo-gro-to' -%}</a>
+{%- endcapture -%}
+
+
+{%- if brand == "go-to" -%}
+    {{ broToLink }} {{ groToLink }}
+{%- endif -%}
+
+{%- if brand == "bro-to" -%}
+    {{ goToLink }} {{ groToLink }}
+{%- endif -%}
+
+{%- if brand == "gro-to" -%}
+    {{ goToLink }} {{ broToLink }}
+{%- endif -%}
+</div>
+
+</div>

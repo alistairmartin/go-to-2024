@@ -38,6 +38,9 @@
   {%- endfor -%}
 
   <product-media filtered-ids="{{ filtered_media_ids | json }}" form-id="{{ product_form_id }}" {% if section.settings.enable_video_autoplay %}autoplay-video{% endif %} thumbnails-position="{{ section.settings.desktop_thumbnails_position }}" {% if settings.reveal_product_media %}reveal-on-scroll{% endif %} product-handle="{{ product.handle }}" class="product__media" style="--largest-image-aspect-ratio: {{ largest_image_aspect_ratio }}">
+
+    {%- render 'product-media--wishlist' product: product -%}
+
     <div class="product__media-list-wrapper" style="max-width: {{ max_width }}px">
       {%- capture flickity_config -%}
       {

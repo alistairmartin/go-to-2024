@@ -174,7 +174,7 @@ z-index: 4;
               aria-controls="mobile-menu-drawer"
               aria-expanded="false">
               <span class="visually-hidden">{{ 'header.general.navigation' | t }}</span>
-              {%- render 'icon' with 'header-hamburger' -%}
+              {%- render 'icon' with 'go-to-hamburger' -%}
             </button>
           {%- endif -%}
 
@@ -185,12 +185,12 @@ z-index: 4;
             aria-controls="search-drawer"
             aria-expanded="false"
             aria-label="{{ 'search.general.title' | t | escape }}">
-            {%- render 'icon' with 'header-search' -%}
+            {%- render 'icon' with 'go-to-search' -%}
           </a>
 
 
             <a
-            href="/pages/wishlist"
+            href="#rivo-favorites"
             is="toggle-link"
             class="header__icon-wrapper tap-area {% if section.settings.header_layout == 'logo_center_search_open' %}hidden-lap{% endif %} hidden-desk"
             aria-label="Wishlist">
@@ -210,7 +210,7 @@ z-index: 4;
                 name="type"
                 value="product">
 
-              {%- render 'icon' with 'header-search' -%}
+              {%- render 'icon' with 'go-to-search' -%}
               <input
                 class="predictive-search__input"
                 is="predictive-search-input"
@@ -410,13 +410,13 @@ z-index: 4;
               aria-label="{{ 'search.general.title' | t | escape }}"
               aria-controls="search-drawer"
               aria-expanded="false">
-              {%- render 'icon' with 'header-search' -%}
+              {%- render 'icon' with 'go-to-search' -%}
             </a>
           {%- endif -%}
 
 
             <a
-            href="/pages/wishlist"
+            href="#rivo-favorites"
             class="header__icon-wrapper header__go-to-wishlist tap-area hidden-phone {% unless section.settings.show_icons %}hidden-desk{% endunless %}"
             aria-label="Go-To Wishlist">
             {%- render 'icon' with 'go-to-wishlist' -%}

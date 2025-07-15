@@ -1,4 +1,4 @@
-<script>
+{% comment %} <script>
 const headerElement = document.querySelector('.shopify-section--header');
 const mobileNavigationElement = document.querySelector('.shopify-section--loyalty-navigation');
 
@@ -11,7 +11,7 @@ window.addEventListener('resize', () => {
   const headerHeight = headerElement.offsetHeight;
   mobileNavigationElement.style.top = `${headerHeight}px`;
 });
-</script>
+</script> {% endcomment %}
 
 <section  {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %} class="hide-desktop">
 <div class="container">
@@ -37,6 +37,10 @@ window.addEventListener('resize', () => {
         {%- if customer.metafields.custom.rivo.value.points_balance >= 200 -%}
             <a href="/">
               <u>My Rewards</u>
+            </a>
+        {% else %}
+            <a href="{{ routes.account_logout_url }}">
+              <u>Logout</u>
             </a>
         {%- endif -%}
       

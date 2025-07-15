@@ -1,6 +1,19 @@
 @import "components/media-queries";
 @import "components/variables";
 
+
+// .template-product {
+//   #main {
+//     .container {
+//       max-width: 1360px;
+//     }
+//   }
+// }
+
+// .product:not(.product--featured) {
+//   gap: calc(var(--grid-gap) * 4);
+// }
+
 .shopify-section--product-content-description {
   margin-top: 20px;
 }
@@ -1040,6 +1053,17 @@
   }
 
   .bought-with {
+
+      rivo-favorite-button {
+      display: block !important;
+      position: absolute;
+      right: 5px;
+      bottom: 30px;
+      width: 20px;
+      height: 20px;
+    }
+
+
     .section-header {
       margin: 0;
       text-align: left;
@@ -1615,6 +1639,18 @@
     font-family: var(----text-font-family) !important;
     text-transform: uppercase;
   } 
+
+
+  product-media {
+    rivo-favorite-button {
+      display: block !important;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 20px;
+      height: 20px;
+    }
+  }
 
 
   .product-media--labels {

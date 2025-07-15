@@ -30,15 +30,21 @@
 <footer class="footer {% if settings.footer_background == settings.background %}footer--bordered{% endif %}">
 
 
- 
-
   <div class="container">
     <div class="footer__inner">
 
       {%- render 'footer--desktop', brand: brand  -%}
       {%- render 'footer--mobile', brand: brand  -%}
       {%- render 'footer--aside', brand: brand -%}
+
+  
     </div>
+
+    <div class="footer--switchers">
+      {%- render 'brand-switcher' -%}
+      {%- render 'footer--country-selector', brand: brand -%}
+    </div>
+
   </div>
 
   {%- if brand == "gro-to" -%}

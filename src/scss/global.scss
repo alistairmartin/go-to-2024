@@ -421,7 +421,6 @@ section {
 }
 
 .brand-switcher--brands {
-  padding-top: 30px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   width: 100%;
@@ -1043,6 +1042,10 @@ store-header.background-blur {
     .product-price {
       font-weight: normal;
     }
+  }
+
+  rivo-favorite-button {
+    display: block !important;
   }
 }
 
@@ -2612,6 +2615,20 @@ split-lines[reveal] {
   .footer__item-list .faq__item+.faq__item {
     border-top: 1px solid #fff !important;
   }
+}
+
+.footer--switchers {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    @include media-query($small) {
+      justify-content:  space-between;
+    }
+
+    .header__cross-border {
+      margin: 0;
+    }
 }
 
 footer {
@@ -5190,10 +5207,12 @@ sort-by-popover {
 }
 
 .shopify-section--loyalty-navigation {
-  position: sticky;
-  z-index: 4;
-  background: rgba(252,226,220,0.8) !important;
-  backdrop-filter: saturate(180%) blur(5px) !important;
+  // position: sticky;
+  // z-index: 4;
+  // background: rgba(252,226,220,0.8) !important;
+  // backdrop-filter: saturate(180%) blur(5px) !important;
+
+  background: rgba(255,255,255,0.6);
   .loyalty-header {
     padding: 10px 0;
     display: flex;

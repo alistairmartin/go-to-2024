@@ -138,7 +138,16 @@
        - vertical-breather: this is a variable that defines the global "spacing" between sections, and inside the section
                             to create some "breath" and minimum spacing
      */
+
+ 
+    
+
+    {%- if product -%}
+    --container-max-width: 1400px;
+    {% else %}
     --container-max-width: 1800px;
+    {%- endif -%}
+    
     --container-gutter: 16px;
     --container-max-width-minus-gutters: calc(var(--container-max-width) - (var(--container-gutter)) * 2);
     --container-outer-width: max(calc((100vw - var(--container-max-width-minus-gutters)) / 2), var(--container-gutter));

@@ -423,21 +423,23 @@ z-index: 4;
           </a>
 
 
-          <a
-            href="/pages/go-to-gang"
-            class="header__icon-wrapper header__go-to-gang tap-area"
+          <span
+            class="header__icon-wrapper header__go-to-gang"
             aria-label="Go-To Gang">
+            <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="tap-area">
             {%- render 'icon' with 'go-to-peach' -%}
+            </a>
 
-            
+           <a href="/pages/go-to-gang" class="tap-area">
             {%- if customer -%}
               <strong class="hidden-phone">
-                {{ customer.metafields.custom.rivo.value.points_balance }} Points
+               Loyalty Program | {{ customer.metafields.custom.rivo.value.points_balance | default: 0 }} Points
               </strong>
             {% else %}
                 <strong class="hidden-phone"><u>Join</u> the loyalty program</strong>
             {%- endif -%}
-          </a>
+            </a>
+          </span>
 
        
           {% comment %} {%- if shop.customer_accounts_enabled -%}

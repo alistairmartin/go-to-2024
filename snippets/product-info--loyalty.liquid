@@ -1,0 +1,20 @@
+
+<p class="product-info--loyalty">
+{%- if customer -%}
+
+    {%- for tag in customer.tags -%}
+        {%- if tag contains "Rivo VIP Tier: Peach Friend" -%}
+            {%- assign peachFriendCustomer = true -%}{% break %}
+        {%- endif -%}
+    {%- endfor -%}
+
+    {%- if peachFriendCustomer -%}
+        Earn {{ product.price | times: 2 | divided_by: 100 }} Points!
+    {% else  %} 
+        Earn {{ product.price | divided_by: 100 }} Points!
+    {%- endif -%}
+
+{% else %}
+    <a href="{{ routes.account_register_url }}"></a>Signup or <a href="{{ routes.account_login_url }}">Login</a> to earn {{ product.price | divided_by: 100 }} Points
+{%- endif -%}
+</p>

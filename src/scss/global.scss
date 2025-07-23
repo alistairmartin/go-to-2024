@@ -383,10 +383,6 @@ section {
   font-weight: 700;
   font-size: 14px;
   transition: .2s color;
-
-  &:hover {
-    color: #fff;
-  }
 }
 
 .header__logo-image {
@@ -428,6 +424,17 @@ section {
   @include media-query($medium-up) {
     display: flex;
     width: auto;
+  }
+}
+
+
+.bro-to {
+  .brand-switcher--brand svg {
+      fill: #fff !important;
+
+    path {
+      fill: #fff !important;
+    }
   }
 }
 
@@ -814,6 +821,12 @@ store-header.background-blur {
 
 .header__icon-list {
   gap: 15px;  
+
+  svg {
+    width: 25px;
+    height: 25px;
+    display: block;
+  }
 }
 
 .header__go-to-gang {
@@ -1046,7 +1059,32 @@ store-header.background-blur {
 
   rivo-favorite-button {
     display: block !important;
+    z-index: 1;
   }
+}
+
+rivo-favorite-button.rivo-favorite-active svg {
+  fill: var(--color-black) !important;
+}
+
+
+
+#rivo-account-slideout {
+
+  .rivo-favorite-button span svg path {
+   stroke: var(--color-black); 
+    stroke-width: 2px;
+    fill: none !important;
+  }
+
+  .rivo-favorite-button.rivo-favorite-active span svg path {
+      fill: var(--color-black) !important;
+      stroke-width: 0px;
+  }
+
+ 
+
+  
 }
 
 .product-item--atc-search-variants {
@@ -1063,6 +1101,17 @@ store-header.background-blur {
 }
 
 .go-to {
+
+  .header {
+    background: $gotoPink;
+
+    .header__linklist-link {
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+  
   .product-brand--bro-to {
     .label {
       border-radius: 0;
@@ -1094,6 +1143,24 @@ store-header.background-blur {
     }
   }
 }
+
+.bro-to {
+  .header__icon-wrapper {
+    svg {
+      @include media-query($small) {
+        fill: #fff;
+      }
+    }
+  }
+
+  .bubble-count {
+     @include media-query($small) {
+        color: #fff;
+      }
+  }
+}
+
+
 
 .tab-list {
   .tab-list--outer {
@@ -5220,4 +5287,16 @@ sort-by-popover {
     align-items: center;
     font-size: 13px;
   }
+}
+
+button[aria-label="Tolstoy stories: next button"] {
+  z-index: 2 !important;
+}
+
+.product-info--loyalty {
+  line-height: 1;
+  font-size: 14px;
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #8f8f8f;
 }

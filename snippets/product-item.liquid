@@ -1,3 +1,9 @@
+{%- if showWishlist == false -%}
+  {%- assign showWishlist = false -%}
+{% else %}
+  {%- assign showWishlist = true -%}
+{%- endif -%}
+
 {%- assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ',' -%}
 {%- assign color_white_label = 'general.label.white' | t | downcase -%}
 {%- assign quick_buy_icon_name = 'quick-buy-' | append: settings.cart_icon | replace: '_', '-' -%}
@@ -445,6 +451,8 @@
   {{ quickBuyDrawers }}
 {% endif %}
 
+
+{%- if showWishlist -%}
 <rivo-favorite-button
   data-product-id="{{ product.id }}" 
   rivo-ax-data
@@ -454,6 +462,7 @@
 >
   {%- render 'icon' with 'go-to-wishlist' -%}
 </rivo-favorite-button>
+{%- endif -%}
 
 </product-item>
 {%- endunless -%}

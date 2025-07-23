@@ -137,6 +137,8 @@
       {%- endif -%}
     </div>
 
+    {%- render 'product-info--loyalty', customer: customer, product: product -%}
+
     {%- if section.settings.show_taxes_included -%}
       {%- if cart.taxes_included or shop.shipping_policy.body != blank -%}
         <p class="product-meta__taxes-included text--small">

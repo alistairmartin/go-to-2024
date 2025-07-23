@@ -121,7 +121,7 @@
   {% capture template_classes %} template-{{ template.name }} template-{{ template.name }}--{{ template.suffix }} {{ template.name }}--{{ page_title | handle }}{% endcapture %}
   {%- assign feature_classes = feature_classes | append: template_classes -%}
 
-  <body class="{{ brand }} no-focus-outline {{ feature_classes }}" data-instant-allow-query-string>
+  <body class="{{ brand }} no-focus-outline {{ feature_classes }} market-{{ localization.market.handle | upcase }}" data-instant-allow-query-string>
     {%- comment -%}Common SVG definitions that we are re-using in several places{%- endcomment -%}
     <svg class="visually-hidden">
       <linearGradient id="rating-star-gradient-half">

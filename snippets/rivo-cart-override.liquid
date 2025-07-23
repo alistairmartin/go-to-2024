@@ -1,0 +1,67 @@
+<script>
+  function addToCartRivo(variantId) {
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: variantId, quantity: 1 })
+    })
+    .then(response => response.json())
+    .then(cart => {
+      setTimeout(() => {
+        document.documentElement.dispatchEvent(
+          new CustomEvent('cart:refresh', { bubbles: true })
+        );
+        document.getElementById('mini-cart').open = true;
+      }, 250);
+    })
+    .catch(error => {
+      console.error('Error adding product:', error);
+    });
+  }
+</script>
+
+<script>
+  ;(function(){
+    // catch Rivo’s “apply discount” message before they do
+    window.addEventListener('message', async function(event) {
+      const msg = event.data || {};
+      // 1) Only handle the discount‑code messages…
+      if (
+        (msg.msg_action !== 'widget.apply_discount_code' &&
+         msg.msg_action !== 'app.apply_discount_code')
+        || !msg.msg_options
+      ) return;
+
+      const opts = msg.msg_options;
+      // 2) Only for free‑product rewards (variant_ids present)
+      if (!opts.variant_ids) {
+        // let their normal message handler apply fixed/percent discounts
+        return;
+      }
+
+      // BLOCK Rivo’s handler
+      event.stopImmediatePropagation();
+      event.preventDefault();
+
+      // 3) Apply the discount (sets Shopify cookie, no nav)
+      try {
+        await fetch(
+          `/discount/${encodeURIComponent(opts.code)}?redirect=/cart`,
+          { method: 'GET', credentials: 'same-origin', redirect: 'manual' }
+        );
+        // 4) refresh the drawer so you see the discount
+        document.documentElement.dispatchEvent(
+          new CustomEvent('cart:refresh', { bubbles: true })
+        );
+      } catch (err) {
+        console.error('Discount apply failed:', err);
+      }
+
+      // 5) finally, add the free product & open drawer
+      const variantId = parseInt(opts.variant_ids.split(',')[0], 10);
+      window.addToCartRivo(variantId);
+    }, /* capture */ true);
+
+    console.log('[Override] Rivo “apply_discount_code” messages are now hijacked');
+  })();
+</script>

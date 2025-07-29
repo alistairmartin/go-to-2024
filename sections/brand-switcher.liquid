@@ -7,29 +7,31 @@
   
     <div class="brand-switcher--brands">
       {%- for block in section.blocks -%}
-       
+        
+
+        {%- unless brand == block.settings.brand -%}
 
           <a href="{% if block.settings.brand == "go-to" %}{{ routes.root_url }}{% else %}{{ block.settings.brand_url }}{% endif %}" class="brand-switcher--brand {{ block.settings.brand }} {% if brand == block.settings.brand %}active{% endif %}">
 
-  
-        {%- if block.settings.brand == "go-to" -%}
+        {%- if block.settings.brand == "go-to" and brand != "go-to" -%}
           {%- render 'svg--logo-go-to' -%}
-        {%- elsif block.settings.brand == "bro-to" -%}
+        {%- elsif block.settings.brand == "bro-to" and brand != "bro-to" -%}
           {%- render 'svg--logo-bro-to' -%}
-        {%- elsif block.settings.brand == "gro-to" -%}
+        {%- elsif block.settings.brand == "gro-to" and brand != "gro-to" -%}
           {%- render 'svg--logo-gro-to' -%}
         {%- endif -%}
 
         </a>
+        {%- endunless -%}
       {%- endfor -%}
     </div>
   
   
-    {%- if shop.customer_accounts_enabled -%}
+    {% comment %} {%- if shop.customer_accounts_enabled -%}
       <div class="customer-accounts-login">
     
       <a href="{% if customer %}{{ routes.account_url }}{% else %}/pages/go-to-gang{% endif %}" class="customer-accounts-login--loyalty" aria-label="{% if customer %}{{ 'header.general.account' | t | escape }}{% else %}{{ 'header.general.login' | t | escape }}{% endif %}">
-        <img src="{{ 'loyalty--go-to-gang.svg' | asset_url }}" alt="Go-To Gang">
+        <img src="{{ 'loyalty--go-to-gang-V2.svg' | asset_url }}" alt="Go-To Gang">
       </a>
   
       <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="customer-accounts-login--account" aria-label="{% if customer %}{{ 'header.general.account' | t | escape }}{% else %}{{ 'header.general.login' | t | escape }}{% endif %}">
@@ -44,7 +46,7 @@
         {% endif %}
       </a>
     </div>
-  {%- endif -%}
+  {%- endif -%} {% endcomment %}
   
   
     </div>

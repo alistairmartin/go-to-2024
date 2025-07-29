@@ -1,0 +1,66 @@
+{% comment %}
+    ADDED BY Go-To Developer. We are wanting to hide the activity from before Go-Live.
+{% endcomment %}
+<script>
+const cutoffDate = new Date("2025-07-24");
+
+const hideOldRows = () => {
+  document.querySelectorAll("#points-logs-activity tbody tr").forEach(row => {
+    const dateCell = row.querySelector("td:last-child");
+    if (dateCell) {
+      const dateText = dateCell.textContent.trim();
+      const parsedDate = new Date(dateText);
+      if (parsedDate.toString() !== 'Invalid Date' && parsedDate < cutoffDate) {
+        row.style.display = "none";
+      }
+    }
+  });
+};
+
+
+// Set up observer to detect table content updates
+const target = document.querySelector("#points-logs-activity tbody");
+
+if (target) {
+  const observer = new MutationObserver(() => {
+    hideOldRows();
+  });
+
+  observer.observe(target, { childList: true, subtree: true });
+
+  // Initial run in case rows already exist
+  hideOldRows();
+}
+</script>
+
+{%- assign customerSMSSubscribed = false -%}
+{%- for tag in customer.tags -%}
+    {%- if tag == "sms-subscribed" -%}
+        {%- assign customerSMSSubscribed = true -%}
+
+
+
+        <script>
+          const disableSMSButton = () => {
+            const smsButton = document.getElementById("rivo-earning-rule-453376");
+            if (smsButton && !smsButton.classList.contains("rivo-no-click")) {
+              smsButton.classList.add("completed", "rivo-no-click");
+              smsButton.setAttribute("aria-disabled", "true");
+              smsButton.setAttribute("disabled", "true");
+              smsButton.style.pointerEvents = "none";
+            }
+          };
+
+          const observer = new MutationObserver(disableSMSButton);
+
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true
+          });
+
+          disableSMSButton();
+        </script>
+        {% break %}
+    {%- endif -%}
+{%- endfor -%}
+

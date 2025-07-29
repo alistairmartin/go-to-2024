@@ -1,0 +1,9 @@
+<rivo-favorite-button
+  data-product-id="{{ product.id }}" 
+  rivo-ax-data
+  rivo-ax-cloak
+  rivo-ax-html="$store.icons.heart"
+  rivo-ax-show="$store.rivo_aw_settings?.favorites_enabled && (!$store.rivo_profile_customer || $store.loading_states.global_favorite_buttons)"
+>
+  {%- render 'icon' with 'go-to-wishlist' -%}
+</rivo-favorite-button>

@@ -1,0 +1,188 @@
+
+
+{%- if localization.available_countries.size > 1 -%}
+          {%- assign country_selector = true -%}
+      {%- endif -%}
+
+        {%- if locale_selector or country_selector -%}
+          {%- form 'localization'
+            , id: 'header-localization-form'
+            , class: 'header__cross-border hidden-pocket' -%}
+            {%- if country_selector -%}
+              <div class="popover-container">
+                <input
+                  type="hidden"
+                  name="country_code"
+                  value="{{ localization.country.iso_code }}">
+                <span class="visually-hidden">{{ 'header.general.country' | t }}</span>
+
+                <button
+                  type="button"
+                  is="toggle-button"
+                  class="popover-button"
+                  aria-expanded="false"
+                  aria-controls="header-localization-form-currency">
+                  {% comment %} {{- localization.country.name }} ({{ localization.country.currency.iso_code }} {% if localization.country.currency.symbol %}{{ localization.country.currency.symbol }}{%- endif -%}) {% endcomment %}
+                  {% comment %} {%- render 'icon' with 'chevron', width: 9, height: 6, inline: true -%} {% endcomment %}
+
+                  {%- assign currentMarket = localization.market.handle | upcase -%}
+                  {% if currentMarket == "US" %}
+                    {% render "icon-flag-united-states" %}
+                  {% elsif currentMarket == "EU" %}
+                    {% render "icon-flag-europe" %}
+                  {% elsif currentMarket == "GB" %}
+                    {% render "icon-flag-united-kingdom" %}
+                  {% else %}
+                    {% render "icon-flag-australia" %}
+                  {% endif %}
+
+                </button>
+
+                <popover-content id="header-localization-form-currency" class="popover">
+                  <span class="popover__overlay"></span>
+
+                  <header class="popover__header">
+                    <span class="popover__title heading h6">{{- 'header.general.country' | t -}}</span>
+
+                    <button
+                      type="button"
+                      class="popover__close-button tap-area tap-area--large"
+                      data-action="close"
+                      title="{{ 'general.accessibility.close' | t | escape }}">
+                      {%- render 'icon' with 'close' -%}
+                    </button>
+                  </header>
+
+                  <div class="popover__content popover__content--restrict">
+                    <div class="popover__choice-list">
+                      {% comment %} {%- for country in localization.available_countries -%}
+                                                                                                                                                                        <button type="submit" name="country_code" value="{{ country.iso_code }}" class="popover__choice-item">
+                                                                                                                                                                          <span class="popover__choice-label" {% if country.iso_code == localization.country.iso_code %}aria-current="true"{% endif %}>
+                                                                                                                                                                            {{- country.name }} ({{ country.currency.iso_code }} {% if country.currency.symbol %}{{ country.currency.symbol }}{%- endif -%})
+                                                                                                                                                                          </span>
+                                                                                                                                                                        </button>
+                                                                                                                                                          {%- endfor -%} {% endcomment %}
+
+                      {% render "header--store-selector" %}
+
+                    </div>
+                  </div>
+                </popover-content>
+              </div>
+            {%- endif -%}
+
+            {%- if locale_selector -%}
+              <div class="popover-container">
+                <input
+                  type="hidden"
+                  name="locale_code"
+                  value="{{ localization.language.iso_code }}">
+                <span class="visually-hidden">{{ 'header.general.language' | t }}</span>
+
+                <button
+                  type="button"
+                  is="toggle-button"
+                  class="popover-button text--small"
+                  aria-expanded="false"
+                  aria-controls="header-localization-form-locale">
+                  {{- localization.language.endonym_name | capitalize -}}
+                  {%- render 'icon' with 'chevron'
+                    , width: 9
+                    , height: 6
+                    , inline: true -%}
+                </button>
+
+                <popover-content id="header-localization-form-locale" class="popover">
+                  <span class="popover__overlay"></span>
+
+                  <header class="popover__header">
+                    <span class="popover__title heading h6">{{- 'header.general.language' | t -}}</span>
+
+                    <button
+                      type="button"
+                      class="popover__close-button tap-area tap-area--large"
+                      data-action="close"
+                      title="{{ 'general.accessibility.close' | t | escape }}">
+                      {%- render 'icon' with 'close' -%}
+                    </button>
+                  </header>
+
+                  <div class="popover__content">
+                    <div class="popover__choice-list">
+                      {%- for language in localization.available_languages -%}
+                        <button
+                          type="submit"
+                          name="locale_code"
+                          value="{{ language.iso_code }}"
+                          class="popover__choice-item">
+                          <span
+                            class="popover__choice-label"
+                            {% if language.iso_code == localization.language.iso_code %}
+                            aria-current="true"
+                            {% endif %}>
+                            {{- language.endonym_name | capitalize -}}
+                          </span>
+                        </button>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                </popover-content>
+              </div>
+            {%- endif -%}
+          {%- endform -%}
+        {%- endif -%}
+
+
+
+          {%- form 'localization', id: 'header-sidebar-localization-form', class: 'header__cross-border hidden-desk' -%}
+            {%- if country_selector -%}
+              <div class="popover-container">
+                <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+                <span class="visually-hidden">{{ 'header.general.country' | t }}</span>
+
+                <button type="button" is="toggle-button" class="popover-button text--xsmall tap-area" aria-expanded="false" aria-controls="header-sidebar-localization-form-currency">
+                  {% comment %} {{- localization.country.name }} ({{ localization.country.currency.iso_code }} {% if localization.country.currency.symbol %}{{ localization.country.currency.symbol }}{%- endif -%})
+                  {%- render 'icon' with 'chevron', width: 9, height: 6, inline: true -%} {% endcomment %}
+
+                  {%- assign currentMarket = localization.market.handle | upcase -%}
+                  {% if currentMarket == "US" %}
+                    {% render "icon-flag-united-states" %}
+                  {% elsif currentMarket == "EU" %}
+                    {% render "icon-flag-europe" %}
+                  {% elsif currentMarket == "GB" %}
+                    {% render "icon-flag-united-kingdom" %}
+                  {% else %}
+                    {% render "icon-flag-australia" %}
+                  {% endif %}
+
+                </button>
+
+                <popover-content id="header-sidebar-localization-form-currency" class="popover popover--top popover--small">
+                  <span class="popover__overlay"></span>
+
+                  <header class="popover__header">
+                    <span class="popover__title heading h6">{{- 'header.general.country' | t -}}</span>
+
+                    <button type="button" class="popover__close-button tap-area tap-area--large" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
+                      {%- render 'icon' with 'close' -%}
+                    </button>
+                  </header>
+
+                  <div class="popover__content">
+                    <div class="popover__choice-list">
+                      {% comment %} {%- for country in localization.available_countries -%}
+                        <button type="submit" name="country_code" value="{{ country.iso_code }}" class="popover__choice-item">
+                          <span class="popover__choice-label" {% if country.iso_code == localization.country.iso_code %}aria-current="true"{% endif %}>
+                            {{- country.name }} ({{ country.currency.iso_code }} {% if country.currency.symbol %}{{ country.currency.symbol }}{%- endif -%})
+                          </span>
+                        </button>
+                      {%- endfor -%} {% endcomment %}
+
+                      {% render "header--store-selector" %}
+
+                    </div>
+                  </div>
+                </popover-content>
+              </div>
+            {%- endif -%}
+          {%- endform -%}

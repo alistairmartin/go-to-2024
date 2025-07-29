@@ -1,0 +1,102 @@
+{%- assign currentMarket = localization.market.handle | upcase -%}
+
+{% comment %} <script>
+const headerElement = document.querySelector('.shopify-section--header');
+const mobileNavigationElement = document.querySelector('.shopify-section--loyalty-navigation');
+
+if (headerElement && mobileNavigationElement) {
+  const headerHeight = headerElement.offsetHeight;
+  mobileNavigationElement.style.top = `${headerHeight}px`;
+}
+
+window.addEventListener('resize', () => {
+  const headerHeight = headerElement.offsetHeight;
+  mobileNavigationElement.style.top = `${headerHeight}px`;
+});
+</script> {% endcomment %}
+
+<section  {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %} class="hide-desktop">
+<div class="container">
+  <div class="loyalty-header">
+{% comment %}             
+    <script>
+        console.log({{ shop.metafields.rivo.loy | json }})
+    </script>
+
+    <script>
+        console.log({{ customer.metafields.custom.rivo.value | json }})
+    </script> {% endcomment %}
+        {%- if customer -%}
+        <a
+            href="{% if currentMarket == "AU" %}/pages/go-to-gang{% else %}{{ routes.account_url }}{% endif %}"
+            class="header__icon-wrapper header__go-to-gang tap-area"
+            aria-label="Go-To Gang">
+            {%- render 'icon' with 'go-to-peach' -%}
+            
+            {%- if currentMarket == "AU" -%}
+            Loyalty | {{ customer.metafields.custom.rivo.value.points_balance | default: 0 }} Points
+            {% else %}
+            My Account
+            {% endif %}
+        </a>
+
+        {%- if customer.metafields.custom.rivo.value.points_balance >= 200 and currentMarket == "AU" -%}
+            <a href="/pages/go-to-gang">
+              <u>
+                My Rewards
+              </u>
+            </a>
+        {% else %}
+            <a href="{{ routes.account_logout_url }}">
+              <u>Logout</u>
+            </a>
+        {%- endif -%}
+      
+        {% else %}
+        <a
+            href="/pages/go-to-gang"
+            class="header__icon-wrapper header__go-to-gang tap-area"
+            aria-label="Go-To Gang">
+            {%- render 'icon' with 'go-to-peach' -%}
+
+            {%- unless customer -%}
+
+              {%- if currentMarket == "AU" -%}
+                <span>
+                  <u>Join</u>
+                  Loyalty
+                </span>
+              {%- endif -%}
+
+            {%- endunless -%}
+        </a>
+
+        <a href="{{ routes.account_login_url }}">
+            <u>{{ 'header.general.login' | t | escape }}</u>
+        </a>
+        {%- endif -%}
+
+  </div>
+</div>
+</section>
+
+
+{% schema %}
+  {
+    "name": "Loyalty (Navigation)",
+    "class": "shopify-section--loyalty-navigation",
+    "settings": [
+      {
+      "type": "text",
+      "id": "id",
+      "label": "ID",
+      "info": "Optional. Used with in-page navigation."
+      }
+    ],
+    "presets": [
+      {
+        "name": "Loyalty (Navigation)"
+      }
+    ]
+  }
+{% endschema %}

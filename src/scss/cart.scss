@@ -356,8 +356,8 @@
   }
 
   .property--promo {
-    color: #000;
-    background:$gotoPink;
+    color: var(--color-black);
+    background:var(--color-primary);
     padding: 10px;
     border-radius: 8px;
     line-height: 1.1;
@@ -369,6 +369,10 @@
 
     .key {
       display: none;
+    }
+
+    &.brand--bro-to-skincare {
+       color: #fff !important;
     }
   }
 }

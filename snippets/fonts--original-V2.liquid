@@ -1,0 +1,421 @@
+<style>
+@font-face {
+  font-family: 'ProximaNova';
+  font-display: swap;
+  src: url('{{"proxima.otf" | file_url }}');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ProximaNova';
+  font-display: swap;
+  src: url('{{"proxima_semibold.otf" | file_url }}');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ProximaNova';
+  font-display: swap;
+  src: url('{{"proxima_bold.otf" | file_url }}');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ProximaNova';
+  font-display: swap;
+  src: url('{{"proxima_it.otf" | file_url }}');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'ProximaNova';
+  font-display: swap;
+  src: url('{{"proxima_semibold_it.otf" | file_url }}');
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'ProximaNova';
+  font-display: swap;
+  src: url('{{"proxima_bold_it.otf" | file_url }}');
+  font-weight: 700;
+  font-style: italic;
+}
+
+/* ## SofiaProSoft */
+@font-face {
+  font-family: 'SofiaProSoft';
+  font-display: swap;
+  src: url('{{"sofiaprosoft.otf" | file_url }}');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SofiaProSoft';
+  font-display: swap;
+  src: url('{{"sofiaprosoft_medium.otf" | file_url }}');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SofiaProSoft';
+  font-display: swap;
+  src: url('{{"sofiaprosoft_bold.otf" | file_url }}');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SofiaProSoft';
+  font-display: swap;
+  src: url('{{"sofiaprosoft_it.otf" | file_url }}');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'SofiaProSoft';
+  font-display: swap;
+  src: url('{{"sofiaprosoft_medium_it.otf" | file_url }}');
+  font-weight: 500;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'SofiaProSoft';
+  font-display: swap;
+  src: url('{{"sofiaprosoft_bold_it.otf" | file_url }}');
+  font-weight: bold;
+  font-style: italic;
+}
+
+/* ## TTCommons */
+@font-face {
+  font-family: 'TTCommons';
+  src: url('{{ "MNKYMarcel-Semibold.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-Semibold.woff" | file_url }}') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TTCommons';
+  src: url('{{ "MNKYMarcel-ExtralightItalic.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-ExtralightItalic.woff" | file_url }}') format('woff');
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TTCommons';
+  src: url('{{ "MNKYMarcel-LightItalic.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-LightItalic.woff" | file_url }}') format('woff');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TTCommons';
+  src: url('{{ "MNKYMarcel-BoldItalic.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-BoldItalic.woff" | file_url }}') format('woff');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TTCommons';
+  src: url('{{ "MNKYMarcel-BlackItalic.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-BlackItalic.woff" | file_url }}') format('woff');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TTCommons';
+  src: url('{{ "MNKYMarcel-Medium.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-Medium.woff" | file_url }}') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TTCommons';
+  src: url('{{ "MNKYMarcel-Light.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-Light.woff" | file_url }}') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TTCommons';
+  src: url('{{ "MNKYMarcel-SemiboldItalic.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-SemiboldItalic.woff" | file_url }}') format('woff');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TTCommons';
+  src: url('{{ "MNKYMarcel-Italic.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-Italic.woff" | file_url }}') format('woff');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TTCommons';
+  src: url('{{ "MNKYMarcel-ExtraboldItalic.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-ExtraboldItalic.woff" | file_url }}') format('woff');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TTCommons';
+  src: url('{{ "MNKYMarcel-Bold.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-Bold.woff" | file_url }}') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TTCommons';
+  src: url('{{ "MNKYMarcel-Black.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-Black.woff" | file_url }}') format('woff');
+font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TTCommons';
+  src: url('{{ "MNKYMarcel-Extralight.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-Extralight.woff" | file_url }}') format('woff');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TTCommons';
+  src: url('{{ "MNKYMarcel-MediumItalic.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-MediumItalic.woff" | file_url }}') format('woff');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TTCommons';
+  src: url('{{ "MNKYMarcel-Extrabold.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-Extrabold.woff" | file_url }}') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TTCommons';
+  src: url('{{ "MNKYMarcel-Regular.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-Regular.woff" | file_url }}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
+/* ## ModernoFB */
+
+@font-face {
+   font-family: 'ModernoFB';
+  src: url('{{ "BentonModernD-SemiBoldIt.woff2" | file_url }}') format('woff2'),
+       url('{{ "BentonModernD-SemiBoldIt.woff" | file_url }}') format('woff');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+   font-family: 'ModernoFB';
+  src: url('{{ "BentonModernD-LightIt.woff2" | file_url }}') format('woff2'),
+       url('{{ "BentonModernD-LightIt.woff" | file_url }}') format('woff');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+   font-family: 'ModernoFB';
+  src: url('{{ "BentonModernD-Italic.woff2" | file_url }}') format('woff2'),
+       url('{{ "BentonModernD-Italic.woff" | file_url }}') format('woff');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+   font-family: 'ModernoFB';
+  src: url('{{ "BentonModernD-Regular.woff2" | file_url }}') format('woff2'),
+       url('{{ "BentonModernD-Regular.woff" | file_url }}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+   font-family: 'ModernoFB';
+  src: url('{{ "BentonModernD-Light.woff2" | file_url }}') format('woff2'),
+       url('{{ "BentonModernD-Light.woff" | file_url }}') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+@font-face {
+   font-family: 'ModernoFB';
+  src: url('{{ "BentonModernD-UltraIt.woff2" | file_url }}') format('woff2'),
+       url('{{ "BentonModernD-UltraIt.woff" | file_url }}') format('woff');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+   font-family: 'ModernoFB';
+  src: url('{{ "BentonModernD-SemiBold.woff2" | file_url }}') format('woff2'),
+       url('{{ "BentonModernD-SemiBold.woff" | file_url }}') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+   font-family: 'ModernoFB';
+  src: url('{{ "BentonModernD-Ultra.woff2" | file_url }}') format('woff2'),
+       url('{{ "BentonModernD-Ultra.woff" | file_url }}') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'FFMarkWebPro';
+  font-display: swap;
+  src: url('{{"FFMarkWebPro-Regular.woff" | file_url }}')  format('woff'),
+    url('{{"FFMarkWebPro-Regular.woff2" | file_url }}')  format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'FFMarkWebPro';
+  font-display: swap;
+  src: url('{{"FFMarkWebPro-Italic.woff" | file_url }}')  format('woff'),
+    url('{{"FFMarkWebPro-Italic.woff2" | file_url }}')  format('woff2');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'FFMarkWebPro';
+  font-display: swap;
+  src: url('{{"FFMarkWebPro-Medium.woff" | file_url }}')  format('woff'),
+    url('{{"FFMarkWebPro-Medium.woff2" | file_url }}')  format('woff2');
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'FFMarkWebPro';
+  font-display: swap;
+  src: url('{{"FFMarkWebPro-Medium-Italic.woff" | file_url }}')  format('woff'),
+    url('{{"FFMarkWebPro-Medium-Italic.woff2" | file_url }}')  format('woff2');
+  font-style: italic;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'FFMarkWebPro';
+  font-display: swap;
+  src: url('{{"FFMarkWebPro-Bold.woff" | file_url }}')  format('woff'),
+    url('{{"FFMarkWebPro-Bold.woff2" | file_url }}')  format('woff2');
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'FFMarkWebPro';
+  font-display: swap;
+  src: url('{{"FFMarkWebPro-Bold-Italic.woff" | file_url }}')  format('woff'),
+    url('{{"FFMarkWebPro-Bold-Italic.woff2" | file_url }}')  format('woff2');
+  font-style: italic;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'FFMarkWebPro';
+  font-display: swap;
+  src: url('{{"FFMarkWebPro-Heavy.woff" | file_url }}')  format('woff'),
+    url('{{"FFMarkWebPro-Heavy.woff2" | file_url }}')  format('woff2');
+  font-style: normal;
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: 'FFMarkWebPro';
+  font-display: swap;
+  src: url('{{"FFMarkWebPro-Heavy-Italic.woff" | file_url }}')  format('woff'),
+    url('{{"FFMarkWebPro-Heavy-Italic.woff2" | file_url }}')  format('woff2');
+  font-style: italic;
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: 'FFMarkWebPro';
+  font-display: swap;
+  src: url('{{"FFMarkWebPro-Book.woff" | file_url }}')  format('woff'),
+    url('{{"FFMarkWebPro-Book.woff2" | file_url }}')  format('woff2');
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'MillerDisplay';
+  font-display: swap;
+  src: url('{{"MillerDisplay-Light.eot" | file_url }}')  format('embedded-opentype'),
+    url('{{"MillerDisplay-Light.woff" | file_url }}')  format('woff'),
+    url('{{"MillerDisplay-Light.woff2" | file_url }}')  format('woff2');
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'MillerDisplay';
+  font-display: swap;
+  src: url('{{"MillerDisplay-Light-Italic.eot" | file_url }}')  format('embedded-opentype'),
+    url('{{"MillerDisplay-Light-Italic.woff" | file_url }}')  format('woff'),
+    url('{{"MillerDisplay-Light-Italic.woff2" | file_url }}')  format('woff2');
+  font-style: italic;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'MillerDisplay';
+  font-display: swap;
+  src: url('{{"MillerDisplay-Roman.eot" | file_url }}')  format('embedded-opentype'),
+    url('{{"MillerDisplay-Roman.woff" | file_url }}')  format('woff'),
+    url('{{"MillerDisplay-Roman.woff2" | file_url }}')  format('woff2');
+  font-style: normal;
+  font-weight: 700;
+}
+</style>

@@ -3,8 +3,8 @@
 {%- capture styles -%}
 <style>
 #block-{{ block.id }} img {
-  --rounded-image-corners-mobile: {% if block.settings.rounded_image_corners_mobile %}8px{% else %}0px{% endif %};
-  --rounded-image-corners-desktop: {% if block.settings.rounded_image_corners_desktop %}8px{% else %}0px{% endif %};
+  --rounded-image-corners-mobile: {% if block.settings.rounded_image_corners_mobile %}0px{% else %}0px{% endif %};
+  --rounded-image-corners-desktop: {% if block.settings.rounded_image_corners_desktop %}0px{% else %}0px{% endif %};
 
   --fill-image-height-mobile: {% if block.settings.fill_image_mobile %}100%{% else %}auto{% endif %};
   --fill-image-cover-mobile: {% if block.settings.fill_image_mobile %}cover{% else %}unset{% endif %};
@@ -17,8 +17,8 @@
 --video-aspect-ratio-mobile: {{ block.settings.video_aspect_ratio_mobile | times: 100.000 }}%;
 --video-aspect-ratio-desktop: {{ block.settings.video_aspect_ratio_desktop | times: 100.000 }}%;
 
---rounded-video-corners-mobile: {% if block.settings.rounded_video_corners_mobile %}8px{% else %}0px{% endif %};
---rounded-video-corners-desktop: {% if block.settings.rounded_video_corners_desktop %}8px{% else %}0px{% endif %};
+--rounded-video-corners-mobile: {% if block.settings.rounded_video_corners_mobile %}0px{% else %}0px{% endif %};
+--rounded-video-corners-desktop: {% if block.settings.rounded_video_corners_desktop %}0px{% else %}0px{% endif %};
 }
 
 

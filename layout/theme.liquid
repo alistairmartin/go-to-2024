@@ -1,35 +1,48 @@
-{%- comment -%}
-------------------------------------------------------------------------------------------------------------------------
-NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing this theme as much as we did for
-  developing it. We have put a lot of work to make this theme as developer friendly as possible by offering you
-  hooks to integrate into critical parts of the theme. You will find the complete technical documentation (including
-  all events, dependencies...) in the "custom.js" file, located in the Assets folder.
-------------------------------------------------------------------------------------------------------------------------
-{%- endcomment -%}
 
+{%- comment -%}
+  ------------------------------------------------------------------------------------------------------------------------
+  NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing this theme as much as we did for
+    developing it. We have put a lot of work to make this theme as developer friendly as possible by offering you
+    hooks to integrate into critical parts of the theme. You will find the complete technical documentation (including
+    all events, dependencies...) in the "custom.js" file, located in the Assets folder.
+  ------------------------------------------------------------------------------------------------------------------------
+{%- endcomment -%}
+{%- assign currentMarket = localization.market.handle | upcase -%}
 {%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
 
 <!doctype html>
 
 {%- assign direction = 'ltr' -%}
 {%- case request.locale.iso_code -%}
-  {%- when 'ar' or 'arc' or 'dv' or 'fa' or 'ha' or 'he' or 'kwh' or 'ks' or 'ku' or 'ps' or 'ur' or 'yi' -%}
+  {%- when 'ar', 'arc', 'dv', 'fa', 'ha', 'he', 'kwh', 'ks', 'ku', 'ps', 'ur', 'yi' -%}
     {%- assign direction = 'rtl' -%}
 {%- endcase -%}
 
-<html class="no-js {% if request.design_mode %}theme-editor{% endif %}" lang="{{ request.locale.iso_code }}" dir="{{ direction }}">
+<html
+  class="no-js {% if request.design_mode %}theme-editor{% endif %}"
+  lang="{{ request.locale.iso_code }}"
+  dir="{{ direction }}"
+>
   <head>
-	{% render 'pandectes-rules' %}
-	
-
+    {% render 'pandectes-rules' %}
 
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=1.0">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=1.0"
+    >
     <meta name="theme-color" content="{{ settings.header_background }}">
 
-    {% include "hide-pages-from-SEO" %}
+    {% include 'hide-pages-from-SEO' %}
 
-    <title>{% if page_title == blank %}{{ shop.name }}{% else %}{{ page_title }}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% endif %}</title>
+    <title>
+      {% if page_title == blank -%}
+        {{- shop.name -}}
+      {%- else -%}
+        {{- page_title -}}
+        {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+      {%- endif %}
+    </title>
 
     {%- if page_description -%}
       <meta name="description" content="{{ page_description | escape }}">
@@ -37,13 +50,13 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
 
     <link rel="canonical" href="{{ canonical_url }}">
 
-    {% comment %} 
-    {%- if settings.favicon -%}
-      <link rel="shortcut icon" href="{{ settings.favicon | img_url: '96x96' }}" type="image/png">
-    {%- endif -%} 
+    {% comment %}
+      {%- if settings.favicon -%}
+        <link rel="shortcut icon" href="{{ settings.favicon | img_url: '96x96' }}" type="image/png">
+      {%- endif -%}
     {% endcomment %}
 
-    {% render "favicon" %}
+    {% render 'favicon' %}
 
     {%- comment -%}Few prefech to increase performance on commonly used third-parties{%- endcomment -%}
     <link rel="preconnect" href="https://cdn.shopify.com">
@@ -74,28 +87,26 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     {% render 'microdata-schema' %}
     {% render 'hreflang' %}
 
-    {%- if brand == "go-to" -%}
+    {%- if brand == 'go-to' -%}
       {% render 'css-variables', direction: direction %}
-    {%- elsif brand == "bro-to" -%}
+    {%- elsif brand == 'bro-to' -%}
       {% render 'css-variables--bro-to', direction: direction %}
-    {%- elsif brand == "gro-to" -%}
+    {%- elsif brand == 'gro-to' -%}
       {% render 'css-variables--gro-to', direction: direction %}
     {%- endif -%}
-    
+
     {% render 'js-variables', direction: direction %}
     <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
-    {%- render "files-css", brand: brand -%}
+    {%- render 'files-css', brand: brand -%}
     {%- render 'files-js' -%}
 
-    
     {%- render 'campaign--the-powder-room' -%}
 
-  
     {{ content_for_header }}
 
-    {% section "label-colours" %}
-    {% section "header--content-square" %}
-    {% render "header--cart-clear" %}
+    {% section 'label-colours' %}
+    {% section 'header--content-square' %}
+    {% render 'header--cart-clear' %}
   </head>
 
   {%- assign feature_classes = 'header-position--top' -%}
@@ -111,7 +122,7 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
   {% capture template_classes %} template-{{ template.name }} template-{{ template.name }}--{{ template.suffix }} {{ template.name }}--{{ page_title | handle }}{% endcapture %}
   {%- assign feature_classes = feature_classes | append: template_classes -%}
 
-  <body class="{{ brand }} no-focus-outline {{ feature_classes }}" data-instant-allow-query-string>
+  <body class="{{ brand }} no-focus-outline {{ feature_classes }} market-{{ localization.market.handle | upcase }}" data-instant-allow-query-string>
     {%- comment -%}Common SVG definitions that we are re-using in several places{%- endcomment -%}
     <svg class="visually-hidden">
       <linearGradient id="rating-star-gradient-half">
@@ -123,84 +134,96 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     <a href="#main" class="visually-hidden skip-to-content">{{ 'general.accessibility.skip_to_content' | t }}</a>
     <loading-bar class="loading-bar"></loading-bar>
 
-    {% comment %} {%- sections 'overlay-group' -%} 
-    {%- sections 'overlay-group--gro-to' -%} 
-    {%- sections 'overlay-group--bro-to' -%}  {% endcomment %}
+    {% comment %}
+      {%- sections 'overlay-group' -%}
+      {%- sections 'overlay-group--gro-to' -%}
+      {%- sections 'overlay-group--bro-to' -%}
+    {% endcomment %}
 
     {%- if request.page_type != 'password' -%}
-      {%- if brand == "go-to" -%}
+      {%- if brand == 'go-to' -%}
         {%- sections 'header-group' -%}
-      {%- elsif brand == "bro-to" -%}
+      {%- elsif brand == 'bro-to' -%}
         {%- sections 'header-group--bro-to' -%}
-      {%- elsif brand == "gro-to" -%}
+      {%- elsif brand == 'gro-to' -%}
         {%- sections 'header-group--gro-to' -%}
       {%- endif -%}
 
       {%- if blog or article -%}
-        {%- if brand == "go-to" -%}
-          {% section "blog-header" %}
+        {%- if brand == 'go-to' -%}
+          {% section 'blog-header' %}
         {%- endif -%}
       {%- endif -%}
-   
+
       {%- unless settings.cart_type == 'page' or request.page_type == 'cart' -%}
         {%- section 'mini-cart' -%}
       {%- endunless -%}
     {%- endif -%}
 
-
-    <div id="main" role="main" class="anchor" data-template="{{ template | handle }}" data-suffix="{{ template.suffix | handle }}">
-    {% comment %} {%- include "icon-go-to--earth" -%} {% endcomment %}
+    <div
+      id="main"
+      role="main"
+      class="anchor"
+      data-template="{{ template | handle }}"
+      data-suffix="{{ template.suffix | handle }}"
+    >
+      {% comment %} {%- include "icon-go-to--earth" -%} {% endcomment %}
 
       {%- render 'theme--special-effects--header' -%}
-      {%- include "theme--filter-search" -%}
+      {%- include 'theme--filter-search' -%}
 
       <div id="main-inner">
+        {% comment %}
+          <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="header__icon-wrapper tap-area hidden-phone" aria-label="{% if customer %}{{ 'header.general.account' | t | escape }}{% else %}{{ 'header.general.login' | t | escape }}{% endif %}">
+            {%- render 'icon' with 'header-customer' -%} LOGIN
+          </a>
+        {% endcomment %}
 
         {%- sections 'aside-group' -%}
 
-        {%- if template.suffix contains "vip-access" and customer -%}
-          {% include "vip-access--validator" %}
+        {%- if currentMarket != "AU" and page.handle == "go-to-gang" -%}
+            {%- section 'main-not-found' -%}
+        {%- elsif template.suffix contains 'vip-access' and customer -%}
+          {% include 'vip-access--validator' %}
           {%- if validVIPCustomer == true -%}
             {{ content_for_layout }}
           {%- else -%}
-            {%- section 'vip-access--unsuccessful'  -%}
+            {%- section 'vip-access--unsuccessful' -%}
           {%- endif -%}
 
-        {%- elsif template.suffix contains "vip-access" %}
-          {%- section 'vip-access--login'  -%}
+        {%- elsif template.suffix contains 'vip-access' %}
+          {%- section 'vip-access--login' -%}
         {%- else -%}
-
-
-          {% comment %} {% if product and product.vendor contains "Go-To" %}
-            {% render "temp--birthday-banner" %}
-            {% assign showCountdown = true %}
-          {% endif %}
-
-          {% if collection %}
-            {%  unless collection.handle contains "bro-to" or collection.handle contains "gro-to"  %}  
+          {% comment %}
+            {% if product and product.vendor contains "Go-To" %}
               {% render "temp--birthday-banner" %}
               {% assign showCountdown = true %}
+            {% endif %}
 
-            {% endunless %} 
-          {% endif %}
+            {% if collection %}
+              {%  unless collection.handle contains "bro-to" or collection.handle contains "gro-to"  %}
+                {% render "temp--birthday-banner" %}
+                {% assign showCountdown = true %}
 
-          {% if showCountdown %}
-            {% section "countdown" %}
-          {% endif %} {% endcomment %}
+              {% endunless %}
+            {% endif %}
+
+            {% if showCountdown %}
+              {% section "countdown" %}
+            {% endif %}
+          {% endcomment %}
 
           {{ content_for_layout }}
         {%- endif -%}
       </div>
-
     </div>
 
     {%- if request.page_type != 'password' -%}
-
-      {%- if brand == "go-to" -%}
+      {%- if brand == 'go-to' -%}
         {%- sections 'footer-group' -%}
-      {%- elsif brand == "bro-to" -%}
+      {%- elsif brand == 'bro-to' -%}
         {%- sections 'footer-group--bro-to' -%}
-      {%- elsif brand == "gro-to" -%}
+      {%- elsif brand == 'gro-to' -%}
         {%- sections 'footer-group--gro-to' -%}
       {%- endif -%}
     {%- endif -%}
@@ -208,6 +231,10 @@ NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing 
     {%- render 'theme--special-effects--footer' -%}
     {%- render 'script--klaviyo-back-in-stock' -%}
     {%- render 'script--covet-pics' -%}
+    {% render 'rivo-cart-override' %}
 
+    {%- if page.handle == "go-to-gang" -%}
+      {% render 'rivo-landing-page' %}
+    {%- endif -%}
   </body>
 </html>

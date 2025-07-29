@@ -1,0 +1,41 @@
+<div class="favorite-button-wrapper">
+  <rivo-favorite-button
+    data-product-id="{{ product.id }}"
+    rivo-ax-data
+    rivo-ax-cloak
+    rivo-ax-html="$store.icons.heart"
+    rivo-ax-show="$store.rivo_aw_settings?.favorites_enabled && (!$store.rivo_profile_customer || $store.loading_states.global_favorite_buttons)"
+  ></rivo-favorite-button>
+</div>
+
+<style>
+  :root {
+    --rivo-aw-favorite-button-active-color: #000413 !important;
+  }
+
+  .favorite-button-wrapper {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    margin-bottom: 0px !important;
+    margin-right: auto;
+    right: 0px;
+    top: 12px;
+    padding: 5px;
+    z-index: 3;
+  }
+
+  rivo-favorite-button svg {
+    position: static !important;
+    height: 20px !important;
+  }
+
+  .favorite-button-wrapper rivo-favorite-button {
+    display: block !important;
+    width: 2.5rem;
+    height: 2.5rem;
+    z-index: 3 !important;
+    margin-right: 5px;
+  }
+</style>

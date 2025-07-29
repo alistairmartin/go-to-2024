@@ -1,5 +1,6 @@
 {% comment %} {%- render "fonts" -%} {% endcomment %}
-{%- render "fonts--original" -%}
+ {%- render "fonts--original" -%}
+{% comment %} {%- render "fonts--original-V2" -%} {% endcomment %}
 {%- render "fonts--custom" -%}
 
 <link rel="stylesheet" href="{{ 'global.css' | asset_url }}">
@@ -36,6 +37,7 @@
     <link rel="stylesheet" href="{{ 'loyalty-landing.css' | asset_url }}">
 {%- endif -%}
 
+ <link rel="stylesheet" href="{{ 'loyalty-rivo.css' | asset_url }}">
 
 {%- if brand == "bro-to" -%}
     <link rel="stylesheet" href="{{ 'brand--bro-to.css' | asset_url }}">

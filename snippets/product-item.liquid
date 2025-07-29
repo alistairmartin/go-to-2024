@@ -1,3 +1,9 @@
+{%- if showWishlist == false -%}
+  {%- assign showWishlist = false -%}
+{% else %}
+  {%- assign showWishlist = true -%}
+{%- endif -%}
+
 {%- assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ',' -%}
 {%- assign color_white_label = 'general.label.white' | t | downcase -%}
 {%- assign quick_buy_icon_name = 'quick-buy-' | append: settings.cart_icon | replace: '_', '-' -%}
@@ -444,6 +450,19 @@
 {% if horizontal %}
   {{ quickBuyDrawers }}
 {% endif %}
+
+
+{%- if showWishlist -%}
+<rivo-favorite-button
+  data-product-id="{{ product.id }}" 
+  rivo-ax-data
+  rivo-ax-cloak
+  rivo-ax-html="$store.icons.heart"
+  rivo-ax-show="$store.rivo_aw_settings?.favorites_enabled && (!$store.rivo_profile_customer || $store.loading_states.global_favorite_buttons)"
+>
+  {%- render 'icon' with 'go-to-wishlist' -%}
+</rivo-favorite-button>
+{%- endif -%}
 
 </product-item>
 {%- endunless -%}

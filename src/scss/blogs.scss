@@ -115,7 +115,7 @@ store-header {
         max-width: 350px;
         justify-content: center;
         margin: 10px auto;
-        border-radius: 8px;
+        border-radius: var(--image-border-radius);;
         padding: 5px;
         
         @include media-query($medium-up) {
@@ -155,8 +155,8 @@ store-header {
         bottom: 0;
         transform: translate(-50%,100%);
         width: 100%;
-        border-bottom-right-radius: 8px;
-        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: var(--image-border-radius);;
+        border-bottom-left-radius: var(--image-border-radius);;
 
         .predictive-search__no-results {
             padding: 10px;
@@ -176,7 +176,7 @@ store-header {
                 background: $gotoPink;
                 font-size: 10px;
                 padding: 2px 5px;
-                border-radius: 8px;
+                border-radius: var(--image-border-radius);;
                 line-height: 1;
                 text-transform: uppercase;
                 font-weight: bold;

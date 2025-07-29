@@ -46,7 +46,7 @@
 
           <div class="footer-logo {{ brand }}">
             {%- if brand == "go-to" -%}
-              {%- render 'svg--logo-go-to' -%}
+              {%- render 'svg--logo-go-to-black' -%}
           {%- elsif brand == "bro-to" -%}
             {%- render 'svg--logo-bro-to' -%}
           {%- elsif brand == "gro-to" -%}
@@ -72,7 +72,7 @@
             {%- endif -%}
             
             
-            <button onclick="openAccessabilityWidget()" class="link link--secondary open-accessability"><strong>OPEN ACCESSABILITY</strong></button>
+            <button onclick="openAccessabilityWidget()" class="link link--secondary open-accessability"><strong>OPEN ACCESSIBILITY</strong></button>
 
 
             {%- if brand == "go-to" -%}
@@ -80,6 +80,7 @@
               {% else %}
               <img class="not-tested-on-animals" src="{{ "not_tested_on_animals_white.png" | asset_img_url: "200x" }}" width="200" height="auto" loading="lazy" alt="Not Tested On Animals">
              {%- endif -%}
+
           </div>
 
         {%- when 'newsletter' -%}

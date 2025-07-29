@@ -1,6 +1,6 @@
 development:
   password: shptka_5ade013fd92c76168c566da7e72001db
-  theme_id: 133780209798
+  theme_id: 133331189894
   store: go-to-skincare.myshopify.com
   ignore_files:
       - config/settings_data.json
@@ -8,9 +8,9 @@ development:
       - sections/*.json
       - locales/*.json
 
-# staging:
+# development:
 #   password: shptka_88612106c9b0965e77f6224ac7c029bc
-#   theme_id: 130958131356
+#   theme_id: 144399761564
 #   store: go-to-staging.myshopify.com
 #   ignore_files:
 #       - config/settings_data.json

@@ -9,9 +9,9 @@
 
   case template.name
     when 'product'
-      if product.tags contains 'Bro-To' or product.vendor == 'Bro-To'
+      if product.tags contains 'Bro-To' or product.vendor contains 'Bro-To'
         assign brand = 'bro-to'
-      elsif product.tags contains 'Gro-To' or product.vendor == 'Gro-To'
+      elsif product.tags contains 'Gro-To' or product.vendor contains 'Gro-To'
         assign brand = 'gro-to'
       endif
     when 'collection'

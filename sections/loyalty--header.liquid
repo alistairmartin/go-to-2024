@@ -111,7 +111,7 @@
 
           {%- capture section_content -%}
 
-            <img src="{{ 'loyalty--go-to-gang.svg' | asset_url }}" alt="Go-To Gang" class="loyalty-header-logo">
+            <img src="{{ 'loyalty--go-to-gang-V2.svg' | asset_url }}" alt="Go-To Gang" class="loyalty-header-logo">
             {%- if block.settings.subheading != blank -%}
               <h2 class="heading heading--small">
                 <split-lines class="hide-mobile" {% if section.settings.transition_type != 'fade' %}reveal{% endif %}>{{ block.settings.subheading | escape }}</split-lines>
@@ -155,7 +155,7 @@
             {%- endif -%}
 
 
-            <p class="sign-in">ALREADY A MEMBER? <a href="{{ routes.account_login_url }}" class="link link--primary">SIGN IN</a></p>
+            <p class="sign-in">ALREADY A MEMBER? <a href="{{ routes.account_login_url }}" class="link link--primary">{{ 'header.general.login' | t | escape }}</a></p>
           {%- endcapture -%}
 
           {%- if section_content != blank -%}

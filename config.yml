@@ -9,6 +9,7 @@ development:
       - locales/*.json
 
 # development:
+# development:
 #   password: shptka_88612106c9b0965e77f6224ac7c029bc
 #   theme_id: 130934276252
 #   store: go-to-staging.myshopify.com

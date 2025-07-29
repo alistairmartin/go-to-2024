@@ -7,12 +7,18 @@ const cutoffDate = new Date("2025-07-24");
 const hideOldRows = () => {
   document.querySelectorAll("#points-logs-activity tbody tr").forEach(row => {
     const dateCell = row.querySelector("td:last-child");
+    const rowText = row.textContent.trim();
+    const shouldHideByText = rowText.includes("Celebrate a birthday");
+    let shouldHideByDate = false;
+
     if (dateCell) {
       const dateText = dateCell.textContent.trim();
       const parsedDate = new Date(dateText);
-      if (parsedDate.toString() !== 'Invalid Date' && parsedDate < cutoffDate) {
-        row.style.display = "none";
-      }
+      shouldHideByDate = parsedDate.toString() !== 'Invalid Date' && parsedDate < cutoffDate;
+    }
+
+    if (shouldHideByDate || shouldHideByText) {
+      row.style.display = "none";
     }
   });
 };

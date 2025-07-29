@@ -8417,9 +8417,9 @@ input:checked + .popover__choice-label:is(:lang(ae), :lang(ar), :lang(arc), :lan
   box-shadow: 0 1px #0000;
 }
 
-.header--bordered:not(.header--transparent) {
+/* .header--bordered:not(.header--transparent) {
   box-shadow: 0 1px rgb(var(--border-color));
-}
+} */
 
 .header__logo {
   margin: 0;

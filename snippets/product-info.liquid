@@ -1,3 +1,5 @@
+{%- assign currentMarket = localization.market.handle | upcase -%}
+
 <div class="product__info">
   <!-- PRODUCT META -->
   <product-meta data-block-type="meta" data-block-id="{{ section.id }}" price-class="price--large" class="product-meta product-meta--desktop">
@@ -137,7 +139,9 @@
       {%- endif -%}
     </div>
 
-    {%- render 'product-info--loyalty', customer: customer, product: product -%}
+    {%- if currentMarket == "AU" -%}
+      {%- render 'product-info--loyalty', customer: customer, product: product -%}
+    {%- endif -%}
 
     {%- if section.settings.show_taxes_included -%}
       {%- if cart.taxes_included or shop.shipping_policy.body != blank -%}

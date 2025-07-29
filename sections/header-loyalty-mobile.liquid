@@ -1,3 +1,5 @@
+{%- assign currentMarket = localization.market.handle | upcase -%}
+
 {% comment %} <script>
 const headerElement = document.querySelector('.shopify-section--header');
 const mobileNavigationElement = document.querySelector('.shopify-section--loyalty-navigation');
@@ -26,17 +28,23 @@ window.addEventListener('resize', () => {
     </script> {% endcomment %}
         {%- if customer -%}
         <a
-            href="/pages/go-to-gang"
+            href="{% if currentMarket == "AU" %}/pages/go-to-gang{% else %}{{ routes.account_url }}{% endif %}"
             class="header__icon-wrapper header__go-to-gang tap-area"
             aria-label="Go-To Gang">
-            {%- render 'icon' with 'go-to-peach' -%} Loyalty Program | 
-
-            {{ customer.metafields.custom.rivo.value.points_balance | default: 0 }} Points
+            {%- render 'icon' with 'go-to-peach' -%}
+            
+            {%- if currentMarket == "AU" -%}
+            Loyalty | {{ customer.metafields.custom.rivo.value.points_balance | default: 0 }} Points
+            {% else %}
+            My Account
+            {% endif %}
         </a>
 
-        {%- if customer.metafields.custom.rivo.value.points_balance >= 200 -%}
+        {%- if customer.metafields.custom.rivo.value.points_balance >= 200 and currentMarket == "AU" -%}
             <a href="/pages/go-to-gang">
-              <u>My Rewards</u>
+              <u>
+                My Rewards
+              </u>
             </a>
         {% else %}
             <a href="{{ routes.account_logout_url }}">
@@ -53,14 +61,14 @@ window.addEventListener('resize', () => {
 
             {%- unless customer -%}
 
-              <span>
-                <u>Join</u>
-                the loyalty program</span>
+              {%- if currentMarket == "AU" -%}
+                <span>
+                  <u>Join</u>
+                  Loyalty
+                </span>
+              {%- endif -%}
 
             {%- endunless -%}
-
-
-            
         </a>
 
         <a href="{{ routes.account_login_url }}">

@@ -9,9 +9,9 @@
     {%- endfor -%}
 
     {%- if peachFriendCustomer -%}
-        Earn {{ product.price | times: 2 | divided_by: 100 }} Points!
+        Earn {{ product.price | times: 2 | divided_by: 100 }} Points! <br><span class="small">Plus 50 Points On Recurring Subscriptions!</span>
     {% else  %} 
-        Earn {{ product.price | divided_by: 100 }} Points!
+        Earn {{ product.price | divided_by: 100 }} Points! <br><span class="small">Plus 50 Points On Recurring Subscriptions!</span>
     {%- endif -%}
 
 {% else %}

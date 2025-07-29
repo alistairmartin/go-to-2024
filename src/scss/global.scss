@@ -5299,4 +5299,29 @@ button[aria-label="Tolstoy stories: next button"] {
   margin: 4px 0 0;
   font-size: 14px;
   color: #8f8f8f;
+
+  .small {
+     font-size: 12px;
+  }
+}
+
+
+
+.page--text-me-go-to-sign-up-to-sms-go-to-skin-care {
+  // background: $gotoPinkLight;
+
+
+  .page-content {
+    .klaviyo-form {
+      margin-top: 40px;
+
+      form {
+        padding-bottom: 30px !important;
+      }
+
+      h2, .ql-font-tt-commons {
+        line-height: 1.2 !important;
+      }
+    }
+  } 
 }

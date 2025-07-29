@@ -1,3 +1,4 @@
+
 {%- comment -%}
   ------------------------------------------------------------------------------------------------------------------------
   NOTE TO DEVELOPERS: welcome to Focal theme! We hope that you will enjoy editing this theme as much as we did for
@@ -6,7 +7,7 @@
     all events, dependencies...) in the "custom.js" file, located in the Assets folder.
   ------------------------------------------------------------------------------------------------------------------------
 {%- endcomment -%}
-
+{%- assign currentMarket = localization.market.handle | upcase -%}
 {%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
 
 <!doctype html>
@@ -180,7 +181,9 @@
 
         {%- sections 'aside-group' -%}
 
-        {%- if template.suffix contains 'vip-access' and customer -%}
+        {%- if currentMarket != "AU" and page.handle == "go-to-gang" -%}
+            {%- section 'main-not-found' -%}
+        {%- elsif template.suffix contains 'vip-access' and customer -%}
           {% include 'vip-access--validator' %}
           {%- if validVIPCustomer == true -%}
             {{ content_for_layout }}
@@ -229,5 +232,9 @@
     {%- render 'script--klaviyo-back-in-stock' -%}
     {%- render 'script--covet-pics' -%}
     {% render 'rivo-cart-override' %}
+
+    {%- if page.handle == "go-to-gang" -%}
+      {% render 'rivo-landing-page' %}
+    {%- endif -%}
   </body>
 </html>

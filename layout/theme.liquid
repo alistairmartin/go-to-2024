@@ -22,6 +22,7 @@
   class="no-js {% if request.design_mode %}theme-editor{% endif %}"
   lang="{{ request.locale.iso_code }}"
   dir="{{ direction }}"
+  market="{{ currentMarket }}"
 >
   <head>
     {% render 'pandectes-rules' %}
@@ -181,7 +182,12 @@
 
         {%- sections 'aside-group' -%}
 
-        {%- if currentMarket != "AU" and page.handle == "go-to-gang" -%}
+        {%- assign canShowGoToGang = false -%}
+        {%- if currentMarket == "AU" or currentMarket == "NZ" -%}
+          {%- assign canShowGoToGang = true -%}
+        {%- endif -%}
+
+        {%- if canShowGoToGang == false and page.handle == "go-to-gang" -%}
             {%- section 'main-not-found' -%}
         {%- elsif template.suffix contains 'vip-access' and customer -%}
           {% include 'vip-access--validator' %}

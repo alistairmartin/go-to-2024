@@ -1,12 +1,3 @@
-    #points-logs-activity tbody tr {
-      display: none;
-    }
-
-    #points-logs-activity tbody tr:first-of-type {
-      display: table-row !important;
-    }
-
-
 .market-EU,.market-US,.market-GB {
     a.rivo-aw-button-points.button.button--primary[href="/pages/go-to-gang"] {
     display: none !important;

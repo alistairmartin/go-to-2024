@@ -28,7 +28,8 @@ updateCartAttributes(cartAttributes);
 
 {%- render 'mini-cart--gifts-automatic' -%}
 
-{%- if section.settings.enable_custom_message -%}
+
+{%- if section.settings.enable_custom_message or section.settings.enable_custom_message_brands -%}
   {%- for attribute in cart.attributes -%}
     {%- if attribute.first == "_last-visited-brand" -%}
     {%- capture brand -%}{{ attribute.last }}{%- endcapture -%}
@@ -67,7 +68,61 @@ updateCartAttributes(cartAttributes);
       {%- assign showCustomMessage = true -%}
     {%- endif -%}
 
-  {%- if section.settings.enable_custom_message and showCustomMessage == true -%}
+    {%- assign showCustomMessageBrands = false -%}
+
+     {%- if section.settings.enable_custom_message_brand %}
+          {%- assign showCustomMessageBrands = true -%}
+     {% endif %}
+
+    {%- if showCustomMessageBrands == true -%}
+      <header class="drawer__header custom-cart-message {%- if section.settings.custom_message_go-to != blank -%}message-enabled--go-to{% endif %} {%- if section.settings.custom_message_bro-to != blank -%}message-enabled--bro-to{% endif %} {%- if section.settings.custom_message_gro-to != blank -%}message-enabled--gro-to{% endif %}">
+    <p class="drawer__title heading h6">
+
+      {%- if section.settings.enable_custom_message_brand -%}
+      <style>
+      .custom-cart-message--inner p {
+          font-size: {{ section.settings.custom_message_size_mobile }}px;
+      }
+      
+      @media screen and (min-width: 768px) {
+          .custom-cart-message--inner p {
+              font-size: {{ section.settings.custom_message_size_desktop }}px;
+          }
+      }
+      </style>
+
+      <div class="custom-cart-message--inner">
+          <span class="text--go-to">{{ section.settings.custom_message_go-to }}</span>
+          <span class="text--bro-to">{{ section.settings.custom_message_bro-to }}</span>
+          <span class="text--gro-to"> {{ section.settings.custom_message_gro-to }}</span>
+      </div>
+
+      {% else %}
+        {%- case settings.cart_icon -%}
+          {%- when 'shopping_bag' -%}
+            {%- render 'icon' with 'header-cart' -%}
+
+          {%- when 'shopping_cart' -%}
+            {%- render 'icon' with 'header-shopping-cart' -%}
+
+          {%- when 'tote_bag' -%}
+            {%- render 'icon' with 'header-tote-bag' -%}
+        {%- endcase -%}
+
+        {%- if cart.item_count == 0 -%}
+          {{- 'cart.general.title' | t -}}
+        {%- else -%}
+          {{- 'cart.general.item_count' | t: count: cart.item_count -}}
+        {%- endif -%}
+      {%- endif -%}
+  
+    </p>
+
+    <button type="button" class="drawer__close-button tap-area" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
+      {%- render 'icon' with 'close' -%}
+    </button>
+  </header>
+  {%- elsif section.settings.enable_custom_message and showCustomMessage == true -%}
   <header class="drawer__header custom-cart-message">
     <p class="drawer__title heading h6">
 
@@ -1130,12 +1185,36 @@ updateCartAttributes(cartAttributes);
     },
     {
       "type": "header",
-      "content": "Custom Message"
+      "content": "Custom Message (Brands)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_message_brand",
+      "label": "Enable Custom Message (Brands)"
+    },
+    {
+      "type": "richtext",
+      "id": "custom_message_go-to",
+      "label": "Custom Message (Go-To 🟪)"
+    },
+       {
+      "type": "richtext",
+      "id": "custom_message_bro-to",
+      "label": "Custom Message (Bro-To 🟥)"
+    },
+    {
+      "type": "richtext",
+      "id": "custom_message_gro-to",
+      "label": "Custom Message (Gro-To 🟩)"
+    },
+      {
+      "type": "header",
+      "content": "Custom Message (Markets)"
     },
     {
       "type": "checkbox",
       "id": "enable_custom_message",
-      "label": "Enable Custom Message"
+      "label": "Enable Custom Message (Markets)"
     },
     {
       "type": "richtext",

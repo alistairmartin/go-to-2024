@@ -139,7 +139,7 @@
       {%- endif -%}
     </div>
 
-    {%- if currentMarket == "AU" -%}
+    {%- if currentMarket == "AU" or currentMarket == "NZ" -%}
       {%- render 'product-info--loyalty', customer: customer, product: product -%}
     {%- endif -%}
 

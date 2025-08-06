@@ -1,4 +1,5 @@
 {%- assign currentMarket = localization.market.handle | upcase -%}
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
 
 {%- comment -%}
   IMPLEMENTATION NOTE: the header in Focal is pretty complex as it allows a lot of different layouts. In order to make
@@ -231,7 +232,9 @@ z-index: 4;
 
       <!-- LOGO PART -->
       {%- capture logo -%}
-        <a class="header__logo-link" href="{{ routes.root_url }}">
+
+
+        <a class="header__logo-link" href="{{ shop.url }}{% if brand == "bro-to" %}/pages/bro-to{% elsif brand == "gro-to" %}/pages/gro-to{% endif %}">
           {%- if section.settings.logo != blank -%}
             {%- capture logo_size -%}{{ section.settings.logo_max_width | at_least: section.settings.mobile_logo_max_width | times: 2 | append: 'x' }}{%- endcapture -%}
             <span class="visually-hidden">{{ shop.name }}</span>
@@ -432,11 +435,11 @@ z-index: 4;
             {%- render 'icon' with 'go-to-peach' -%}
             </a>
 
-           <a href="{%- if currentMarket == "AU" -%}/pages/go-to-gang{% else %}{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}{% endif %}" class="tap-area">
+           <a href="{%- if currentMarket == "AU" or currentMarket == "NZ" -%}/pages/go-to-gang{% else %}{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}{% endif %}" class="tap-area">
             {%- if customer -%}
               <strong class="hidden-phone">
 
-              {%- if currentMarket == "AU" -%}
+              {%- if currentMarket == "AU" or currentMarket == "NZ" -%}
                  Loyalty | {{ customer.metafields.custom.rivo.value.points_balance | default: 0 }} Points
               {% else %}
                   My Account
@@ -444,7 +447,7 @@ z-index: 4;
               
               </strong>
             {% else %}
-                {%- if currentMarket == "AU" -%}
+                {%- if currentMarket == "AU" or currentMarket == "NZ" -%}
                 <strong class="hidden-phone"><u>Join</u> Loyalty</strong>
                 {% else %}
                 <strong class="hidden-phone"><u>Login</u></strong>

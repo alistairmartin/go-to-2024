@@ -28,19 +28,24 @@ window.addEventListener('resize', () => {
     </script> {% endcomment %}
         {%- if customer -%}
         <a
-            href="{% if currentMarket == "AU" %}/pages/go-to-gang{% else %}{{ routes.account_url }}{% endif %}"
+            href="{% if currentMarket == "AU" or currentMarket == "NZ" %}/pages/go-to-gang{% else %}{{ routes.account_url }}{% endif %}"
             class="header__icon-wrapper header__go-to-gang tap-area"
             aria-label="Go-To Gang">
             {%- render 'icon' with 'go-to-peach' -%}
             
-            {%- if currentMarket == "AU" -%}
+            {%- if currentMarket == "AU" or currentMarket == "NZ" -%}
             Loyalty | {{ customer.metafields.custom.rivo.value.points_balance | default: 0 }} Points
             {% else %}
             My Account
             {% endif %}
         </a>
-
-        {%- if customer.metafields.custom.rivo.value.points_balance >= 200 and currentMarket == "AU" -%}
+        {%- if customer.metafields.custom.rivo.value.points_balance >= 200 and currentMarket == "NZ" -%}
+            <a href="/pages/go-to-gang">
+              <u>
+                My Rewards
+              </u>
+            </a>
+        {%- elsif customer.metafields.custom.rivo.value.points_balance >= 200 and currentMarket == "AU" -%}
             <a href="/pages/go-to-gang">
               <u>
                 My Rewards
@@ -61,7 +66,7 @@ window.addEventListener('resize', () => {
 
             {%- unless customer -%}
 
-              {%- if currentMarket == "AU" -%}
+              {%- if currentMarket == "AU" or currentMarket == "NZ" -%}
                 <span>
                   <u>Join</u>
                   Loyalty

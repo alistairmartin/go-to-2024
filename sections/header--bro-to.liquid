@@ -154,7 +154,7 @@ IMPLEMENTATION NOTE: the header in Focal is pretty complex as it allows a lot of
 
       <!-- LOGO PART -->
       {%- capture logo -%}
-        <a class="header__logo-link" href="{{ routes.root_url }}">
+        <a class="header__logo-link" href="{{ routes.root_url }}/pages/bro-to">
           {%- if section.settings.logo != blank -%}
             {%- capture logo_size -%}{{ section.settings.logo_max_width | at_least: section.settings.mobile_logo_max_width | times: 2 | append: 'x' }}{%- endcapture -%}
             <span class="visually-hidden">{{ shop.name }}</span>

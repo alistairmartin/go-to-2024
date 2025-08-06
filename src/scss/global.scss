@@ -1100,7 +1100,44 @@ rivo-favorite-button.rivo-favorite-active svg {
   }
 }
 
+
+.custom-cart-message {
+  height: 0;
+  margin-top: -1px;
+
+  .drawer__title, .custom-cart-message--inner {
+    display: none;
+  }
+
+  .drawer__close-button {
+    margin-top: 18px;
+  }
+}
+
 .go-to {
+
+  .text--go-to {
+    display: block;
+  }
+
+  .text--bro-to, .text--gro-to {
+    display: none;
+  }
+
+
+  .message-enabled--go-to {
+    display: flex;
+    height: 100%;
+     margin-top: 0px;
+
+    .drawer__title, .custom-cart-message--inner {
+    display: block;
+    }
+    
+    .drawer__close-button {
+      margin-top: 0;
+    }
+  }
 
   .header {
     background: $gotoPink;
@@ -1145,6 +1182,15 @@ rivo-favorite-button.rivo-favorite-active svg {
 }
 
 .bro-to {
+
+  .text--bro-to {
+    display: block;
+  }
+
+  .text--go-to, .text--gro-to {
+    display: none;
+  }
+
   .header__icon-wrapper {
     svg {
       @include media-query($small) {
@@ -1157,6 +1203,45 @@ rivo-favorite-button.rivo-favorite-active svg {
      @include media-query($small) {
         color: #fff;
       }
+  }
+
+  .message-enabled--bro-to {
+    display: flex;
+    height: 100%;
+    margin-top: 0px;
+
+    .drawer__title, .custom-cart-message--inner {
+    display: block;
+    }
+
+    .drawer__close-button {
+      margin-top: 0;
+    }
+  }
+}
+
+
+.gro-to {
+  .text--gro-to {
+    display: block;
+  }
+
+  .text--bro-to, .text--go-to {
+    display: none;
+  }
+
+  .message-enabled--gro-to {
+    display: flex;
+    height: 100%;
+    margin-top: 0px;
+
+    .drawer__title, .custom-cart-message--inner {
+      display: block;
+    }
+
+    .drawer__close-button {
+      margin-top: 0;
+    }
   }
 }
 

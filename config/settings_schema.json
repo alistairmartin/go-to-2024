@@ -1339,7 +1339,17 @@
       {
         "type": "checkbox",
         "id": "shipping_motivator_AU",
-        "label": "Show For Australia?"
+        "label": "(🟪 Go-To) Show For Australia?"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_motivator_AU_bro",
+        "label": "(🟥 Bro-To) Show For Australia?"
+      },
+        {
+        "type": "checkbox",
+        "id": "shipping_motivator_AU_gro",
+        "label": "(🟩 Gro-To) Show For Australia?"
       },
       {
         "type": "text",
@@ -1351,10 +1361,20 @@
         "type": "header",
         "content": "Shipping Motivator (NZ 🇳🇿)"
       },
-      {
+         {
         "type": "checkbox",
         "id": "shipping_motivator_NZ",
-        "label": "Show For New Zealand?"
+        "label": "(🟪 Go-To) Show For NZ?"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_motivator_NZ_bro",
+        "label": "(🟥 Bro-To) Show For NZ?"
+      },
+        {
+        "type": "checkbox",
+        "id": "shipping_motivator_NZ_gro",
+        "label": "(🟩 Gro-To) Show For NZ?"
       },
       {
         "type": "text",
@@ -1368,8 +1388,18 @@
       },
       {
         "type": "checkbox",
-        "id": "shipping_motivator_GB",
-        "label": "Show For United Kingdom?"
+        "id": "shipping_motivator_UK",
+        "label": "(🟪 Go-To) Show For UK?"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_motivator_UK_bro",
+        "label": "(🟥 Bro-To) Show For UK?"
+      },
+        {
+        "type": "checkbox",
+        "id": "shipping_motivator_UK_gro",
+        "label": "(🟩 Gro-To) Show For UK?"
       },
       {
         "type": "text",
@@ -1384,7 +1414,17 @@
       {
         "type": "checkbox",
         "id": "shipping_motivator_US",
-        "label": "Show For United States?"
+        "label": "(🟪 Go-To) Show For US?"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_motivator_US_bro",
+        "label": "(🟥 Bro-To) Show For US?"
+      },
+        {
+        "type": "checkbox",
+        "id": "shipping_motivator_US_gro",
+        "label": "(🟩 Gro-To) Show For US?"
       },
       {
         "type": "text",

@@ -8,14 +8,90 @@
         font-size: {{ settings.shipping_motivator_size_desktop }}px;
     }
 }
+
+{% unless settings.shipping_motivator_AU %}
+.market-AU.brand-go-to .shipping-bar-free {
+        display: none !important;
+}
+{% endunless %}
+
+{% unless settings.shipping_motivator_AU_bro %}
+.market-AU.brand-bro-to .shipping-bar-free {
+        display: none !important;
+}
+{% endunless %}
+
+{% unless settings.shipping_motivator_AU_gro %}
+.market-AU.brand-gro-to .shipping-bar-free {
+        display: none !important;
+}
+{% endunless %}
+
+
+{% unless settings.shipping_motivator_NZ %}
+.market-NZ.brand-go-to .shipping-bar-free {
+        display: none !important;
+}
+{% endunless %}
+
+{% unless settings.shipping_motivator_NZ_bro %}
+.market-NZ.brand-bro-to .shipping-bar-free {
+        display: none !important;
+}
+{% endunless %}
+
+{% unless settings.shipping_motivator_NZ_gro %}
+.market-NZ.brand-gro-to .shipping-bar-free {
+        display: none !important;
+}
+{% endunless %}
+
+
+{% unless settings.shipping_motivator_UK %}
+.market-GB.brand-go-to .shipping-bar-free {
+        display: none !important;
+}
+{% endunless %}
+
+{% unless settings.shipping_motivator_UK_bro %}
+.market-GB.brand-bro-to .shipping-bar-free {
+        display: none !important;
+}
+{% endunless %}
+
+{% unless settings.shipping_motivator_UK_gro %}
+.market-GB.brand-gro-to .shipping-bar-free {
+        display: none !important;
+}
+{% endunless %}
+
+
+{% unless settings.shipping_motivator_US %}
+.market-US.brand-go-to .shipping-bar-free {
+        display: none !important;
+}
+{% endunless %}
+
+{% unless settings.shipping_motivator_US_bro %}
+.market-US.brand-bro-to .shipping-bar-free {
+        display: none !important;
+}
+{% endunless %}
+
+{% unless settings.shipping_motivator_US_gro %}
+.market-US.brand-gro-to .shipping-bar-free {
+        display: none !important;
+}
+{% endunless %}
+
 </style>
 
-{%- if localization.market.handle == 'au' -%}
-    {%- render 'cart--free-shipping-AU' -%}
-{%- elsif localization.market.handle == 'nz' -%}
-    {%- render 'cart--free-shipping-NZ' -%}
-{%- elsif localization.market.handle == 'gb' -%}
-    {%- render 'cart--free-shipping-GB' -%}
-{%- elsif localization.market.handle == 'us' -%}
-    {%- render 'cart--free-shipping-US' -%}
-{%- endif -%}
+{% if localization.market.handle == 'au' %}
+    {% render 'cart--free-shipping-AU' %}
+{% elsif localization.market.handle == 'nz' %}
+    {% render 'cart--free-shipping-NZ' %}
+{% elsif localization.market.handle == 'gb' %}
+    {% render 'cart--free-shipping-GB' %}
+{% elsif localization.market.handle == 'us' %}
+    {% render 'cart--free-shipping-US' %}
+{% endif %}

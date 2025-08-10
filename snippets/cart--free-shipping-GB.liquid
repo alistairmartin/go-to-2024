@@ -1,4 +1,19 @@
-{%- if settings.shipping_motivator_GB and settings.cart_free_shipping_threshold_GB != '' and cart.requires_shipping -%}
+  {%- assign showShippingMotivatorGB = false -%}
+  {%- assign currentMarket = localization.market.handle | upcase -%}
+
+{%- if settings.shipping_motivator_UK and currentMarket == "GB" -%}
+  {%- assign showShippingMotivatorGB = true -%}
+{%- endif -%}
+
+{%- if settings.shipping_motivator_UK_bro and currentMarket == "GB" -%}
+    {%- assign showShippingMotivatorGB = true -%}
+{%- endif -%}
+
+{%- if settings.shipping_motivator_UK_gro and currentMarket == "GB" -%}
+    {%- assign showShippingMotivatorGB = true -%}
+{%- endif -%}
+
+{%- if showShippingMotivatorGB and settings.cart_free_shipping_threshold_GB != '' and cart.requires_shipping -%}
     {%- assign free_shipping_thresholds = settings.cart_free_shipping_threshold_GB | remove: ' ' | split: ',' -%}
     {%- assign has_found_matching_threshold = false -%}
 

@@ -1,4 +1,19 @@
-{%- if settings.shipping_motivator_AU and settings.cart_free_shipping_threshold != '' and cart.requires_shipping -%}
+  {%- assign showShippingMotivatorAU = false -%}
+  {%- assign currentMarket = localization.market.handle | upcase -%}
+
+{%- if settings.shipping_motivator_AU and currentMarket == "AU" -%}
+  {%- assign showShippingMotivatorAU = true -%}
+{%- endif -%}
+
+{%- if settings.shipping_motivator_AU_bro and currentMarket == "AU" -%}
+    {%- assign showShippingMotivatorAU = true -%}
+{%- endif -%}
+
+{%- if settings.shipping_motivator_AU_gro and currentMarket == "AU" -%}
+    {%- assign showShippingMotivatorAU = true -%}
+{%- endif -%}
+
+{%- if showShippingMotivatorAU and settings.cart_free_shipping_threshold != '' and cart.requires_shipping -%}
     {%- assign free_shipping_thresholds = settings.cart_free_shipping_threshold | remove: ' ' | split: ',' -%}
     {%- assign has_found_matching_threshold = false -%}
 
@@ -38,7 +53,7 @@
 
       {%- assign calculated_total_price = calculated_total_price | minus: total_cart_discount -%}
 
-      <free-shipping-bar threshold="{{ threshold_in_cents }}" class="shipping-bar shipping-bar-custom" style="--progress: {{ calculated_total_price | times: 1.0 | divided_by: threshold_in_cents | at_most: 1 }}">
+      <free-shipping-bar threshold="{{ threshold_in_cents }}" class="shipping-bar shipping-bar-custom shipping-bar-free" style="--progress: {{ calculated_total_price | times: 1.0 | divided_by: threshold_in_cents | at_most: 1 }}">
         {%- if calculated_total_price >= threshold_in_cents -%}
           <span class="shipping-bar__text text--xxsmall">{{ 'cart.general.free_shipping' | t }}</span>
         {%- else -%}

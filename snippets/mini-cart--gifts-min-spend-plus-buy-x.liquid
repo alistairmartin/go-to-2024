@@ -9,8 +9,32 @@
   {% assign getProduct3 = block.settings.get_product3 %}
 {%- endif -%}
 
+{%- assign currentMarket = localization.market.handle | upcase -%}
+{%- assign validMarket = false -%}
 
+{%- if block.settings.market_AU and currentMarket == "AU" -%}
+    {%- assign validMarket = true -%}
+{%- endif -%}
 
+{%- if block.settings.market_NZ and currentMarket == "NZ" -%}
+    {%- assign validMarket = true -%}
+{%- endif -%}
+
+{%- if block.settings.market_EU and currentMarket == "EU" -%}
+    {%- assign validMarket = true -%}
+{%- endif -%}
+
+{%- if block.settings.market_GB and currentMarket == "GB" -%}
+    {%- assign validMarket = true -%}
+{%- endif -%}
+
+{%- if block.settings.market_US and currentMarket == "US" -%}
+    {%- assign validMarket = true -%}
+{%- endif -%}
+
+{%- if block.settings.market_international and currentMarket == "international" -%}
+    {%- assign validMarket = true -%}
+{%- endif -%}
 
 {%- for attribute in cart.attributes -%}
   {%- if attribute.first == "_last-visited-brand" -%}
@@ -31,7 +55,8 @@
 {%- endif -%}
 
 {%- if enable_for_go-to or enable_for_bro-to or enable_for_gro-to -%}
-
+{%- if validMarket == true -%}
+  
 {%- for item in cart.items -%}
   {%- if item.product.handle == getProduct.handle -%}
     {% assign getProductInCart = true -%}
@@ -150,6 +175,7 @@
     
   {%- endif -%}
 
+{%- endif -%}
 {%- endif -%}
 
 

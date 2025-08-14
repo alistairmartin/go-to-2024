@@ -1,25 +1,4 @@
 <style>
-  /* .template-page--go-to-guardians-of-go-to #main {
-        background-image: url({{ "guardians-background-2.png" | asset_img_url: "700x" }});
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: cover;
-        background-attachment: fixed;
-        min-height: 100vh;
-        min-width: 100vw;
-  }
-  
-  @media screen and (min-width: 741px) {
-          .template-page--go-to-guardians-of-go-to #main {
-            background-image: url({{ "guardians-background-2.png" | asset_img_url: "2000x" }});
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: cover;
-            background-attachment: fixed;
-            min-height: 100vh;
-            min-width: 100vw;
-          }
-  } */
 
   .rating__caption {
     color: #000 !important;
@@ -29,18 +8,6 @@
   section.section .section__color-wrapper {
     background: transparent !important;
   }
-
-
-    body, iframe, .custom-section {
-      cursor: url({{ "color-pixels-wand-cursor.png" | asset_img_url: "32px" }}), default !important;
-    }
-
-    button, a, .flip-card:hover  {
-      cursor: url({{ "color-pixels-wand-pointer.png" | asset_img_url: "32px" }}), pointer !important;
-    }
-
-
-
 </style>
 
 
@@ -133,6 +100,8 @@
                       <div class="flip-card-inner">
                         <div class="flip-card-front">
                           {{ block.settings.image | image_url: width: 600 | image_tag: sizes: sizes_attribute, widths: '300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000', class: 'gallery__image' }}
+
+                          <button class="flip-button">FLIP ME</button>
                         </div>
                         <div class="flip-card-back">
                           {{ block.settings.image_flip | image_url: width: 600 | image_tag: sizes: sizes_attribute, widths: '300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000', class: 'gallery__image' }}
@@ -146,7 +115,7 @@
                         {{- block.settings.caption -}}
                       </figcaption>
                     {%- endif -%}
-                    <a href="{{ block.settings.link }}" class="button button--outline">{{ block.settings.link_title }}</a>
+                    <a href="{{ block.settings.link }}" class="button button--secondary">{{ block.settings.link_title }}</a>
                   </figure>
                 </gallery-item>
               {%- endfor -%}
@@ -183,8 +152,8 @@
   
   {% schema %}
   {
-    "name": "Flip Cards",
-    "class": "shopify-section--gallery shopify-section--flip-cards",
+    "name": "Flip Cards V2",
+    "class": "shopify-section--gallery shopify-section--flip-cards shopify-section--flip-cards-V2",
     "disabled_on": {
       "groups": ["header", "custom.overlay"]
     },
@@ -337,7 +306,7 @@
     ],
     "presets": [
       {
-        "name": "Flip Cards",
+        "name": "Flip Cards V2",
         "blocks": [
         ],
         "settings": {}

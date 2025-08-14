@@ -5178,6 +5178,7 @@ product-item[data-title="Face Hero"] {
 
 
 
+
 .shopify-section--flip-cards {
   // background: $gotoPink !important;
   // max-width: 1000px;
@@ -5198,7 +5199,11 @@ product-item[data-title="Face Hero"] {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    border-radius: 10px;
+
+
+    @include media-query($medium-up) {
+     object-fit: cover;
+    }
   }
 
   .flip-card {
@@ -5286,6 +5291,52 @@ product-item[data-title="Face Hero"] {
 
       @include media-query($medium-up) {
         margin: 20px auto 0px;
+      }
+    }
+  }
+}
+
+
+.shopify-section--flip-cards-V2 {
+  .flip-button {
+    padding: 10px;
+    background: $gotoPink;
+    font-weight: bold;
+    width: 100%;
+    margin-bottom: 40px;
+  }
+
+    .gallery__item {
+    // width: 33.5vw;
+    // width: 25%;
+    cursor: pointer;
+    height: calc(var(--gallery-image-height) * 1.365);
+
+
+    @include media-query($medium-up) {
+      width: 23.5%;
+      height: calc(var(--gallery-image-height));
+    }
+
+    @include media-query($small) {
+      // width: 65vw;
+      width: 75%;
+    }
+  }
+
+    .gallery__list {
+    padding: 2vw 0 9vw;
+    justify-content: center;
+
+    @include media-query($small) {
+      padding: 0vw 0 12vw;
+    }
+
+    a { 
+      margin: 4vw auto 0;
+
+      @include media-query($medium-up) {
+        margin: 4vw auto 0px;
       }
     }
   }

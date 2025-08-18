@@ -74,7 +74,7 @@
                 {%- when 'question-with-table' -%} 
                   <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
                   <button is="toggle-button" class="collapsible-toggle text--strong heading heading--{{ section.settings.font_family }}" aria-controls="block-{{ section.id }}-{{ block.id }}" aria-expanded="false" itemprop="name">
-                    {{- block.settings.title -}}
+                    <span>{{- block.settings.title -}}</span>
                     <span class="animated-plus"></span>
                   </button>
 
@@ -133,7 +133,7 @@
                 {%- when 'question' -%}
                   <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
                     <button is="toggle-button" class="collapsible-toggle text--strong heading heading--{{ section.settings.font_family }}" aria-controls="block-{{ section.id }}-{{ block.id }}" aria-expanded="false" itemprop="name">
-                      {{- block.settings.title -}}
+                      <span>{{- block.settings.title -}}</span>
                       <span class="animated-plus"></span>
                     </button>
 

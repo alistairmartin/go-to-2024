@@ -51,6 +51,10 @@
     {%- when 'Eco SunPass Approved' -%}
       <img src="{{ brand | append: '_Eco_SunPass_Approved.svg' | asset_url }}" alt="Vegan" loading="lazy" width="auto" height="auto" class="{{ class }}">
       <p>Eco SunPass Approved</p>
+
+    {%- when 'korea' -%}
+      <img src="{{ 'badge-south-korea.svg' | asset_url }}" alt="Vegan" loading="lazy" width="auto" height="auto" class="{{ class }}">
+      <p>Made In Korea</p>
   {% endcase %}
 </div>
 

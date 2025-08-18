@@ -53,7 +53,7 @@
 
       {%- assign calculated_total_price = calculated_total_price | minus: total_cart_discount -%}
 
-      <free-shipping-bar threshold="{{ threshold_in_cents }}" class="shipping-bar shipping-bar-custom" style="--progress: {{ calculated_total_price | times: 1.0 | divided_by: threshold_in_cents | at_most: 1 }}">
+      <free-shipping-bar threshold="{{ threshold_in_cents }}" class="shipping-bar shipping-bar-custom shipping-bar-free" style="--progress: {{ calculated_total_price | times: 1.0 | divided_by: threshold_in_cents | at_most: 1 }}">
         {%- if calculated_total_price >= threshold_in_cents -%}
           <span class="shipping-bar__text text--xxsmall">{{ 'cart.general.free_shipping_US' | t }}</span>
         {%- else -%}

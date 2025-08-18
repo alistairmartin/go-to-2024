@@ -1,6 +1,3 @@
-<style>
-</style>
-
 
 {%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
     {%- assign blends_with_background = false -%}
@@ -48,7 +45,7 @@
     <div class="section__color-wrapper {% unless blends_with_background %}vertical-breather{% endunless %}">
   
      
-        {%- if section.settings.subheading != blank or section.settings.title != blank -%}
+        {% comment %} {%- if section.settings.subheading != blank or section.settings.title != blank -%}
           <div class="container container-header">
           <header class="section__header container text-container text-{{ section.settings.header_text_alignment }}">
             {%- if section.settings.subheading != blank -%}
@@ -63,7 +60,7 @@
         {%- endif -%}
     
   
-  
+   {% endcomment %}
       {%- comment -%}
       If we have more than 3 blocks we assume that by default the content may be scrollable. This may not be the case and
       the JavaScript will fired up to remove it in case it is needed, but if it is indeed scrollable this will avoid
@@ -76,35 +73,29 @@
               {%- for block in section.blocks -%}
                 <gallery-item class="gallery__item" {{ block.shopify_attributes }}>
                   <figure class="gallery__figure">
-  
+
+
+                    {%- if block.settings.title != blank -%}
+                      <figcaption class="gallery__caption rte heading">
+                        {{- block.settings.title -}}
+                      </figcaption>
+                    {%- endif -%}
+                    
+                      {%- if block.settings.description != blank -%}
+                      <figcaption class="gallery__caption rte">
+                        {{- block.settings.description -}}
+                      </figcaption>
+                    {%- endif -%}
   
                     {%- if block.settings.image -%}
                       {%- assign mobile_size = 370 | times: block.settings.image.aspect_ratio | ceil -%}
                       {%- assign tablet_size = 520 | times: block.settings.image.aspect_ratio | ceil -%}
                       {%- assign desktop_size = 600 | times: block.settings.image.aspect_ratio | ceil -%}
                       {%- capture sizes_attribute -%}(max-width: 740px) {{ mobile_size }}px, (max-width: 999px) {{ tablet_size }}px, {{ desktop_size }}px{%- endcapture -%}
-  
-                      {% comment %} {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000', class: 'gallery__image flip-card--image' }}
-                      {{ block.settings.image_flip | image_url: width: block.settings.image.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000', class: 'gallery__image flip-card--flip' }} {% endcomment %}
-
-                      <div class="flip-card" onclick="this.classList.toggle('flip')">
-                      <div class="flip-card-inner">
-                        <div class="flip-card-front">
                           {{ block.settings.image | image_url: width: 600 | image_tag: sizes: sizes_attribute, widths: '300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000', class: 'gallery__image' }}
-                        </div>
-                        <div class="flip-card-back">
-                          {{ block.settings.image_flip | image_url: width: 600 | image_tag: sizes: sizes_attribute, widths: '300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000', class: 'gallery__image' }}
-                        </div>
-                      </div>
-                    </div>
                     {%- endif -%}
   
-                    {%- if block.settings.caption != blank -%}
-                      <figcaption class="gallery__caption rte">
-                        {{- block.settings.caption -}}
-                      </figcaption>
-                    {%- endif -%}
-                    <a href="{{ block.settings.link }}" class="button button--secondary">{{ block.settings.link_title }}</a>
+                    <a href="{{ block.settings.button_link   }}" class="button button--secondary">{{ block.settings.button_text }}</a>
                   </figure>
                 </gallery-item>
               {%- endfor -%}
@@ -133,16 +124,11 @@
     </div>
   </section>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function(event) {
-    
-    });
-  </script>
   
   {% schema %}
   {
-    "name": "Flip Cards V2",
-    "class": "shopify-section--gallery shopify-section--flip-cards shopify-section--flip-cards-V2",
+    "name": "Card Carousel",
+    "class": "shopify-section--gallery shopify-section--card-carousel hide-desktop",
     "disabled_on": {
       "groups": ["header", "custom.overlay"]
     },
@@ -153,17 +139,26 @@
         "settings": [
           {
             "type": "header",
+            "content": "Title"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "textarea",
+            "id": "description",
+            "label": "Description"
+          },
+          {
+            "type": "header",
             "content": "Image"
           },
           {
             "type": "image_picker",
             "id": "image",
             "label": "Image"
-          },
-          {
-            "type": "image_picker",
-            "id": "image_flip",
-            "label": "Image (Flip)"
           },
           {
             "type": "text",
@@ -174,6 +169,20 @@
             "type": "url",
             "id": "link",
             "label": "Link"
+          },
+          {
+            "type": "header",
+            "content": "Button"
+          },
+          {
+            "type": "text",
+            "id": "button_text",
+            "label": "Button Text"
+          },
+                    {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button Link"
           }
         ]
       }
@@ -295,7 +304,7 @@
     ],
     "presets": [
       {
-        "name": "Flip Cards V2",
+        "name": "Card Carousel",
         "blocks": [
         ],
         "settings": {}

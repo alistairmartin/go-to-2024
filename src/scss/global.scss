@@ -1126,8 +1126,9 @@ rivo-favorite-button.rivo-favorite-active svg {
 
 
   .message-enabled--go-to {
+    background: var(--cartMessageBackgroundGoTo);
     display: flex;
-    height: 100%;
+    height: 60px;
      margin-top: 0px;
 
     .drawer__title, .custom-cart-message--inner {
@@ -1206,8 +1207,9 @@ rivo-favorite-button.rivo-favorite-active svg {
   }
 
   .message-enabled--bro-to {
+    background: var(--cartMessageBackgroundBroTo);
     display: flex;
-    height: 100%;
+    height: 60px;
     margin-top: 0px;
 
     .drawer__title, .custom-cart-message--inner {
@@ -1231,8 +1233,9 @@ rivo-favorite-button.rivo-favorite-active svg {
   }
 
   .message-enabled--gro-to {
+    background: var(--cartMessageBackgroundGroTo);
     display: flex;
-    height: 100%;
+    height: 60px;
     margin-top: 0px;
 
     .drawer__title, .custom-cart-message--inner {
@@ -5298,6 +5301,11 @@ product-item[data-title="Face Hero"] {
 
 
 .shopify-section--flip-cards-V2 {
+
+  img {
+    height: unset;
+  }
+
   .flip-button {
     padding: 10px;
     background: $gotoPink;
@@ -5460,4 +5468,41 @@ button[aria-label="Tolstoy stories: next button"] {
       }
     }
   } 
+}
+
+.shopify-section--card-carousel {
+
+  .gallery__item {
+    width: 90%;
+  }
+
+  .gallery__figure {
+    width: 100%;
+  }
+
+  .gallery__image {
+    height: unset;
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  .button {
+    display: table;
+    margin: 32px auto 0;
+  }
+
+  .gallery__caption {
+    caption-side: top;
+    text-align: center;
+    margin-bottom: 16px;
+
+    &.heading {
+      font-weight: normal;
+      font-size: 7vw;
+    }
+
+    &.description {
+      font-size: 16px;
+    }
+  }
 }

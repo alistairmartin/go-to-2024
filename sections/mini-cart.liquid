@@ -29,7 +29,7 @@ updateCartAttributes(cartAttributes);
 {%- render 'mini-cart--gifts-automatic' -%}
 
 
-{%- if section.settings.enable_custom_message or section.settings.enable_custom_message_brands -%}
+{%- if section.settings.enable_custom_message_brand_market -%}
   {%- for attribute in cart.attributes -%}
     {%- if attribute.first == "_last-visited-brand" -%}
     {%- capture brand -%}{{ attribute.last }}{%- endcapture -%}
@@ -37,7 +37,7 @@ updateCartAttributes(cartAttributes);
   {%- endfor -%}
 
   <style>
-  #mini-cart .drawer__header {
+  /* #mini-cart .drawer__header {
     {%- if brand == "go-to" -%}
       background: {{ section.settings.custom_message_color_background }} !important;
     {%- elsif brand == "bro-to" -%}
@@ -45,6 +45,12 @@ updateCartAttributes(cartAttributes);
     {%- elsif brand == "gro-to" -%} 
       background: {{ section.settings.custom_message_color_background_gro }} !important;
     {%- endif -%}
+  } */
+
+   #mini-cart .drawer__header {
+    --cartMessageBackgroundGoTo: {{ section.settings.custom_message_color_background }};
+    --cartMessageBackgroundBroTo: {{ section.settings.custom_message_color_background_bro }};
+    --cartMessageBackgroundGroTo: {{ section.settings.custom_message_color_background_gro }};
   }
 
   #mini-cart .drawer__title,  #mini-cart .drawer__close-button {
@@ -57,28 +63,65 @@ updateCartAttributes(cartAttributes);
 <cart-drawer section="{{ section.id }}" id="mini-cart" class="mini-cart drawer drawer--large">
   <span class="drawer__overlay"></span>
 
-  {%- assign showCustomMessage = false -%}
-    {%- if localization.market.handle == 'au' and section.settings.custom_message != blank -%}
-      {%- assign showCustomMessage = true -%}
-    {%- elsif localization.market.handle == 'nz' and section.settings.custom_message_NZ != blank -%}
-      {%- assign showCustomMessage = true -%}
-    {%- elsif localization.market.handle == 'gb' and section.settings.custom_message_GB != blank -%}
-      {%- assign showCustomMessage = true -%}
-    {%- elsif localization.market.handle == 'us' and section.settings.custom_message_US != blank -%}
-      {%- assign showCustomMessage = true -%}
-    {%- endif -%}
+   {%- assign showCustomMessage = true -%}
 
-    {%- assign showCustomMessageBrands = false -%}
 
-     {%- if section.settings.enable_custom_message_brand %}
-          {%- assign showCustomMessageBrands = true -%}
-     {% endif %}
+    {%- if localization.market.handle == "au" and brand == "go-to" and section.settings.custom_message_go_to_AU != blank -%}
+      {%- assign cartMessage = section.settings.custom_message_go_to_AU -%}
+      {%- assign showGoToCustomMessage = true -%}
 
-    {%- if showCustomMessageBrands == true -%}
-      <header class="drawer__header custom-cart-message {%- if section.settings.custom_message_go-to != blank -%}message-enabled--go-to{% endif %} {%- if section.settings.custom_message_bro-to != blank -%}message-enabled--bro-to{% endif %} {%- if section.settings.custom_message_gro-to != blank -%}message-enabled--gro-to{% endif %}">
+    {%- elsif localization.market.handle == "nz" and brand == "go-to" and section.settings.custom_message_go_to_NZ != blank -%}
+      {%- assign cartMessage = section.settings.custom_message_go_to_NZ -%}
+      {%- assign showGoToCustomMessage = true -%}
+
+    {%- elsif localization.market.handle == "gb" and brand == "go-to" and section.settings.custom_message_go_to_GB != blank -%}
+      {%- assign cartMessage = section.settings.custom_message_go_to_GB -%}
+      {%- assign showGoToCustomMessage = true -%}
+
+    {%- elsif localization.market.handle == "us" and brand == "go-to" and section.settings.custom_message_go_to_US != blank -%}
+      {%- assign cartMessage = section.settings.custom_message_go_to_US -%}
+      {%- assign showGoToCustomMessage = true -%}
+
+     {%- elsif localization.market.handle == "au" and brand == "bro-to" and section.settings.custom_message_bro_to_AU != blank -%}
+      {%- assign cartMessage = section.settings.custom_message_bro_to_AU -%}
+      {%- assign showBroToCustomMessage = true -%}
+
+    {%- elsif localization.market.handle == "nz" and brand == "bro-to" and section.settings.custom_message_bro_to_NZ != blank -%}
+      {%- assign cartMessage = section.settings.custom_message_bro_to_NZ -%}
+      {%- assign showBroToCustomMessage = true -%}
+
+    {%- elsif localization.market.handle == "gb" and brand == "bro-to" and section.settings.custom_message_bro_to_GB != blank -%}
+      {%- assign cartMessage = section.settings.custom_message_bro_to_GB -%}
+      {%- assign showBroToCustomMessage = true -%}
+
+    {%- elsif localization.market.handle == "us" and brand == "bro-to" and section.settings.custom_message_bro_to_US != blank -%}
+      {%- assign cartMessage = section.settings.custom_message_bro_to_US -%}
+      {%- assign showBroToCustomMessage = true -%}
+  
+    {%- elsif localization.market.handle == "au" and brand == "gro-to" and section.settings.custom_message_gro_to_AU != blank -%}
+      {%- assign cartMessage = section.settings.custom_message_gro_to_AU -%}
+      {%- assign showGroToCustomMessage = true -%}
+
+    {%- elsif localization.market.handle == "nz" and brand == "gro-to" and section.settings.custom_message_bro_to_NZ != blank -%}
+      {%- assign cartMessage = section.settings.custom_message_bro_to_NZ -%}
+      {%- assign showGroToCustomMessage = true -%}
+
+    {%- elsif localization.market.handle == "gb" and brand == "gro-to" and section.settings.custom_message_gro_to_GB != blank -%}
+      {%- assign cartMessage = section.settings.custom_message_gro_to_GB -%}
+      {%- assign showGroToCustomMessage = true -%}
+
+    {%- elsif localization.market.handle == "us" and brand == "gro-to" and section.settings.custom_message_gro_to_US != blank -%}
+      {%- assign cartMessage = section.settings.custom_message_gro_to_US -%}
+      {%- assign showGroToCustomMessage = true -%}
+
+    {% endif %}
+
+
+    {%- if showCustomMessage == true -%}
+      <header class="drawer__header custom-cart-message {% if showGoToCustomMessage %}message-enabled--go-to{% endif %} {%- if showBroToCustomMessage != blank -%}message-enabled--bro-to{% endif %} {%- if showGroToCustomMessage != blank -%}message-enabled--gro-to{% endif %}">
     <p class="drawer__title heading h6">
 
-      {%- if section.settings.enable_custom_message_brand -%}
+      {%- if section.settings.enable_custom_message_brand_market -%}
       <style>
       .custom-cart-message--inner p {
           font-size: {{ section.settings.custom_message_size_mobile }}px;
@@ -92,9 +135,27 @@ updateCartAttributes(cartAttributes);
       </style>
 
       <div class="custom-cart-message--inner">
-          <span class="text--go-to">{{ section.settings.custom_message_go-to }}</span>
-          <span class="text--bro-to">{{ section.settings.custom_message_bro-to }}</span>
-          <span class="text--gro-to"> {{ section.settings.custom_message_gro-to }}</span>
+          <span class="text--go-to">
+            {{ cartMessage }}
+            {% comment %} <span>{{ section.settings.custom_message_go_to_AU }}</span>
+            <span>{{ section.settings.custom_message_go_to_NZ }}</span>
+            <span>{{ section.settings.custom_message_go_to_GB }}</span>
+            <span>{{ section.settings.custom_message_go_to_US }}</span> {% endcomment %}
+          </span>
+          <span class="text--bro-to">
+             {{ cartMessage }}
+            {% comment %} <span>{{ section.settings.custom_message_bro_to_AU }}</span>
+            <span>{{ section.settings.custom_message_bro_to_NZ }}</span>
+            <span>{{ section.settings.custom_message_bro_to_GB }}</span>
+            <span>{{ section.settings.custom_message_bro_to_US }}</span> {% endcomment %}
+            </span>
+          <span class="text--gro-to">
+             {{ cartMessage }}
+            {% comment %} <span>{{ section.settings.custom_message_gro_to_AU }}</span>
+            <span>{{ section.settings.custom_message_gro_to_NZ }}</span>
+            <span>{{ section.settings.custom_message_gro_to_GB }}</span>
+            <span>{{ section.settings.custom_message_gro_to_US }}</span> {% endcomment %}
+          </span>
       </div>
 
       {% else %}

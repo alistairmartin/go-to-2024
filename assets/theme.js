@@ -4570,6 +4570,9 @@ var GalleryItem = class extends HTMLElement {
 };
 window.customElements.define("gallery-item", GalleryItem);
 
+
+
+
 // js/custom-element/section/image-with-text-overlay/image-with-text-overlay.js
 var ImageWithTextOverlay = class extends CustomHTMLElement {
   connectedCallback() {

@@ -41,7 +41,7 @@
     }
   </style>
   
-  <section class="section {% unless blends_with_background %}section--flush{% endunless %} {% if section.settings.arrow_bottom_right %}arrows-bottom-right{% endif %}">
+  <section class="section {% unless blends_with_background %}section--flush{% endunless %} {% if section.settings.arrow_bottom_right %}arrows-bottom-right{% endif %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
     <div class="section__color-wrapper {% unless blends_with_background %}vertical-breather{% endunless %}">
   
      
@@ -188,6 +188,12 @@
       }
     ],
     "settings": [
+          {
+      "type": "text",
+      "id": "id",
+      "label": "ID",
+      "info": "Optional. Used with in-page navigation."
+    },
       {
         "type": "checkbox",
         "id": "enable_container",

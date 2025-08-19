@@ -5282,7 +5282,7 @@ product-item[data-title="Face Hero"] {
 
   .gallery__list {
     padding: 3.5vw 0 5vw;
-
+    
     @include media-query($small) {
       padding: 0vw 0 12vw;
     }
@@ -5306,6 +5306,7 @@ product-item[data-title="Face Hero"] {
     height: unset;
   }
 
+
   .flip-button {
     padding: 10px;
     background: $gotoPink;
@@ -5318,17 +5319,12 @@ product-item[data-title="Face Hero"] {
     // width: 33.5vw;
     // width: 25%;
     cursor: pointer;
-    height: calc(var(--gallery-image-height) * 1.365);
+    height: 80vw;
 
 
     @include media-query($medium-up) {
       width: 23.5%;
-      height: calc(var(--gallery-image-height));
-    }
-
-    @include media-query($small) {
-      // width: 65vw;
-      width: 75%;
+      height: 28vw;
     }
   }
 
@@ -5337,11 +5333,13 @@ product-item[data-title="Face Hero"] {
     justify-content: center;
 
     @include media-query($small) {
-      padding: 0vw 0 12vw;
+      padding: 0vw 0 17vw;
+        width: calc(84vw * 4);
     }
 
     a { 
       margin: 4vw auto 0;
+      max-width: 85%;
 
       @include media-query($medium-up) {
         margin: 4vw auto 0px;
@@ -5504,5 +5502,84 @@ button[aria-label="Tolstoy stories: next button"] {
     &.description {
       font-size: 16px;
     }
+  }
+}
+
+.shopify-section--carousel-with-text {
+
+  .prev-next-button[disabled] {
+    color: rgba(var(--prev-next-button-color),.3) !important;
+
+    path {
+      fill: rgba(var(--prev-next-button-color),.3) !important;
+    }
+  }
+
+  h2 {
+    font-size: 48px;
+    font-family: "ModernoFB";
+    text-align: center;
+    font-weight: normal;
+    margin: 48px 0 0 !important;
+
+    @include media-query($small) {
+      font-size: 7vw;
+      margin: 48px 0 24px !important;
+    }
+  }
+
+  .section__color-wrapper .container {
+    display: flex;
+    gap: 50px;
+  }
+
+  .featured-collections {
+    width: 66%;
+
+    @include media-query($small) {
+      width: 100%;
+    }
+  }
+  .mobile-text-container {
+    font-size: 16px;
+    text-align: center;
+    max-width: 80%;
+    margin: 0 auto;
+    display: block;
+    * {
+      text-align: center;
+    }
+  }
+
+  .desktop-text-container {
+    width: 33%;
+    text-align: center;
+    font-size: 1.7vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    @include media-query($small) {
+      display: none;
+    }
+  }
+
+  .product-list__prev-next {
+    top: 50%;
+    transform: translate(0%, -50%);
+  }
+
+  .product-list__arrow {
+    background: $gotoPinkLight;
+  }
+
+  .faq {
+    padding: 0 var(--container-gutter);
+  }
+
+  .faq__item {
+    border-top: 1px solid $gotoGreyLight;
+    border-bottom: 1px solid $gotoGreyLight;
   }
 }

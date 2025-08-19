@@ -1,0 +1,171 @@
+{%- if collection -%}
+  {%- assign outerCollectionHandle = collection.handle -%}
+{%- endif -%}
+
+{%- assign gridImagesCounter = 0 -%}
+
+{%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
+  {%- assign blends_with_background = false -%}
+{%- else -%}
+  {%- assign blends_with_background = true -%}
+{%- endif -%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color = settings.heading_color -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_background == 'rgba(0,0,0,0)' -%}
+      {%- assign button_background = settings.primary_button_background -%}
+    {%- else -%}
+      {%- assign button_background = section.settings.button_background -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign button_text_color = settings.primary_button_text_color -%}
+    {%- else -%}
+      {%- assign button_text_color = section.settings.button_text_color -%}
+    {%- endif -%}
+
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --primary-button-background: {{ button_background.red }}, {{ button_background.green }}, {{ button_background.blue }};
+    --primary-button-text-color: {{ button_text_color.red }}, {{ button_text_color.green }}, {{ button_text_color.blue }};
+
+    --prev-next-button-background: {{ settings.background.red }}, {{ settings.background.green }}, {{ settings.background.blue }};
+    --prev-next-button-color: {{ settings.text_color.red }}, {{ settings.text_color.green }}, {{ settings.text_color.blue }};
+
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+    --section-products-per-row: 2;
+    --section-products-per-row-mobile: {{ section.settings.mobile_products_per_rows }}vw;
+  }
+
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} {
+      --section-products-per-row: {{ section.settings.products_per_row | at_most: 3 }};
+    }
+  }
+
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} {
+      --section-products-per-row: {{ section.settings.products_per_row | at_most: 4 }};
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    #shopify-section-{{ section.id }} {
+      --section-products-per-row: {{ section.settings.products_per_row }};
+    }
+  }
+
+  {%- if section.settings.enable_background -%}
+  #shopify-section-{{ section.id }} .product-list__inner {
+    {%- if brand == 'bro-to' -%}
+      --product-list-block-spacing: 8px;
+      --product-list-column-gap: 8px;
+    {%- else %}
+      --product-list-block-spacing: 8px;
+      --product-list-column-gap: 8px;
+    {%- endif -%}
+ 
+  }
+
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} .product-list__inner {
+      {%- if brand == 'bro-to' -%}
+      --product-list-block-spacing: 24px;
+      --product-list-column-gap: 24px;
+    {%- else %}
+      --product-list-block-spacing: 8px;
+      --product-list-column-gap: 8px;
+    {%- endif -%}
+  }
+  }
+  {%- endif -%}
+</style>
+
+<section class="section {% unless blends_with_background %}section--flush{% endunless %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
+  <div class="section__color-wrapper">
+    <div class="container {% unless blends_with_background %}vertical-breather{% endunless %}">
+
+      <div class="featured-collections">
+
+          <product-list {% if settings.stagger_products_apparition %}stagger-apparition{% endif %} {% unless forloop.first %}hidden{% endunless %} id="block-{{ section.id }}-{{ block.id }}" class="product-list product-list--{{ block.settings.product_list_alignment }} {% if section.settings.enable_background %}product-list__background{% endif %}">
+            <div class="scroller">
+              <div class="product-list__inner product-list__inner--scroller hide-scrollbar">
+                {%- assign number_of_products_minus_one = 1 -%}
+                {%- assign gap_width = 24.0 | divided_by: 1 | times: number_of_products_minus_one -%}
+                {%- capture sizes_attribute -%}(max-width: 740px) 52vw, calc(min(100vw - 80px, 1520px) / {{ section.settings.products_per_row }} - {{ gap_width | ceil }}px){%- endcapture -%}
+
+                    <h1>TEST1</h1>
+                    <h1>TEST2</h1>
+              </div>
+
+         
+
+                {%- assign products_shown = 1 -%}
+                {%- assign smallest_image_aspect_ratio = 1 -%}
+        
+                <prev-next-buttons class="product-list__prev-next hidden-pocket" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
+                  <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled>
+                    <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
+                    {%- render 'icon' with 'chevron-back', block: true, direction_aware: true -%}
+                  </button>
+
+                  <button class="product-list__arrow prev-next-button prev-next-button--next">
+                    <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
+                    {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
+                  </button>
+                </prev-next-buttons>
+
+
+
+                 </div>
+          </product-list>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<style>
+  .product-list__dots {
+    display: none;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .product-list__dots .dot {
+    display: block;
+    width: 8px;
+    height: 8px;
+    background: transparent;
+    border-radius: 50%;
+    border: 1px solid #000;
+  }
+  .product-list__dots .dot.active {
+    background: #f9c6b9;
+    border: 1px solid transparent;
+  }
+
+@media screen and (min-width: 999px) {
+    .product-list__dots {
+      display: flex;
+    }
+  }
+</style> 

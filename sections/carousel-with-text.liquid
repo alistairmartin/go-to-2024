@@ -6,7 +6,9 @@
   {%- assign blends_with_background = true -%}
 {%- endif -%}
 
+
 <style>
+  
   #shopify-section-{{ section.id }} {
     {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
       {%- assign section_background = settings.background -%}
@@ -118,41 +120,45 @@
 
       <div class="featured-collections">
 
+        <carousel-with-text-list class="carousel-with-text-list">
           <product-list {% if settings.stagger_products_apparition %}stagger-apparition{% endif %} id="block-{{ section.id }}-{{ block.id }}" class="product-list product-list--{{ block.settings.product_list_alignment }} {% if section.settings.enable_background %}product-list__background{% endif %}">
-            <div class="scroller">
-              <div class="product-list__inner product-list__inner--scroller hide-scrollbar">
+            <div class="scroller gallery__list-wrapper">
+              <div class="product-list__inner  product-list__inner--scroller hide-scrollbar gallery__list">
                 {%- assign number_of_products_minus_one = 1 -%}
                 {%- assign gap_width = 24.0 | divided_by: 1 | times: number_of_products_minus_one -%}
                 {%- capture sizes_attribute -%}(max-width: 740px) 52vw, calc(min(100vw - 80px, 1520px) / {{ section.settings.products_per_row }} - {{ gap_width | ceil }}px){%- endcapture -%}
 
-                    {%- for block in section.blocks -%}
-                    <div class="product-item">
-                      {{- block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: '' -}}
-                    </div>
-                    {%- endfor -%}    
+                {%- for block in section.blocks -%}
+                  <carousel-with-text-list-item class="product-item">
+                    <a href="{{ block.settings.url }}">
+                    {{- block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: '' -}}
+                    </a>
+                  </carousel-with-text-list-item>
+                {%- endfor -%}
               </div>
             </div>
-                {%- assign products_shown = 1 -%}
-                {%- assign smallest_image_aspect_ratio = 1 -%}
-        
-                <prev-next-buttons class="product-list__prev-next hidden-pocket" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
-                  <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled>
-                    <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
-                    {%- render 'icon' with 'nav-arrow-left', block: true, direction_aware: true -%}
-                  </button>
 
-                  <button class="product-list__arrow prev-next-button prev-next-button--next">
-                    <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
-                    {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
-                  </button>
-                </prev-next-buttons>
+            {%- assign products_shown = 1 -%}
+            {%- assign smallest_image_aspect_ratio = 1 -%}
 
-              <div class="gallery__progress-bar-wrapper container">
-                <span class="gallery__progress-bar progress-bar" style="--divider: {{ section.blocks.size }}"></span>
-              </div>
+            <prev-next-buttons class="product-list__prev-next hidden-pocket" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
+              <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled>
+                <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
+                {%- render 'icon' with 'brand-arrow-left', block: true, direction_aware: true -%}
+              </button>
+
+              <button class="product-list__arrow prev-next-button prev-next-button--next">
+                <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
+                {%- render 'icon' with 'brand-arrow-right', block: true, direction_aware: true -%}
+              </button>
+            </prev-next-buttons>
+
+            <div class="gallery__progress-bar-wrapper container">
+              <span class="gallery__progress-bar progress-bar" style="--divider: {{ section.blocks.size }}"></span>
+            </div>
           </product-list>
+        </carousel-with-text-list>
 
-          
       </div>
 
 
@@ -176,8 +182,76 @@
 </section>
 
 
+<script>
+(() => {
+  const section = document.getElementById('shopify-section-{{ section.id }}');
+  if (!section) return;
+  if (section.dataset.progressInit === '1') return; // prevent double-binding in Theme Editor
+  section.dataset.progressInit = '1';
 
+  // Resolve candidates and pick the one that actually scrolls horizontally
+  const inner = section.querySelector('.product-list__inner');
+  const outer = section.querySelector('.scroller');
+  const candidates = [inner, outer].filter(Boolean);
+  const getScroller = () => {
+    for (const el of candidates) {
+      if (el && el.scrollWidth > el.clientWidth + 1) return el;
+    }
+    return inner || outer || null;
+  };
 
+  let scroller = getScroller();
+  const bar = section.querySelector('.gallery__progress-bar.progress-bar') || section.querySelector('.gallery__progress-bar.progress-bar');
+  const items = Array.from(section.querySelectorAll('.product-item'));
+  if (!scroller || !bar) return;
+
+  const update = () => {
+    // In case layout changed, re-resolve scroller on each update
+    scroller = getScroller() || scroller;
+    const max = Math.max(scroller.scrollWidth - scroller.clientWidth, 1);
+    const progress = Math.min(Math.max(scroller.scrollLeft / max, 0), 1);
+    bar.style.setProperty('--transform', `${progress * 100}%`);
+  };
+
+  // Robust scroll tracking: listen on both candidates + a small rAF loop during scroll
+  let ticking = false;
+  const onScroll = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        update();
+      });
+    }
+  };
+
+  candidates.forEach((el) => el && el.addEventListener('scroll', onScroll, { passive: true }));
+
+  // Update on resize and after images load (layout changes widths)
+  window.addEventListener('resize', update, { passive: true });
+  section.querySelectorAll('img').forEach((img) => {
+    if (img.complete) return;
+    img.addEventListener('load', update, { once: true });
+  });
+
+  // Ensure update after arrow clicks (smooth scrolling may defer scrollLeft changes)
+  section.querySelectorAll('.prev-next-button').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      setTimeout(update, 0);
+      setTimeout(update, 250);
+    });
+  });
+
+  // Also update on pointer up/end to catch momentum scroll end
+  candidates.forEach((el) => {
+    el && el.addEventListener('pointerup', () => setTimeout(update, 0), { passive: true });
+    el && el.addEventListener('touchend', () => setTimeout(update, 0), { passive: true });
+  });
+
+  // Initial paint (next frame to ensure DOM is measured)
+  requestAnimationFrame(update);
+})();
+</script>
 
 <style>
   .product-list__dots {
@@ -225,6 +299,11 @@
           "type": "image_picker",
           "id": "image",
           "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
         }
       ]
     }

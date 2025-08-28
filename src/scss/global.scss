@@ -819,6 +819,12 @@ store-header.background-blur {
     }
 }
 
+.brand-go-to {
+  .announcement-bar__message {
+    padding-bottom: 0;
+  }
+}
+
 .header__icon-list {
   gap: 15px;  
 
@@ -4551,6 +4557,9 @@ product-rerender {
   .product-list__prev-next {
     margin-left: -28px;
     width: calc(100% + 56px);
+
+    top: 50%;
+    transform: translate(0, -50%);
   }
 
   .product-list__background {
@@ -4561,7 +4570,14 @@ product-rerender {
     }
   }
 
+  .section__footer {
+    display: flex;
+    justify-content: var(--flex-justify-content-desktop);
 
+      @include media-query($small) {
+         justify-content: var(--flex-justify-content-mobile);
+      }
+  }
 
 }
 
@@ -5302,10 +5318,14 @@ product-item[data-title="Face Hero"] {
 
 .shopify-section--flip-cards-V2 {
 
+  .section {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
   img {
     height: unset;
   }
-
 
   .flip-button {
     padding: 10px;
@@ -5316,11 +5336,10 @@ product-item[data-title="Face Hero"] {
   }
 
     .gallery__item {
-    // width: 33.5vw;
-    // width: 25%;
+    // width: 33.2vw;
     cursor: pointer;
-    height: 80vw;
-
+    height: 120vw;
+    width: 86vw;
 
     @include media-query($medium-up) {
       width: 23.5%;
@@ -5329,17 +5348,18 @@ product-item[data-title="Face Hero"] {
   }
 
     .gallery__list {
-    padding: 2vw 0 9vw;
+    padding: 2vw 0 10vw;
     justify-content: center;
 
     @include media-query($small) {
       padding: 0vw 0 17vw;
-        width: calc(84vw * 4);
+      width: calc(90vw * 4);
     }
 
     a { 
       margin: 4vw auto 0;
       max-width: 85%;
+      padding: 0;
 
       @include media-query($medium-up) {
         margin: 4vw auto 0px;
@@ -5470,8 +5490,14 @@ button[aria-label="Tolstoy stories: next button"] {
 
 .shopify-section--card-carousel {
 
+  .section {
+    padding-top: 60px;
+    margin-top: 0;
+  }
+
   .gallery__item {
     width: 90%;
+    padding-bottom: 1vw;
   }
 
   .gallery__figure {
@@ -5494,6 +5520,7 @@ button[aria-label="Tolstoy stories: next button"] {
     text-align: center;
     margin-bottom: 16px;
 
+
     &.heading {
       font-weight: normal;
       font-size: 7vw;
@@ -5501,6 +5528,7 @@ button[aria-label="Tolstoy stories: next button"] {
 
     &.description {
       font-size: 16px;
+      min-height: 51px;
     }
   }
 }
@@ -5572,6 +5600,7 @@ button[aria-label="Tolstoy stories: next button"] {
 
   .product-list__arrow {
     background: $gotoPinkLight;
+    border: none !important;
   }
 
   .faq {
@@ -5582,4 +5611,48 @@ button[aria-label="Tolstoy stories: next button"] {
     border-top: 1px solid $gotoGreyLight;
     border-bottom: 1px solid $gotoGreyLight;
   }
+
+
+  
+  .gallery__progress-bar-wrapper {
+    padding: 0;
+     @include media-query($medium-up) {
+      display: none !important;
+    }
+  }
+
+  .gallery__progress-bar {
+    margin-top: 16px;
+    background: #dddddd;
+    height: 2px;
+    width: 100%;
+
+    &:before {
+      background: $gotoPink;
+    }
+  }
 }
+
+.page--go-to-primers {
+  .shopify-section--featured-collections {
+    h3 {
+      font-size: 7vw;    
+      font-weight: normal;
+      margin: 0 0 24px!important;
+        @include media-query($medium-up) {
+          font-size: 48px;
+        }
+    }
+
+    .content * {
+      font-size: 16px;
+      line-height: 1;
+       @include media-query($medium-up) {
+         font-size: 1.7vw;
+      }
+    }
+  }
+
+}
+
+

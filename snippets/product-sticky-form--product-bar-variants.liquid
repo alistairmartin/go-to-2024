@@ -190,7 +190,15 @@
 
                       <button class="open-combo-box select" type="button" is="toggle-button" aria-expanded="false" aria-haspopup="listbox" aria-controls="{{ option_id }}-combo-box">
                         <span class="select__selected-value">
-                          {{- outer_related_product_title -}}
+                         
+
+                          <span class="hide-desktop">
+                              {{- outer_related_product_title | replace: "Very Glowy Primer", "Glowy" | replace: "Very Mattifying Primer", "Mattifying" -}}
+                          </span>
+
+                          <span class="hide-mobile">
+                              {{- outer_related_product_title -}}
+                          </span>
                         </span>
 
                         {%- render 'icon' with 'chevron' -%}

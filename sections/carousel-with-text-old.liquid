@@ -119,12 +119,12 @@
                 <prev-next-buttons class="product-list__prev-next hidden-pocket" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
                   <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled>
                     <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
-                    {%- render 'icon' with 'chevron-back', block: true, direction_aware: true -%}
+                    {%- render 'icon' with 'brand-arrow-left', block: true, direction_aware: true -%}
                   </button>
 
                   <button class="product-list__arrow prev-next-button prev-next-button--next">
                     <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
-                    {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
+                    {%- render 'icon' with 'brand-arrow-right', block: true, direction_aware: true -%}
                   </button>
                 </prev-next-buttons>
 

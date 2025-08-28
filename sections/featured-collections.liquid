@@ -93,6 +93,16 @@
   }
   }
   {%- endif -%}
+
+
+  {%- for block in section.blocks -%}
+        #shopify-section-{{ section.id }} .section__footer {
+            --flex-justify-content-mobile: {{ section.settings.flex_justify_content_mobile }};
+            --flex-justify-content-desktop: {{ section.settings.flex_justify_content_desktop }};
+          }
+  {%- endfor -%}
+      
+
 </style>
 
 <section class="section {% unless blends_with_background %}section--flush{% endunless %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
@@ -190,12 +200,12 @@
                 <prev-next-buttons class="product-list__prev-next hidden-pocket" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
                   <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled>
                     <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
-                    {%- render 'icon' with 'chevron-back', block: true, direction_aware: true -%}
+                    {%- render 'icon' with 'brand-arrow-left', block: true, direction_aware: true -%}
                   </button>
 
                   <button class="product-list__arrow prev-next-button prev-next-button--next">
                     <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
-                    {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
+                    {%- render 'icon' with 'brand-arrow-right', block: true, direction_aware: true -%}
                   </button>
                 </prev-next-buttons>
                 {%- endif -%}
@@ -204,7 +214,7 @@
 
             {%- if block.settings.button_text != blank -%}
               <div class="section__footer">
-                <a class="button button--primary" href="{{ block.settings.button_url | default: collection.url }}">{{ block.settings.button_text }}</a>
+                <a href="{{ block.settings.button_url | default: collection.url }}" class="blocks--button {% if block.settings.button_style contains "link" %}link--{% if block.settings.button_style == 'link-with-arrow-white' %}secondary{% else %}primary{% endif %}{% else %}button {{ block.settings.button_style }}{% endif %}" id="block-{{ block.id }}">{{ block.settings.button_text }} {% if block.settings.button_style contains "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</a>
               </div>
             {%- endif -%}
           </product-list>
@@ -320,7 +330,46 @@
           "label": "Button link",
           "info": "If empty, the collection URL is used."
         },
-
+               {
+              "type": "radio",
+              "id": "button_style",
+              "label": "Button Style",
+              "options": [
+                {
+                "value": "button--primary",
+                "label": "Button"
+              },
+              {
+                  "value": "button--secondary",
+                  "label": "Button (Secondary)"
+              },
+              {
+                  "value": "button--ternary",
+                  "label": "Button (Ternary)"
+              },
+              {
+                  "value": "button--ternary-white",
+                  "label": "Button (Ternary - White)"
+              },
+              {
+                  "value": "button--outline",
+                  "label": "Button (Outline)"
+              },
+              {
+                  "value": "link",
+                  "label": "Link"
+              },
+              {
+                  "value": "link-with-arrow",
+                  "label": "Link (With Arrow)"
+              },
+              {
+              "value": "link-with-arrow-white",
+              "label": "White Link (With Arrow)"
+              }
+              ],
+              "default": "button--primary"
+          },
         {
           "type": "radio",
           "id": "product_list_alignment",
@@ -779,7 +828,61 @@
       "id": "background",
       "label": "Background",
       "default": "rgba(0,0,0,0)"
-    }
+    },
+        {
+      "type": "header",
+      "content": "Button Position"
+    },
+    {
+      "type": "select",
+      "id": "flex_justify_content_desktop",
+      "label": "Button Position (Desktop)",
+      "info": "Position the button (Left, Center, Right)",
+      "default": "center",
+      "options": [
+      {
+        "value": "unset",
+        "label": "Unset"
+      },
+      {
+        "value": "flex-start",
+        "label": "Left"
+      },
+      {
+        "value": "center",
+        "label": "Center"
+      },
+      {
+        "value": "flex-end",
+        "label": "Right"
+      }
+  ]
+  },
+    {
+      "type": "select",
+      "id": "flex_justify_content_mobile",
+      "label": "Button Position (Mobile)",
+      "info": "Position the button (Left, Center, Right)", 
+      "default": "center",
+      "options": [
+      {
+        "value": "unset",
+        "label": "Unset"
+      },
+      {
+        "value": "flex-start",
+        "label": "Left"
+      },
+      {
+        "value": "center",
+        "label": "Center"
+      },
+      {
+        "value": "flex-end",
+        "label": "Right"
+      }
+  ]
+}
   ],
   "presets": [
     {

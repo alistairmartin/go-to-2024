@@ -32,7 +32,11 @@
     --video-aspect-ratio-desktop: {{ block.settings.video_aspect_ratio_desktop | times: 100.000 }}%;
   }
 
-  
+  .video-poster-overlay.hide-poster {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease;
+  }
 
   
 </style>
@@ -191,6 +195,10 @@
       };
 
       var player = new Vimeo.Player('video-{{ block.id }}', playerOptions);
+      // Hide overlay when video has loaded
+      // player.on('loaded', function() {
+      //   document.getElementById('poster-{{ block.id }}').classList.add('hide-poster');
+      // });
       player.on('play', function() {
         document.getElementById('poster-{{ block.id }}').classList.add('hide-poster');
       });
@@ -313,6 +321,10 @@
             {
               "value": "1",
               "label": "Square (1:1)"
+            },
+            {
+              "value": "0.75",
+              "label": "Portrait (3:4)"
             },
             {
               "value": "1.3333333",

@@ -1,0 +1,33 @@
+{%- for block in section.blocks -%}
+  {{ block.settings.liquid }}
+{%- endfor -%}
+
+{% schema %}
+{
+  "name": "Global Liquid",
+  "class": "shopify-section--global-liquid",
+  "disabled_on": {
+    "groups": ["custom.overlay"]
+  },
+  "settings": [
+  ],
+   "blocks": [
+    {
+      "type": "liquid",
+      "name": "Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "liquid",
+          "label": "Liquid"
+        },
+      ]
+    }
+    ],
+  "presets": [
+    {
+      "name": "Global Liquid"
+    }
+  ]
+}
+{% endschema %}

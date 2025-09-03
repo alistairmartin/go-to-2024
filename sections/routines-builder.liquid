@@ -1,0 +1,190 @@
+{% comment %} if emitted {% endcomment %}
+{{ 'routine-builder.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'routine-builder.js' | asset_url }}" defer></script>
+
+<div id="routine-builder-root">
+  <script type="application/json" id="routine-builder-props">
+    {
+      "settings": { "maxItems": 6 },
+      "products": [
+        { "id": "fancy-face", "title": "Fancy Face", "category": "Cleanse", "dayPart": "PM", "flags": ["fancy-face"], "variantId": 12345676 },
+        { "id": "juicy-gel", "title": "Juicy Gel", "category": "Cleanse", "dayPart": "AM + PM", "flags": ["juicy-gel"], "variantId": 12345676 },
+        { "id": "properly-clean", "title": "Properly Clean", "category": "Cleanse", "dayPart": "AM + PM", "flags": ["properly-clean"], "variantId": 12345676 },
+        { "id": "glow-exfol", "title": "Glow Exfoliator", "category": "Exfoliate", "dayPart": "PM", "flags": ["exfoliator", "glow-exfol"], "variantId": 12345676 },
+        { "id": "clarifying-exfol", "title": "Clarifying Exfoliator", "category": "Exfoliate", "dayPart": "PM", "flags": ["exfoliator", "clarifying-exfol"], "variantId": 12345676 },
+        { "id": "gentle-exfol", "title": "Gentle Exfoliator", "category": "Exfoliate", "dayPart": "PM", "flags": ["exfoliator", "gentle-exfol"], "variantId": 12345676 },
+        { "id": "retinal", "title": "Very Amazing Retinal", "category": "Treat", "dayPart": "PM", "flags": ["retinal"], "variantId": 12345676 },
+        { "id": "much-brighter", "title": "Much Brighter Skin", "category": "Treat", "dayPart": "AM + PM", "flags": ["much-brighter"], "variantId": 12345676 },
+        { "id": "much-plumper", "title": "Much Plumper Skin", "category": "Treat", "dayPart": "AM + PM", "flags": ["much-plumper"], "variantId": 12345676 },
+        { "id": "de-crease", "title": "De-Crease", "category": "Treat", "dayPart": "PM", "flags": ["de-crease"], "variantId": 12345676 },
+        { "id": "clarifying-face-hero", "title": "Clarifying Face Hero", "category": "Treat", "dayPart": "AM + PM", "flags": ["clarifying-face-hero"], "variantId": 12345676 },
+        { "id": "face-hero", "title": "Face Hero", "category": "Nourish", "dayPart": "AM + PM", "flags": ["face-hero"], "variantId": 12345676 },
+        { "id": "very-luxe", "title": "Very Luxe Face Cream", "category": "Nourish", "dayPart": "AM + PM", "flags": ["very-luxe"], "variantId": 12345676 },
+        { "id": "very-useful", "title": "Very Useful Face Cream", "category": "Nourish", "dayPart": "AM + PM", "flags": ["very-useful"], "variantId": 12345676 },
+        { "id": "very-lightweight", "title": "Very Lightweight Moisturiser", "category": "Nourish", "dayPart": "AM + PM", "flags": ["very-lightweight"], "variantId": 12345676 },
+        { "id": "nifty-fifty-min", "title": "Nifty Fifty Mineral", "category": "Protect", "dayPart": "AM", "flags": ["spf"], "variantId": 12345676 }
+      ]
+    }
+  </script>
+</div>
+
+
+{% schema %}
+{
+  "name": "Routines Builder",
+  "class": "shopify-section--rich-text",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+    "type": "text",
+    "id": "id",
+    "label": "ID",
+    "info": "Optional. Used with in-page navigation."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Talk about your brand"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "background_type",
+      "label": "Background",
+      "options": [
+        {
+          "value": "full_width",
+          "label": "Full width"
+        },
+        {
+          "value": "boxed",
+          "label": "Boxed"
+        }
+      ],
+      "default": "full_width"
+    },
+    {
+      "type": "select",
+      "id": "text_width",
+      "label": "Text width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "fill",
+          "label": "Fill screen"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Text position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Routines Builder",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

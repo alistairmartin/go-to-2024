@@ -53,8 +53,12 @@
       <p>Eco SunPass Approved</p>
 
     {%- when 'korea' -%}
-      <img src="{{ 'badge-south-korea.svg' | asset_url }}" alt="Vegan" loading="lazy" width="auto" height="auto" class="{{ class }}">
+      <img src="{{ 'badge-south-korea.svg' | asset_url }}" alt="Made In Korea" loading="lazy" width="auto" height="auto" class="{{ class }}">
       <p>Made In Korea</p>
+
+    {%- when 'Alcohol Free' -%}
+      <img src="{{ 'alcohol-free.svg' | asset_url }}" alt="Alcohol Free" loading="lazy" width="auto" height="auto" class="{{ class }}">
+      <p>Alcohol Free</p>
   {% endcase %}
 </div>
 

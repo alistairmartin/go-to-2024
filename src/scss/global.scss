@@ -5353,7 +5353,7 @@ product-item[data-title="Face Hero"] {
 
     @include media-query($small) {
       padding: 0vw 0 17vw;
-      width: calc(90vw * 4);
+      width: calc(90vw * 2);
     }
 
     a { 
@@ -5518,7 +5518,7 @@ button[aria-label="Tolstoy stories: next button"] {
   .gallery__caption {
     caption-side: top;
     text-align: center;
-    margin-bottom: 16px;
+    margin-bottom: 0;
 
 
     &.heading {
@@ -5652,7 +5652,39 @@ button[aria-label="Tolstoy stories: next button"] {
       }
     }
   }
+}
 
+#primer-comparison-mobile {
+  padding-top: 20px;
+}
+
+.brand-go-to {
+  .button--go-to {
+    display: inline-block;
+  }
+
+  .button--bro-to, .button--gro-to {
+    display: none;
+  }
 }
 
 
+.brand-bro-to {
+  .button--bro-to {
+    display: inline-block;
+  }
+
+  .button--gro-to, .button--go-to {
+    display: none;
+  }
+}
+
+.brand-gro-to {
+  .button--gro-to {
+    display: inline-block;
+  }
+
+  .button--bro-to, .button--go-to {
+    display: none;
+  }
+}

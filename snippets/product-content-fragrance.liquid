@@ -1,0 +1,73 @@
+{%- assign headValue = product.metafields.accentuate.product_key_fragrances__head -%}
+{%- assign heartValue = product.metafields.accentuate.product_key_fragrances__heart -%}
+{%- assign baseValue = product.metafields.accentuate.product_key_fragrances__base -%}
+
+<div class="container">
+  <div class="product-content-ingredients">      
+    <h3 class="heading h3 text--bold hide-desktop">{{ section.settings.title }}</h3>
+    <div class="product-content-ingredients--image">
+      {%- if product.metafields.custom.product_key_fragrances__vimeo != blank -%}
+        {% assign vimeoVideoId = product.metafields.custom.product_key_fragrances__vimeo %}
+      {%- endif -%}
+      
+      {%- if vimeoVideoId != blank -%}
+        <div class="product-content-ingredients--video">
+          {%- assign video_url_transform = 'https://player.vimeo.com/video/' | append: vimeoVideoId | append: '?autoplay=1&loop=1&background=1&muted=1&portrait=0&byline=0' -%}
+          <iframe src="{{ video_url_transform }}" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen>
+          </iframe>
+        </div>
+    
+      {%- else -%}
+        {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_key_fragrances__image_desktop, src_mobile: product.metafields.custom.product_key_fragrances__image_mobile %}
+      {%- endif -%}
+    </div>
+    
+    <div class="product-content-ingredients--text">
+      <h3 class="heading h3 text--bold hide-mobile">{{ section.settings.title }}</h3>
+      <div class="hide-mobile">
+
+          {%- if headValue != blank -%}
+          <div class="product-content-ingredients--text-item">
+            <p class="heading h4 text--bold">Head</p>
+            {{ headValue | metafield_tag }}
+          </div>
+          {%- endif -%}
+
+          {%- if heartValue != blank -%}
+          <div class="product-content-ingredients--text-item">
+            <p class="heading h4 text--bold">Heart</p>
+            {{ heartValue | metafield_tag }}
+          </div>
+          {%- endif -%}
+           
+          {%- if baseValue != blank -%}
+          <div class="product-content-ingredients--text-item">
+            <p class="heading h4 text--bold">Base</p>
+            {{ baseValue | metafield_tag }}
+          </div>
+          {%- endif -%}
+ 
+      </div>
+      
+      <div class="product-content-ingredients--text__mobile hide-desktop">
+        <div class="line"></div>
+
+            <div class="product-content-ingredients--text-item__mobile active" data-action="activate">
+              <p class="heading h4 text--bold">Head</p>
+              <div class="text">{{ headValue | metafield_tag }}</div>
+            </div>
+
+             <div class="product-content-ingredients--text-item__mobile" data-action="activate">
+              <p class="heading h4 text--bold">Heart</p>
+              <div class="text">{{ heartValue | metafield_tag }}</div>
+            </div>
+
+             <div class="product-content-ingredients--text-item__mobile" data-action="activate">
+              <p class="heading h4 text--bold">Base</p>
+              <div class="text">{{ baseValue | metafield_tag }}</div>
+            </div>
+      </div>
+
+    </div>
+  </div>
+</div>

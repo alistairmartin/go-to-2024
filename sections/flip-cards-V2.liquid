@@ -1,5 +1,3 @@
-<style>
-</style>
 
 
 {%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
@@ -43,8 +41,8 @@
       width: auto;
     }
   </style>
-  
-  <section class="section {% unless blends_with_background %}section--flush{% endunless %} {% if section.settings.arrow_bottom_right %}arrows-bottom-right{% endif %}">
+    
+  <section class="section {% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %} {% unless blends_with_background %}section--flush{% endunless %} {% if section.settings.arrow_bottom_right %}arrows-bottom-right{% endif %}">
     <div class="section__color-wrapper {% unless blends_with_background %}vertical-breather{% endunless %}">
   
      
@@ -179,6 +177,16 @@
       }
     ],
     "settings": [
+      {
+        "type": "checkbox",
+        "id": "hide_mobile",
+        "label": "Hide Mobile?"
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_desktop",
+        "label": "Hide Desktop?"
+      },
       {
         "type": "checkbox",
         "id": "enable_container",

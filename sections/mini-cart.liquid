@@ -26,6 +26,8 @@ updateCartAttributes(cartAttributes);
 </script>
 
 
+
+
 {%- render 'mini-cart--gifts-automatic' -%}
 
 
@@ -258,11 +260,16 @@ updateCartAttributes(cartAttributes);
       <p>{{ 'cart.general.empty' | t }}</p>
 
       <div class="button-wrapper">
-        <a href="{{ section.settings.empty_button_link }}" class="button button--primary">{{ 'cart.general.start_shopping' | t }}</a>
+
+        <a href="/collections/bro-to" class="button button--primary button--bro-to">{{ 'cart.general.start_shopping' | t }}</a>
+        <a href="/collections/gro-to" class="button button--primary button--gro-to">{{ 'cart.general.start_shopping' | t }}</a>
+        <a href="{{ section.settings.empty_button_link }}" class="button button--primary button--go-to">{{ 'cart.general.start_shopping' | t }}</a>
+
       </div>
     </div>
   {%- else -%}
     <div class="drawer__content">
+
       {%- render 'cart--free-shipping' -%}
       {%- render 'mini-cart--gifts' -%}
       {%- render 'mini-cart--byo-bundle-message' -%}

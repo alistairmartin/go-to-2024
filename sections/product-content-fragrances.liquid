@@ -1,0 +1,39 @@
+
+{%- if product.metafields.accentuate.product_key_fragrances__head != blank -%}
+{%- liquid
+    echo '<section class="section">'
+          render 'product-content-fragrance'
+    echo '</section>'
+-%}
+{%- endif -%}
+
+
+{% schema %}
+  {
+    "name": "Prod. Con: Fragrance",
+    "class": "section--product-content-ingredients",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile",
+        "label": "Image - Mobile"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_desktop",
+        "label": "Image - Desktop"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Prod. Con: Fragrance",
+        "category": "Product"
+      }
+    ]
+  }
+{% endschema %}

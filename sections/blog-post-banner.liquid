@@ -58,8 +58,9 @@
       {%- for tag in article.tags -%}
           {%- if acceptedTags contains tag -%}
             <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="article__category heading heading--small">{{ tag }}</a>
+            {% break %}
           {%- endif -%}
-    {%- endfor -%}
+      {%- endfor -%}
     {%- endif -%}
 
 

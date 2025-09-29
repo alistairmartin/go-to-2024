@@ -1762,6 +1762,100 @@ rivo-favorite-button.rivo-favorite-active svg {
       z-index: 3;
       }
     }
+
+    &.absolute-top_left--mobile {
+      @include media-query($small) {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      }
+    }
+
+    &.absolute-top_center--mobile {
+      @include media-query($small) {
+      position: absolute;
+      left: 50%;
+      top: 0%;
+      transform: translate(-50%, 0%);
+      z-index: 3;
+      }
+    }
+
+    &.absolute-top_right--mobile {
+      @include media-query($small) {
+      position: absolute;
+      left: unset;
+      right: 0;
+      top: 0%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      }
+    }
+
+    &.absolute-middle_left--mobile {
+      @include media-query($small) {
+      position: absolute;
+      left: 0%;
+      top: 50%;
+      transform: translate(0%, -50%);
+      z-index: 3;
+      }
+    }
+
+    &.absolute-middle_center--mobile {
+      @include media-query($small) {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      }
+    }
+
+    &.absolute-middle_right--mobile {
+      @include media-query($small) {
+      position: absolute;
+      right: 0%;
+      top: 50%;
+      transform: translate(0%, -50%);
+      z-index: 3;
+      }
+    }
+
+
+    &.absolute-bottom_left--mobile {
+      @include media-query($small) {
+      position: absolute;
+      left: 0%;
+      bottom: 0%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      }
+    }
+
+    &.absolute-bottom_center--mobile {
+      @include media-query($small) {
+      position: absolute;
+      top: unset;
+      left: 50%;
+      bottom: 0%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      }
+    }
+
+    &.absolute-bottom_right--mobile {
+      @include media-query($small) {
+      position: absolute;
+      left: 100%;
+      bottom: 0;
+      top: unset;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      }
+    }
   
     &.absolute-top_left--desktop {
       @include media-query($medium-up) {
@@ -5300,7 +5394,7 @@ product-item[data-title="Face Hero"] {
     padding: 3.5vw 0 5vw;
     
     @include media-query($small) {
-      padding: 0vw 0 12vw;
+      padding: 2vw 0 12vw;
     }
 
     a { 
@@ -5317,6 +5411,9 @@ product-item[data-title="Face Hero"] {
 
 
 .shopify-section--flip-cards-V2 {
+
+  // var(--block-size-mobile)
+  // var(--block-size-desktop)
 
   .section {
     margin-top: 0 !important;
@@ -5338,8 +5435,8 @@ product-item[data-title="Face Hero"] {
     .gallery__item {
     // width: 33.2vw;
     cursor: pointer;
-    height: 120vw;
-    width: 86vw;
+    height: var(--card-height-mobile);
+    width: var(--card-width-mobile);
 
     @include media-query($medium-up) {
       width: 23.5%;
@@ -5352,8 +5449,8 @@ product-item[data-title="Face Hero"] {
     justify-content: center;
 
     @include media-query($small) {
-      padding: 0vw 0 17vw;
-      width: calc(90vw * 2);
+      padding: 2vw 0 17vw;
+      width: var(--card-width-mobile-grid);
     }
 
     a { 
@@ -5686,5 +5783,77 @@ button[aria-label="Tolstoy stories: next button"] {
 
   .button--bro-to, .button--go-to {
     display: none;
+  }
+}
+
+.shopify-section--featured-product-carousel-text-V2 {
+  .container {
+    padding-bottom: 0;
+  }
+
+  .section {
+    margin-bottom: 24px;
+  }
+  
+  .featured-carousel-product--arrows {
+    width: 40px;
+    height: 40px;
+    border-radius: 0;
+    background: $gotoPink;
+
+    &.right {
+      right: 6%;
+      top: 15vh;
+    }
+
+    &.left {
+      left: 15%;
+      top: 15vh;
+    }
+  }
+
+  .heading-main {
+    font-size: 32px !important;
+    margin-bottom: 30px;
+    font-weight: 300;
+    font-family: "ModernoFB" !important;
+    line-height: 1.3;
+  }
+
+  .heading-secondary {
+    font-size: 18px !important;
+  }
+
+  p {
+    font-size: 18px !important;
+  }
+
+  .featured-carousel-product {
+    height: 35vh;
+    z-index: 3;
+  }
+
+  .text-container {
+     background: $gotoPinkLighter;
+     z-index: 2;
+    //  padding-top: 15vh !important;
+    //  margin-top: -12vh;
+
+     padding-top: 120px !important;
+     margin-top: -70px;
+     
+     *{
+      text-align: center;
+     }
+  }
+
+  .button-wrapper {
+    justify-content: center;
+  }
+
+  .featured-icon {
+    max-height: 130px;
+    margin: 20px auto 0 !important;
+    width: auto;
   }
 }

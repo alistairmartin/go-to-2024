@@ -7,6 +7,7 @@
     margin-top: var(--margin-top-mobile);
     margin-bottom: var(--margin-bottom-mobile);
     width: var(--button-width-mobile);
+   color: var(--button-color-text-mobile) !important;
 
     @include media-query($medium-up) {
       align-items: center;
@@ -14,7 +15,16 @@
       margin-top: var(--margin-top-desktop);
       margin-bottom: var(--margin-bottom-desktop);
       width: var(--button-width-desktop);
+      color: var(--button-color-text-desktop) !important;
     }
+
+    svg path {
+       fill: var(--button-color-text-mobile) !important;
+       @include media-query($medium-up) {
+         fill: var(--button-color-text-desktop) !important;
+       }
+    }
+
 
     &.button--outline {
       color: var(--button-color-text-mobile) !important;

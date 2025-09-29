@@ -1,5 +1,4 @@
-
-    {%- capture styles -%}
+   {%- capture styles -%}
       <style>
           #shopify-block-{{ block.id }} {
             --margin-top-desktop: {{ block.settings.margin_top_desktop }}px;
@@ -14,10 +13,10 @@
             --button-width-mobile: {% if block.settings.button_width_mobile == 0 %}auto{% else %}{{ block.settings.button_width_mobile }}vw{% endif %};
             --button-width-desktop: {% if block.settings.button_width_desktop == 0 %}auto{% else %}{{ block.settings.button_width_desktop }}vw{% endif %};
   
-            {%- if block.settings.button_style == "button--outline" -%}
+
               --button-color-text-mobile: {{ block.settings.button_color_mobile }};
               --button-color-text-desktop: {{ block.settings.button_color_desktop }};
-            {%- endif -%}
+
           }
       </style>
       {%- endcapture -%}

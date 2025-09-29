@@ -11,10 +11,8 @@
           --flex-justify-content-mobile: {{ block.settings.flex_justify_content_mobile }};
           --flex-justify-content-desktop: {{ block.settings.flex_justify_content_desktop }};
 
-          {%- if block.settings.button_style == "button--outline" -%}
-            --button-color-text-mobile: {{ block.settings.button_color_mobile }};
-            --button-color-text-desktop: {{ block.settings.button_color_desktop }};
-          {%- endif -%}
+          --button-color-text-mobile: {{ block.settings.button_color_mobile }};
+          --button-color-text-desktop: {{ block.settings.button_color_desktop }};
         }
     </style>
     {%- endcapture -%}

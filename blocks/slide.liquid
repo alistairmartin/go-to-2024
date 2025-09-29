@@ -30,6 +30,8 @@
 
     --video-aspect-ratio-mobile: {{ block.settings.video_aspect_ratio_mobile | times: 100.000 }}%;
     --video-aspect-ratio-desktop: {{ block.settings.video_aspect_ratio_desktop | times: 100.000 }}%;
+
+    --split-slide-mobile-height: {{ block.settings.split_slide_min_height_mobile | default: 0 }}vh;
   }
 
   .video-poster-overlay.hide-poster {
@@ -72,6 +74,7 @@
       {% assign classes = classes | append: " absolute-bottom--mobile" %}
     {%- endif -%}
 
+
     {% comment %} DESKTOP --- Positioning {% endcomment %}
 
     {%- if block.settings.position_desktop == "top_left"  -%}
@@ -110,13 +113,36 @@
       {% assign classes = classes | append: " absolute-bottom_right--desktop" %}
     {%- endif -%}
 
-<div class="custom-slideshow--slide">
-  
+<div class="custom-slideshow--slide {% if block.settings.split_slide %}split-slide split-slide--position-{{ block.settings.split_slide_position }}{% endif %}">
+    
+    {%- if block.settings.split_slide -%}
+    <a href="{{ block.settings.url }}">
+    <flickity-carousel
+      id="split-slide-{{ block.id }}"
+      class="slide1 split-slide-carousel"
+      flickity-config='{"cellSelector":".carousel-cell","cellAlign":"left","contain":true,"wrapAround":true,"autoPlay":{{ block.settings.split_slide_autoplay_speed | times: 1 }},"pauseAutoPlayOnHover":false,"fade": true,"imagesLoaded":true,"prevNextButtons":false,"pageDots":true,"draggable":">1","selectedAttraction":0.02,"friction":0.28}'>
+      <div class="carousel-cell">
+        {{ block.settings.split_slide_img1 | image_url: width: block.settings.split_slide_img1.width | image_tag: loading: "eagerly", sizes: sizes_attribute, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: class_attribute }}
+      </div>
+      <div class="carousel-cell">
+        {{ block.settings.split_slide_img2 | image_url: width: block.settings.split_slide_img2.width | image_tag: loading: "lazy", sizes: sizes_attribute, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: class_attribute }}
+      </div>
+      <div class="carousel-cell">
+        {{ block.settings.split_slide_img3 | image_url: width: block.settings.split_slide_img3.width | image_tag: loading: "lazy", sizes: sizes_attribute, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: class_attribute }}
+      </div>
+    </flickity-carousel>
+    </a>
+    {%- endif -%}
+
+
+    
+    {%- if block.settings.split_slide -%}<div class="slide-group--split">{%- endif -%}
     <div class="slide-group {{ classes }}">
-    {% content_for 'blocks' %}
+      {% content_for 'blocks' %}
     </div>
-
-
+    {%- if block.settings.split_slide -%}</div>{%- endif -%}
+  
+    {%- unless block.settings.split_slide -%}
     <a href="{{ block.settings.url }}">
       {%- if block.settings.background_media == "video" -%}
         <div class="custom-slideshow--slide-video" id="video-container-{{ block.id }}">
@@ -127,8 +153,6 @@
   
         {%- capture class_attribute -%}{% if block.settings.mobile_image != blank %}hide-mobile{% endif %}{%- endcapture -%}
         {%- capture sizes_attribute -%}(max-width: 999px) 100vw, 100vw{%- endcapture -%}
-
-          
 
           {%- if block.settings.load_image_as_priorty == true -%}
             {%- assign load_image_as_priorty = "eagerly" -%}
@@ -145,6 +169,8 @@
   
       {%- endif -%}
     </a>
+    {% endunless %}
+
 
 </div>
 
@@ -218,7 +244,7 @@
           "info": "Only Admin Will See This.",
           "default": "⏹️⏹️ Container - START"
         },
-
+    
         {
           "type": "header",
           "content": "--- 🔗 LINK  ---"
@@ -339,6 +365,63 @@
               "label": "Wide (21:9)"
             }
           ]
+        },
+        {
+          "type": "header",
+          "content": "--- SPLIT SLIDE  ---"
+        },
+        {
+          "type": "checkbox",
+          "id": "split_slide",
+          "label": "Split Slide 50/50",
+          "info": "Will Split Slide in half, ima" 
+        },
+        {
+          "type": "radio",
+          "id": "split_slide_position",
+          "label": "split_slide_position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+             {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "text",
+          "id": "split_slide_autoplay_speed",
+          "label": "Autoplay Speed",
+          "default": "3000"
+        },
+        {
+          "type": "image_picker",
+          "id": "split_slide_img1",
+          "label": "Split Slide #1"
+        },
+        {
+          "type": "image_picker",
+          "id": "split_slide_img2",
+          "label": "Split Slide #2"
+        },
+            {
+          "type": "image_picker",
+          "id": "split_slide_img3",
+          "label": "Split Slide #3"
+        },
+        {
+          "type": "range",
+          "id": "split_slide_min_height_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "VH",
+          "label": "Min Height Mobile (Viewheight)",
+          "default": 0
         },
         {
           "type": "header",

@@ -11,7 +11,20 @@
     CSS
   ------------------------------------------------------------------------------------------------------------------------
   {%- endcomment -%}
-  
+
+  {%- assign blockCounterDesktop = 0 -%}
+  {%- assign blockCounterMobile = 0 -%}
+
+  {%- for block in section.blocks -%}
+      {%- unless block.settings.hide_desktop == true -%}
+           {%- assign blockCounterDesktop = blockCounterDesktop | plus: 1 -%}
+      {%- endunless -%}
+
+      {%- unless block.settings.hide_mobile == true -%}
+          {%- assign blockCounterMobile = blockCounterMobile | plus: 1 -%} 
+      {%- endunless -%}
+  {%- endfor -%}
+
   <style>
     #shopify-section-{{ section.id }} {
       {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
@@ -34,11 +47,27 @@
       --prev-next-button-color: var(--section-background);
   
       --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+      --block-size-mobile: {{ blockCounterMobile }};
+      --block-size-desktop: {{ blockCounterDesktop }};
+
+      --card-height-mobile: {{ section.settings.card_height_mobile }}vw;
+      --card-width-mobile: {{ section.settings.card_width_mobile }}vw;
+
+      {%- assign gridWidthTotal = section.settings.card_width_mobile | times: blockCounterMobile -%}
+      {%- assign gridWidthMobile = 4 | times: blockCounterMobile | plus: gridWidthTotal -%}
+      --card-width-mobile-grid: {{ gridWidthMobile }}vw;
+
+      --card-height-desktop: {{ section.settings.card_height_desktop}};
+      --card-width-desktop: {{ section.settings.card_width_desktop }};
     }
   
     #shopify-section-{{ section.id }}  video {
       height: calc(var(--gallery-image-height) + 40px);
       width: auto;
+    }
+
+    #shopify-section-{{ section.id }} .progress-bar:before {
+      background: rgb(249 198 185);
     }
   </style>
     
@@ -102,7 +131,10 @@
                         {{- block.settings.caption -}}
                       </figcaption>
                     {%- endif -%}
-                    <a href="{{ block.settings.link }}" class="button button--secondary">{{ block.settings.link_title }}</a>
+                    {% comment %} <a href="{{ block.settings.link }}" class="button button--secondary">{{ block.settings.link_title }}</a> {% endcomment %}
+
+                    <a class="blocks--button {% if section.settings.button_style contains "link" %}link--{% if section.settings.button_style == 'link-with-arrow-white' %}secondary{% else %}primary{% endif %}{% else %}button {{ section.settings.button_style }}{% endif %} {% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %}" href="{{ block.settings.link }}" id="block-{{ section.id }}">{{ block.settings.link_title }} {% if section.settings.button_style contains "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</a>
+
                   </figure>
                 </gallery-item>
               {%- endfor -%}
@@ -186,6 +218,46 @@
         "type": "checkbox",
         "id": "hide_desktop",
         "label": "Hide Desktop?"
+      },
+      {
+          "type": "range",
+          "id": "card_width_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "VW",
+          "label": "Card Width (Mobile)",
+          "default": 86
+      },
+      {
+          "type": "range",
+          "id": "card_height_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "VH",
+          "label": "Card Height (Mobile)",
+          "default": 50
+      },
+      {
+          "type": "range",
+          "id": "card_width_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "VW",
+          "label": "Card Width (Desktop)",
+          "default": 0
+      },
+      {
+          "type": "range",
+          "id": "card_height_desktop",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "VH",
+          "label": "Card Height (Desktop)",
+          "default": 0
       },
       {
         "type": "checkbox",
@@ -299,7 +371,47 @@
         "id": "text_color",
         "label": "Color",
         "default": "rgba(0,0,0,0)"
+      },
+        {
+      "type": "radio",
+      "id": "button_style",
+      "label": "Button Style",
+      "options": [
+        {
+        "value": "button--primary",
+        "label": "Button"
+      },
+      {
+          "value": "button--secondary",
+          "label": "Button (Secondary)"
+      },
+      {
+          "value": "button--ternary",
+          "label": "Button (Ternary)"
+      },
+      {
+          "value": "button--ternary-white",
+          "label": "Button (Ternary - White)"
+      },
+      {
+          "value": "button--outline",
+          "label": "Button (Outline)"
+      },
+      {
+          "value": "link",
+          "label": "Link"
+      },
+      {
+          "value": "link-with-arrow",
+          "label": "Link (With Arrow)"
+      },
+      {
+      "value": "link-with-arrow-white",
+      "label": "White Link (With Arrow)"
       }
+      ],
+      "default": "button--primary"
+  }
     ],
     "presets": [
       {

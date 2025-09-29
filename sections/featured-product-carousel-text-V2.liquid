@@ -1,0 +1,315 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+   
+    {%- assign heading_color = section.settings.heading_color -%}
+    {%- assign text_color = section.settings.text_color -%}
+
+
+    {%- if section.settings.button_background == 'rgba(0,0,0,0)' -%}
+      {%- assign button_background = settings.primary_button_background -%}
+    {%- else -%}
+      {%- assign button_background = section.settings.button_background -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign button_text_color = settings.primary_button_text_color -%}
+    {%- else -%}
+      {%- assign button_text_color = section.settings.button_text_color -%}
+    {%- endif -%}
+
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --primary-button-background: {{ button_background.red }}, {{ button_background.green }}, {{ button_background.blue }};
+    --primary-button-text-color: {{ button_text_color.red }}, {{ button_text_color.green }}, {{ button_text_color.blue }};
+
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+  }
+  {%- if template.suffix == "go-to-spf-landing" -%}
+  #shopify-section-{{ section.id }}  .featured-carousel-product--text-inner .title {
+    font-family: Recoleta, TT Commons;
+  }
+  {% endif %}
+  
+  {%- for block in section.blocks -%}
+  #shopify-section-{{ section.id }} .product-{{ forloop.index }} {
+    --text-color-item: {{ block.settings.text_color }};
+  }
+  {%- endfor -%}
+</style>
+
+
+<section {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %} class="section {% if section.settings.enable_alt_mode %}alt-mode{% endif %}" data-section-id="{{ section.id }}" data-current="0">
+
+  <div class="section__color-wrapper">
+
+    <div class="container vertical-breather">
+
+    {%- for block in section.blocks -%}
+      <div class="text-container" data-index="{{ forloop.index0 }}">
+
+        {%- if block.settings.text_title != blank -%}
+          <h3 class="heading h3 heading--secondary heading-main">{{ block.settings.text_title | escape }}</h3>
+        {%- endif -%}
+
+        {%- if block.settings.text_subheading != blank -%}
+          <h2 class="heading heading--small heading-secondary">{{ block.settings.text_subheading }}</h2>
+        {%- endif -%}
+
+        {%- if block.settings.text_content != blank -%}
+          {{- block.settings.text_content -}}
+        {%- endif -%}
+
+        {%- if block.settings.button_text != blank -%}
+          <div class="button-wrapper">  
+
+            {%- if block.settings.link_type == "modal" -%}
+
+              {%- assign blockId = block.settings.button_text | append: "-" | append: forloop.index | handle -%}
+              <button class="link link--secondary" id="{{ blockId }}">
+                {{ block.settings.button_text }}
+              </button>
+              {%- render 'modal', modalId: blockId, buttonId: blockId, content: block.settings.modal_content, class: "modal-padding" -%}
+            {% else %}
+                <a href="{{ block.settings.button_link }}" class="button button--primary"><strong>{{ block.settings.button_text | escape }}</strong></a>
+            {%- endif -%}
+
+          </div>
+        {%- endif -%}
+
+        {%- if block.settings.icon != blank -%}
+            {{ block.settings.icon | image_url: width: 400 | image_tag: alt: product.title, class: "featured-icon"}}
+        {%- endif -%}
+
+    </div>
+    {%- endfor -%}
+
+
+  {% comment %} https://codepen.io/aybukeceylan/pen/RwrRPoOL {% endcomment %}
+  <div class="featured-carousel-product">
+    <input type="radio" name="featured-product-carousel-{{ section.id }}" id="item-1-{{ section.id }}" class="item-1" checked>
+    <input type="radio" name="featured-product-carousel-{{ section.id }}" id="item-2-{{ section.id }}" class="item-2">
+    <input type="radio" name="featured-product-carousel-{{ section.id }}" id="item-3-{{ section.id }}" class="item-3">
+  
+    <div class="featured-carousel-product--items">
+      {%- for block in section.blocks -%}
+        {%- assign product = block.settings.product -%}
+  
+        <label class="featured-carousel-product--item product-{{ forloop.index }}" for="item-{{ forloop.index }}-{{ section.id }}" id="product-{{ forloop.index }}-{{ section.id }}">
+          <div class="featured-carousel-product--text">
+
+            {%- if block.settings.image_url != blank -%}
+              <a href="{{ block.settings.image_url }}">
+            {%- endif -%}
+            
+            {{ block.settings.image | image_url: width: 1000 | image_tag: alt: product.title, class: "hide-mobile" }}
+            {{ block.settings.image_mobile | image_url: width: 600 | image_tag: alt: product.title, class: "hide-desktop" }}
+
+            {%- if block.settings.image_url != blank -%}
+            </a>
+            {%- endif -%}
+            
+            <div class="featured-carousel-product--text-inner">
+              <h2 class="title heading">{{ block.settings.title }}</h2>
+              <h3 class="subtitle">{{ block.settings.subtitle }}</h3>
+              {% comment %} {% capture button_text %} | <strong> {{ product.price | money | remove: ".00" | remove: ",00" }}</strong>{% endcapture %}
+              {%- render 'product-item--ATC' product: product, button_text: button_text, button_class: "button button--full" -%} {% endcomment %}
+            </div>
+          </div>
+        </label>
+      {%- endfor -%}
+    </div>
+  
+    <button class="featured-carousel-product--arrows left" onclick="moveCarousel(-1, '{{ section.id }}')">{% render "icon" with "brand-arrow-left" %}</button>
+    <button class="featured-carousel-product--arrows right" onclick="moveCarousel(1, '{{ section.id }}')">{% render "icon" with "brand-arrow-right" %}</button>
+  </div>
+  
+
+  </div>
+</div>
+</section>
+
+
+
+
+{% schema %}
+    {
+      "name": "Prod. Carousel (Text V2)",
+      "class": "shopify-section--featured-product-carousel-text shopify-section--featured-product-carousel-text-V2 hide-desktop",
+      "settings": [
+        {
+        "type": "text",
+        "id": "id",
+        "label": "ID",
+        "info": "Optional. Used with in-page navigation."
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_alt_mode",
+          "label": "Enable Alternative Layout"
+        },
+        {
+        "type": "header",
+        "content": "Colors"
+        },
+        {
+        "type": "color",
+        "id": "background",
+        "label": "Background",
+        "default": "rgba(0,0,0,0)"
+        },
+        {
+        "type": "color",
+        "id": "heading_color",
+        "label": "Heading color",
+        "default": "rgba(0,0,0,0)"
+        },
+        {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text color",
+        "default": "rgba(0,0,0,0)"
+        },
+        {
+        "type": "color",
+        "id": "button_background",
+        "label": "Button background",
+        "default": "rgba(0,0,0,0)"
+        },
+        {
+        "type": "color",
+        "id": "button_text_color",
+        "label": "Button text",
+        "default": "rgba(0,0,0,0)"
+        }
+      ],
+      "blocks": [
+      {
+        "name": "Product",
+        "type": "product",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Text"
+          },
+          {
+        "type": "text",
+        "id": "text_subheading",
+        "label": "Subheading",
+        "default": "Subheading"
+        },
+        {
+        "type": "text",
+        "id": "text_title",
+        "label": "Heading",
+        "default": "Talk about your brand"
+        },
+        {
+        "type": "richtext",
+        "id": "text_content",
+        "label": "Content",
+        "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+        },
+        {
+            "type": "header",
+            "content": "Button"
+          },
+          {
+          "type": "radio",
+          "id": "link_type",
+          "label": "Link Type",
+          "options": [
+            {
+              "value": "link",
+              "label": "Link"
+            },
+            {
+              "value": "modal",
+              "label": "Modal"
+            } 
+          ]
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Link"
+        },
+        {
+          "type": "richtext",
+          "id": "modal_content",
+          "label": "Modal Content"
+        },
+        {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button text"
+        },
+          {
+            "type": "header",
+            "content": "Product"
+          },
+          {
+            "type": "product",
+            "id": "product",
+            "label": "Product"
+          },
+          {
+            "type": "textarea",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "textarea",
+            "id": "subtitle",
+            "label": "Subtitle"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_mobile",
+            "label": "Image (Mobile)"
+          },
+          {
+            "type": "url",
+            "id": "image_url",
+            "label": "Image URL"
+          },
+          {
+            "type": "header",
+            "content": "Colors"
+          },
+          {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text color",
+            "default": "rgba(0,0,0,0)"
+          },
+              {
+            "type": "header",
+            "content": "Icon"
+          },
+          {
+            "type": "image_picker",
+            "id": "icon",
+            "label": "Icon"
+          }
+        ]
+      }
+      ],
+      "presets": [
+    {
+      "name": "Prod. Carousel (Text V2)"
+    }
+  ]
+    }
+{% endschema %}
+    

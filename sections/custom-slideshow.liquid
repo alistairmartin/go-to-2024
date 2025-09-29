@@ -12,7 +12,7 @@
 {%- endif -%}
 
 {%- if showSection -%}
-<div class="custom-section">
+<div class="custom-section {% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %}">
   {% content_for 'blocks' %}
 </div>
 {% endif %}
@@ -26,7 +26,16 @@
     { "type": "@app" }
   ],
   "settings": [
-
+      {
+        "type": "checkbox",
+        "id": "hide_mobile",
+        "label": "Hide Mobile?"
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_desktop",
+        "label": "Hide Desktop?"
+      }
   ],
   "presets": [
     {

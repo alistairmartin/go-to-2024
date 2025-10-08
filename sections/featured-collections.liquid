@@ -165,7 +165,7 @@
                     {%- assign smallest_image_aspect_ratio = smallest_image_aspect_ratio | at_least: product.featured_media.aspect_ratio -%}
                   {%- endif -%}
 
-                  {%- render 'product-item', product: product, collection: collection, reduced_content: true, show_cta: section.settings.show_cta, block: block, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, section_name: "featured-collections", outerCollectionHandle: outerCollectionHandle, enable_byo_bundle: block.settings.enable_byo_bundle -%}
+                  {%- render 'product-item', product: product, collection: collection, reduced_content: true, show_cta: section.settings.show_cta, block: block, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, section_name: "featured-collections", outerCollectionHandle: outerCollectionHandle, enable_byo_bundle: block.settings.enable_byo_bundle, showHiddenProduct: section.settings.show_hidden_products -%}
 
                   {%- include 'featured-collections--grid-images', validCollectionForImages: validCollectionForImages, reveal: settings.stagger_products_apparition -%}
                 {%- else -%}
@@ -178,7 +178,7 @@
                 {%- endfor -%}
               </div>
 
-              {%- if collection.products_count > 5 -%}
+              {%- if collection.products_count >= 5 -%}
               <div class="product-list__dots" aria-hidden="true"></div>
               {%- endif -%}
               </div>
@@ -196,7 +196,7 @@
                 {%- endif -%}
 
 
-                {%- if collection.products_count > 5 -%}
+                {%- if collection.products_count >= 5 -%}
                 <prev-next-buttons class="product-list__prev-next hidden-pocket" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
                   <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled>
                     <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
@@ -679,6 +679,12 @@
       "type": "checkbox",
       "id": "hide_desktop",
       "label": "Hide Desktop?"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hidden_products",
+      "label": "Show Hidden Products",
+      "info": "For Testing Purposes Only!"
     },
     {
       "type": "header",

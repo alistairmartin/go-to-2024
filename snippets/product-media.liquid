@@ -54,6 +54,7 @@
     {%- render 'product-media--wishlist', product: product -%}
 
     <div class="product__media-list-wrapper" style="max-width: {{ max_width }}px">
+
       {%- capture flickity_config -%}
       {
         "adaptiveHeight": true,
@@ -76,7 +77,7 @@
         class="product__media-list"
       >
         {% comment %} FEATURED IMAGE  --- START {% endcomment %}
-        {% render 'rivo-wishlist-heart' %}
+       
         {%- assign featured_selected_image = 0 -%}
         {%- for tag in product.tags -%}
           {%- if tag contains 'PDPImage_' -%}
@@ -161,7 +162,6 @@
                   class="product__media-image-wrapper aspect-ratio aspect-ratio--natural"
                   style="padding-bottom: {{ 100.0 | divided_by: media.aspect_ratio }}%; --aspect-ratio: {{ media.aspect_ratio }}"
                 >
-                  {% render 'rivo-wishlist-heart' %}
                   {%- assign should_reveal = false -%}
                   {%- assign loading = 'eager' -%}
 
@@ -203,7 +203,7 @@
                   class="video-wrapper video-wrapper--native"
                   style="--aspect-ratio: {{ media.aspect_ratio }}"
                 >
-                  {%- unless section.settings.enable_video_autoplay -%}
+           
                     <div class="video-wrapper__poster">
                       {{
                         media.preview_image
@@ -214,7 +214,7 @@
                           widths: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200',
                           class: 'video-wrapper__poster-image'
                       }}
-
+                      {%- unless section.settings.enable_video_autoplay -%}
                       <div class="video-wrapper__poster-content">
                         <button
                           type="button"
@@ -224,8 +224,9 @@
                           {%- render 'icon' with 'play', width: 72, height: 72 -%}
                         </button>
                       </div>
+                      {%- endunless -%}
                     </div>
-                  {%- endunless -%}
+            
 
                   <template>
                     {{-

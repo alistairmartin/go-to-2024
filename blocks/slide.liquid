@@ -1,9 +1,14 @@
 
+  
+  {% if section.settings.enable_slideshow %}
+    <div id="carousel-{{ block.id }}" class="carousel-slide">
+  {% endif %}
+
 {%- assign classes = "" -%}
 
 {%- capture styles -%}
   <style>
-  #shopify-block-{{ block.id }} {
+  #shopify-block-{{ block.id }}, #carousel-{{ block.id }} {
     --background-mobile: {{ block.settings.background_mobile }};
     --background-desktop: {{ block.settings.background_desktop }};
 
@@ -46,6 +51,8 @@
 {{- styles | strip_newlines | remove:" " | strip -}}
 
 {%- assign classes = "" -%}
+
+
 
 {% comment %} {%- if block.settings.max_width_enabled_desktop == "enabled" -%}
      
@@ -112,7 +119,7 @@
     {%- if block.settings.position_desktop == "bottom_right"  -%}
       {% assign classes = classes | append: " absolute-bottom_right--desktop" %}
     {%- endif -%}
-
+  
 <div class="custom-slideshow--slide {% if block.settings.split_slide %}split-slide split-slide--position-{{ block.settings.split_slide_position }}{% endif %}">
     
     {%- if block.settings.split_slide -%}
@@ -231,6 +238,10 @@
     });
   </script>
   {%- endif -%}
+
+{% if section.settings.enable_slideshow %}
+</div>
+{% endif %}
 
 {% schema %}
 {
@@ -395,7 +406,8 @@
         {
           "type": "text",
           "id": "split_slide_autoplay_speed",
-          "label": "Autoplay Speed",
+          "label": "Autoplay Speed (Milliseconds)",
+          "info": "e.g. 4000 = 4 Seconds",
           "default": "3000"
         },
         {

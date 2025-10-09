@@ -12,6 +12,7 @@ npm run watch
 
 2. shopify theme dev --store go-to-skincare --environment development
 
+3. Run another tab with `npm run watch` to start compiling for SCSS / JS changes. 
 
 ==== Flickity Carousel Example: 
 

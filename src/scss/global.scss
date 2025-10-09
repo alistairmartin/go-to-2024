@@ -5525,6 +5525,11 @@ sort-by-popover {
     border: 0;
   }
 
+  &:disabled {
+    opacity: 0.3 !important;
+    cursor: no-drop;
+  }
+
   // &.prev-next-button--next {
   //   svg {
   //     transform: rotate(270deg) !important;
@@ -5857,3 +5862,5 @@ button[aria-label="Tolstoy stories: next button"] {
     width: auto;
   }
 }
+
+

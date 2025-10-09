@@ -168,6 +168,9 @@
                   {%- render 'product-item', product: product, collection: collection, reduced_content: true, show_cta: section.settings.show_cta, block: block, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, section_name: "featured-collections", outerCollectionHandle: outerCollectionHandle, enable_byo_bundle: block.settings.enable_byo_bundle, showHiddenProduct: section.settings.show_hidden_products -%}
 
                   {%- include 'featured-collections--grid-images', validCollectionForImages: validCollectionForImages, reveal: settings.stagger_products_apparition -%}
+
+                  {%- include 'featured-collections--tolstoy-video', validCollectionForImages: validCollectionForImages, reveal: settings.stagger_products_apparition -%}
+
                 {%- else -%}
                   {%- assign smallest_image_aspect_ratio = 1 -%}
 
@@ -659,7 +662,41 @@
         }
       ],
       "default": "2"
-    }
+    },
+        {
+          "type": "header",
+          "content": "Tolstoy Video"
+        },
+        {
+          "type": "text",
+          "id": "publish_id_tolstoy",
+          "label": "Publish Id",
+          "default": "du8dqmcngwzsr"
+        },
+        {
+          "type": "text",
+          "id": "position_desktop_tolstoy",
+          "label": "Position (Desktop)",
+          "info": "Position In The Collection"
+        },
+        {
+          "type": "text",
+          "id": "position_mobile_tolstoy",
+          "label": "Position (Mobile)",
+          "info": "Position In The Collection"
+        },
+        {
+          "type": "url",
+          "id": "link_tolstoy",
+          "label": "Link Setting",
+          "info": "Optional"
+        },
+        {
+          "type": "text",
+          "id": "content_square_id_tolstoy",
+          "label": "Content Square Button ID",
+          "info": "Must match the 'Content Square' section in the header."
+        }
       ]
     }
   ],

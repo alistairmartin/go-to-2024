@@ -1,0 +1,23 @@
+{% liquid
+  assign exclude_product_tag_from_cart = settings.exclude_product_tags_from_cart | strip | strip_newlines | split: ","
+  assign approved_tags = ""
+
+  for tag in product.tags
+    assign do_not_add = false
+    assign innerTagCounter = 0
+
+    for innerTag in exclude_product_tag_from_cart
+      assign innerTagCounter = innerTagCounter | plus: 1
+      
+      if tag contains innerTag
+        assign do_not_add = true
+      endif
+
+      if exclude_product_tag_from_cart.size == innerTagCounter and do_not_add == false
+        assign approved_tags = approved_tags | append: tag | append: ","
+      endif
+    endfor
+  endfor
+%}
+
+<input type="hidden" name="properties[_tags]" value="{{ approved_tags }}">

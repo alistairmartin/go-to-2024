@@ -476,10 +476,8 @@
               {%- endif -%}
 
               <input type="hidden" disabled name="id" value="{{ product.selected_or_first_available_variant.id }}">
-
-
-              <input type="hidden" name="properties[_tags]" value="{% for tag in product.tags %}{{ tag }},{% endfor %}">
-
+              {%- render 'add-tags-to-cart', product: product -%}
+              
               <product-payment-container {% if update_url %}id="MainPaymentContainer"{% endif %} class="product-form__payment-container" {{ block.shopify_attributes }}>
 
 

@@ -1,0 +1,66 @@
+{%- assign outerForloop = forloop.index -%}
+
+    {%- capture publishIdSetting -%}publish_id_tolstoy{%- endcapture -%}
+    {%- assign publish_id = block.settings[publishIdSetting] -%}
+
+    {% capture mobilePositionSettings %}position_mobile_tolstoy{% endcapture %}
+    {%- assign mobilePosition = block.settings[mobilePositionSettings] | times: 1 -%}
+
+    {% capture desktopPositionSettings %}position_desktop_tolstoy{% endcapture %}
+    {%- assign desktopPosition = block.settings[desktopPositionSettings] | times: 1 -%}
+
+
+    {% capture linkSettingObject %}link_tolstoy{% endcapture %}
+    {%- assign linkSetting = block.settings[linkSettingObject] -%}
+
+
+    {% capture contentSquareSetting %}content_square_id_tolstoy{% endcapture %}
+    {%- assign contentSquare = block.settings[contentSquareSetting] -%}
+
+
+    {%- if publish_id != blank-%}
+
+            {% if outerForloop == desktopPosition %}
+
+            {%- assign gridImagesCounter = gridImagesCounter | plus: 1 -%}
+
+            <product-item
+                class="product-item product-item__grid-image hide-mobile"
+                {% if reveal %}reveal{% endif %}
+            >
+
+            {%- if linkSetting != blank -%}
+         
+              <a href="{{ linkSetting }}" {% if contentSquare %}data-content-square="{{ contentSquare }}"{% endif %}>
+            {%- endif -%}
+                  {% comment %} <tolstoy-collectionPageTile data-tags="{% for tag in product.tags -%}{{ tag }},{%- endfor %}" class="tolstoy-collectionPageTile" data-publish-id="{{ publish_id }}" data-product-id="{{ product.id }}"> </tolstoy-collectionPageTile> {% endcomment %}
+                  <tolstoy-collection-page-tile style="display: none;" class="tolstoy-collection-page-tile" data-publish-id="{{ publish_id }}" data-collection-id="{{ collection.id }}"></tolstoy-collection-page-tile>
+                  
+                {%- if linkSetting != blank -%}
+                  </a>
+                {%- endif -%}
+            </product-item>
+            {% endif %}
+
+            {% if outerForloop == mobilePosition %}
+            <product-item
+                class="product-item product-item__grid-image hide-desktop"
+                {% if reveal %}
+                reveal
+                {% endif %}
+                
+            >
+
+                {%- if linkSetting != blank -%}
+                  <a href="{{ linkSetting }}">
+                {%- endif -%}
+                {% comment %} <tolstoy-collectionPageTile data-tags="{% for tag in product.tags -%}{{ tag }},{%- endfor %}" class="tolstoy-collectionPageTile" data-publish-id="{{ publish_id }}" data-product-id="{{ product.id }}"> </tolstoy-collectionPageTile> {% endcomment %}
+                <tolstoy-collection-page-tile style="display: none;" class="tolstoy-collection-page-tile" data-publish-id="{{ publish_id }}" data-collection-id="{{ collection.id }}"></tolstoy-collection-page-tile>
+
+                {%- if linkSetting != blank -%}
+                  </a>
+                {%- endif -%}
+            </product-item>
+            {% endif %}
+
+{%- endif -%}

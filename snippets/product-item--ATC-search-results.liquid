@@ -20,7 +20,7 @@
             {%- form 'product', product, is: 'product-form', id: form_id -%}
               <input type="hidden" name="quantity" value="1">
               <input type="hidden" name="id" value="{{ product.first_available_variant.id }}">
-              <input type="hidden" name="properties[_tags]" value="{% for tag in product.tags %}{{ tag }},{% endfor %}">
+              {%- render 'add-tags-to-cart', product: product -%}
               <button type="submit" {% if show_cta %}is="loader-button"{% endif %} class="{% if reduced_content %}product-item__link link text--subdued{% else %}product-item__cta button button--primary{% endif %}">{{ 'collection.product.add_to_cart_short' | t }}{% if button_text != blank %}{{ button_text }}{% endif %}</button>
             {%- endform -%}
           {%- else -%}

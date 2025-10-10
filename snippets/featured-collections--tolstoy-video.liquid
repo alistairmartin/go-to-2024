@@ -1,3 +1,8 @@
+
+            {% comment %} <tolstoy-collection-page-tiles class="tolstoy-collection-page-tiles" data-publish-id="{{ publish_id }}" data-collection-id="{{ collection.id }}"></tolstoy-collection-page-tiles> {% endcomment %}
+                  
+
+
 {%- assign outerForloop = forloop.index -%}
 
     {%- capture publishIdSetting -%}publish_id_tolstoy{%- endcapture -%}
@@ -17,9 +22,8 @@
     {% capture contentSquareSetting %}content_square_id_tolstoy{% endcapture %}
     {%- assign contentSquare = block.settings[contentSquareSetting] -%}
 
-
-    {%- if publish_id != blank-%}
-
+    {%- if publish_id != blank -%}
+        
             {% if outerForloop == desktopPosition %}
 
             {%- assign gridImagesCounter = gridImagesCounter | plus: 1 -%}
@@ -33,9 +37,10 @@
          
               <a href="{{ linkSetting }}" {% if contentSquare %}data-content-square="{{ contentSquare }}"{% endif %}>
             {%- endif -%}
-                  {% comment %} <tolstoy-collectionPageTile data-tags="{% for tag in product.tags -%}{{ tag }},{%- endfor %}" class="tolstoy-collectionPageTile" data-publish-id="{{ publish_id }}" data-product-id="{{ product.id }}"> </tolstoy-collectionPageTile> {% endcomment %}
-                  <tolstoy-collection-page-tile style="display: none;" class="tolstoy-collection-page-tile" data-publish-id="{{ publish_id }}" data-collection-id="{{ collection.id }}"></tolstoy-collection-page-tile>
-                  
+          
+
+            <tolstoy-collection-page-tile style="display: none;" class="tolstoy-collection-page-tile" data-publish-id="{{ publish_id }}" data-collection-id="135439155283"></tolstoy-collection-page-tile>
+
                 {%- if linkSetting != blank -%}
                   </a>
                 {%- endif -%}
@@ -55,7 +60,8 @@
                   <a href="{{ linkSetting }}">
                 {%- endif -%}
                 {% comment %} <tolstoy-collectionPageTile data-tags="{% for tag in product.tags -%}{{ tag }},{%- endfor %}" class="tolstoy-collectionPageTile" data-publish-id="{{ publish_id }}" data-product-id="{{ product.id }}"> </tolstoy-collectionPageTile> {% endcomment %}
-                <tolstoy-collection-page-tile style="display: none;" class="tolstoy-collection-page-tile" data-publish-id="{{ publish_id }}" data-collection-id="{{ collection.id }}"></tolstoy-collection-page-tile>
+                <tolstoy-collection-page-tile style="display: none;" class="tolstoy-collection-page-tile" data-publish-id="{{ publish_id }}" data-collection-id="135439155283"></tolstoy-collection-page-tile>
+
 
                 {%- if linkSetting != blank -%}
                   </a>
@@ -64,3 +70,4 @@
             {% endif %}
 
 {%- endif -%}
+

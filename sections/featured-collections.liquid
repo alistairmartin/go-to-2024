@@ -169,7 +169,7 @@
 
                   {%- include 'featured-collections--grid-images', validCollectionForImages: validCollectionForImages, reveal: settings.stagger_products_apparition -%}
 
-                  {%- include 'featured-collections--tolstoy-video', validCollectionForImages: validCollectionForImages, reveal: settings.stagger_products_apparition -%}
+                  {%- include 'featured-collections--tolstoy-video', validCollectionForImages: validCollectionForImages, reveal: settings.stagger_products_apparition, collection: collection -%}
 
                 {%- else -%}
                   {%- assign smallest_image_aspect_ratio = 1 -%}

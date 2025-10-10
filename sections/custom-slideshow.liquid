@@ -17,8 +17,9 @@
       {% if section.settings.enable_slideshow %}
       <flickity-carousel
       id="split-slide-{{ section.id }}"
-      class="outer-carousel"
-      flickity-config='{"cellSelector":".carousel-slide","cellAlign":"left","contain":true,"wrapAround":true,"autoPlay":{{ section.settings.slide_autoplay_speed | times: 1 }},"pauseAutoPlayOnHover":false,"fade": true,"imagesLoaded":false,"prevNextButtons":{{ section.settings.enable_slideshow_arrows }},"pageDots":true,"draggable":">1","selectedAttraction":0.02,"friction":0.28}'>
+      class="outer-carousel has-fade"
+      flickity-config='{"cellSelector":".carousel-slide","cellAlign":"left","contain":true,"wrapAround":true,"autoPlay":{{ section.settings.slide_autoplay_speed | times: 1 }},"pauseAutoPlayOnHover":false,"fade": true,"imagesLoaded":true,"adaptiveHeight":true,"prevNextButtons":{{ section.settings.enable_slideshow_arrows }},"pageDots":true,"draggable":">1","selectedAttraction":0.02,"friction":0.28}'>
+     
       {%- endif -%}
 
       {% content_for 'blocks' %}

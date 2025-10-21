@@ -24,6 +24,7 @@
     <script>
       var cartGWPItem = {
         type: "min-spend",
+        admin_title: "{{ block.settings.admin_title }}",
         minSpend: {{ minSpend }},
         gwp_item_message: "{{ block.settings.gwp_item_message | strip_html }}",
         getProduct: {

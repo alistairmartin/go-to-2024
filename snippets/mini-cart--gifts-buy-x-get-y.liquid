@@ -45,6 +45,7 @@
       <script>
         var cartGWPItem = {
           type: "buy-x-get-y",
+          admin_title: "{{ block.settings.admin_title }}",
           gwp_item_message: "{{ block.settings.gwp_item_message | strip_html }}",
           buyXTag: "{{ buyProductTag }}",
           getProduct: {

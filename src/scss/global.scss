@@ -3280,6 +3280,7 @@ footer {
       background: unset !important;
       padding-bottom: 0;
       box-shadow: 1px 1px 1px #9b9b9b49;
+      position: relative;
 
       .product-item__grid-image--link {
         height: 100%;
@@ -3307,6 +3308,8 @@ footer {
 
 
   .product-item__grid-image {
+    position: relative;
+
     img  {
       border-radius: var(--image-border-radius);
       height: 100%;

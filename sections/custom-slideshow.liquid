@@ -12,43 +12,59 @@
 {%- endif -%}
 
 {%- if showSection -%}
+
+    <style>
+    #shopify-section-{{ section.id }} {
+      /* Duration drives the ring/progress animation; seconds expected */
+      --section-autoplay-duration: {{ section.settings.slide_autoplay_speed | divided_by: 1000.0 }}s;
+      --section-animation-play-state: paused;
+      --progress-bar-color: 255,255,255;
+    }
+  </style>
+  
 <div class="custom-section {% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %}">
 
-      {% if section.settings.enable_slideshow %}
-      <flickity-carousel
-      id="split-slide-{{ section.id }}"
-      class="outer-carousel has-fade"
-      flickity-config='{"cellSelector":".carousel-slide","cellAlign":"left","contain":true,"wrapAround":true,"autoPlay":{{ section.settings.slide_autoplay_speed | times: 1 }},"pauseAutoPlayOnHover":false,"fade": true,"imagesLoaded":true,"adaptiveHeight":true,"prevNextButtons":{{ section.settings.enable_slideshow_arrows }},"pageDots":true,"draggable":">1","selectedAttraction":0.02,"friction":0.28}'>
-     
-      {%- endif -%}
 
-      {% content_for 'blocks' %}
+  {% if section.settings.enable_slideshow %}
 
-      {% if section.settings.enable_slideshow %}
+    <slide-show reveal-on-scroll {% if section.settings.autoplay %}auto-play{% endif %} transition-type="{{ section.settings.transition_type | default: 'sweep' }}" class="slideshow slideshow--auto">
+      <div class="slideshow__slide-list">
+        {% for block in section.blocks %}
+          {% capture block_content %}{% render block %}{% endcapture %}
 
-        {% comment %} <button class="flickity-button flickity-prev-next-button previous hidden-pocket" type="button" aria-label="Previous">
-            {%- render 'icon' with 'brand-arrow-left', block: true, direction_aware: true -%}
-        </button>
+          {%- capture slide_attributes -%}
+            {{ block.shopify_attributes }}
+            id="block-{{ section.id }}-{{ block.id }}"
+            class="slideshow__slide {% if section.settings.transition_type == 'sweep' %}slideshow__slide--sweep{% endif %}"
+            {% unless forloop.first %}hidden{% endunless %}
+          {%- endcapture -%}
 
-        <button class="flickity-button flickity-prev-next-button next hidden-pocket" type="button" aria-label="Next">
-            {%- render 'icon' with 'brand-arrow-right', block: true, direction_aware: true -%}
-        </button> {% endcomment %}
+          <slide-show-item reveal-visibility {{ slide_attributes }}>
+            <div class="slideshow__slide-inner">
+              {{ block_content }}
+            </div>
+          </slide-show-item>
+        {% endfor %}
+      </div>
 
+      {% if section.blocks.size > 1 %}
+        <page-dots {% if section.settings.autoplay %}animation-timer{% endif %} class="slideshow__nav container">
+          {% for block in section.blocks %}
+            <button class="slideshow__progress-bar" aria-controls="block-{{ section.id }}-{{ block.id }}" {% if forloop.first %}aria-current="true"{% endif %}>
+              <span class="visually-hidden">{{ 'general.accessibility.go_to_slide' | t: num: forloop.index }}</span>
+            </button>
+          {% endfor %}
+        </page-dots>
+      {% endif %}
+    </slide-show>
+  {% else %}
+    {% for block in section.blocks %}
+      {% render block %}
+    {% endfor %}
+  {% endif %}
 
-        {% comment %} <prev-next-buttons class="product-list__prev-next hidden-pocket" style="--smallest-image-aspect-ratio: 1.0">
-                  <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled="">
-                    <span class="visually-hidden">Previous</span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon icon--brand-arrow-left  icon--direction-aware ">
-     <path d="M7.57129 1.60034C7.37955 1.60046 7.18785 1.67823 7.04199 1.83472L1.79199 7.4353C1.49902 7.74784 1.499 8.25364 1.79199 8.56616L7.04199 14.1658C7.33496 14.4781 7.80861 14.4781 8.10156 14.1658C8.39456 13.8532 8.39456 13.3474 8.10156 13.0349L4.12891 8.79663H13.1777C13.6061 8.79519 14 8.54062 14 8.02026C13.9999 7.50003 13.5968 7.24976 13.2002 7.24976H4.08691L8.10156 2.96558C8.39456 2.65304 8.39456 2.14725 8.10156 1.83472C7.95559 1.67808 7.76319 1.60034 7.57129 1.60034Z" fill="#383838"></path>
-    </svg></button>
+  
 
-                  <button class="product-list__arrow prev-next-button prev-next-button--next">
-                    <span class="visually-hidden">Next</span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon icon--brand-arrow-right  icon--direction-aware ">
-    <path d="M7.75 1.60034C7.94174 1.60046 8.13344 1.67823 8.2793 1.83472L13.5293 7.4353C13.8223 7.74784 13.8223 8.25364 13.5293 8.56616L8.2793 14.1658C7.98632 14.4781 7.51268 14.4781 7.21973 14.1658C6.92673 13.8532 6.92673 13.3474 7.21973 13.0349L11.1924 8.79663H2.14355C1.71516 8.79519 1.32132 8.54062 1.32129 8.02026C1.32134 7.50002 1.72446 7.24976 2.12109 7.24976H11.2344L7.21973 2.96558C6.92673 2.65304 6.92673 2.14725 7.21973 1.83472C7.3657 1.67807 7.5581 1.60034 7.75 1.60034Z" fill="#383838"></path>
-    </svg></button>
-                </prev-next-buttons> {% endcomment %}
-
-      </flickity-carousel>
-      {%- endif -%}
 
 </div>
 {% endif %}
@@ -59,42 +75,59 @@
   "name": "Custom Slideshow",
   "class": "shopify-section--custom-slideshow",
   "blocks": [
-    { "type": "@theme" }, 
+    { "type": "@theme" },
     { "type": "@app" }
   ],
   "settings": [
-      {
-        "type": "checkbox",
-        "id": "hide_mobile",
-        "label": "Hide Mobile?"
-      },
-      {
-        "type": "checkbox",
-        "id": "hide_desktop",
-        "label": "Hide Desktop?"
-      },
-      {
-        "type": "header",
-        "content": "Slideshow"
-      },
-      {
-        "type": "checkbox",
-        "id": "enable_slideshow",
-        "label": "Enable Slideshow?"
-      },
-      {
-        "type": "checkbox",
-        "id": "enable_slideshow_arrows",
-        "label": "Enable Slidshow Arrows?",
-        "default": true
-      },
-      {
+    {
+      "type": "checkbox",
+      "id": "hide_mobile",
+      "label": "Hide Mobile?"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_desktop",
+      "label": "Hide Desktop?"
+    },
+    {
+      "type": "header",
+      "content": "Slideshow"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_slideshow",
+      "label": "Enable Slideshow?"
+    },
+    {
+      "type": "select",
+      "id": "transition_type",
+      "label": "Transition type",
+      "options": [
+        { "value": "sweep", "label": "Sweep" },
+        { "value": "reveal", "label": "Reveal" },
+        { "value": "fade", "label": "Fade" }
+      ],
+      "default": "sweep"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto rotate between slides",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_slideshow_arrows",
+      "label": "Enable Slidshow Arrows?",
+      "default": true
+    },
+    {
       "type": "text",
       "id": "slide_autoplay_speed",
       "label": "Autoplay Speed (Milliseconds)",
       "info": "e.g. 4000 = 4 Seconds",
       "default": "3000"
-     }
+    }
   ],
   "presets": [
     {

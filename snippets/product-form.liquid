@@ -59,10 +59,10 @@
   
               <div class="product-form__option-selector" data-selector-type="{{ selector_type | replace: '_', '-' | escape }}">
                 <div class="product-form__option-info">
-                  <span class="product-form__option-name">{{ option.name }}:</span>
+                  <span class="product-form__option-name">{{ option.name |  upcase }}:</span>
 
                   {%- if selector_type != 'dropdown' -%}
-                    <span id="{{ option_id }}-value" class="product-form__option-value">{{ option.selected_value }}</span>
+                    <span id="{{ option_id }}-value" class="product-form__option-value">{{ option.selected_value | upcase }}</span>
                   {%- endif -%}
 
                   {%- if size_chart_page != blank and size_label_list contains option_downcase -%}

@@ -42,12 +42,19 @@
         <div class="product-content-description--content-inner tab-panel description" id="product-content-description--tab-1" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-1" aria-hidden="false">
           {% assign product_desc = product.description | split: ' ' %}
           <div class="product-content-description--teaser" aria-revealed="{% if product_desc.size > 110 %}false{% else %}true{% endif %}">
-            {%- capture callout_image -%}
-              {%- if product.metafields.custom.product_gwp__image_mobile != blank or product.metafields.custom.product_gwp__image_desktop != blank -%}
-                {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_gwp__image_desktop, src_mobile: product.metafields.custom.product_gwp__image_mobile, class: "ProductGWP" %}
-              {%- endif -%}
-            {%- endcapture -%}
 
+            {%- if product.metafields.custom.product_gwp_gif_mobile != blank and product.metafields.custom.product_gwp_gif_desktop != blank -%}
+              {%- capture callout_image -%}
+                  {{ product.metafields.custom.product_gwp_gif_mobile | image_url: width: 600 | image_tag: class: 'ProductGWP hide-desktop', alt: product.title, loading: 'lazy' }}
+                  {{ product.metafields.custom.product_gwp_gif_desktop | image_url: width: 1000 | image_tag: class: 'ProductGWP hide-mobile', alt: product.title, loading: 'lazy' }}
+              {%- endcapture -%}
+            {% else  %}
+                {%- capture callout_image -%}
+                {%- if product.metafields.custom.product_gwp__image_mobile != blank or product.metafields.custom.product_gwp__image_desktop != blank -%}
+                  {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_gwp__image_desktop, src_mobile: product.metafields.custom.product_gwp__image_mobile, class: "ProductGWP" %}
+                {%- endif -%}
+              {%- endcapture -%}
+            {%- endif -%}
             
             {%- assign productCallOutModal = product.metafields.accentuate.product_gwp__modal_content -%}
 

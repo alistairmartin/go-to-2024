@@ -6194,7 +6194,7 @@ var CartDrawer = class extends DrawerContent {
     }
     
     // ADD GWP
-    function addToCart(variantId, quantity, gwp_item_message) {
+    function addToCart(variantId, quantity, gwp_item_message, admin_type, type) {
       fetch('/cart/add.js', {
           method: 'POST',
           headers: {
@@ -6204,6 +6204,9 @@ var CartDrawer = class extends DrawerContent {
               id: variantId,
               quantity: quantity,
               properties: {
+                "_promo" :"true",
+                "_type": admin_type,
+                "_source": `Cart: ${type}`,
                 "Promo": gwp_item_message
               }
           }),
@@ -6228,7 +6231,7 @@ var CartDrawer = class extends DrawerContent {
     console.log(window.cartGWP);
 
     for (const cartGWP of window.cartGWP) {
-        console.log("Type:", cartGWP.type);
+        console.log("Type:",cartGWP.type);
 
         if(cartGWP.type === "min-spend") {
 
@@ -6236,7 +6239,7 @@ var CartDrawer = class extends DrawerContent {
           const matchingItem = cartObject.items.find(item => item.handle === cartGWPHandle);
 
           if(cartObject.total_price >= cartGWP.minSpend && !matchingItem) {
-            addToCart(cartGWP.getProduct.variantId,1,cartGWP.gwp_item_message);
+            addToCart(cartGWP.getProduct.variantId,1,cartGWP.gwp_item_message, cartGWP.admin_title,cartGWP.type);
           } else if(cartObject.total_price < cartGWP.minSpend && matchingItem) {
 
             const itemKey = matchingItem.key;
@@ -6263,7 +6266,9 @@ var CartDrawer = class extends DrawerContent {
             });
           } else if (cartGWP.buyXTag !== "") {
             cartObject.items.forEach(item => {
+              console.log(item)
               const itemTags = item.properties?._tags ? item.properties._tags.split(",") : [];
+              console.log(itemTags)
               if (itemTags.includes(cartGWP.buyXTag)) {
                 console.log(itemTags)
                 minsSpendBuyX += item.line_price;
@@ -6271,21 +6276,28 @@ var CartDrawer = class extends DrawerContent {
             });
           }
 
+          console.log(minsSpendBuyX)
+          console.log(cartGWP.minSpend)
+
           // New logic to handle getProduct2 and getProduct3
           if (minsSpendBuyX >= cartGWP.minSpend && !matchingItem) {
-            addToCart(cartGWP.getProduct.variantId, 1, cartGWP.gwp_item_message);
+            console.log('TEST1')
+            addToCart(cartGWP.getProduct.variantId, 1, cartGWP.gwp_item_message,cartGWP.admin_title,cartGWP.type);
             if (cartGWP.getProduct2?.available) {
-              addToCart(cartGWP.getProduct2.variantId, 1, cartGWP.gwp_item_message);
+              addToCart(cartGWP.getProduct2.variantId, 1, cartGWP.gwp_item_message,cartGWP.admin_title,cartGWP.type);
             }
             if (cartGWP.getProduct3?.available) {
-              addToCart(cartGWP.getProduct3.variantId, 1, cartGWP.gwp_item_message);
+              addToCart(cartGWP.getProduct3.variantId, 1, cartGWP.gwp_item_message,cartGWP.admin_title,cartGWP.type);
             }
           } else if (minsSpendBuyX < cartGWP.minSpend && matchingItem) {
+            console.log('TEST2')
             removeFromCart(matchingItem.key);
             const matchingItem2 = cartObject.items.find(item => item.handle === cartGWP.getProduct2?.handle);
             const matchingItem3 = cartObject.items.find(item => item.handle === cartGWP.getProduct3?.handle);
             if (matchingItem2) removeFromCart(matchingItem2.key);
             if (matchingItem3) removeFromCart(matchingItem3.key);
+          } else {
+            console.log('TEST3')
           }
         }
 
@@ -6308,7 +6320,7 @@ var CartDrawer = class extends DrawerContent {
 
           if(hasBuyTag === true && !matchingItem) {
             console.log("test1")
-            addToCart(cartGWP.getProduct.variantId,1,cartGWP.gwp_item_message);
+            addToCart(cartGWP.getProduct.variantId,1,cartGWP.gwp_item_message,cartGWP.admin_title,cartGWP.type);
           } else if(hasBuyTag === false && matchingItem) {
             console.log("test2")
             const itemKey = matchingItem.key;
@@ -6331,7 +6343,7 @@ var CartDrawer = class extends DrawerContent {
           });
 
           if(hasSubscription === true && !matchingItem) {
-            addToCart(cartGWP.getProduct.variantId,1,cartGWP.gwp_item_message);
+            addToCart(cartGWP.getProduct.variantId,1,cartGWP.gwp_item_message,cartGWP.admin_title,cartGWP.type);
           } else if(hasSubscription === false && matchingItem) {
             const itemKey = matchingItem.key;
             removeFromCart(itemKey);

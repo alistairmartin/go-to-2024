@@ -195,6 +195,36 @@
   display: none;
 }
 
+.product--matte-pop-blush {
+  .product {
+    .product-form__option-selector {
+      margin-top: 20px;
+    }
+
+    .product-form__option-info {
+      display: block;
+      font-weight: bold;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .product-form__option-value {
+      font-weight: normal;
+    }
+
+    .color-swatch-list {
+      justify-content: center;
+    }
+
+    .color-swatch-list {
+      gap: 0;
+    }
+  }
+}
+
+
+
+
   // .product-content-description --- START
 
   .product-content-description {

@@ -45,7 +45,6 @@
     transition: opacity 0.5s ease;
   }
 
-  
 </style>
 {%- endcapture -%}
 {{- styles | strip_newlines | remove:" " | strip -}}
@@ -124,25 +123,50 @@
     
     {%- if block.settings.split_slide -%}
     <a href="{{ block.settings.url }}">
-    <flickity-carousel
-      id="split-slide-{{ block.id }}"
-      class="slide1 split-slide-carousel"
-      flickity-config='{"cellSelector":".carousel-cell","cellAlign":"left","contain":true,"wrapAround":true,"autoPlay":{{ block.settings.split_slide_autoplay_speed | times: 1 }},"pauseAutoPlayOnHover":false,"fade": true,"imagesLoaded":true,"prevNextButtons":false,"pageDots":true,"draggable":">1","selectedAttraction":0.02,"friction":0.28}'>
-      <div class="carousel-cell">
-        {{ block.settings.split_slide_img1 | image_url: width: block.settings.split_slide_img1.width | image_tag: loading: "eagerly", sizes: sizes_attribute, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: class_attribute }}
-      </div>
-      <div class="carousel-cell">
-        {{ block.settings.split_slide_img2 | image_url: width: block.settings.split_slide_img2.width | image_tag: loading: "lazy", sizes: sizes_attribute, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: class_attribute }}
-      </div>
-      <div class="carousel-cell">
-        {{ block.settings.split_slide_img3 | image_url: width: block.settings.split_slide_img3.width | image_tag: loading: "lazy", sizes: sizes_attribute, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: class_attribute }}
-      </div>
-    </flickity-carousel>
+
+    {%- if block.settings.enable_split_slide_images -%}
+      <flickity-carousel
+        id="split-slide-{{ block.id }}"
+        class="slide1 split-slide-carousel"
+        flickity-config='{"cellSelector":".carousel-cell","cellAlign":"left","contain":true,"wrapAround":true,"autoPlay":{{ block.settings.split_slide_autoplay_speed | times: 1 }},"pauseAutoPlayOnHover":false,"fade": true,"imagesLoaded":true,"prevNextButtons":false,"pageDots":true,"draggable":">1","selectedAttraction":0.02,"friction":0.28}'>
+        <div class="carousel-cell">
+          {{ block.settings.split_slide_img1 | image_url: width: block.settings.split_slide_img1.width | image_tag: loading: "eagerly", sizes: sizes_attribute, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: class_attribute }}
+        </div>
+        <div class="carousel-cell">
+          {{ block.settings.split_slide_img2 | image_url: width: block.settings.split_slide_img2.width | image_tag: loading: "lazy", sizes: sizes_attribute, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: class_attribute }}
+        </div>
+        {%- if block.settings.split_slide_img3 != blank -%}
+        <div class="carousel-cell">
+          {{ block.settings.split_slide_img3 | image_url: width: block.settings.split_slide_img3.width | image_tag: loading: "lazy", sizes: sizes_attribute, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: class_attribute }}
+        </div>
+        {%- endif -%}
+      </flickity-carousel>
+    {% else %}
+
+        <div id="split-slide-{{ block.id }}" class="slide1 split-slide-carousel">
+        {%- capture class_attribute -%}{% if block.settings.mobile_image != blank %}hide-mobile{% endif %}{%- endcapture -%}
+        {%- capture sizes_attribute -%}(max-width: 999px) 100vw, 100vw{%- endcapture -%}
+
+          {%- if block.settings.load_image_as_priorty == true -%}
+            {%- assign load_image_as_priorty = "eagerly" -%}
+          {% else  %}
+          {%- assign load_image_as_priorty = "lazy" -%}
+          {%- endif -%}
+        {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: load_image_as_priorty, sizes: sizes_attribute, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: class_attribute }}
+  
+        {%- if block.settings.mobile_image != blank -%}
+        {%- capture class_attribute -%}hide-desktop{%- endcapture -%}
+        {%- capture sizes_attribute -%}(max-width: 999px) 100vw, 100vw{%- endcapture -%}
+            {{ block.settings.mobile_image | image_url: width: block.settings.mobile_image.width | image_tag: loading: load_image_as_priorty, sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400', class: class_attribute }}
+        {%- endif -%}
+          </div>
+    {%- endif -%}
+
     </a>
     {%- endif -%}
 
 
-    
+  
     {%- if block.settings.split_slide -%}<div class="slide-group--split">{%- endif -%}
     <div class="slide-group {{ classes }}">
       {% content_for 'blocks' %}
@@ -385,12 +409,12 @@
           "type": "checkbox",
           "id": "split_slide",
           "label": "Split Slide 50/50",
-          "info": "Will Split Slide in half, ima" 
+          "info": "Will Split Slide in half" 
         },
         {
           "type": "radio",
           "id": "split_slide_position",
-          "label": "split_slide_position",
+          "label": "Split Slide Position",
           "options": [
             {
               "value": "left",
@@ -409,6 +433,12 @@
           "label": "Autoplay Speed (Milliseconds)",
           "info": "e.g. 4000 = 4 Seconds",
           "default": "3000"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_split_slide_images",
+          "label": "Enable Split Slide Images",
+          "info": "Need to add 2 Slide images below, else will default to the Images above."
         },
         {
           "type": "image_picker",

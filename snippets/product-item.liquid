@@ -121,7 +121,9 @@
         {{ product.featured_media | image_url: width: product.featured_media.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '200,300,400,500,600,700,800,900,1000,1100,1200', class: 'product-item__primary-image', data-media-id: product.featured_media.id }}
       {%- endif -%}
 
+
       {%- if settings.product_color_display == 'swatch' -%}
+
         {%- for color_label in color_label_list -%}
           {%- if product.options_by_name[color_label] != blank -%}
 			      {%- for color_option in product.options_by_name[color_label].values -%}
@@ -353,7 +355,7 @@
 
     
 
-      {%- if settings.product_color_display != 'hide' and reduced_content != true -%}
+      {%- if settings.product_color_display != 'hide' -%}
         {%- for color_label in color_label_list -%}
           {%- if product.options_by_name[color_label] != blank -%}
             {%- assign product_option = product.options_by_name[color_label] -%}

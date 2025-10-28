@@ -32,15 +32,30 @@
     --prev-next-button-color: var(--section-background);
 
     --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+
+    {%- if section.settings.enable_custom_progress_bar_colour -%}
+      --progress-bar: {{ section.settings.progress_bar_colour.red }}, {{ section.settings.progress_bar_colour.green }}, {{ section.settings.progress_bar_colour.blue }};
+    {%- endif -%}
   }
 
   #shopify-section-{{ section.id }}  video {
     height: var(--gallery-image-height);
     width: auto;
   }
+
+  {%- for block in section.blocks -%}
+
+    {%- if block.settings.enable_media_height -%}
+        #block-{{ block.id }} .gallery__image, #block-{{ block.id }} video {
+          height: {{ block.settings.media_height }}vw;
+        }
+    {%- endif -%}
+
+  {%- endfor -%}
+  
 </style>
 
-<section class="section {% unless blends_with_background %}section--flush{% endunless %} {% if section.settings.arrow_bottom_right %}arrows-bottom-right{% endif %}">
+<section class="section {% unless blends_with_background %}section--flush{% endunless %} {% if section.settings.arrow_bottom_right %}arrows-bottom-right{% endif %} {% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %}">
   <div class="section__color-wrapper {% unless blends_with_background %}vertical-breather{% endunless %}">
 
     <div class="container container-header">
@@ -68,20 +83,25 @@
         <div class="{% if section.settings.enable_container %}container{% else %}no-container{% endif %}">
           <div class="gallery__list">
             {%- for block in section.blocks -%}
-              <gallery-item class="gallery__item" {{ block.shopify_attributes }}>
+              <gallery-item class="gallery__item" {{ block.shopify_attributes }} id="block-{{ block.id }}">
                 <figure class="gallery__figure">
 
 
                   {%- if block.settings.video != blank -%}
 
-                    {%- if block.settings.video_poster != blank -%}
+
+                    {%- if block.settings.video_poster != blank or block.settings.enable_autoplay -%}
                       {%- assign posterImage = block.settings.video_poster | image_url: width: 600 -%}
                     {% else %}
                       {%- assign posterImage = "none" -%}
                     {%- endif -%}
-                    
 
-                        {{- block.settings.video | video_tag: controls: true, autoplay: false, muted: false, playsinline: true, loop: false, poster: posterImage -}}
+                      {%- assign autoPlay = false -%}
+                      {%- if block.settings.enable_autoplay -%}
+                          {%- assign autoPlay = true -%}
+                      {%- endif -%}
+
+                        {{- block.settings.video | video_tag: controls: true, autoplay: block.settings.enable_autoplay, muted: false, playsinline: true, loop: block.settings.enable_loop_video, poster: posterImage -}}
 
                   {%- elsif block.settings.image -%}
                     {%- assign mobile_size = 370 | times: block.settings.image.aspect_ratio | ceil -%}
@@ -121,7 +141,7 @@
       {% endif %}
 
       <div class="gallery__progress-bar-wrapper container">
-        <span class="gallery__progress-bar progress-bar" style="--divider: {{ section.blocks.size }}"></span>
+        <span class="gallery__progress-bar progress-bar {% if section.settings.enable_custom_progress_bar_colour %}progress-bar-custom{% endif %}" style="--divider: {{ section.blocks.size }}"></span>
       </div>
     </gallery-list>
   </div>
@@ -142,6 +162,16 @@
         {
           "type": "header",
           "content": "Video"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_autoplay",
+          "label": "Enable Autoplay"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_loop",
+          "label": "Enable Loop"
         },
         {
           "type": "video",
@@ -172,11 +202,40 @@
           "type": "richtext",
           "id": "caption",
           "label": "Caption"
+        },
+        {
+        "type": "header",
+        "content": "Media Height"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_media_height",
+          "label": "Enable Custom Media Height"
+        },
+        {
+          "type": "range",
+          "id": "media_height",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "vw",
+          "label": "VW",
+          "default": 50
         }
       ]
     }
   ],
   "settings": [
+      {
+        "type": "checkbox",
+        "id": "hide_mobile",
+        "label": "Hide Mobile?"
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_desktop",
+        "label": "Hide Desktop?"
+      },
     {
       "type": "checkbox",
       "id": "enable_container",
@@ -289,6 +348,21 @@
       "id": "text_color",
       "label": "Color",
       "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "header",
+      "content": "Progress Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_progress_bar_colour",
+      "label": "Enable Custom Colour?"
+    },
+    {
+      "type": "color",
+      "id": "progress_bar_colour",
+      "label": "Progress Bar Colour",
+      "default": "#f9c6b9"
     }
   ],
   "presets": [

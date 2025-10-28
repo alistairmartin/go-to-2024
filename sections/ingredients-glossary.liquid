@@ -148,6 +148,33 @@
                             </div>
                           </div>
                         {% endfor %}  
+
+
+                        {%- if product.variants.size > 1 -%}
+                        {%- for variant in product.variants -%}
+                           {%- assign glossaryMetaobjects = variant.metafields.custom.ingredients.value | sort: "title" -%}
+                           {%- assign firstVariantLoop = true -%}
+
+                            {% for metaobject in glossaryMetaobjects %}
+                              {%- if firstVariantLoop == true -%}
+                                   <div class="ingredients-glossary--description-title heading" data-title="{{ metaobject.title | strip_html }}">
+                                  {{ product.title }} - {{ variant.title }}
+                                  </div>
+                                  {%- assign firstVariantLoop = false -%}
+                              {%- endif -%}
+                           
+
+                            <div class="ingredients-glossary--description-item" data-title="{{ metaobject.title | strip_html }}">
+                              <strong>{{ metaobject.title }}</strong>
+                              <div>
+                                {{ metaobject.description | metafield_tag }}
+                              </div>
+                            </div>
+                          {% endfor %} 
+                           
+                          
+                        {%- endfor -%}
+                        {%- endif -%}
                       </div>
                       </div>
 

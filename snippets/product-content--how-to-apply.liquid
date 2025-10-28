@@ -1,0 +1,38 @@
+<style>
+  #shopify-section-{{ section.id }} .image-tile {
+    --gridDesktop: {{ section.blocks.size }};
+  }
+</style>
+
+<section class="section">
+  <div class="container">
+
+         <h3 class="heading h2 text-align--left">{{ section.settings.title }}</h3>
+
+          <div class="image-tile">
+              {% for productItem in product.metafields.custom.product_how_to_apply_image_desktop %}
+
+                  {%- liquid
+                  assign imageDesktopObject = product.metafields.custom.product_how_to_apply_image_desktop[forloop.index0]
+                  assign imageMobileObject = product.metafields.product_how_to_apply_image_mobile[forloop.index0]
+                  assign titleObject = product.metafields.custom.product_how_to_apply_title[forloop.index0]
+                  assign descriptionObject = product.metafields.custom.product_how_to_apply_description[forloop.index0] 
+          -%}
+          
+              <div class="image-tile--item">
+                
+                {% render "responsive-image-metafields", src_desktop: imageDesktopObject, src_mobile: imageMobileObject %}
+
+                <div class="image-tile--item-container">
+                  <h4 class="image-tile--item-title">{{ titleObject }}</h4>
+                  <div class="image-tile--item-description">
+                    {{ descriptionObject }}
+                  </div>
+                </div>
+
+
+              </div>
+            {%- endfor -%}
+          </div>
+  </div>
+</section>

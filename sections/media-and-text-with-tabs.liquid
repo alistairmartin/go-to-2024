@@ -1,0 +1,228 @@
+<div class="media-text-tabs hide-desktop" id="media-text-tabs-{{ section.id }}">
+  <div class="media-text-tabs__inner">
+
+    {%- comment -%} Preload responsive images for smoother swaps {%- endcomment -%}
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    {%- for block in section.blocks -%}
+      {%- if block.settings.image != blank -%}
+        {%- assign pimg = block.settings.image -%}
+        <link rel="preload"
+              as="image"
+              href="{{ pimg | image_url: width: 720 }}"
+              imagesrcset="{{ pimg | image_url: width: 360 }} 360w, {{ pimg | image_url: width: 540 }} 540w, {{ pimg | image_url: width: 720 }} 720w, {{ pimg | image_url: width: 900 }} 900w"
+              imagesizes="(max-width: 749px) 90vw">
+      {%- endif -%}
+    {%- endfor -%}
+
+    <div class="media-text-tabs__image" id="media-text-tabs-active-image"></div>
+
+    <h2 class="media-text-tabs__title media-text-tabs__title--active heading h2" id="media-text-tabs-active-title"></h2>
+
+    <nav class="media-text-tabs__tabs" aria-label="Items" role="tablist">
+      <ul class="media-text-tabs__tablist list--unstyled hide-scrollbar" role="list">
+        {%- for block in section.blocks -%}
+          {%- assign is_active = forloop.first -%}
+          <li class="media-text-tabs__tabitem">
+            <button
+              id="media-text-tabs-tab-{{ section.id }}-{{ forloop.index }}"
+              class="media-text-tabs__tab{% if is_active %} is-selected{% endif %}"
+              type="button"
+              role="tab"
+              aria-selected="{% if is_active %}true{% else %}false{% endif %}"
+              aria-controls="media-text-tabs-panel-{{ section.id }}-{{ forloop.index }}"
+              data-index="{{ forloop.index }}"
+            >
+              {{ block.settings.tab_label | default: block.settings.title | escape }}
+            </button>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="media-text-tabs__panels">
+      {%- for block in section.blocks -%}
+        {%- assign is_active = forloop.first -%}
+        <article
+          class="media-text-tabs__panel{% if is_active %} is-active{% endif %}"
+          id="media-text-tabs-panel-{{ section.id }}-{{ forloop.index }}"
+          role="tabpanel"
+          aria-labelledby="media-text-tabs-tab-{{ section.id }}-{{ forloop.index }}"
+          tabindex="0"
+          {% unless is_active %}hidden{% endunless %}
+          {{ block.shopify_attributes }}
+        >
+          <div class="media-text-tabs__image media-text-tabs__image--source" hidden>
+            {%- if block.settings.image != blank -%}
+              {%- assign img = block.settings.image -%}
+              <img
+                srcset="{{ img | image_url: width: 360 }} 360w, {{ img | image_url: width: 540 }} 540w, {{ img | image_url: width: 720 }} 720w, {{ img | image_url: width: 900 }} 900w"
+                sizes="(max-width: 749px) 90vw"
+                src="{{ img | image_url: width: 900 }}"
+                alt="{{ block.settings.image_alt | escape }}"
+                width="{{ img.width }}" height="{{ img.height }}"
+                decoding="async"
+                fetchpriority="low"
+                loading="lazy"
+              >
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'placeholder' }}
+            {%- endif -%}
+          </div>
+
+          <div class="media-text-tabs__content">
+            {%- if block.settings.title != blank -%}
+              <h2 class="media-text-tabs__title media-text-tabs__title--hidden" aria-hidden="true">{{ block.settings.title }}</h2>
+            {%- endif -%}
+
+            {%- if block.settings.description != blank -%}
+              <div class="media-text-tabs__description rte">{{ block.settings.description }}</div>
+            {%- endif -%}
+
+            {%- if block.settings.button_label != blank and block.settings.button_link != blank -%}
+              <a class="media-text-tabs__button link link--primary" href="{{ block.settings.button_link }}">{{ block.settings.button_label }}</a>
+            {%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+<style>
+
+  .media-text-tabs { padding: 0; }
+  .media-text-tabs__image img { width: 100%; height: auto; display: block; padding: 0 16px; }
+  .media-text-tabs__title { margin: 16px 0 8px; font-size: 36px; line-height: 1.2; padding: 0 16px; font-weight: normal; }
+  .media-text-tabs__title--hidden { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+  .media-text-tabs__title--active { margin: 16px 0 8px; }
+  .media-text-tabs__description { margin: 8px 0 16px; padding: 0 16px;  }
+  .media-text-tabs__button { display: inline-block;  margin-left: 16px; margin-top: 32px; }
+
+  /* Tabs */
+  .media-text-tabs__tabs { margin: 16px 0; }
+  .media-text-tabs__tablist { display:flex; gap:16px; overflow:auto; -webkit-overflow-scrolling:touch; padding: 0 2px 0 16px; }
+  .media-text-tabs__tab { background: none; border: 0; padding: 10px 0; font: inherit; white-space: nowrap; cursor: pointer; border-bottom: 1px solid currentColor; opacity: .6; }
+  .media-text-tabs__tab.is-selected { opacity: 1; border-bottom-width: 2px; border-color: #f9c6ba; font-weight: 600; }
+
+  /* Panels */
+  .media-text-tabs__panel { }
+  .media-text-tabs__panel[hidden] { display: none !important; }
+
+  .media-text-tabs__image img { transition: opacity 0.5s ease, transform 0.6s ease; opacity: 1; }
+  .media-text-tabs__image.is-fading img { opacity: 0; transform: scale(1.00); }
+  .media-text-tabs__image img:hover { transform: scale(1.00); }
+  .media-text-tabs__title--active { transition: opacity 0.4s ease, transform 0.4s ease; opacity: 1; }
+  .media-text-tabs__title--active.is-fading { opacity: 0; transform: translateY(4px); }
+  .media-text-tabs__description { transition: opacity 0.4s ease; }
+  .media-text-tabs__description.is-fading { opacity: 0; }
+  .media-text-tabs__tab { transition: color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease; }
+  .media-text-tabs__tab.is-selected { color: #1c1c1; opacity: 1; }
+</style>
+
+<script>
+  (function() {
+    const root = document.getElementById('media-text-tabs-{{ section.id }}');
+    if (!root) return;
+    const tabs = root.querySelectorAll('.media-text-tabs__tab');
+    const panels = root.querySelectorAll('.media-text-tabs__panel');
+    const activeTitle = root.querySelector('#media-text-tabs-active-title');
+    const activeImage = root.querySelector('#media-text-tabs-active-image');
+
+    function activate(index) {
+      // Add fade-out animations
+      if (activeImage) activeImage.classList.add('is-fading');
+      if (activeTitle) activeTitle.classList.add('is-fading');
+
+      setTimeout(() => {
+        tabs.forEach((tab, i) => {
+          const selected = (i + 1) === index;
+          tab.classList.toggle('is-selected', selected);
+          tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+        });
+        panels.forEach((panel, i) => {
+          const active = (i + 1) === index;
+          if (active) {
+            panel.removeAttribute('hidden');
+            panel.classList.add('is-active');
+          } else {
+            panel.setAttribute('hidden', 'hidden');
+            panel.classList.remove('is-active');
+          }
+        });
+        const panel = panels[index - 1];
+        if (panel && activeTitle) {
+          const hiddenTitle = panel.querySelector('.media-text-tabs__title');
+          if (hiddenTitle) activeTitle.innerHTML = hiddenTitle.innerHTML;
+        }
+        if (panel && activeImage) {
+          const img = panel.querySelector('.media-text-tabs__image--source img');
+          if (img) {
+            activeImage.innerHTML = img.outerHTML;
+            const ai = activeImage.querySelector('img');
+            if (ai) {
+              ai.setAttribute('decoding', 'async');
+              ai.setAttribute('fetchpriority', 'high');
+              ai.setAttribute('loading', 'eager');
+            }
+          }
+        }
+        // Fade back in
+        if (activeImage) activeImage.classList.remove('is-fading');
+        if (activeTitle) activeTitle.classList.remove('is-fading');
+      }, 200);
+    }
+
+    // Initialize the active title to the first panel’s title
+    (function initTitle(){
+      const first = panels[0];
+      if (!first || !activeTitle) return;
+      const hiddenTitle = first.querySelector('.media-text-tabs__title');
+      if (hiddenTitle) activeTitle.innerHTML = hiddenTitle.innerHTML;
+      const firstImg = first.querySelector('.media-text-tabs__image--source img');
+      if (firstImg && activeImage) {
+        activeImage.innerHTML = firstImg.outerHTML;
+        const ai = activeImage.querySelector('img');
+        if (ai) {
+          ai.setAttribute('decoding', 'async');
+          ai.setAttribute('fetchpriority', 'high');
+          ai.setAttribute('loading', 'eager');
+        }
+      }
+    })();
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const index = parseInt(tab.getAttribute('data-index'), 10);
+        activate(index);
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Media & text with tabs",
+  "class": "media-and-text-with-tabs",
+  "max_blocks": 6,
+  "settings": [],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Tab item",
+      "settings": [
+        { "type": "text", "id": "tab_label", "label": "Tab label" },
+        { "type": "image_picker", "id": "image", "label": "Image (mobile)" },
+        { "type": "text", "id": "image_alt", "label": "Image alt text" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Your Best Lighting. Always On." },
+        { "type": "richtext", "id": "description", "label": "Description" },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop now" },
+        { "type": "url", "id": "button_link", "label": "Button link" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Media & text with tabs (Mobile)", "category": "Custom" }
+  ]
+}
+{% endschema %}

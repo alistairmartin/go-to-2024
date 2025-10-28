@@ -120,7 +120,7 @@
     {% assign feature_classes = feature_classes | append: ' compact-mobile-header' %}
   {%- endif -%}
 
-  {% capture template_classes %} template-{{ template.name }} template-{{ template.name }}--{{ template.suffix }} {{ template.name }}--{{ page_title | handle }}{% endcapture %}
+  {% capture template_classes %} template-{{ template.name }} template-{{ template.name }}--{{ template.suffix }} {{ template.name }}--{{ page_title | handle }} product--{{ product.handle }}{% endcapture %}
   {%- assign feature_classes = feature_classes | append: template_classes -%}
 
   <body class="{{ brand }} brand-{{ brand }} no-focus-outline {{ feature_classes }} market-{{ localization.market.handle | upcase }}" data-instant-allow-query-string>

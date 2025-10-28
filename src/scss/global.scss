@@ -2543,6 +2543,34 @@ rivo-favorite-button.rivo-favorite-active svg {
         }
       }
     }
+
+    .ingredients-glossary--description-title {
+      grid-column: span 2;
+      border-bottom: 1px solid #d4d4d4;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    }
+  }
+}
+
+.faq-ingredients {
+  &.faq {
+    .faq__wrapper {
+      width: 100%;
+    }
+
+    .collapsible__content {
+      padding: 0;
+    }
+
+    .collapsible-toggle[aria-expanded="true"] {
+        background: $gotoPink;
+    }
+  }
+
+  .ingredients-glossary--description  {
+    grid-template-columns: 1fr 1fr;
+    padding-top: 20px;
   }
 }
 
@@ -3450,7 +3478,6 @@ product-rerender {
   }
 
   .quick-buy-product__image {
-    border-radius: 8px !important;
     box-shadow: 1px 1px 1px #9b9b9b49;
   }
 
@@ -5866,4 +5893,77 @@ button[aria-label="Tolstoy stories: next button"] {
   }
 }
 
+.product-item-meta__swatch-list {
+  margin-top: -20px;
+  padding-bottom: 3px;
 
+    @include media-query($small) {
+        margin-top: -10px;
+        padding-bottom: 3px;
+    }
+    
+}
+
+.shopify-section--image-tiles {
+
+  .heading.h2 {
+    font-weight: normal;
+    font-size: 36px;
+
+    @include media-query($medium-up) {
+        font-size: 54px;
+    }
+  }
+
+  .image-tile {
+    display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+
+      @include media-query($medium-up) {
+        grid-template-columns: repeat(var(--gridDesktop), 1fr);
+      }
+
+      .image-tile--item {
+        display: flex;
+        flex-direction: row;
+        box-shadow: 0px 1px 4px 0px #00000040;
+
+          @include media-query($medium-up) {
+        display: flex;
+        flex-direction: column;
+          }
+      }
+
+      .image-tile--item-container {
+        padding: 20px 15px;
+      }
+
+      .image-tile--item-title {
+        margin-bottom: 5px;
+        text-align: left;
+        font-size: 24px;
+      }
+
+      img {
+        margin: 0 !important;
+        max-width: 33%;
+        @include media-query($medium-up) {
+          max-width: 100%;
+        }
+      }
+  }
+}
+
+.shopify-section--image-tiles-pdp{
+  picture {
+    max-width: 33%;
+       @include media-query($medium-up) {
+        max-width: 100%;
+       }
+  }
+  img {
+      max-width: 100% !important;
+      width: 100% !important;
+    }
+}

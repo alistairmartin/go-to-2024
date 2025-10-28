@@ -1870,6 +1870,14 @@ p a:not(.button), .rte a:not(.button), .link {
   top: 0;
 }
 
+.progress-bar-custom {
+  background: rgba(var(--progress-bar), .15);
+}
+
+.progress-bar:before {
+  background: rgb(var(--progress-bar));
+}
+
 .progress-bar:not(:lang(ae), :lang(ar), :lang(arc), :lang(bcc), :lang(bqi), :lang(ckb), :lang(dv), :lang(fa), :lang(glk), :lang(he), :lang(ku), :lang(mzn), :lang(nqo), :lang(pnb), :lang(ps), :lang(sd), :lang(ug), :lang(ur), :lang(yi)):before {
   left: 0;
 }

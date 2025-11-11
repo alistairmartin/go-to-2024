@@ -678,8 +678,8 @@
         // padding-bottom: 56.25%;
         padding-bottom: 68%;
         overflow: hidden;
-        min-height: 600px;
-        max-height: 680px;
+        // min-height: 600px;
+        // max-height: 680px;
       }
 
       img {
@@ -687,8 +687,8 @@
         border-radius: var(--image-border-radius);
         width: 100%;
         @include media-query($medium-up) {
-        max-height: 680px;
-        min-height: 600px;
+        // max-height: 680px;
+        // min-height: 600px;
         }
       }
 
@@ -701,7 +701,7 @@
         border-radius: var(--image-border-radius);
 
         @include media-query($medium-up) {
-          border-radius: 10px;
+          border-radius: var(--image-border-radius);
         }
       }
     }

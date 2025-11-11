@@ -144,21 +144,30 @@
     {% else %}
 
         <div id="split-slide-{{ block.id }}" class="slide1 split-slide-carousel">
-        {%- capture class_attribute -%}{% if block.settings.mobile_image != blank %}hide-mobile{% endif %}{%- endcapture -%}
-        {%- capture sizes_attribute -%}(max-width: 999px) 100vw, 100vw{%- endcapture -%}
 
-          {%- if block.settings.load_image_as_priorty == true -%}
-            {%- assign load_image_as_priorty = "eagerly" -%}
-          {% else  %}
-          {%- assign load_image_as_priorty = "lazy" -%}
+        {%- if block.settings.background_media == "video" -%}
+          <div class="custom-slideshow--slide-video" id="video-container-{{ block.id }}">
+            <div class="video-poster-overlay" id="poster-{{ block.id }}"></div>
+            <div id="video-{{ block.id }}"></div>
+          </div>
+      {% else %}    
+          {%- capture class_attribute -%}{% if block.settings.mobile_image != blank %}hide-mobile{% endif %}{%- endcapture -%}
+          {%- capture sizes_attribute -%}(max-width: 999px) 100vw, 100vw{%- endcapture -%}
+
+            {%- if block.settings.load_image_as_priorty == true -%}
+              {%- assign load_image_as_priorty = "eagerly" -%}
+            {% else  %}
+            {%- assign load_image_as_priorty = "lazy" -%}
+            {%- endif -%}
+          {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: load_image_as_priorty, sizes: sizes_attribute, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: class_attribute }}
+    
+          {%- if block.settings.mobile_image != blank -%}
+          {%- capture class_attribute -%}hide-desktop{%- endcapture -%}
+          {%- capture sizes_attribute -%}(max-width: 999px) 100vw, 100vw{%- endcapture -%}
+              {{ block.settings.mobile_image | image_url: width: block.settings.mobile_image.width | image_tag: loading: load_image_as_priorty, sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400', class: class_attribute }}
           {%- endif -%}
-        {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: load_image_as_priorty, sizes: sizes_attribute, widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000', class: class_attribute }}
-  
-        {%- if block.settings.mobile_image != blank -%}
-        {%- capture class_attribute -%}hide-desktop{%- endcapture -%}
-        {%- capture sizes_attribute -%}(max-width: 999px) 100vw, 100vw{%- endcapture -%}
-            {{ block.settings.mobile_image | image_url: width: block.settings.mobile_image.width | image_tag: loading: load_image_as_priorty, sizes: '100vw', widths: '600,700,800,1000,1200,1400,1600,1800,2000,2200,2400', class: class_attribute }}
-        {%- endif -%}
+
+        {% endif %}
           </div>
     {%- endif -%}
 
@@ -221,23 +230,26 @@
 
       }
 
+      
       fetch(vimeoEmbedUrl)
         .then(response => response.json())
         .then(data => {
           let thumbnailUrl = data.thumbnail_url;
           var posterOverlay = document.getElementById('poster-{{ block.id }}');
 
-          if (window.innerWidth > 469) {
-            let parts = thumbnailUrl.split("_");
-            let lastPart = parts.pop(); 
-            let updatedThumbnailUrl = parts.join("_") + "_252x108." + lastPart.split(".").pop();
-            posterOverlay.style.backgroundImage = `url('${updatedThumbnailUrl}')`;
-          } else {
-            let parts = thumbnailUrl.split("_");
-            let lastPart = parts.pop(); 
-            let updatedThumbnailUrl = parts.join("_") + "_250x250." + lastPart.split(".").pop();
-            posterOverlay.style.backgroundImage = `url('${updatedThumbnailUrl}')`;
-          }
+          //    if (window.innerWidth > 469) {
+          //   let parts = thumbnailUrl.split("_");
+          //   let lastPart = parts.pop(); 
+          //   let updatedThumbnailUrl = parts.join("_") + "_252x108." + lastPart.split(".").pop();
+          //   posterOverlay.style.backgroundImage = `url('${updatedThumbnailUrl}')`;
+          // } else {
+          //   let parts = thumbnailUrl.split("_");
+          //   let lastPart = parts.pop(); 
+          //   let updatedThumbnailUrl = parts.join("_") + "_250x250." + lastPart.split(".").pop();
+          //   posterOverlay.style.backgroundImage = `url('${updatedThumbnailUrl}')`;
+          // }
+
+          posterOverlay.style.backgroundImage = `url('${thumbnailUrl}')`;
 
         })
         .catch(err => console.error('Error fetching thumbnail:', err));

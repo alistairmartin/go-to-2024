@@ -64,7 +64,18 @@
         {%- endif -%}
       {%- endif -%}
       
-      {%- if product.available and reduced_content or show_cta -%}
+      {% assign soldOutProduct = false %}
+      {%- for tag in product.tags -%}
+        {%- if tag == "SOLDOUT" -%}
+          {% assign soldOutProduct = true %}
+          {% break %}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if soldOutProduct == true -%}
+        <button class="link link--primary back-in-stock">SOLD OUT</button>
+      
+      {%- elsif product.available and reduced_content or show_cta -%}
         <div class="product-item__cta-wrapper">
           {%- if product.variants.size == 1 -%}
             {%- capture form_id -%}product_form_{{ section.id }}_{{ block.id }}_{{ product.id }}_{% increment product_form_index %}{%- endcapture -%}

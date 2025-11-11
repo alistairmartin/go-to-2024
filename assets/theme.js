@@ -1730,6 +1730,21 @@ var ToggleButton = class extends HTMLButtonElement {
 Object.assign(ToggleButton.prototype, LoaderButtonMixin);
 window.customElements.define("toggle-button", ToggleButton, { extends: "button" });
 
+// Fallback: support [data-collapsible-toggle] buttons where customized built-ins are not supported
+(function(){
+  const rootDelegate = new main_default(document.documentElement);
+  rootDelegate.on('click', '[data-collapsible-toggle]', function(event, target){
+    event.preventDefault();
+    const controls = target.getAttribute('aria-controls');
+    if (!controls) return;
+    const controlled = document.getElementById(controls);
+    if (!controlled) return;
+    const expanded = target.getAttribute('aria-expanded') === 'true';
+    target.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+    controlled.open = !expanded;
+  }, true);
+})();
+
 // js/custom-element/behavior/toggle-link.js
 var ToggleLink = class extends HTMLAnchorElement {
   static get observedAttributes() {

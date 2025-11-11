@@ -481,8 +481,6 @@
               <product-payment-container {% if update_url %}id="MainPaymentContainer"{% endif %} class="product-form__payment-container" {{ block.shopify_attributes }}>
 
 
-         
-
                   {%- assign showBackInStock = false -%}
 
                   {%- if product.tags contains 'no-waitlist' -%}
@@ -493,21 +491,39 @@
                     {%- assign showBackInStock = true -%}
                   {% endif %}
 
-                  <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')"  class="button button--primary back-in-stock {% if showBackInStock == false %}hide{% endif %}">WAITLIST ME</button>
 
-                  <button id="AddToCart" type="submit" is="loader-button" {% unless block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}data-use-primary{% endunless %} data-product-add-to-cart-button data-button-content="{% if product.template_suffix == 'pre-order' %}{{ 'product.form.pre_order' | t | escape }}{% else %}{{ 'product.form.add_to_cart' | t | escape }}{% endif %}" class="product-form__add-button button {% if showBackInStock == true %}hide{% endif %} {% unless product.selected_or_first_available_variant.available %}button--ternary{% else %}{% if block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}button--secondary{% else %}button--primary{% endif %}{% endunless %} button--full" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
-                    {%- if product.selected_or_first_available_variant == nil -%}
-                      {{- 'product.form.unavailable' | t -}}
-                    {%- elsif product.selected_or_first_available_variant.available -%}
-                      {%- if product.template_suffix == 'pre-order' -%}
-                        {{- 'product.form.pre_order' | t -}}
-                      {%- else -%}
-                        {{- 'product.form.add_to_cart' | t -}}
-                      {%- endif -%}
-                    {%- else -%}
-                        {{- 'product.form.sold_out' | t -}}       
+                   {% assign soldOutProduct = false %}
+                  {%- for tag in product.tags -%}
+                    {%- if tag == "SOLDOUT" -%}
+                      {% assign soldOutProduct = true %}
+                      {% break %}
                     {%- endif -%}
+                  {%- endfor -%}
+
+
+                  {%- if soldOutProduct == true -%}
+                    <button id="AddToCart" type="submit" is="loader-button" data-product-add-to-cart-button data-button-content="{{ 'product.form.add_to_cart' | t | escape }}" class="product-form__add-button button button--ternary button--full" disabled>
+                        {{- 'product.form.sold_out' | t -}}
                   </button>
+
+                  {% else  %}
+                    <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')"  class="button button--primary back-in-stock {% if showBackInStock == false or soldOutProduct == true %}hide{% endif %}">WAITLIST ME</button>
+
+                    <button id="AddToCart" type="submit" is="loader-button" {% unless block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}data-use-primary{% endunless %} data-product-add-to-cart-button data-button-content="{% if product.template_suffix == 'pre-order' %}{{ 'product.form.pre_order' | t | escape }}{% else %}{{ 'product.form.add_to_cart' | t | escape }}{% endif %}" class="product-form__add-button button {% if showBackInStock == true %}hide{% endif %} {% unless product.selected_or_first_available_variant.available %}button--ternary{% else %}{% if block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}button--secondary{% else %}button--primary{% endif %}{% endunless %} button--full" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+                      {%- if product.selected_or_first_available_variant == nil -%}
+                        {{- 'product.form.unavailable' | t -}}
+                      {%- elsif product.selected_or_first_available_variant.available -%}
+                        {%- if product.template_suffix == 'pre-order' -%}
+                          {{- 'product.form.pre_order' | t -}}
+                        {%- else -%}
+                          {{- 'product.form.add_to_cart' | t -}}
+                        {%- endif -%}
+                      {%- else -%}
+                          {{- 'product.form.sold_out' | t -}}       
+                      {%- endif -%}
+                    </button>
+                  {%- endif -%}
+        
 
                   {%- if block.settings.show_payment_button and recipient_feature_active == false and template.suffix != 'quick-buy-popover' -%}
                     {{ form | payment_button }}

@@ -1,0 +1,24 @@
+
+<div class="popover-buttons">
+  <button type="button" is="toggle-button" class="link link--primary hidden-phone" aria-controls="{{ popoverId }}-drawer" aria-expanded="false">{{ popoverButton }} {%- render 'icon' with "plus" -%}</button>
+</div>
+
+
+<drawer-content id="{{ popoverId }}-drawer" class="drawer drawer--large hidden-phone">
+    <span class="drawer__overlay"></span>
+
+    <header class="drawer__header">
+      <p class="drawer__title heading h6">{{ popoverTitle }}</p>
+
+      <button type="button" class="drawer__close-button tap-area" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
+        {%- render 'icon' with 'close' -%}
+      </button>
+    </header>
+
+    <div class="drawer__content drawer__content--padded-start">
+      <div class="rte">
+        {{ popoverContent }}
+      </div>
+    </div>
+  </drawer-content>
+

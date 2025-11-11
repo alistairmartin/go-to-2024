@@ -2572,6 +2572,17 @@ rivo-favorite-button.rivo-favorite-active svg {
     grid-template-columns: 1fr 1fr;
     padding-top: 20px;
   }
+
+  .faq__item {
+      @include media-query($small) {
+        padding: 0;
+
+        button {
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+      }
+  }
 }
 
 
@@ -5966,4 +5977,12 @@ button[aria-label="Tolstoy stories: next button"] {
       max-width: 100% !important;
       width: 100% !important;
     }
+}
+
+
+.product-form__add-button {
+  &:disabled {
+    transform: none !important;
+    box-shadow: 4px 4px 0 var(--color-button-ternary-shadow) !important;
+  }
 }

@@ -17,8 +17,16 @@
       {%- assign customVariants = true -%}
     {%- endif -%}
 
+         {% assign soldOutProduct = false %}
+      {%- for tag in product.tags -%}
+        {%- if tag == "SOLDOUT" -%}
+          {% assign soldOutProduct = true %}
+          {% break %}
+        {%- endif -%}
+      {%- endfor -%}
+      
 
-
+      {%- unless soldOutProduct -%}
       <product-sticky-form form-id="{{ product_form_id }}" hidden class="product-sticky-form {% if customVariants %}product-sticky-form--custom-variants{% endif %}">
         <div class="container">
           <div class="product-sticky-form__inner">
@@ -220,6 +228,7 @@
           </div>
         </div>
       </product-sticky-form>
+  {%- endunless -%}
     {%- endif -%}
   </product-rerender>
 {%- endif -%}

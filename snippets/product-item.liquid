@@ -392,8 +392,21 @@
       </div>
 
     </div>
+
+       {% assign soldOutProduct = false %}
+      {%- for tag in product.tags -%}
+        {%- if tag == "SOLDOUT" -%}
+          {% assign soldOutProduct = true %}
+          {% break %}
+        {%- endif -%}
+      {%- endfor -%}
+      
     {%- if outerCollectionHandle == "build-your-routine" and section_name == "featured-collections" and enable_byo_bundle == true -%}
       {% render "product-item--ATC-BYO", product: product %}
+    
+      {%- elsif soldOutProduct == true -%}
+        <button class="link link--primary back-in-stock">SOLD OUT</button>
+
     {%- elsif product.available and reduced_content or show_cta -%}
       <div class="product-item__cta-wrapper">
 

@@ -1,0 +1,24 @@
+
+<div class="popover-buttons">
+  <button type="button" is="toggle-button" class="link link--primary hidden-tablet-and-up" aria-controls="{{ popoverId }}-popover" aria-expanded="false">{{ popoverButton }} {%- render 'icon' with "plus" -%}</button>
+</div>
+
+
+  {%- comment -%}Popover is for mobile{%- endcomment -%}
+  <popover-content id="{{ popoverId }}-popover" class="popover hidden-lap-and-up">
+    <span class="popover__overlay"></span>
+
+    <header class="popover__header">
+      <p class="popover__title heading h6">{{ popoverTitle }}</p>
+
+      <button type="button" class="popover__close-button tap-area tap-area--large" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
+        {%- render 'icon' with 'close' -%}
+      </button>
+    </header>
+
+    <div class="popover__content">
+      <div class="rte">
+        {{ popoverContent }}
+      </div>
+    </div>
+  </popover-content>

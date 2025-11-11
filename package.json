@@ -11,6 +11,7 @@
     "prefix": "npx postcss assets/*.css --use autoprefixer --replace --no-map",
     "watch": "concurrently \"npm run watch:scss\" \"npm run watch:js\" \"theme watch\"",
     "watch-live": "concurrently \"npm run watch:scss\" \"npm run watch:js\" \"theme watch --allow-live\"",
+    "deploy-live": "npm run build && npm run prefix && theme deploy --allow-live",
     "watch:scss": "npx chokidar 'src/scss/**/*.scss' -c 'npm run scss'",
     "watch:js": "npx chokidar 'src/js/**/*.js' -c 'npm run js'"
   },

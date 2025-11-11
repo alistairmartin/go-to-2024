@@ -101,7 +101,7 @@
                           {%- assign autoPlay = true -%}
                       {%- endif -%}
 
-                        {{- block.settings.video | video_tag: controls: true, autoplay: block.settings.enable_autoplay, muted: false, playsinline: true, loop: block.settings.enable_loop_video, poster: posterImage -}}
+                        {{- block.settings.video | video_tag: controls: true, autoplay: block.settings.enable_autoplay, muted: block.settings.enable_mute, playsinline: true, loop: block.settings.enable_loop_video, poster: posterImage -}}
 
                   {%- elsif block.settings.image -%}
                     {%- assign mobile_size = 370 | times: block.settings.image.aspect_ratio | ceil -%}
@@ -171,6 +171,11 @@
         {
           "type": "checkbox",
           "id": "enable_loop",
+          "label": "Enable Loop"
+        },
+          {
+          "type": "checkbox",
+          "id": "enable_mute",
           "label": "Enable Loop"
         },
         {

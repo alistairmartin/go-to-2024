@@ -19,6 +19,7 @@
 }
 
 .shopify-section--main-product {
+  position: relative;
   .product-sticky-form  {
       @include media-query($medium-up) {
         background: #ffffff9c !important;
@@ -1148,6 +1149,21 @@
         bottom: 10px;
         transform: translate(-50%,0);
       }
+    }
+
+    .product-item[data-title="Glowy Blush"], .product-item[data-title="Matte Pop Blush"], .product-item[data-title="Ring Light"] {
+
+      .product-item-meta {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .product-item-meta__swatch-list {
+        order: 3;
+        justify-content: flex-start;
+        margin-top: 8px;
+        padding-bottom: 0;
+      } 
     }
   }
 

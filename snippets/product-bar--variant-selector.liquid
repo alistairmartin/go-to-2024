@@ -90,7 +90,7 @@
                             </a>
                           {%- else -%}
                             <input class="color-swatch__radio visually-hidden" type="radio" data-option-position="{{ option.position }}" name="option{{ option.position }}" form="{{ product_form_id }}" id="{{ option_id }}-{{ forloop.index }}" value="{{ value.id }}" {% if value == option.selected_value %}checked="checked"{% endif %}>
-                            <label class="color-swatch__item" for="{{ option_id }}-{{ forloop.index }}" style="{% render 'color-swatch-style', swatch: value.swatch, color_swatch_config: color_swatch_config, value: value %}">
+                            <label class="color-swatch__item color-swatch-{{ product.handle }}-{{ value | handle }}" for="{{ option_id }}-{{ forloop.index }}" style="{% render 'color-swatch-style', swatch: value.swatch, color_swatch_config: color_swatch_config, value: value %}">
                               <span class="visually-hidden">{{ value }}</span>
                             </label>
                           {%- endif -%}

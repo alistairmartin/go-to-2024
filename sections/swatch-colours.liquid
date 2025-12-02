@@ -1,0 +1,80 @@
+<style>
+  {%- for block in section.blocks -%}
+   .color-swatch-{{ block.settings.product.handle }}-{{ block.settings.variant_1 | handle }} {
+    background-color: {{ block.settings.color_1 }} !important;
+   }
+
+   .color-swatch-{{ block.settings.product.handle }}-{{ block.settings.variant_2 | handle }} {
+    background-color: {{ block.settings.color_2 }} !important;
+   }
+
+    .color-swatch-{{ block.settings.product.handle }}-{{ block.settings.variant_3 | handle }} {
+    background-color: {{ block.settings.color_3 }} !important;
+   }
+  {%- endfor -%}
+</style>
+
+{% schema %}
+  {
+    "name": "Swatch Colours",
+    "blocks": [
+      {
+        "type": "product",
+        "name": "Product",
+        "settings": [
+          {
+            "type": "product",
+            "id": "product",
+            "label": "Product"
+          },
+          {
+            "type": "header",
+            "content": "Colour #1"
+          },
+          {
+            "type": "text",
+            "id": "variant_1",
+            "label": "Variant Title",
+            "info": "e.g. Peachy"
+          },
+          {
+            "type": "color",
+            "id": "color_1",
+            "label": "Colour"
+          },
+              {
+            "type": "header",
+            "content": "Colour #2"
+          },
+          {
+            "type": "text",
+            "id": "variant_2",
+            "label": "Variant Title",
+            "info": "e.g. Peachy"
+          },
+          {
+            "type": "color",
+            "id": "color_2",
+            "label": "Colour"
+          },
+          {
+            "type": "header",
+            "content": "Colour #3"
+          },
+          {
+            "type": "text",
+            "id": "variant_3",
+            "label": "Variant Title",
+            "info": "e.g. Peachy"
+          },
+          {
+            "type": "color",
+            "id": "color_3",
+            "label": "Colour"
+          },
+          
+        ]
+      }
+    ]
+  }
+{% endschema %}

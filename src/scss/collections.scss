@@ -12,3 +12,16 @@
     margin-bottom: 0;
     padding-bottom: 80px;
 }
+
+.color-swatch__item {
+    border: 2px solid #fff !important;
+}
+
+.color-swatch__item:before {
+    border: 0px solid #fff !important;
+}
+
+
+.color-swatch__item:after {
+    border: 1px solid #000 !important;
+}

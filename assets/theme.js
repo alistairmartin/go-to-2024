@@ -1745,6 +1745,52 @@ window.customElements.define("toggle-button", ToggleButton, { extends: "button" 
   }, true);
 })();
 
+// ---- Scroll to top on variant selection ------------------------------------
+// When a user changes a variant in the product form (swatches or select),
+// scroll the page to the very top. Works for both the custom <variant-picker>
+// element and any block marked with [data-block-type="variant-picker"].
+(function(){
+  try {
+    var rootDelegate = new main_default(document.documentElement);
+
+    function scrollToTopSmooth() {
+      // Respect reduced motion if preferred
+      var prefersReduced = false;
+      try {
+        prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      } catch(e) {}
+      if (prefersReduced) {
+        window.scrollTo(0, 0);
+      } else {
+        try {
+          // window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.scrollTo(0, 0);
+        } catch(e) {
+          window.scrollTo(0, 0);
+        }
+      }
+    }
+
+    // Delegate change events on inputs/selects inside variant pickers
+    rootDelegate.on(
+      'change',
+      'variant-picker input, variant-picker select, [data-block-type="variant-picker"] input, [data-block-type="variant-picker"] select',
+      function() {
+        // Allow any variant update logic to run first, then scroll.
+        requestAnimationFrame(scrollToTopSmooth);
+      }
+    );
+
+    // Also listen for common custom events some themes emit on variant change.
+    // If your theme dispatches one of these, the scroll will also trigger.
+    document.addEventListener('variant:changed', function(){ requestAnimationFrame(scrollToTopSmooth); });
+    document.addEventListener('product:variant-change', function(){ requestAnimationFrame(scrollToTopSmooth); });
+  } catch(e) {
+    // Fail silently; do not break the page if something unexpected happens.
+    if (console && console.warn) console.warn('Scroll-to-top on variant change failed to init:', e);
+  }
+})();
+
 // js/custom-element/behavior/toggle-link.js
 var ToggleLink = class extends HTMLAnchorElement {
   static get observedAttributes() {

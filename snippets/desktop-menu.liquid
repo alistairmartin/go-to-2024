@@ -17,7 +17,7 @@
       {%- endfor -%}
 
       <li class="header__linklist-item {% if link.links.size > 0 or mega_menu_block != '' %}has-dropdown{% endif %}" data-item-title="{{ link.title | escape }}">
-        <a class="header__linklist-link link--animated" href="{{ link.url }}" {% if link.links.size > 0 or mega_menu_block != '' %}aria-controls="desktop-menu-{{ forloop.index }}" aria-expanded="false"{% endif %}>
+        <a class="header__linklist-link link--animated header-link--{{ link.title | handle }}" href="{{ link.url }}" {% if link.links.size > 0 or mega_menu_block != '' %}aria-controls="desktop-menu-{{ forloop.index }}" aria-expanded="false"{% endif %}>
           {{- link.title -}}
         </a>
 

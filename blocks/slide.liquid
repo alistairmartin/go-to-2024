@@ -217,25 +217,25 @@
   {%- if block.settings.background_media == "video" -%}
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      var videoId = "{{ block.settings.video_url_desktop | remove: 'https://vimeo.com/' }}";
-      var vimeoEmbedUrl = `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId}`;
+      var videoId{{ block.id }} = "{{ block.settings.video_url_desktop | remove: 'https://vimeo.com/' }}";
+      var vimeoEmbedUrl{{ block.id }}= `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId{{ block.id }}}`;
 
       if (window.innerWidth > 469) {
-        var videoId = "{{ block.settings.video_url_desktop | remove: 'https://vimeo.com/' }}";
-        var vimeoEmbedUrl = `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId}`;
+        var videoId{{ block.id }} = "{{ block.settings.video_url_desktop | remove: 'https://vimeo.com/' }}";
+        var vimeoEmbedUrl{{ block.id }} = `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId{{ block.id }}}`;
 
       } else {
-        var videoId = "{{ block.settings.video_url_mobile | remove: 'https://vimeo.com/' }}";
-        var vimeoEmbedUrl = `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId}`;
+        var videoId{{ block.id }} = "{{ block.settings.video_url_mobile | remove: 'https://vimeo.com/' }}";
+        var vimeoEmbedUrl{{ block.id }} = `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId{{ block.id }}}`;
 
       }
 
       
-      fetch(vimeoEmbedUrl)
+      fetch(vimeoEmbedUrl{{ block.id }})
         .then(response => response.json())
         .then(data => {
-          let thumbnailUrl = data.thumbnail_url;
-          var posterOverlay = document.getElementById('poster-{{ block.id }}');
+          let thumbnailUrl{{ block.id }} = data.thumbnail_url;
+          var posterOverlay{{ block.id }} = document.getElementById('poster-{{ block.id }}');
 
           //    if (window.innerWidth > 469) {
           //   let parts = thumbnailUrl.split("_");
@@ -249,26 +249,25 @@
           //   posterOverlay.style.backgroundImage = `url('${updatedThumbnailUrl}')`;
           // }
 
-          posterOverlay.style.backgroundImage = `url('${thumbnailUrl}')`;
+          posterOverlay{{ block.id }}.style.backgroundImage = `url('${thumbnailUrl{{ block.id }}}')`;
 
         })
         .catch(err => console.error('Error fetching thumbnail:', err));
 
-
-      var playerOptions = {
-        id: videoId,
+      var playerOptions{{ block.id }} = {
+        id: videoId{{ block.id }},
         background: true,
         loop: true,
         autoplay: true,
         muted: true
       };
 
-      var player = new Vimeo.Player('video-{{ block.id }}', playerOptions);
+      var player{{ block.id }} = new Vimeo.Player('video-{{ block.id }}', playerOptions{{ block.id }});
       // Hide overlay when video has loaded
       // player.on('loaded', function() {
       //   document.getElementById('poster-{{ block.id }}').classList.add('hide-poster');
       // });
-      player.on('play', function() {
+      player{{ block.id }}.on('play', function() {
         document.getElementById('poster-{{ block.id }}').classList.add('hide-poster');
       });
     });

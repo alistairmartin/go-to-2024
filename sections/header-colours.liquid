@@ -1,0 +1,33 @@
+<style>
+  {%- for block in section.blocks -%}
+      .header-link--{{ block.settings.title | handle }}{
+        color: {{ block.settings.color }} !important;
+          {% if block.settings.enable_bold %}
+          font-weight: bold !important;
+        {% endif %}
+      }
+  {%- endfor -%}
+</style>
+
+{% schema %}
+  {
+    "name": "Header Colours",
+    "blocks": [
+      {
+        "type": "navigation-item",
+        "name": "Navigation Item",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Navigation Title"
+          },{
+            "type": "color",
+            "id": "color",
+            "label": "Colour"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -230,7 +230,7 @@
 
                     <div class="color-swatch {% if color_white_label == color_value_downcase %}color-swatch--white{% endif %}">
                       <input class="color-swatch__radio visually-hidden" type="radio" name="{{ color_name }}" id="{{ color_id }}" value="{{ value | escape }}" {% if product_option.selected_value == value %}checked="checked"{% endif %} data-variant-id="{{ variant_for_value.id }}" {% if variant_for_value.featured_media %}data-variant-featured-media="{{ variant_for_value.featured_media.id }}"{% endif %}>
-                      <label class="color-swatch__item" for="{{ color_id }}" style="{% render 'color-swatch-style', swatch: value.swatch, color_swatch_config: color_swatch_config, value: value %}">
+                      <label class="color-swatch__item color-swatch-{{ product.handle }}-{{ value | handle }}" for="{{ color_id }}" style="{% render 'color-swatch-style', swatch: value.swatch, color_swatch_config: color_swatch_config, value: value %}">
                         <span class="visually-hidden">{{ value }}</span>
                       </label>
                     </div>
@@ -245,7 +245,7 @@
 
       <a href="{{ product.url }}" data-instant class="product-item-meta__title">
 
-        {%- unless product.handle == "weekly-essentials" or product.handle contains "very-lightweight-moisturiser" or product.handle contains "matte-pop-blush" -%}
+        {%- unless product.handle == "weekly-essentials" or product.handle contains "very-lightweight-moisturiser" or product.handle contains "matte-pop-blush" or product.handle == "ring-light" or product.handle == "glowy-blush" -%}
           <span class="variant-option">
 
             {%- if product.variants.size > 1 -%}

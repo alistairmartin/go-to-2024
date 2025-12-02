@@ -129,7 +129,7 @@
                 {% endif %}
               {% endfor %}
 
-              <div class="heading heading--secondary h4">
+              <div class="heading heading--secondary h4 header-link--{{ link.title | handle }}">
                 {{ link.title }}
               </div>
             </a>
@@ -191,7 +191,7 @@
                   {%- endif -%}
                 {% endif %}
               {% endfor %}
-              <div class="heading heading--secondary h4">
+              <div class="heading heading--secondary h4 header-link--{{ link.title | handle }}">
                 {{ link.title }}
               </div>
              

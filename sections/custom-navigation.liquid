@@ -5,6 +5,14 @@
     --border-color: {{ section.settings.border_color }};
     --text-color: {{ section.settings.text_color }};
   }
+
+  {%- for block in section.blocks -%}
+    {%- if block.settings.text_color != blank -%}
+      .link-bar__link-item--{{ block.settings.text | handle }} {
+        color: {{ block.settings.text_color }} !important;
+      }
+    {%- endif -%}
+  {%- endfor -%}
 </style> 
 
 
@@ -25,7 +33,7 @@
             <ul class="link-bar__linklist list--unstyled" role="list">
               {%- assign canonical_url_updated = canonical_url | remove: shop.url  -%}
               {%- for block in section.blocks -%}
-                <li class="link-bar__link-item {% if canonical_url_updated contains block.settings.url %}link-bar__link-item--selected text--underlined{% endif %}">
+                <li class="link-bar__link-item link-bar__link-item--{{ block.settings.text | handle }} {% if canonical_url_updated contains block.settings.url %}link-bar__link-item--selected text--underlined{% endif %}">
                   <a href="{{ block.settings.url }}">
                     <strong>{{ block.settings.text }}</strong>
                   </a>
@@ -110,6 +118,11 @@
             "type": "text",
             "id": "text",
             "label": "Text"
+          },
+          {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text Colour"
           }
         ]
       }

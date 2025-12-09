@@ -64,7 +64,7 @@
 
       .product-meta__title {
         line-height: 1;
-        font-size: 18px;
+        font-size: 14px;
         margin-bottom: 0;
       }
       .product-meta__subtitle {
@@ -79,7 +79,7 @@
         margin: 2px 0 10px;
 
         .rating__caption {
-          font-size: 10px;
+          font-size: 8px;
           text-decoration-thickness: 1px !important;
         }
 
@@ -92,7 +92,7 @@
         line-height: 1;
 
         .price {
-          font-size: 18px;
+          font-size: 14px;
         }
       }
 
@@ -206,7 +206,7 @@
       display: block;
       font-weight: bold;
       text-align: center;
-      font-size: 14px;
+      font-size: 12px;
     }
 
     .product-form__option-value {
@@ -279,13 +279,13 @@
 
       .product-reviews--item-author {
         font-weight: 700;
-        font-size: 18px;
+        font-size: 14px;
         margin-bottom: 0;
       }
 
       .product-reviews--item-title {
         font-weight: 600;
-        font-size: 18px;
+        font-size: 14px;
         margin: 0;
       }
 
@@ -470,7 +470,7 @@
       }
 
       li {
-        font-size: 18px;
+        font-size: 14px;
 
         @include media-query($medium-up) {
           font-size: 24px;
@@ -772,7 +772,7 @@
           height: 8px;
           border-radius: var(--image-border-radius);
           top: 12px;
-          left: 18px;
+          left: 14px;
           position: absolute;
           // rotate: deg(90);
         }
@@ -988,7 +988,7 @@
     }
 
     .rc-tooltip__content {
-      font-size: 18px;
+      font-size: 14px;
       line-height: 28px;
       -webkit-border-radius: 4px;
       -moz-border-radius: 4px;
@@ -1021,7 +1021,7 @@
       -o-border-radius: 4px;
       border-radius: 4px;
       padding: 10px 16px;
-      font-size: 18px;
+      font-size: 14px;
       line-height: 28px;
     }
 
@@ -1037,7 +1037,7 @@
       
     .rc-radio {
       padding: 0;
-      font-size: 18px;
+      font-size: 14px;
       line-height: 28px;
 
       .rc-radio__input {
@@ -1224,7 +1224,7 @@
         align-items: flex-start;
 
         p {
-          font-size: 18px;
+          font-size: 14px;
           margin: 0;
           line-height: 1.2;
         }
@@ -1498,7 +1498,7 @@
     font-size: 16px;
   
     @include media-query($medium-up) {
-      font-size: 18px;
+      font-size: 14px;
     }
 
     .link {
@@ -1546,7 +1546,7 @@
     line-height: 32px;
     position: relative;
     color: #484848;
-    font-size: 14px;
+    font-size: 12px;
 
     @include media-query($medium-up) {
       padding-top: 10px;
@@ -1716,7 +1716,7 @@
       font-size: 12px;
         
       @include media-query($medium-up) {
-        font-size: 14px;
+        font-size: 12px;
       }
     }
   }

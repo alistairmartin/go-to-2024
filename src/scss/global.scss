@@ -336,7 +336,7 @@ section {
 }
 
 .text--bold, .text--bold * {
-  font-weight: bold !important;
+  font-weight: 600 !important;
 }
 
 .no-scroll-bar {
@@ -381,7 +381,7 @@ section {
 
 .header__linklist-link {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 12px;
   transition: .2s color;
 }
 
@@ -805,7 +805,7 @@ store-header.background-blur {
 
     a {
       text-decoration: none !important;
-      font-size: 13px;
+      font-size: 12px;
     }
 
     p {
@@ -815,7 +815,7 @@ store-header.background-blur {
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 13px;
+      font-size: 12px;
     }
 }
 
@@ -836,7 +836,7 @@ store-header.background-blur {
 }
 
 .header__go-to-gang {
-  font-size: 13px;
+  font-size: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -897,7 +897,7 @@ store-header.background-blur {
 
         p {
           text-shadow: 0 0 #b4b4b4;
-          font-size: 14px;
+          font-size: 12px;
           font-weight: bold;
           line-height: 1.2;
         }
@@ -960,11 +960,11 @@ store-header.background-blur {
   padding-bottom: 10px;
   .product-item-meta.outer {
     .title, .variant-option, .price, .product-item-meta__title, .product-item-meta__subtitle, .product-item-meta__reviews-badge {
-      font-size: 14px;
+      font-size: 12px;
       line-height: 1 !important;
 
       @include media-query($medium-up) {
-        font-size: 14px;
+        font-size: 12px;
       }
     }
   }
@@ -983,7 +983,7 @@ store-header.background-blur {
       gap: 10px;
 
       .option {
-        font-size: 10px;
+        font-size: 8px;
         color: var(--color-grey-dark);
       }
 
@@ -1024,7 +1024,7 @@ store-header.background-blur {
   }
 
   .rating__caption {
-    font-size: 11px;
+    font-size: 8px;
     color: #b5b5b5;
   }
 
@@ -1049,7 +1049,7 @@ store-header.background-blur {
   }
 
   .link {
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .loader-button__text {
@@ -2930,10 +2930,10 @@ footer {
     position: relative;
 
     .footer__item-content {
-      font-size: 14px;
+      font-size: 12px;
 
       p {
-        font-size: 14px;
+        font-size: 12px;
         line-height: 1;
       }
     }
@@ -2968,7 +2968,7 @@ footer {
   .linklist__item {
     margin-bottom: 16px;
     text-transform: uppercase;
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .footer-logo {
@@ -3022,6 +3022,9 @@ footer {
 .shopify-section--faq {
   .collapsible-toggle {
     background: unset !important;
+    font-size: 18px;
+    font-weight: 600;
+
 
     &[aria-expanded='true'] {
       background: var(--color-secondary) !important;
@@ -3505,7 +3508,7 @@ product-rerender {
   }
 
   .product-meta__subtitle {
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1;
   }
 
@@ -3742,7 +3745,7 @@ product-rerender {
 
     td, th {
       padding: 16px 0 16px 8px !important;
-      font-size: 14px;
+      font-size: 12px;
     }
   }
 }
@@ -5103,7 +5106,7 @@ product-rerender {
 
         .price {
           font-family: var(--text-font-family);
-          font-size: 14px;
+          font-size: 12px;
         }
       }
 
@@ -5600,9 +5603,9 @@ button[aria-label="Tolstoy stories: next button"] {
 
 .product-info--loyalty {
   line-height: 1;
-  font-size: 14px;
+  font-size: 12px;
   margin: 4px 0 0;
-  font-size: 14px;
+  font-size: 12px;
   color: #8f8f8f;
 
   .small {

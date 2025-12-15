@@ -41,6 +41,19 @@ html {
   text-decoration-thickness: 2px;
 }
 
+.link--basic {
+  text-transform: uppercase;
+  text-decoration: none;
+  padding-bottom: 10px;
+  transition: 300ms all;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 1px solid $gotoBlack;
+}
+
 .link--primary {
   text-decoration: none;
   padding-bottom: 3px;
@@ -2855,7 +2868,7 @@ split-lines[reveal] {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 16px;
+  margin-top: 25px;
 
   svg {
     margin-left: 5px;

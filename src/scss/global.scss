@@ -5602,14 +5602,29 @@ button[aria-label="Tolstoy stories: next button"] {
 }
 
 .product-info--loyalty {
+  display: flex;
+  gap: 5px;
   line-height: 1;
   font-size: 12px;
   margin: 4px 0 0;
   font-size: 12px;
-  color: #8f8f8f;
+  color: $gotoBlack;
+  padding: 8px;
+  border: 1px solid $gotoPink;
+  background: $gotoPinkLighter;
+  border-radius: 6px;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
 
   .small {
      font-size: 12px;
+  }
+
+  .product-info--loyalty-text {
+    display: block;
   }
 }
 

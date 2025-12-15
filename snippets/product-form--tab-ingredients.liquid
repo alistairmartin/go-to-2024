@@ -1,0 +1,160 @@
+
+<div class="container">
+  <div class="product-content-ingredients">      
+    {% comment %} <h3 class="heading h3 text--bold hide-desktop">{{ section.settings.title }}</h3> {% endcomment %}
+
+    
+    <div class="product-content-ingredients--text">
+      {% comment %} <h3 class="heading h3 text--bold hide-mobile">{{ section.settings.title }}</h3> {% endcomment %}
+      <div class="hide-mobile">
+        {%- assign glossaryMetaobjects = product.metafields.custom.ingredients_featured.value  -%}
+        {% for metaobject in glossaryMetaobjects %}
+          <div class="product-content-ingredients--text-item">
+            <p class="heading h4 text--bold">{{ metaobject.title | strip_html }}</p>
+            {{ metaobject.description | metafield_tag }}
+          </div>
+        {% endfor %}  
+      </div>
+      
+      <div class="product-content-ingredients--text__mobile hide-desktop">
+        <div class="line"></div>
+        {%- assign ingredientCounter = 0 -%}
+        {%- assign glossaryMetaobjects = product.metafields.custom.ingredients_featured.value  -%}
+        {% for metaobject in glossaryMetaobjects %}
+            <div class="product-content-ingredients--text-item__mobile {% if ingredientCounter == 0 %}active{% endif %}" data-action="activate">
+              {%- assign ingredientCounter = 1 -%}
+              <p class="heading h4 text--bold">{{ metaobject.title | strip_html }}</p>
+              <div class="text">{{ metaobject.description | metafield_tag }}</div>
+            </div>
+        {% endfor %} 
+      </div>
+
+
+      {%- capture glossaryContentDesktop -%}
+        {%- assign glossaryMetaobjects = product.metafields.custom.ingredients.value | sort: "title" -%}
+        <div class="ingredients-glossary">
+        <div class="ingredients-glossary--description ">
+        {% for metaobject in glossaryMetaobjects %}
+          <div class="ingredients-glossary--description-item">
+            <strong>{{ metaobject.title }}</strong>
+            <div>
+              {{ metaobject.description | metafield_tag }}
+            </div>
+        </div>
+        {% endfor %}  
+
+         </div>
+        </div>
+       
+        {%- if product.variants.size > 1 -%}
+          <div class="faq faq-ingredients hide-mobile">
+              <div class="faq__wrapper" itemscope itemtype="https://schema.org/FAQPage">
+                  {%- for variant in product.variants -%}
+                       {%- assign glossaryMetaobjects = variant.metafields.custom.ingredients.value | sort: "title" -%}
+                  <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"
+                      id="variant-{{ variant.id }}">
+                      <button is="toggle-button" class="collapsible-toggle text--strong heading"
+                          aria-controls="block-ingredients-{{ variant.id }}" aria-expanded="false" itemprop="name">
+                          {{- variant.title -}}
+                          <span class="animated-plus"></span>
+                      </button>
+
+                      <collapsible-content id="block-ingredients-{{ variant.id }}" class="collapsible anchor" itemscope
+                          itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" {{ block.shopify_attributes }}>
+                          <div class="collapsible__content text-container" itemprop="text">
+
+
+                              <div class="ingredients-glossary">
+                                  <div class="ingredients-glossary--description ">
+
+                                      {% for metaobject in glossaryMetaobjects %}
+                                      <div class="ingredients-glossary--description-item"
+                                          data-title="{{ metaobject.title | strip_html }}">
+                                          <strong>{{ metaobject.title }}</strong>
+                                          <div>
+                                              {{ metaobject.description | metafield_tag }}
+                                          </div>
+                                      </div>
+                                      {% endfor %} 
+
+                                  </div>
+                              </div>
+                          </div>
+                      </collapsible-content>
+                  </div>
+                  {%- endfor -%}
+              </div>
+          </div> 
+
+
+        
+          {% endif %}
+      {%- endcapture -%}
+
+
+    {%- capture glossaryContentMobile -%}
+        {%- assign glossaryMetaobjects = product.metafields.custom.ingredients.value | sort: "title" -%}
+        <div class="ingredients-glossary">
+        <div class="ingredients-glossary--description ">
+        {% for metaobject in glossaryMetaobjects %}
+          <div class="ingredients-glossary--description-item">
+            <strong>{{ metaobject.title }}</strong>
+            <div>
+              {{ metaobject.description | metafield_tag }}
+            </div>
+        </div>
+        {% endfor %}  
+
+         </div>
+        </div>
+       
+        {%- if product.variants.size > 1 -%}
+
+          <div class="faq faq-ingredients hide-desktop">
+            <div class="faq__wrapper" itemscope itemtype="https://schema.org/FAQPage">
+                {%- for variant in product.variants -%}
+                     {%- assign glossaryMetaobjects = variant.metafields.custom.ingredients.value | sort: "title" -%}
+                <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question"
+                    id="variant-{{ variant.id }}-mobile">
+                    <button type="button" data-collapsible-toggle class="collapsible-toggle text--strong heading"
+                        aria-controls="block-ingredients-{{ variant.id }}-mobile" aria-expanded="false" itemprop="name">
+                        {{- variant.title -}}
+                        <span class="animated-plus"></span>
+                    </button>
+
+                    <collapsible-content id="block-ingredients-{{ variant.id }}-mobile" class="collapsible anchor" itemscope
+                        itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" {{ block.shopify_attributes }}>
+                        <div class="collapsible__content text-container" itemprop="text">
+
+
+                            <div class="ingredients-glossary">
+                                <div class="ingredients-glossary--description ">
+
+                                    {% for metaobject in glossaryMetaobjects %}
+                                    <div class="ingredients-glossary--description-item"
+                                        data-title="{{ metaobject.title | strip_html }}">
+                                        <strong>{{ metaobject.title }}</strong>
+                                        <div>
+                                            {{ metaobject.description | metafield_tag }}
+                                        </div>
+                                    </div>
+                                    {% endfor %} 
+
+                                </div>
+                            </div>
+                        </div>
+                    </collapsible-content>
+                </div>
+                {%- endfor -%}
+            </div>
+        </div>        
+          {% endif %}
+      {%- endcapture -%}
+
+      {%- assign popoverTitle = "Ingredients For " | append: product.title -%}
+      {%- render 'popover-mobile', popoverId: "ingredients-glossary-mobile", popoverTitle: popoverTitle, popoverButton: "View All Ingredients", popoverContent: glossaryContentMobile -%}
+      {%- render 'popover-desktop', popoverId: "ingredients-glossary-desktop", popoverTitle: popoverTitle, popoverButton: "View All Ingredients", popoverContent: glossaryContentDesktop -%}
+
+    </div>
+  </div>
+</div>

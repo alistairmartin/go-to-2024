@@ -1,0 +1,52 @@
+<section class="section {% if section.settings.enable_full_width %}section-faq--full-width{% endif %} {% if template.name == 'page' and template.suffix contains 'faq' %}section--tight{% endif %} {% unless blends_with_background %}section--flush{% endunless %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
+  <div class="section__color-wrapper">
+    <div class="container">
+      <div class="{% unless blends_with_background %}vertical-breather{% endunless %}">
+  
+        <div class="faq">
+          <div class="faq__wrapper" itemscope itemtype="https://schema.org/FAQPage">
+    
+                {%- comment -%}
+                ----------------------------------------------------------------------------------------------------------------
+                What Is It?
+                ----------------------------------------------------------------------------------------------------------------
+                {%- endcomment -%}
+
+                  <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <button is="toggle-button" class="collapsible-toggle text--strong heading" aria-controls="block-product-tabs-1" aria-expanded="false" itemprop="name">
+                      <span>WHAT IS IT?</span>
+                      <span class="animated-plus"></span>
+                    </button>
+
+                    <collapsible-content id="block-product-tabs-1" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                      <div class="collapsible__content text-container" itemprop="text">
+                        {{ product.description }}
+                      </div>
+                    </collapsible-content>
+                  </div>
+
+                {%- comment -%}
+                ----------------------------------------------------------------------------------------------------------------
+                HERO INGREDIENTS
+                ----------------------------------------------------------------------------------------------------------------
+                {%- endcomment -%}
+
+                  <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <button is="toggle-button" class="collapsible-toggle text--strong heading" aria-controls="block-product-tabs-2" aria-expanded="false" itemprop="name">
+                      <span>HERO INGREDIENTS</span>
+                      <span class="animated-plus"></span>
+                    </button>
+
+                    <collapsible-content id="block-product-tabs-2" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                      <div class="collapsible__content text-container" itemprop="text">
+                            {%- render 'product-form--tab-ingredients' -%}
+                      </div>
+                    </collapsible-content>
+                  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

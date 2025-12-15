@@ -30,7 +30,7 @@
 }
 
 .product-meta {
-    text-align: center;
+    text-align: left;
     margin: 0;
 
     .product-meta__title {
@@ -38,7 +38,7 @@
     }
 
     .product-meta__reference {
-      justify-content: center;
+      justify-content: flex-start;
       margin-bottom: 16px;
 
       .rating__caption {
@@ -48,6 +48,11 @@
         text-decoration-thickness: 2px !important;
       }
      
+    }
+
+    .product-meta__price-loyalty {
+      display: flex;
+      gap: 20px;
     }
 
     .product-meta__price-list-container {
@@ -184,6 +189,20 @@
   //   }
   }
 
+}
+
+.product-form__buy-quantity {
+  display: flex;
+  gap: 24px;
+
+  .product-form__buy-buttons {
+    width: 100%;
+  }
+}
+
+.product-form__free-shipping {
+  text-align: center;
+  font-size: 12px;
 }
 
 .product-form__option-selector {
@@ -1719,4 +1738,9 @@
         font-size: 12px;
       }
     }
+  }
+
+
+  .product-content-description-V2 {
+    
   }

@@ -1,0 +1,112 @@
+        {%- comment %} CONTENT -  DESCRIPTION {% endcomment -%}
+        
+        <div class="product-content-description--content-inner tab-panel description" id="product-content-description--tab-1" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-1" aria-hidden="false">
+          {% assign product_desc = product.description | split: ' ' %}
+          <div class="product-content-description--teaser" aria-revealed="{% if product_desc.size > 110 %}false{% else %}true{% endif %}">
+
+            {%- if product.metafields.custom.product_gwp_gif_mobile != blank and product.metafields.custom.product_gwp_gif_desktop != blank -%}
+              {%- capture callout_image -%}
+                  {{ product.metafields.custom.product_gwp_gif_mobile | image_url: width: 600 | image_tag: class: 'ProductGWP hide-desktop', alt: product.title, loading: 'lazy' }}
+                  {{ product.metafields.custom.product_gwp_gif_desktop | image_url: width: 1000 | image_tag: class: 'ProductGWP hide-mobile', alt: product.title, loading: 'lazy' }}
+              {%- endcapture -%}
+            {% else  %}
+                {%- capture callout_image -%}
+                {%- if product.metafields.custom.product_gwp__image_mobile != blank or product.metafields.custom.product_gwp__image_desktop != blank -%}
+                  {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_gwp__image_desktop, src_mobile: product.metafields.custom.product_gwp__image_mobile, class: "ProductGWP" %}
+                {%- endif -%}
+              {%- endcapture -%}
+            {%- endif -%}
+            
+            {%- assign productCallOutModal = product.metafields.accentuate.product_gwp__modal_content -%}
+
+            {%- if productCallOutModal != blank -%}
+                <button class="link link--primary" id="open-product-quiz">
+                  {{ callout_image }}
+                </button>
+                {%- render 'modal', modalId: "open-product-quiz", buttonId: "open-product-quiz" content: productCallOutModal -%}
+            {% elsif callout_image != blank %}
+
+              {%- if product.metafields.custom.product_gwp__link != blank -%}
+                <a href="{{ product.metafields.custom.product_gwp__link }}">
+                  {{ callout_image }}
+                </a>
+              {% else %}
+              {{ callout_image }}
+              {%- endif -%}
+
+            {% endif %}
+            
+            {% comment %}             
+            {%- elsif product.metafields.custom.product_gwp__url != blank -%}
+              {%- assign product_gwp__url = product.metafields.custom.product_gwp__url | split: '#' -%}
+              {%- else -%}
+                <a href="{{ product.metafields.custom.product_gwp__url }}">{{ callout_image }}</a>
+              {%- endif -%}
+            {%- elsif product.metafields.custom.product_gwp__link != blank -%}
+              <a href="{{ product.metafields.custom.product_gwp__link }}">{{ callout_image }}</a>              
+            {%- else -%}
+              {{ callout_image }}
+            {%- endif -%} {% endcomment %}
+
+            {{ product.description }}
+            
+          </div>
+
+          {% unless product_desc.size < 110 %}
+            <button type="button" name="button" data-action="toggle-teaser" aria-controls="product-content-description--teaser" class="product-content-description--teaser-open link">{{ 'product.general.read_more' | t }}</button>
+            <button type="button" name="button" data-action="toggle-teaser" aria-controls="product-content-description--teaser" class="product-content-description--teaser-close hidden link">{{ 'product.general.show_less' | t }}</button>
+
+          {% endunless %}
+
+          {% assign skinTypeCounter = 0 %}
+          {%- for tag in product.tags -%}
+            {%- if tag contains "skintype_" -%}
+              {%- unless tag contains "jebbit" -%}
+                {% assign skinTypeFound = true %}
+                {%- assign skinTypeCounter = skinTypeCounter | plus: 1 -%}
+              {%- endunless -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+  
+          {%- if skinTypeFound == true -%}
+          <div class="perfect-for">
+            <h3 class="text--bold">{{ 'product.content.plays_nice_with' | t }}</h3>
+            <div class="perfect-for--container items-{{ skinTypeCounter }}">
+              {%- for tag in product.tags -%}
+                {%- if tag contains "skintype_" -%}
+                  {%- unless tag contains "jebbit" -%}
+                  {% assign icon = tag | remove: "skintype_" %}
+                  {% render "product-content-icons--perfect-for", icon: icon %}
+                  {%- endunless -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        {% assign badgeCounter = 0 %}
+        {%- for tag in product.tags -%}
+          {%- if tag contains "badge_" -%}
+            {% assign badgeFound = true %}
+            {%- assign badgeCounter = badgeCounter | plus: 1 -%}
+            {% break %}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if badgeFound -%}
+          <div class="who-is-it-for">
+            <h3 class="text--bold">{{ 'product.content.good_to_know' | t }}</h3>
+            <div class="who-is-it-for--container items-{{ badgeCounter }}">
+              {%- for tag in product.tags -%}
+                {%- if tag contains "badge_" -%}
+                  {%- unless tag contains "jebbit" -%}
+                  {% assign icon = tag | remove: "badge_" %}
+                  {% render "product-content-icons--good-to-know", icon: icon %}
+                  {%- endunless -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+        </div>

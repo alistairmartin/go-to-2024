@@ -1,3 +1,4 @@
+{%- assign currentMarket = localization.market.handle | upcase -%}
 {%- assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ',' -%}
 {%- assign color_white_label = 'general.label.white' | t | downcase -%}
 {%- assign size_label_list = 'general.label.size' | t | replace: ', ', ',' | downcase | split: ',' -%}
@@ -426,6 +427,62 @@
           </div>
         {%- endif -%}
 
+            {%- comment -%}
+      ----------------------------------------------------------------------------------------------------------------
+      PRODUCT DETAILS
+      ----------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- when 'product_details' -%}
+          <div data-block-type="product_details" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+            <h2>Best mates with thirsty, dry or mature skin 🫰🏽</h2>
+
+            <table>
+              <tr>
+                <td><strong>Suitable for</strong></td>
+                <td>All skin types</td>
+              </tr>
+              <tr>
+                <td><strong>Use it</strong></td>
+                <td>
+                  AM: after your cleansers, exfoliators, serums. But before your SPF &amp; makeup<br>
+                  PM: apply after your cleansers, exfoliators, and serums.
+                </td>
+              </tr>
+            </table>
+          </div>
+
+      {%- comment -%}
+      ----------------------------------------------------------------------------------------------------------------
+      PRODUCT QUIZ
+      ----------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- when 'product_quiz' -%}
+          <div data-block-type="product_quiz" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+
+            <div class="product-quiz">
+              <h3>Wondering which Go-To moisturiser is your perfect match?</h3>
+              <p>Answer these quickfire questions and we’ll figure it out for you.</p>
+              <a href="#" class="link link--primary">Quiz Me</a>
+            </div>
+          </div>
+    
+      {%- comment -%}
+      ----------------------------------------------------------------------------------------------------------------
+      Pairs With
+      ----------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- when 'pairs_with' -%}
+        {%- render 'product-form--pairs-with' -%}
+
+
+            {%- comment -%}
+      ----------------------------------------------------------------------------------------------------------------
+      Product Tabs
+      ----------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- when 'product_tabs' -%}
+        {%- render 'product-form--tabs' -%}
+
       {%- comment -%}
       ----------------------------------------------------------------------------------------------------------------
       BUY BUTTONS
@@ -438,6 +495,28 @@
           {%- if product.gift_card? and block.settings.show_gift_card_recipient -%}
             {%- assign recipient_feature_active = true -%}
           {%- endif -%}
+
+          <div class="product-form__buy-quantity">
+
+          {%- if request.page_type != 'password' and product.available -%}
+          <div class="product-form__quantity" {{ block.shopify_attributes }}>
+            <span class="product-form__quantity-label visually-hidden">{{ 'product.form.quantity' | t }}:</span>
+
+            <quantity-selector class="quantity-selector">
+              <button type="button" class="quantity-selector__button">
+                <span class="visually-hidden">{{ 'cart.general.decrease_quantity' | t }}</span>
+                {%- render 'icon' with 'minus-big' -%}
+              </button>
+
+              <input type="text" form="{{ product_form_id }}" is="input-number" class="quantity-selector__input" inputmode="numeric" name="quantity" autocomplete="off" min="1" value="1" size="2" aria-label="{{ 'product.form.quantity' | t | escape }}">
+
+              <button type="button" class="quantity-selector__button">
+                <span class="visually-hidden">{{ 'cart.general.increase_quantity' | t }}</span>
+                {%- render 'icon' with 'plus-big' -%}
+              </button>
+            </quantity-selector>
+          </div>
+           {%- endif -%}
 
           <div data-block-type="buy-buttons" data-block-id="{{ block.id }}" class="product-form__buy-buttons" {{ block.shopify_attributes }}>
             {%- form 'product', product, is: 'product-form', id: product_form_id -%}
@@ -544,7 +623,16 @@
 
             {%- endform -%}
           </div>
+          </div>
         {%- endif -%}
+
+         {%- if currentMarket == "AU" -%}
+          <div class="product-form__free-shipping">
+            Free Shipping on all AU order
+          </div>
+            
+        {%- endif -%}
+
 
         {%- if context != 'quick-buy' -%}
           <store-pickup data-block-type="pickup-availability" data-block-id="{{ block.id }}" class="product-form__store-availability-container">
@@ -554,6 +642,8 @@
     {%- endcase -%}
   {%- endfor -%}
 
+
+ 
   {%- comment -%}
   IMPLEMENTATION NOTE: under rare circumstances, merchant may want to show selectors but hide the add to cart button. This
   is however problematic as elements changed based on this. So if we detect there is no buy buttons block, we add an empty one

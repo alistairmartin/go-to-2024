@@ -60,8 +60,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
   document.querySelectorAll("button[data-action='toggle-tab']").forEach(function (button) {
     button.addEventListener("click", function () {
       console.log('clicked');
-      let targetElement = document.getElementById(this.getAttribute("aria-controls"));
-      let tabList = this.closest(".tab-list").querySelectorAll(".tab-list--tab");
+      const tabListEl = this.closest(".tab-list");
+      const targetElement = document.getElementById(this.getAttribute("aria-controls"));
+      const tabList = Array.from(tabListEl.querySelectorAll(".tab-list--tab")).filter((tab) => tab.closest(".tab-list") === tabListEl);
+      const tabPanels = Array.from(tabListEl.querySelectorAll(".tab-panel")).filter((panel) => panel.closest(".tab-list") === tabListEl);
 
       console.log(targetElement);
 
@@ -73,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
       this.setAttribute("aria-selected", true);
       this.classList.add("active");
 
-      this.closest(".tab-list").querySelectorAll(".tab-panel").forEach(function (panel) {
+      tabPanels.forEach(function (panel) {
         panel.setAttribute("aria-hidden", true);
       });
 
@@ -192,5 +194,4 @@ function blockTextReadMore(blockId, buttonText) {
     buttonInner.textContent = "Show Less";
   }
 }
-
 

@@ -427,16 +427,66 @@
           </div>
         {%- endif -%}
 
+      {%- comment -%}
+      ----------------------------------------------------------------------------------------------------------------
+      CUSTOM SUBSCRIPTION
+      ----------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- when 'custom_subscription' -%}
+          <div data-block-type="custom_subscription" data-block-id="{{ block.id }}" {{ block.shopify_attributes }} class="product-form--custom-subscription">
+            <fieldset class="custom-subscription" role="radiogroup" aria-label="Purchase options">
+              <label class="custom-subscription__row">
+                <input
+                  class="custom-subscription__radio"
+                  type="radio"
+                  name="purchase_option"
+                  value="one_time"
+                  checked
+                />
+                <span class="custom-subscription__indicator" aria-hidden="true"></span>
+                <span class="custom-subscription__label">One-time purchase</span>
+              </label>
+
+              <div class="custom-subscription__divider" aria-hidden="true"></div>
+
+              <label class="custom-subscription__row custom-subscription__row--with-link">
+                <input
+                  class="custom-subscription__radio"
+                  type="radio"
+                  name="purchase_option"
+                  value="subscribe"
+                />
+                <span class="custom-subscription__indicator" aria-hidden="true"></span>
+                <span class="custom-subscription__label">
+                  <span class="custom-subscription__label-regular">Subscribe</span>
+                  <strong class="custom-subscription__label-strong">
+                    Perk-y and convenient
+                  </strong>
+                </span>
+
+                <a class="custom-subscription__link" href="#subscribe-details">
+                  Tell me more
+                </a>
+              </label>
+
+              <ul class="custom-subscription__bullets" id="subscribe-details">
+                <li>Free gift on your first order</li>
+                <li>Free delivery on every order</li>
+                <li>Earn Go-to Gang points on every order</li>
+              </ul>
+            </fieldset>
+          </div>
+
             {%- comment -%}
       ----------------------------------------------------------------------------------------------------------------
       PRODUCT DETAILS
       ----------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
       {%- when 'product_details' -%}
-          <div data-block-type="product_details" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
-            <h2>Best mates with thirsty, dry or mature skin 🫰🏽</h2>
+          <div data-block-type="product_details" data-block-id="{{ block.id }}" {{ block.shopify_attributes }} class="product-form--details">
+            <h2 class="product-form--details-title h5 heading heading--primary">Best mates with thirsty, dry or mature skin</h2>
 
-            <table>
+            <table class="product-form--details-table">
               <tr>
                 <td><strong>Suitable for</strong></td>
                 <td>All skin types</td>
@@ -444,7 +494,7 @@
               <tr>
                 <td><strong>Use it</strong></td>
                 <td>
-                  AM: after your cleansers, exfoliators, serums. But before your SPF &amp; makeup<br>
+                  AM: after your cleansers, exfoliators, serums. But before your SPF &amp; makeup<br><br>
                   PM: apply after your cleansers, exfoliators, and serums.
                 </td>
               </tr>
@@ -457,12 +507,14 @@
       ----------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
       {%- when 'product_quiz' -%}
-          <div data-block-type="product_quiz" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
-
-            <div class="product-quiz">
+          <div data-block-type="product_quiz" data-block-id="{{ block.id }}" {{ block.shopify_attributes }} class="product-form--quiz">
+            <div class="product-quiz--inner">
               <h3>Wondering which Go-To moisturiser is your perfect match?</h3>
               <p>Answer these quickfire questions and we’ll figure it out for you.</p>
-              <a href="#" class="link link--primary">Quiz Me</a>
+
+              <div class="button-container">
+                <a href="#" class="link link--primary">Quiz Me</a>
+              </div>
             </div>
           </div>
     
@@ -498,7 +550,7 @@
 
           <div class="product-form__buy-quantity">
 
-          {%- if request.page_type != 'password' and product.available -%}
+          {% comment %} {%- if request.page_type != 'password' and product.available -%}
           <div class="product-form__quantity" {{ block.shopify_attributes }}>
             <span class="product-form__quantity-label visually-hidden">{{ 'product.form.quantity' | t }}:</span>
 
@@ -516,7 +568,7 @@
               </button>
             </quantity-selector>
           </div>
-           {%- endif -%}
+           {%- endif -%} {% endcomment %}
 
           <div data-block-type="buy-buttons" data-block-id="{{ block.id }}" class="product-form__buy-buttons" {{ block.shopify_attributes }}>
             {%- form 'product', product, is: 'product-form', id: product_form_id -%}
@@ -634,11 +686,11 @@
         {%- endif -%}
 
 
-        {%- if context != 'quick-buy' -%}
+        {% comment %} {%- if context != 'quick-buy' -%}
           <store-pickup data-block-type="pickup-availability" data-block-id="{{ block.id }}" class="product-form__store-availability-container">
             {%- render 'store-availability', product_variant: product.selected_or_first_available_variant -%}
           </store-pickup>
-        {%- endif -%}
+        {%- endif -%} {% endcomment %}
     {%- endcase -%}
   {%- endfor -%}
 

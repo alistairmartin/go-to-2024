@@ -1,9 +1,7 @@
-<section class="section {% if section.settings.enable_full_width %}section-faq--full-width{% endif %} {% if template.name == 'page' and template.suffix contains 'faq' %}section--tight{% endif %} {% unless blends_with_background %}section--flush{% endunless %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
-  <div class="section__color-wrapper">
-    <div class="container">
-      <div class="{% unless blends_with_background %}vertical-breather{% endunless %}">
+
+
   
-        <div class="faq">
+        <div class="faq product-faq">
           <div class="faq__wrapper" itemscope itemtype="https://schema.org/FAQPage">
     
                 {%- comment -%}
@@ -13,15 +11,76 @@
                 {%- endcomment -%}
 
                   <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-                    <button is="toggle-button" class="collapsible-toggle text--strong heading" aria-controls="block-product-tabs-1" aria-expanded="false" itemprop="name">
-                      <span>WHAT'S THIS ALL ABOUT?</span>
+                    <button is="toggle-button" class="collapsible-toggle text--strong" aria-controls="block-product-tabs-1" aria-expanded="true" itemprop="name">
+                      <span>WHAT IS IT?</span>
                       <span class="animated-plus"></span>
                     </button>
 
-                    <collapsible-content id="block-product-tabs-1" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                    <collapsible-content id="block-product-tabs-1" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" style="overflow: visible;" open>
                       <div class="collapsible__content text-container" itemprop="text">
-                        {{ product.description }}
+                          {% assign product_desc = product.description | split: ' ' %}
+                          <div class="product-content-description--teaser" aria-revealed="{% if product_desc.size > 110 %}false{% else %}true{% endif %}">
+                            {{ product.description }}
+                          </div>
+
+                             {% unless product_desc.size < 110 %}
+                              <button type="button" name="button" data-action="toggle-teaser" aria-controls="product-content-description--teaser" class="product-content-description--teaser-open link">{{ 'product.general.read_more' | t }}</button>
+                              <button type="button" name="button" data-action="toggle-teaser" aria-controls="product-content-description--teaser" class="product-content-description--teaser-close hidden link">{{ 'product.general.show_less' | t }}</button>
+
+                            {% endunless %}
                       </div>
+
+                         {% assign skinTypeCounter = 0 %}
+                          {%- for tag in product.tags -%}
+                            {%- if tag contains "skintype_" -%}
+                              {%- unless tag contains "jebbit" -%}
+                                {% assign skinTypeFound = true %}
+                                {%- assign skinTypeCounter = skinTypeCounter | plus: 1 -%}
+                              {%- endunless -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+
+                  
+                          {%- if skinTypeFound == true -%}
+                          <div class="perfect-for">
+                            <h3 class="text--bold">{{ 'product.content.plays_nice_with' | t }}</h3>
+                            <div class="perfect-for--container items-{{ skinTypeCounter }}">
+                              {%- for tag in product.tags -%}
+                                {%- if tag contains "skintype_" -%}
+                                  {%- unless tag contains "jebbit" -%}
+                                  {% assign icon = tag | remove: "skintype_" %}
+                                  {% render "product-content-icons--perfect-for", icon: icon %}
+                                  {%- endunless -%}
+                                {%- endif -%}
+                              {%- endfor -%}
+                            </div>
+                          </div>
+                        {%- endif -%}
+
+                        {% assign badgeCounter = 0 %}
+                        {%- for tag in product.tags -%}
+                          {%- if tag contains "badge_" -%}
+                            {% assign badgeFound = true %}
+                            {%- assign badgeCounter = badgeCounter | plus: 1 -%}
+                            {% break %}
+                          {%- endif -%}
+                        {%- endfor -%}
+
+                        {%- if badgeFound -%}
+                          <div class="who-is-it-for">
+                            <h3 class="text--bold">{{ 'product.content.good_to_know' | t }}</h3>
+                            <div class="who-is-it-for--container items-{{ badgeCounter }}">
+                              {%- for tag in product.tags -%}
+                                {%- if tag contains "badge_" -%}
+                                  {%- unless tag contains "jebbit" -%}
+                                  {% assign icon = tag | remove: "badge_" %}
+                                  {% render "product-content-icons--good-to-know", icon: icon %}
+                                  {%- endunless -%}
+                                {%- endif -%}
+                              {%- endfor -%}
+                            </div>
+                          </div>
+                        {%- endif -%}
                     </collapsible-content>
                   </div>
 
@@ -32,7 +91,7 @@
                 {%- endcomment -%}
 
                   <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-                    <button is="toggle-button" class="collapsible-toggle text--strong heading" aria-controls="block-product-tabs-2" aria-expanded="false" itemprop="name">
+                    <button is="toggle-button" class="collapsible-toggle text--strong" aria-controls="block-product-tabs-2" aria-expanded="false" itemprop="name">
                       <span>HERO INGREDIENTS</span>
                       <span class="animated-plus"></span>
                     </button>
@@ -44,9 +103,24 @@
                     </collapsible-content>
                   </div>
 
+                {%- comment -%}
+                ----------------------------------------------------------------------------------------------------------------
+                SHIPPING & RETURNS
+                ----------------------------------------------------------------------------------------------------------------
+                {%- endcomment -%}
+
+                  <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <button is="toggle-button" class="collapsible-toggle text--strong " aria-controls="block-product-tabs-3" aria-expanded="false" itemprop="name">
+                      <span>SHIPPING & RETURNS</span>
+                      <span class="animated-plus"></span>
+                    </button>
+
+                    <collapsible-content id="block-product-tabs-3" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                      <div class="collapsible__content text-container" itemprop="text">
+                              {{ pages['shipping-and-returns'].content }}
+                      </div>
+                    </collapsible-content>
+                  </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+

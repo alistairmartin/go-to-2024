@@ -1,5 +1,5 @@
 
-<div class="container">
+
   <div class="product-content-ingredients">      
     {% comment %} <h3 class="heading h3 text--bold hide-desktop">{{ section.settings.title }}</h3> {% endcomment %}
 
@@ -10,7 +10,7 @@
         {%- assign glossaryMetaobjects = product.metafields.custom.ingredients_featured.value  -%}
         {% for metaobject in glossaryMetaobjects %}
           <div class="product-content-ingredients--text-item">
-            <p class="heading h4 text--bold">{{ metaobject.title | strip_html }}</p>
+            <p class="heading h6 heading--secondary text--bold">{{ metaobject.title | strip_html | upcase }}</p>
             {{ metaobject.description | metafield_tag }}
           </div>
         {% endfor %}  
@@ -23,7 +23,7 @@
         {% for metaobject in glossaryMetaobjects %}
             <div class="product-content-ingredients--text-item__mobile {% if ingredientCounter == 0 %}active{% endif %}" data-action="activate">
               {%- assign ingredientCounter = 1 -%}
-              <p class="heading h4 text--bold">{{ metaobject.title | strip_html }}</p>
+              <p class="heading h6 heading--secondary text--bold">{{ metaobject.title | strip_html | upcase }}</p>
               <div class="text">{{ metaobject.description | metafield_tag }}</div>
             </div>
         {% endfor %} 
@@ -36,7 +36,7 @@
         <div class="ingredients-glossary--description ">
         {% for metaobject in glossaryMetaobjects %}
           <div class="ingredients-glossary--description-item">
-            <strong>{{ metaobject.title }}</strong>
+            <strong>{{ metaobject.title | upcase }}</strong>
             <div>
               {{ metaobject.description | metafield_tag }}
             </div>
@@ -152,9 +152,8 @@
       {%- endcapture -%}
 
       {%- assign popoverTitle = "Ingredients For " | append: product.title -%}
-      {%- render 'popover-mobile', popoverId: "ingredients-glossary-mobile", popoverTitle: popoverTitle, popoverButton: "View All Ingredients", popoverContent: glossaryContentMobile -%}
-      {%- render 'popover-desktop', popoverId: "ingredients-glossary-desktop", popoverTitle: popoverTitle, popoverButton: "View All Ingredients", popoverContent: glossaryContentDesktop -%}
+      {%- render 'popover-mobile', popoverId: "ingredients-glossary-mobile", popoverTitle: popoverTitle, popoverButton: "View All Ingredients", popoverContent: glossaryContentMobile, button: "basic", hide_icon: true -%}
+      {%- render 'popover-desktop', popoverId: "ingredients-glossary-desktop", popoverTitle: popoverTitle, popoverButton: "View All Ingredients", popoverContent: glossaryContentDesktop, button: "basic", hide_icon: true -%}
 
     </div>
   </div>
-</div>

@@ -1,0 +1,17 @@
+
+   {% comment %} {%- render 'product-media--labels', product: product -%} {% endcomment %}
+
+<div class="product__media">
+    <div class="product-media-desktop">
+    {%- for media in product.media -%}
+        {{-
+            media
+            | image_url: width: media.width
+            | image_tag:
+            loading: loading,
+            sizes: '(max-width: 999px) calc(100vw - 48px), 640px',
+            widths: '400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800'
+            -}}
+    {%- endfor -%}
+    </div>
+</div>

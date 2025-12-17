@@ -1,3 +1,5 @@
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+
 {%- if product.media.size > 0 -%}
   {%- assign selected_media = product.selected_variant.featured_media | default: product.featured_media -%}
 
@@ -37,6 +39,11 @@
     {%- assign largest_image_aspect_ratio = largest_image_aspect_ratio | at_most: media.preview_image.aspect_ratio -%}
   {%- endfor -%}
 
+
+  {%- if brand == 'go-to' -%}
+      {%- render 'product-media--desktop' -%}
+  {%- endif -%}
+
   <product-media
     filtered-ids="{{ filtered_media_ids | json }}"
     form-id="{{ product_form_id }}"
@@ -48,7 +55,7 @@
       reveal-on-scroll
     {% endif %}
     product-handle="{{ product.handle }}"
-    class="product__media"
+    class="product__media {% if brand == 'go-to' %}hide-desktop{% endif %}"
     style="--largest-image-aspect-ratio: {{ largest_image_aspect_ratio }}"
   >
 

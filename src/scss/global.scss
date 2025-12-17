@@ -349,7 +349,7 @@ section {
 }
 
 .text--bold, .text--bold * {
-  font-weight: 600 !important;
+  font-weight: 700 !important;
 }
 
 .no-scroll-bar {
@@ -2550,9 +2550,9 @@ rivo-favorite-button.rivo-favorite-active svg {
 
       p {
         padding: 0 0 0 8px;
-        font-size: 16px;
+        font-size: 13px;
         @include media-query($medium-up) {
-          font-size: 16px;
+          font-size: 13px;
         }
       }
     }
@@ -5626,6 +5626,10 @@ button[aria-label="Tolstoy stories: next button"] {
   border: 1px solid $gotoPink;
   background: $gotoPinkLighter;
   border-radius: 6px;
+
+  a {
+    text-decoration: underline;
+  }
 
   svg {
     width: 16px;

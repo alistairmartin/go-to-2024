@@ -4,68 +4,72 @@
   <!-- PRODUCT META -->
   <product-meta data-block-type="meta" data-block-id="{{ section.id }}" price-class="price--large" class="product-meta product-meta--desktop">
 
-    {%- render 'product-media--wishlist', product: product -%}
+    <div class="product-meta__outer">
+
+        {%- render 'product-media--wishlist', product: product -%}
 
 
-    {%- if section.settings.show_vendor -%}
-      <h2 class="product-meta__vendor heading heading--small">
-        {%- assign vendor_handle = product.vendor | handle -%}
-        {%- assign vendor_collection = collections[vendor_handle] -%}
+        {%- if section.settings.show_vendor -%}
+          <h2 class="product-meta__vendor heading heading--small">
+            {%- assign vendor_handle = product.vendor | handle -%}
+            {%- assign vendor_collection = collections[vendor_handle] -%}
 
-        {%- if vendor_collection != blank -%}
-          <a href="{{ vendor_collection.url }}">{{ product.vendor }}</a>
-        {%- else -%}
-          <a href="{{ product.vendor | url_for_vendor }}">{{ product.vendor }}</a>
+            {%- if vendor_collection != blank -%}
+              <a href="{{ vendor_collection.url }}">{{ product.vendor }}</a>
+            {%- else -%}
+              <a href="{{ product.vendor | url_for_vendor }}">{{ product.vendor }}</a>
+            {%- endif -%}
+          </h2>
         {%- endif -%}
-      </h2>
-    {%- endif -%}
 
-    {% unless featured %}
-      <h1 class="product-meta__title heading h4 heading--primary ">{{ product.title | remove: "Bro-To " | remove: "Gro-To " }}</h1>
-    {% else %}
-      <h2 class="product-meta__title heading h4 heading--primary">
-        <a href="{{ product.url }}">{{ product.title }}</a>
-      </h2>
-    {% endunless %}
+        {% unless featured %}
+          <h1 class="product-meta__title heading h4 heading--primary ">{{ product.title | remove: "Bro-To " | remove: "Gro-To " }}</h1>
+        {% else %}
+          <h2 class="product-meta__title heading h4 heading--primary">
+            <a href="{{ product.url }}">{{ product.title }}</a>
+          </h2>
+        {% endunless %}
 
-    <div class="product-meta__subtitle">
+        <div class="product-meta__subtitle">
 
-    {%- comment %}START -- Metafield - Volume and Subtitle {% endcomment -%}
-    {%- if product.metafields.custom.product_subtitle__description != blank or product.metafields.custom.product_subtitle__measurement != blank -%}
-    <p>
-      {%- if product.metafields.custom.product_subtitle__description != blank -%}
-        {{- product.metafields.custom.product_subtitle__description -}}
-      {%- endif -%}
+        {%- comment %}START -- Metafield - Volume and Subtitle {% endcomment -%}
+        {%- if product.metafields.custom.product_subtitle__description != blank or product.metafields.custom.product_subtitle__measurement != blank -%}
+        <p>
+          {%- if product.metafields.custom.product_subtitle__description != blank -%}
+            {{- product.metafields.custom.product_subtitle__description -}}
+          {%- endif -%}
 
-      {%- if product.metafields.custom.product_subtitle__description != blank and product.metafields.custom.product_subtitle__measurement != blank -%}
-        <span class="separator--dot"> • </span>
-      {%- endif -%}
+          {%- if product.metafields.custom.product_subtitle__description != blank and product.metafields.custom.product_subtitle__measurement != blank -%}
+            <span class="separator--dot"> • </span>
+          {%- endif -%}
 
-      {%- if product.metafields.custom.product_subtitle__measurement != blank -%}
-        {{- product.metafields.custom.product_subtitle__measurement -}}
-      {%- endif -%}
+          {%- if product.metafields.custom.product_subtitle__measurement != blank -%}
+            {{- product.metafields.custom.product_subtitle__measurement -}}
+          {%- endif -%}
 
-    </p>
-    {%- endif -%}
-    {%- comment %}END -- Metafield - Volume and Subtitle {% endcomment -%}
+        </p>
+        {%- endif -%}
+        {%- comment %}END -- Metafield - Volume and Subtitle {% endcomment -%}
+
+        </div>
+
+        {%- if section.settings.show_product_rating or section.settings.show_sku -%}
+          <div class="product-meta__reference">
+            {%- if section.settings.show_product_rating -%}
+              <a href="#customer-reviews" is="review-link" data-smooth-scroll class="product-meta__reviews-badge hidden-lap-and-up">{%- render 'product-rating', product: product -%}</a>
+              <a href="#customer-reviews" is="review-link" data-smooth-scroll class="product-meta__reviews-badge hidden-pocket">{%- render 'product-rating', product: product -%}</a>
+            {%- endif -%}
+
+            {%- if section.settings.show_sku -%}
+              <span class="product-meta__sku text--subdued text--xxsmall" {% if product.selected_or_first_available_variant.sku == blank %}style="display: none"{% endif %} data-product-sku-container>
+                {{- 'product.general.sku' | t }}
+                <span class="product-meta__sku-number" data-product-sku-number>{{ product.selected_or_first_available_variant.sku }}</span>
+              </span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
 
     </div>
-
-    {%- if section.settings.show_product_rating or section.settings.show_sku -%}
-      <div class="product-meta__reference">
-        {%- if section.settings.show_product_rating -%}
-          <a href="#customer-reviews" is="review-link" data-smooth-scroll class="product-meta__reviews-badge hidden-lap-and-up">{%- render 'product-rating', product: product -%}</a>
-          <a href="#customer-reviews" is="review-link" data-smooth-scroll class="product-meta__reviews-badge hidden-pocket">{%- render 'product-rating', product: product -%}</a>
-        {%- endif -%}
-
-        {%- if section.settings.show_sku -%}
-          <span class="product-meta__sku text--subdued text--xxsmall" {% if product.selected_or_first_available_variant.sku == blank %}style="display: none"{% endif %} data-product-sku-container>
-            {{- 'product.general.sku' | t }}
-            <span class="product-meta__sku-number" data-product-sku-number>{{ product.selected_or_first_available_variant.sku }}</span>
-          </span>
-        {%- endif -%}
-      </div>
-    {%- endif -%}
 
     <div class="product-meta__price-loyalty">
       <div class="product-meta__price-list-container">
@@ -102,7 +106,7 @@
             </span>
           {%- endif -%}
 
-          {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
+          {% comment %} {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
             <div class="price text--subdued">
               <div class="unit-price-measurement">
                 <span class="unit-price-measurement__price">{{ product.selected_or_first_available_variant.unit_price | money | remove: ".00" | remove: ",00" }}</span>
@@ -115,7 +119,7 @@
                 <span class="unit-price-measurement__reference-unit">{{ product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}</span>
               </div>
             </div>
-          {%- endif -%}
+          {%- endif -%} {% endcomment %}
         </div>
       {%- endif -%}
 
@@ -149,8 +153,7 @@
     {%- endif -%}
     </div>
 
-
-
+  {% comment %} 
     {%- if section.settings.show_taxes_included -%}
       {%- if cart.taxes_included or shop.shipping_policy.body != blank -%}
         <p class="product-meta__taxes-included text--small">
@@ -163,7 +166,7 @@
           {%- endif -%}
         </p>
       {%- endif -%}
-    {%- endif -%}
+    {%- endif -%} {% endcomment %}
 
     <product-payment-terms data-block-type="payment-terms" data-block-id="{{ section.id }}">
       {%- assign product_installment_form_id = 'product-installment-form-' | append: section.id | append: '-' | append: product.id -%}

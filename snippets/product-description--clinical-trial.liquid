@@ -1,0 +1,85 @@
+{%- if product.metafields.custom.product_trials__side-by-side.size >= 1 -%}
+    <div class="product-content-description--content-inner tab-panel clinical-trials" id="product-content-description--tab-{{ tab }}" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-{{ tab }}" aria-hidden="true">
+
+  <section class="section BeforeAfter {% unless product.metafields.custom.product_trials.size < 2 %}BeforeAfter--hasTabs{% endunless %}" data-section-id="{{ section.id }}" data-section-type="before-after" id="before-after">
+    <div class="container">
+      <div class="BeforeAfter__Container">
+        <div class="BeforeAfter__SliderWrapper">
+
+          {%- if product.metafields.custom.product_trials__side-by-side.size == 1 -%}
+            {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_trials__side-by-side[0] , src_mobile: product.metafields.custom.product_trials__side-by-side[0], reveal: false, %}
+          {% else %}
+            <div class="custom-carousel carousel" data-flickity='{ "cellSelector": ".carousel-cell", "prevNextButtons": true, "wrapAround": true, "autoPlay": true, "resize": true, "lazyLoad": true, "draggable": ">1"  }'>
+              {%- for block in product.metafields.custom.product_trials__trial_title -%}
+                <div class="carousel-cell">
+                  {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_trials__side-by-side[forloop.index0] , src_mobile: product.metafields.custom.product_trials__side-by-side[forloop.index0], reveal: false, %}
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+
+        </div>
+        <div class="BeforeAfter__TextContainer">
+          <h2 class="BeforeAfter__Title">{{ product.metafields.custom.product_trials__title }}</h2>
+          <div class="BeforeAfter__Description">
+            {{ product.metafields.custom.product_trials__description }}
+            {%- unless product.metafields.custom.product_trials__modal_button_text == blank -%}
+              <button class="button button--outline button--ternary" id="open-trials">
+                {{ product.metafields.custom.product_trials__modal_button_text }}
+              </button>
+
+              {%- capture modalContent -%}
+                <div class="rte ">
+                  {{ product.metafields.custom.product_trials__modal_content }}
+                </div>
+              {%- endcapture -%}
+              {%- render 'modal', modalId: "open-trials", buttonId: "open-trials" content: modalContent -%}
+            {%- endunless -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+    </div>
+
+
+<style>
+  #shopify-section-{{ section.id }} {
+    background: {{ section.settings.section_background }};
+  }
+
+  #shopify-section-{{ section.id }} .BeforeAfter__Container {
+    background: {{ section.settings.text_background }};
+  }
+  
+  #shopify-section-{{ section.id }} .BeforeAfter__Title {
+    font-size: {{ section.settings.title_font_size-mobile }}px;
+  }
+
+  #shopify-section-{{ section.id }} .BeforeAfter__Description {
+    font-size: {{ section.settings.description_font_size-mobile }}px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .BeforeAfter__Title {
+      font-size: {{ section.settings.title_font_size-desktop }}px;
+    }
+  
+    #shopify-section-{{ section.id }} .BeforeAfter__Description {
+      font-size: {{ section.settings.description_font_size-desktop }}px;
+    }
+  }
+</style>
+
+{%- if product.metafields.custom.product_trials__side-by-side.size > 1 -%}
+<script>
+window.onload = function() {
+  const beforeAndAfter = document.querySelector(".custom-carousel");
+  if (beforeAndAfter && beforeAndAfter.flickity) {
+    beforeAndAfter.flickity.resize();
+  }
+};
+</script>
+{%- endif -%}
+
+{%- endif -%}

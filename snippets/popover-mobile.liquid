@@ -1,6 +1,15 @@
 
+{%- unless button -%}
+  {%- assign button = "primary" -%}
+{%- endunless -%}
+
+{%- unless hide_icon == true -%}
+  {%- assign hide_icon = false -%}
+{%- endunless -%}
+
+
 <div class="popover-buttons">
-  <button type="button" is="toggle-button" class="link link--primary hidden-tablet-and-up" aria-controls="{{ popoverId }}-popover" aria-expanded="false">{{ popoverButton }} {%- render 'icon' with "plus" -%}</button>
+  <button type="button" is="toggle-button" class="link link--{{ button }} hidden-tablet-and-up" aria-controls="{{ popoverId }}-popover" aria-expanded="false">{{ popoverButton }} {% unless hide_icon %}{%- render 'icon' with "plus" -%}{% endunless %}</button>
 </div>
 
 

@@ -2028,7 +2028,12 @@
         }
 
         .image-column {
-            max-width: 415px;
+          width: 100%;
+          max-width: 415px;
+
+          img {
+            width: 100%;
+          }
         }
       }
   }

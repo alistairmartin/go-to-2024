@@ -459,9 +459,9 @@
                 <span class="custom-subscription__indicator" aria-hidden="true"></span>
                 <span class="custom-subscription__label">
                   <span class="custom-subscription__label-regular">Subscribe</span>
-                  <strong class="custom-subscription__label-strong">
+                  {% comment %} <strong class="custom-subscription__label-strong">
                     Perk-y and convenient
-                  </strong>
+                  </strong> {% endcomment %}
                 </span>
 
                 <a class="custom-subscription__link" href="#subscribe-details">
@@ -484,18 +484,18 @@
       {%- endcomment -%}
       {%- when 'product_details' -%}
           <div data-block-type="product_details" data-block-id="{{ block.id }}" {{ block.shopify_attributes }} class="product-form--details">
-            <h2 class="product-form--details-title h5 heading heading--primary">Best mates with thirsty, dry or mature skin</h2>
+            <h2 class="product-form--details-title h5 heading heading--primary">Best mates with thirsty, dry, or mature faces</h2>
 
             <table class="product-form--details-table">
               <tr>
                 <td><strong>Suitable for</strong></td>
-                <td>All skin types</td>
+                <td>Ageing Skin, Combination Skin, Dry Skin, Sensitive Skin</td>
               </tr>
               <tr>
                 <td><strong>Use it</strong></td>
                 <td>
-                  AM: after your cleansers, exfoliators, serums. But before your SPF &amp; makeup<br><br>
-                  PM: apply after your cleansers, exfoliators, and serums.
+                  AM:  after your cleansers, exfoliators, serums. But before your SPF & makeup.<br><br>
+                  PM: apply after your cleansers, exfoliators, and serums.
                 </td>
               </tr>
             </table>

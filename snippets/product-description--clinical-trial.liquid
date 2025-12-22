@@ -73,12 +73,71 @@
 
 {%- if product.metafields.custom.product_trials__side-by-side.size > 1 -%}
 <script>
-window.onload = function() {
-  const beforeAndAfter = document.querySelector(".custom-carousel");
-  if (beforeAndAfter && beforeAndAfter.flickity) {
-    beforeAndAfter.flickity.resize();
+(function() {
+  var tabId = "product-content-description--tab-{{ tab }}";
+  var tabPanel = document.getElementById(tabId);
+
+  function getFlickityInstance(carousel) {
+    if (window.Flickity && typeof window.Flickity.data === "function") {
+      var instance = window.Flickity.data(carousel);
+      if (instance) return instance;
+    }
+
+    if (carousel && carousel.flickity) {
+      return carousel.flickity;
+    }
+
+    return null;
   }
-};
+
+  function refreshCarousel() {
+    if (!tabPanel || tabPanel.getAttribute("aria-hidden") === "true") return;
+
+    var carousel = tabPanel.querySelector(".custom-carousel");
+    if (!carousel) return;
+
+    var flickityInstance = getFlickityInstance(carousel);
+
+    if (flickityInstance && typeof flickityInstance.resize === "function") {
+      if (typeof flickityInstance.reloadCells === "function") {
+        flickityInstance.reloadCells();
+      }
+      flickityInstance.resize();
+      if (typeof flickityInstance.reposition === "function") {
+        flickityInstance.reposition();
+      }
+    }
+  }
+
+  function onTabShow() {
+    requestAnimationFrame(function() {
+      refreshCarousel();
+      setTimeout(refreshCarousel, 80);
+    });
+  }
+
+  if (tabPanel && typeof MutationObserver !== "undefined") {
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.attributeName === "aria-hidden" && tabPanel.getAttribute("aria-hidden") === "false") {
+          onTabShow();
+        }
+      });
+    });
+    observer.observe(tabPanel, { attributes: true, attributeFilter: ["aria-hidden"] });
+  }
+
+  var tabButton = document.querySelector('[aria-controls="' + tabId + '"]');
+  if (tabButton) {
+    tabButton.addEventListener("click", onTabShow);
+  }
+
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    onTabShow();
+  } else {
+    window.addEventListener("load", onTabShow);
+  }
+})();
 </script>
 {%- endif -%}
 

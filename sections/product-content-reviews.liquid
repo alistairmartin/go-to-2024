@@ -42,13 +42,14 @@
     --prev-next-button-color: {{ settings.text_color.red }}, {{ settings.text_color.green }}, {{ settings.text_color.blue }};
 
     --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
-    --section-logo-count: {{ section.blocks.size | default: 6 }}; 
+    --section-logo-count: 6; 
 
     --section-star-colour: {{ section.settings.stars_colour }};
   }
 
   #shopify-section-{{ section.id }} .logo-list__list {
     --logos-gap: 5px;
+    --logos-per-row: 3;
     grid-template-columns: repeat(min(var(--logos-per-row),var(--section-logo-count)),minmax(260px,400px));
   }
 
@@ -77,43 +78,44 @@
 
       {%- capture section_content -%}
         <div class="logo-list__list">
-          {%- for block in section.blocks -%}
-            {%- capture logo_content -%}
-
-              {%- if block.settings.text != blank -%}
+          {% for review_title in product.metafields.custom.product_main_information__review_title %}
+            <div class="logo-list__item">
                 <div class="logo-list__stars">
                 {%- for i in (1..5) -%}
                     {%- render 'icon' with "rating-star" -%}
                 {%- endfor -%}
                 </div>
-                <div class="logo-list__text text--large">{{ block.settings.text }}</div>
-                <div class="logo-list__reviewer text--large">{{ block.settings.reviewer }}</div>
-              {%- endif -%}
-            
-            {%- endcapture -%}
 
-            {%- if block.settings.link -%}
-              <a href="{{ block.settings.link }}" {% if section.settings.reveal_on_scroll %}reveal{% endif %} class="logo-list__item" {{ block.shopify_attributes }}>
-                {{- logo_content -}}
-              </a>
-            {%- else -%}
-              <div class="logo-list__item" {% if section.settings.reveal_on_scroll %}reveal{% endif %} {{ block.shopify_attributes }}>
-                {{- logo_content -}}
+                {% comment %} review_title {% endcomment %}
+                <div class="logo-list__text text--large">{{ product.metafields.custom.product_main_information__review_description[forloop.index0] | strip_html }}</div>
+                <div class="logo-list__reviewer text--large">{{ product.metafields.custom.product_main_information__review_author[forloop.index0] }}</div>
+
+            
+              {% comment %} <div class="product-reviews--item">
+                <p class="product-reviews--item-author">{{ product.metafields.custom.product_main_information__review_author[forloop.index0] }}</p>
+                <div class="product-reviews--item-stars">
+                  <svg width="96" height="16" viewBox="0 0 96 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 0L9.79611 5.52786H15.6085L10.9062 8.94427L12.7023 14.4721L8 11.0557L3.29772 14.4721L5.09383 8.94427L0.391548 5.52786H6.20389L8 0Z" fill="#181818"/>
+                    <path d="M48 0L49.7961 5.52786H55.6085L50.9062 8.94427L52.7023 14.4721L48 11.0557L43.2977 14.4721L45.0938 8.94427L40.3915 5.52786H46.2039L48 0Z" fill="#181818"/>
+                    <path d="M28 0L29.7961 5.52786H35.6085L30.9062 8.94427L32.7023 14.4721L28 11.0557L23.2977 14.4721L25.0938 8.94427L20.3915 5.52786H26.2039L28 0Z" fill="#181818"/>
+                    <path d="M68 0L69.7961 5.52786H75.6085L70.9062 8.94427L72.7023 14.4721L68 11.0557L63.2977 14.4721L65.0938 8.94427L60.3915 5.52786H66.2039L68 0Z" fill="#181818"/>
+                    <path d="M88 0L89.7961 5.52786H95.6085L90.9062 8.94427L92.7023 14.4721L88 11.0557L83.2977 14.4721L85.0938 8.94427L80.3915 5.52786H86.2039L88 0Z" fill="#181818"/>
+                  </svg>
+                </div>
+                <p class="product-reviews--item-title">{{ review_title }}</p>
+                <p class="product-reviews--item-review text--small">{{ product.metafields.custom.product_main_information__review_description[forloop.index0] | strip_html }}</p>
+              </div> {% endcomment %}
               </div>
-            {%- endif -%}
           {%- endfor -%}
+
         </div>
       {%- endcapture -%}
 
-      {%- if section.settings.stack_logos -%}
-        {% comment %} <logo-list {% if section.settings.reveal_on_scroll %}reveal-on-scroll{% endif %} class="logo-list logo-list--grid">
-          {{- section_content -}}
-        </logo-list> {% endcomment %}
-      {%- else -%}
+  
         <div class="scroller">
           <div class="scroller__inner">
             <logo-list {% if section.settings.reveal_on_scroll %}reveal-on-scroll{% endif %} class="logo-list logo-list--carousel">
-              {%- if section.blocks.size > 6 -%}
+
                 <prev-next-buttons class="logo-list__prev-next hidden-pocket">
                   <button class="logo-list__arrow prev-next-button prev-next-button--prev" disabled>
                     <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
@@ -125,13 +127,12 @@
                     {%- include 'icon' with 'brand-arrow-right', block: true, direction_aware: true -%}
                   </button>
                 </prev-next-buttons>
-              {%- endif -%}
 
               {{- section_content -}}
             </logo-list>
           </div>
         </div>
-      {%- endif -%}
+
 
       {%- if section.settings.button_text != blank -%}
         <div class="section__footer">

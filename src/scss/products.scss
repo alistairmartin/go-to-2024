@@ -127,15 +127,15 @@
   position: sticky;
   top: 90px;
   }
+}
 
 
-  @include media-query($small) {
+@include media-query($small) {
 
   .product__media-nav {
-      margin: 6px -16px 12px;
+      margin: 16px 0px;
       width: calc(100% + 32px);
-      justify-content: center;
-      opacity: 0.7;
+      justify-content: flex-start;
   }
 
   .dots-nav__item[aria-current=true] {
@@ -144,50 +144,17 @@
         border: 1px solid #cececeb5;
   }
 
-
   .dots-nav__item {
-    // margin: 0;
-    // border-radius: 0;
-    // flex: 1;
-    background: none;
-    border: 1px solid #000;
+      // margin: 0;
+      // border-radius: 0;
+      // flex: 1;
+      background: none;
+      border: 1px solid #000;
 
-    // &:before {
-    //   display: none !important;
-    // }
-  }
-
-  // for line dots
-
-  //   .product__media-nav {
-  //     margin: 0 -16px 32px;
-  //     width: calc(100% + 32px);
-  //   }
-  
-  //   .dots-nav {
-  //     width: 100%;
-  //     padding: 0;
-  //     margin: 0;
-  
-  //     .dots-nav__item {
-  //       margin: 0;
-  //       border-radius: 0;
-  //       flex: 1;
-  //       background: var(--color-primary);
-  //       border: 1px solid transparent;
-
-  //       &:before {
-  //         display: none !important;
-  //       }
-  //     }
-  
-  //     .dots-nav__item[aria-current=true] {
-  //       background: var(--color-primary);
-  //       box-shadow: 2px 2px 2px #d0d0d045;
-  //       border: 1px solid #cececeb5;
-  //     }
-  //   }
-  }
+      // &:before {
+      //   display: none !important;
+      // }
+    }
 
 }
 
@@ -1743,9 +1710,12 @@
 
 
 .product-media-desktop {
-  display: grid;
+  display: none;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
+  @include media-query($medium-up) {
+    display: grid;
+  }
 }
 
 
@@ -2224,6 +2194,7 @@
     background: #fff;
     font: 16px/1.35 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
     color: #111;
+    padding: 0;
   }
 
   .custom-subscription__row {

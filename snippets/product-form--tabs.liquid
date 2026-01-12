@@ -30,7 +30,7 @@
                             {% endunless %}
                       </div>
 
-                         {% assign skinTypeCounter = 0 %}
+                         {% comment %} {% assign skinTypeCounter = 0 %}
                           {%- for tag in product.tags -%}
                             {%- if tag contains "skintype_" -%}
                               {%- unless tag contains "jebbit" -%}
@@ -80,7 +80,7 @@
                               {%- endfor -%}
                             </div>
                           </div>
-                        {%- endif -%}
+                        {%- endif -%} {% endcomment %}
                     </collapsible-content>
                   </div>
 

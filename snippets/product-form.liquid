@@ -3,6 +3,8 @@
 {%- assign color_white_label = 'general.label.white' | t | downcase -%}
 {%- assign size_label_list = 'general.label.size' | t | replace: ', ', ',' | downcase | split: ',' -%}
 
+{%- assign productMetafields = product.metafields.custom -%}
+
 <div class="product-form">
 
   {%- for block in section.blocks -%}
@@ -204,7 +206,7 @@
             </noscript>
           </variant-picker>
         {% else %}
-          {%- assign related_products = product.metafields.custom.product_main_information__related_products | split: "|" -%}
+          {%- assign related_products = productMetafields.product_main_information__related_products | split: "|" -%}
           {%- if related_products != blank -%}
           <div class="block-swatch-list block-swatch-list--custom">
             {%- for product_handle in related_products -%}
@@ -364,14 +366,14 @@
       ----------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
       {%- when 'product_usp_mobile' -%}
-        {%- if product.metafields.custom.product_usp__text != blank and context != 'quick-buy' -%}
+        {%- if productMetafields.product_usp__text != blank and context != 'quick-buy' -%}
           <section>
             <div class="product-USP hide-desktop">
-              {% assign USPtextSize = product.metafields.custom.product_usp__text | size %}
+              {% assign USPtextSize = productMetafields.product_usp__text | size %}
 
-              <h3 class="heading {% if USPtextSize > 100 %}product-USP--title__smallx{% elsif USPtextSize > 40 %}product-USP--title__small{% endif %}">{{ product.metafields.custom.product_usp__text | remove: "<p>" | remove: "</p>" }}</h3>
+              <h3 class="heading {% if USPtextSize > 100 %}product-USP--title__smallx{% elsif USPtextSize > 40 %}product-USP--title__small{% endif %}">{{ productMetafields.product_usp__text | remove: "<p>" | remove: "</p>" }}</h3>
 
-              {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_usp__image_desktop, src_mobile: product.metafields.custom.product_usp__image_mobile %}
+              {% render "responsive-image-metafields", src_desktop: productMetafields.product_usp__image_desktop, src_mobile: productMetafields.product_usp__image_mobile %}
             </div>
           </section>
         {%- endif -%}
@@ -379,13 +381,13 @@
 
 
       {%- when 'product_usp_desktop' -%}
-        {%- if product.metafields.custom.product_usp__text != blank and context != 'quick-buy' -%}
+        {%- if productMetafields.product_usp__text != blank and context != 'quick-buy' -%}
         <div class="product-USP hide-mobile">
 
-            {% assign USPtextSize = product.metafields.custom.product_usp__text | size %}
+            {% assign USPtextSize = productMetafields.product_usp__text | size %}
 
-            <h3 class="heading {% if USPtextSize > 40 %}product-USP--title__small{% endif %}">{{ product.metafields.custom.product_usp__text | remove: "<p>" | remove: "</p>" }}</h3>
-            {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_usp__image_desktop, src_mobile: product.metafields.custom.product_usp__image_mobile %}
+            <h3 class="heading {% if USPtextSize > 40 %}product-USP--title__small{% endif %}">{{ productMetafields.product_usp__text | remove: "<p>" | remove: "</p>" }}</h3>
+            {% render "responsive-image-metafields", src_desktop: productMetafields.product_usp__image_desktop, src_mobile: productMetafields.product_usp__image_mobile %}
         </div>
         {%- endif -%}
         
@@ -484,20 +486,43 @@
       {%- endcomment -%}
       {%- when 'product_details' -%}
           <div data-block-type="product_details" data-block-id="{{ block.id }}" {{ block.shopify_attributes }} class="product-form--details">
-            <h2 class="product-form--details-title h5 heading heading--primary">Best mates with thirsty, dry, or mature faces</h2>
-
+            {%- if productMetafields.product_tag_line != blank -%}
+              <h2 class="product-form--details-title h5 heading heading--primary">{{ productMetafields.product_tag_line }}</h2>
+            {%- endif -%}
+            
             <table class="product-form--details-table">
+              {%- if productMetafields.product_suitable_for != blank -%}
               <tr>
                 <td><strong>Suitable for</strong></td>
-                <td>Ageing Skin, Combination Skin, Dry Skin, Sensitive Skin</td>
+                <td>{{ productMetafields.product_suitable_for }}</td>
               </tr>
+              {% endif %}
+
+              {%- if productMetafields.product_good_to_know != blank -%}
+              <tr>
+                <td><strong>Good To Know</strong></td>
+                <td>{{ productMetafields.product_good_to_know }}</td>
+              </tr>
+              {% endif %}
+
+              {%- assign applicationMetafield = productMetafields.application.value | metafield_tag -%}
+
+              {%- if applicationMetafield != blank -%}
+              <tr>
+                <td><strong>Application</strong></td>
+                <td>{{ applicationMetafield }}</td>
+              </tr>
+              {% endif %}
+
+              {%- if productMetafields.product_use_it_am != blank or productMetafields.product_use_it_pm != blank  -%}
               <tr>
                 <td><strong>Use it</strong></td>
                 <td>
-                  AM:  after your cleansers, exfoliators, serums. But before your SPF & makeup.<br><br>
-                  PM: apply after your cleansers, exfoliators, and serums.
+                  {%- if productMetafields.product_use_it_am != blank -%}AM:  {{ productMetafields.product_use_it_am }}<br><br>{%- endif -%}
+                  {%- if productMetafields.product_use_it_pm != blank -%}PM: {{ productMetafields.product_use_it_pm }}{% endif %}
                 </td>
               </tr>
+              {% endif %}
             </table>
           </div>
 
@@ -507,16 +532,36 @@
       ----------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
       {%- when 'product_quiz' -%}
+          {%- if productMetafields.product_quiz_title != balnk -%}
           <div data-block-type="product_quiz" data-block-id="{{ block.id }}" {{ block.shopify_attributes }} class="product-form--quiz">
             <div class="product-quiz--inner">
-              <h3>Wondering which Go-To moisturiser is your perfect match?</h3>
-              <p>Answer these quickfire questions and we’ll figure it out for you.</p>
+              <h3>{{ productMetafields.product_quiz_title }}</h3>
+              <p>{{ productMetafields.product_quiz_description }}</p>
+
+              {%- assign product_quiz_link_type = productMetafields.product_quiz_link_type -%}
+
+
+              {%- if product_quiz_link_type == "Popup" -%}
+              {%- capture modalContent -%}
+                  <div class="rte ">
+                    {{ product.metafields.custom.product_quiz_popup }}
+                  </div>
+                {%- endcapture -%}
+              {%- render 'modal', modalId: "open-product-quiz", buttonId: "open-product-quiz" content: modalContent -%}
+              {%- endif -%}
 
               <div class="button-container">
-                <a href="#" class="link link--primary">Quiz Me</a>
+                {%- if product_quiz_link_type == "Link" -%}
+                  <a href="{{ productMetafields.quiz_link }}" class="link link--primary">{{ productMetafields.product_quiz_button_text }}</a>
+                {%- endif -%}
+
+                {%- if product_quiz_link_type == "Popup" -%}
+                  <button id="open-product-quiz"class="link link--primary">{{ productMetafields.product_quiz_button_text }}</button>
+                {%- endif -%}
               </div>
             </div>
           </div>
+          {%- endif -%}
     
       {%- comment -%}
       ----------------------------------------------------------------------------------------------------------------

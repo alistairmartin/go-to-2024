@@ -349,7 +349,11 @@ section {
 }
 
 .text--bold, .text--bold * {
-  font-weight: 700 !important;
+  font-weight: 600 !important;
+}
+
+.text--bold-medium {
+  font-weight: 500 !important;
 }
 
 .no-scroll-bar {

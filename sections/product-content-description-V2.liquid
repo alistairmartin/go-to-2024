@@ -23,37 +23,54 @@
                 <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-4" class="tab-list--tab">{{ 'product.content.whats_included' | t }}</button>
               {%- endif -%} {% endcomment %}
 
-            
+              {%- if product.metafields.custom.product_how_to_apply_image_desktop != blank -%}
               <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-2" class="tab-list--tab">
+                  HOW TO APPLY
+              </button>
+              {% endif %}
+
+              {%- if product.metafields.custom.product_trials__side-by-side.size >= 1 -%}
+              <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-3 product-content-description--clinical-trial" class="tab-list--tab">
                   CLINICAL TRIALS
               </button>
-
-               <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-3" class="tab-list--tab">
+              {% endif %}
+              
+              {%- if product.metafields.custom.product_routine__steps-morning != blank or product.metafields.custom.product_routine__steps-evening != blank -%}
+               <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-4" class="tab-list--tab">
                   {%- render 'icon' with "go-to-sun" -%} AM /  {%- render 'icon' with "go-to-moon" -%} PM
               </button>
+              {% endif %}
 
-              <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-4" class="tab-list--tab">
+              {%- if product.metafields.accentuate.product_main_information__whats_in_it != blank -%}
+              <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-5" class="tab-list--tab">
                   WHAT'S IN IT?
               </button>
+              {% endif %}
 
-              <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-5" class="tab-list--tab">
+              {%- if product.metafields.custom.product_doing_our_bit__how_its_made != blank or product.metafields.custom.product_doing_our_bit__how_to_recycle != blank -%}
+              <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-6" class="tab-list--tab">
                   REUSE & RECYCLE
               </button>
+              {% endif %}
 
 
             </div>
           </div>
 
 
+           
+
           {%- render 'product-description--main' product: product, tab: 1  -%}
+          
+          {%- render 'product-description--how-to-apply' product: product, tab: 2  -%}
 
-          {%- render 'product-description--clinical-trial' product: product, tab: 2  -%}
+          {%- render 'product-description--clinical-trial' product: product, tab: 3  -%}
 
-          {%- render 'product-description--routine' product: product, tab: 3 -%}
+          {%- render 'product-description--routine' product: product, tab: 4 -%}
 
-          {%- render 'product-description--ingredients' product: product, tab: 4 -%}
+          {%- render 'product-description--ingredients' product: product, tab: 5 -%}
 
-          {%- render 'product-description--recycle' product: product, tab: 5 -%}
+          {%- render 'product-description--recycle' product: product, tab: 6 -%}
 
 
           </div>

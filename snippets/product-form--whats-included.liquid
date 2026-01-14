@@ -1,0 +1,45 @@
+
+        
+        
+        {%- if product.metafields.custom.product_main_information__included_products != blank -%}
+
+
+
+
+        <div class="product-whats-included" id="whats-included">
+
+          <h2 class="heading h6 product-whats-included--title heading--secondary text--bold-medium ">WHAT'S INCLUDED</h2>
+
+          <div class="product-whats-included--container">
+          {% assign whatsIncludedProducts = product.metafields.custom.product_main_information__included_products | split: "|" %}
+          {%- for whatsIncludedProductHandle in whatsIncludedProducts -%}
+
+            {% assign whatsIncludedProduct = all_products[whatsIncludedProductHandle] %}
+            <div class="product-whats-included--item">
+              <div class="product-whats-included--item-image">
+                {{ whatsIncludedProduct | image_url: width: "300x" | image_tag }}
+              </div>
+              <div class="product-whats-included--item-text">
+
+                  <p class="heading h5 title"><i>{{ whatsIncludedProduct.title }}</i></p>
+                  {%- if whatsIncludedProduct.metafields.custom.product_subtitle__description != blank -%}
+                    <p>{{ whatsIncludedProduct.metafields.custom.product_subtitle__description }}</p>
+                  {%- endif -%}
+                  {%- if whatsIncludedProduct.metafields.custom.product_subtitle__measurement != blank -%}
+                    <p class="text--small">{{ whatsIncludedProduct.metafields.custom.product_subtitle__measurement }}</p>
+                  {%- endif -%}
+                </div>
+
+                {%- unless whatsIncludedProduct.template_suffix == "hidden" or whatsIncludedProduct.tag contains "hidden" -%}
+                <a href="{{ whatsIncludedProduct.url }}" class="link link--primary">VIEW PRODUCT {%- render 'icon' with "brand-arrow-right" -%}</a>
+
+                {%- render 'product-item--ATC-drawer', product: whatsIncludedProduct, button_text_atc: "VIEW PRODUCT", button_text: button_text,  button_class: "link" -%}
+
+                {%- endunless -%}
+
+
+            </div>
+          {%- endfor -%}
+          </div>
+        </div>
+        {%- endif -%}

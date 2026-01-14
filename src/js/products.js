@@ -47,4 +47,47 @@ document.addEventListener("DOMContentLoaded", function(event) {
         });
     }
 
+    var subscriptionBlocks = document.querySelectorAll('[data-block-type="custom_subscription"]');
+    if (subscriptionBlocks.length > 0) {
+        subscriptionBlocks.forEach(function(block) {
+            var planContainer = block.querySelector('[data-selling-plan-container]');
+            var planSelect = block.querySelector('[data-selling-plan-select]');
+            var subscribeRadio = block.querySelector('input[name="purchase_option"][value="subscribe"]');
+            var oneTimeRadio = block.querySelector('input[name="purchase_option"][value="one_time"]');
+
+            if (!planSelect || !subscribeRadio || !oneTimeRadio) {
+                return;
+            }
+
+            if (planSelect.options.length === 0) {
+                subscribeRadio.disabled = true;
+                if (planContainer) {
+                    planContainer.hidden = true;
+                }
+                planSelect.disabled = true;
+                return;
+            }
+
+            var setSubscriptionState = function(isSubscribe) {
+                if (planContainer) {
+                    planContainer.hidden = !isSubscribe;
+                }
+                planSelect.disabled = !isSubscribe;
+                if (isSubscribe && planSelect.selectedIndex === -1) {
+                    planSelect.selectedIndex = 0;
+                }
+            };
+
+            setSubscriptionState(subscribeRadio.checked);
+
+            subscribeRadio.addEventListener("change", function(event) {
+                setSubscriptionState(event.target.checked);
+            });
+
+            oneTimeRadio.addEventListener("change", function() {
+                setSubscriptionState(false);
+            });
+        });
+    }
+
 });

@@ -354,7 +354,7 @@
           {%- render 'icon' with 'nav-arrow-left', direction_aware: true -%}
         </button>
 
-        {%- unless section.settings.show_thumbnails_on_mobile -%}
+        {% comment %} {%- unless section.settings.show_thumbnails_on_mobile -%} {% endcomment %}
           <div class="dots-nav dots-nav--centered hidden-lap-and-up">
             {%- if featured_selected_image > 0 -%}
               {%- for media in product.media -%}
@@ -410,7 +410,7 @@
               </button>
             {%- endfor -%}
           </div>
-        {%- endunless -%}
+        {% comment %} {%- endunless -%} {% endcomment %}
 
         <scroll-shadow class="product__thumbnail-scroll-shadow {% unless section.settings.show_thumbnails_on_mobile %}hidden-pocket{% endunless %}">
           <div class="product__thumbnail-list hide-scrollbar">

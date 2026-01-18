@@ -339,6 +339,13 @@ section {
   }
 }
 
+.hide-desktop--grid {
+  display: grid !important;
+  @include media-query($medium-up) {
+    display: none !important;
+  }
+}
+
 .hide-mobile {
   display: none !important;
   @include media-query($medium-up) {
@@ -350,6 +357,13 @@ section {
   display: none !important;
   @include media-query($medium-up) {
     display: flex !important;
+  }
+}
+
+.hide-mobile--grid {
+  display: none !important;
+  @include media-query($medium-up) {
+    display: grid !important;
   }
 }
 
@@ -1673,12 +1687,16 @@ rivo-favorite-button.rivo-favorite-active svg {
   }
 }
 
+.product-reviews {
+  padding-bottom: 10px;
+}
+
 
 .shopify-section--testimonials-V2 {
 
   .logo-list__item {
     min-width: 240px;
-    gap: 20px;
+    gap: 15px;
   }
 
   .logo-list__reviewer {
@@ -1691,7 +1709,7 @@ rivo-favorite-button.rivo-favorite-active svg {
   }
 
   .logo-list__text {
-    margin-top: 20px;
+    margin-top: 0px;
     text-align: left;
     font-size: 20px;
     line-height: 32px;
@@ -1709,9 +1727,93 @@ rivo-favorite-button.rivo-favorite-active svg {
     }
   }
 
+  .logo-list__list {
+    &.no-scroll {
+      grid-template-columns: 1fr 1fr 1fr !important;
+    }
+  }
+
+  .product-reviews-mobile-carousel {
+    display: block;
+    position: relative;
+    width: 100%;
+  }
+
+  .product-reviews-mobile__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    padding-right: 48px;
+  }
+
+  .product-reviews-mobile__stars {
+    display: flex;
+    width: 100%;
+    gap: 2px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      color: var(--section-star-colour);
+    }
+  }
+
+  .product-reviews-mobile__text {
+    margin-top: 25px;
+    text-align: left;
+    font-size: 20px;
+    line-height: 32px;
+  }
+
+  .product-reviews-mobile__reviewer {
+    text-align: left;
+    display: block;
+    width: 100%;
+    margin-top: 25px;
+    font-size: 18px;
+    font-weight: 600;
+    font-family: "Benton";
+    font-style: italic;
+  }
+
+  .product-reviews-mobile-carousel .flickity-prev-next-button {
+    appearance: none;
+    background: #FDE4DB;
+    border-radius: 999px;
+    color: rgb(var(--text-color));
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    width: 32px;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+
+  .product-reviews-mobile-carousel .flickity-prev-next-button.previous {
+    display: none;
+  }
+
+  .product-reviews-mobile-carousel .flickity-prev-next-button:disabled {
+    display: none;
+  }
+
+  .product-reviews-mobile-carousel .flickity-button-icon {
+    width: 8px;
+    height: 8px;
+    fill: currentColor;
+  }
+
   .section__footer {
     display: flex;
     justify-content: flex-start;
+    margin-top: 45px;
 
        @include media-query($medium-up) {
          justify-content: center;

@@ -82,7 +82,7 @@
       {% endfor %}
 
       {%- capture section_content -%}
-        <div class="logo-list__list">
+        <div class="logo-list__list {% if reviewCounter <= 3 %}no-scroll{% endif %} hide-mobile--grid">
           {% for review_title in product.metafields.custom.product_main_information__review_title %}
             <div class="logo-list__item">
                 <div class="logo-list__stars">
@@ -114,6 +114,22 @@
           {%- endfor -%}
 
         </div>
+
+        <flickity-carousel
+          class="product-reviews-mobile product-reviews-mobile-carousel hide-desktop"
+          flickity-config='{"cellSelector":".product-reviews-mobile__item","cellAlign":"left","contain":true,"wrapAround":true,"prevNextButtons":true,"pageDots":false,"adaptiveHeight":true,"draggable":">1","selectedAttraction":0.02,"friction":0.28}'>
+          {% for review_title in product.metafields.custom.product_main_information__review_title %}
+            <div class="product-reviews-mobile__item">
+              <div class="product-reviews-mobile__stars">
+                {%- for i in (1..5) -%}
+                  {%- render 'icon' with "rating-star" -%}
+                {%- endfor -%}
+              </div>
+              <div class="product-reviews-mobile__text text--large">{{ product.metafields.custom.product_main_information__review_description[forloop.index0] | strip_html }}</div>
+              <div class="product-reviews-mobile__reviewer text--large">{{ product.metafields.custom.product_main_information__review_author[forloop.index0] }}</div>
+            </div>
+          {%- endfor -%}
+        </flickity-carousel>
       {%- endcapture -%}
 
   

@@ -1667,19 +1667,23 @@ rivo-favorite-button.rivo-favorite-active svg {
 
   .logo-list__item {
     min-width: 240px;
+    gap: 20px;
   }
 
   .logo-list__reviewer {
     text-align: left;
-    font-style: italic;
     display: block;
     width: 100%;
     margin-top: 12px;
+    font-size: 18px;
+    font-weight: 800;
   }
 
   .logo-list__text {
     margin-top: 20px;
     text-align: left;
+    font-size: 20px;
+    line-height: 32px;
   }
 
   .logo-list__stars {
@@ -1696,6 +1700,11 @@ rivo-favorite-button.rivo-favorite-active svg {
 
   .section__footer {
     display: flex;
+    justify-content: flex-start;
+
+       @include media-query($medium-up) {
+         justify-content: center;
+      }
   }
 }
 
@@ -3430,16 +3439,16 @@ footer {
 
 
 .who-is-it-for, .perfect-for {
-  margin-top: 42px;
 
   h3 {
     margin-bottom: 0;
     line-height: 1;
+    font-size: 14px;
   }
 
   .who-is-it-for--container, .perfect-for--container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
 
     @include media-query($medium-up) {
       display: flex;
@@ -3480,7 +3489,7 @@ footer {
       margin-top: 5px;
       text-align: center;
       line-height: 1;
-      font-size: 16px;
+      font-size: 12px;
       font-weight: 600;
     }
   }

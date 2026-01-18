@@ -2,7 +2,7 @@
     <div class="product-content-description--content-inner tab-panel clinical-trials" id="product-content-description--tab-{{ tab }}" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-{{ tab }}" aria-hidden="true">
 
   <section class="section BeforeAfter {% unless product.metafields.custom.product_trials.size < 2 %}BeforeAfter--hasTabs{% endunless %}" data-section-id="{{ section.id }}" data-section-type="before-after" id="before-after">
-    <div class="container">
+
       <div class="BeforeAfter__Container">
         <div class="BeforeAfter__SliderWrapper">
 
@@ -24,7 +24,7 @@
           <div class="BeforeAfter__Description">
             {{ product.metafields.custom.product_trials__description }}
             {%- unless product.metafields.custom.product_trials__modal_button_text == blank -%}
-              <button class="button button--outline button--ternary" id="open-trials">
+              <button class="link link--basic" id="open-trials">
                 {{ product.metafields.custom.product_trials__modal_button_text }}
               </button>
 
@@ -38,7 +38,7 @@
           </div>
         </div>
       </div>
-    </div>
+
   </section>
     </div>
 
@@ -91,10 +91,10 @@
   }
 
   function refreshCarousel() {
-    if (!tabPanel || tabPanel.getAttribute("aria-hidden") === "true") return;
+    if (!tabPanel || tabPanel.getAttribute("aria-hidden") === "true") return false;
 
     var carousel = tabPanel.querySelector(".custom-carousel");
-    if (!carousel) return;
+    if (!carousel) return false;
 
     var flickityInstance = getFlickityInstance(carousel);
 
@@ -106,13 +106,22 @@
       if (typeof flickityInstance.reposition === "function") {
         flickityInstance.reposition();
       }
+      if (typeof flickityInstance.lazyLoad === "function") {
+        flickityInstance.lazyLoad();
+      }
     }
+
+    return true;
   }
 
   function onTabShow() {
     requestAnimationFrame(function() {
-      refreshCarousel();
-      setTimeout(refreshCarousel, 80);
+      if (!refreshCarousel()) return;
+      window.dispatchEvent(new Event("resize"));
+      setTimeout(function() {
+        if (!refreshCarousel()) return;
+        window.dispatchEvent(new Event("resize"));
+      }, 80);
     });
   }
 

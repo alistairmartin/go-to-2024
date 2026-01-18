@@ -28,14 +28,14 @@
                   {%- if whatsIncludedProduct.metafields.custom.product_subtitle__measurement != blank -%}
                     <p class="text--small">{{ whatsIncludedProduct.metafields.custom.product_subtitle__measurement }}</p>
                   {%- endif -%}
+
+                  {%- unless whatsIncludedProduct.template_suffix == "hidden" or whatsIncludedProduct.tag contains "hidden" -%}
+                  <a href="{{ whatsIncludedProduct.url }}" class="link link--basic">VIEW PRODUCT {%- render 'icon' with "brand-arrow-right" -%}</a>
+                  {% comment %} {%- render 'product-item--ATC-drawer', product: whatsIncludedProduct, button_text_atc: "VIEW PRODUCT", button_text: button_text,  button_class: "link" -%} {% endcomment %}
+                  {%- endunless -%}
                 </div>
 
-                {%- unless whatsIncludedProduct.template_suffix == "hidden" or whatsIncludedProduct.tag contains "hidden" -%}
-                <a href="{{ whatsIncludedProduct.url }}" class="link link--primary">VIEW PRODUCT {%- render 'icon' with "brand-arrow-right" -%}</a>
-
-                {%- render 'product-item--ATC-drawer', product: whatsIncludedProduct, button_text_atc: "VIEW PRODUCT", button_text: button_text,  button_class: "link" -%}
-
-                {%- endunless -%}
+            
 
 
             </div>

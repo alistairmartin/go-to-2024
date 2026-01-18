@@ -6,7 +6,7 @@
     
     <div class="product-content-ingredients--text">
       {% comment %} <h3 class="heading h3 text--bold hide-mobile">{{ section.settings.title }}</h3> {% endcomment %}
-      <div class="hide-mobile">
+      <div class="">
         {%- assign glossaryMetaobjects = product.metafields.custom.ingredients_featured.value  -%}
         {% for metaobject in glossaryMetaobjects %}
           <div class="product-content-ingredients--text-item">
@@ -16,7 +16,7 @@
         {% endfor %}  
       </div>
       
-      <div class="product-content-ingredients--text__mobile hide-desktop">
+      {% comment %} <div class="product-content-ingredients--text__mobile hide-desktop">
         <div class="line"></div>
         {%- assign ingredientCounter = 0 -%}
         {%- assign glossaryMetaobjects = product.metafields.custom.ingredients_featured.value  -%}
@@ -27,7 +27,7 @@
               <div class="text">{{ metaobject.description | metafield_tag }}</div>
             </div>
         {% endfor %} 
-      </div>
+      </div> {% endcomment %}
 
 
       {%- capture glossaryContentDesktop -%}
@@ -47,7 +47,7 @@
         </div>
        
         {%- if product.variants.size > 1 -%}
-          <div class="faq faq-ingredients hide-mobile">
+          <div class="faq faq-ingredients">
               <div class="faq__wrapper" itemscope itemtype="https://schema.org/FAQPage">
                   {%- for variant in product.variants -%}
                        {%- assign glossaryMetaobjects = variant.metafields.custom.ingredients.value | sort: "title" -%}
@@ -108,7 +108,7 @@
          </div>
         </div>
        
-        {%- if product.variants.size > 1 -%}
+        {% comment %} {%- if product.variants.size > 1 -%}
 
           <div class="faq faq-ingredients hide-desktop">
             <div class="faq__wrapper" itemscope itemtype="https://schema.org/FAQPage">
@@ -148,7 +148,7 @@
                 {%- endfor -%}
             </div>
         </div>        
-          {% endif %}
+          {% endif %} {% endcomment %}
       {%- endcapture -%}
 
       {%- assign popoverTitle = "Ingredients For " | append: product.title -%}

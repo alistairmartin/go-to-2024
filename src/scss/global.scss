@@ -2974,6 +2974,11 @@ footer {
         line-height: 1;
       }
     }
+
+    .collapsible-toggle {
+      font-size: 14px !important;
+      font-weight: 800 !important;
+    }
   
   .open-accessability {
     margin-top: 32px;
@@ -2995,7 +3000,7 @@ footer {
   }
 
   .footer__item-title {
-    font-size: 20px;
+    font-size: 14px;
 
     @include media-query($large-up) {
       font-size: 16px;

@@ -9,25 +9,28 @@
         <div class="tab-list">
           <div class="tab-list--outer tab-list--outer-main {% if hideTabs == true %}hide{% endif %}">
             <div class="tab-list--inner" role="tablist">
-              <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-1" class="tab-list--tab active">WHAT IS IT?</button>
 
-              {% comment %} {%- if product.metafields.custom.product_main_information__review_title != blank -%}
-                <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-2" class="tab-list--tab">{{ 'product.content.reviews' | t }}</button>
-              {%- endif -%}
+             {%- if product.type == "Blush" -%}
+                  {%- if product.metafields.custom.product_how_to_apply_image_desktop != blank -%}
+                  <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-2" class="tab-list--tab active">
+                      HOW TO APPLY
+                  </button>
+                  {% endif %}
 
-              {%- if product.metafields.accentuate.product_main_information__whats_in_it != blank -%}
-                <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-3" class="tab-list--tab">{{ 'product.content.whats_in_it' | t }}</button>
-              {%- endif -%}
+                  <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-1" class="tab-list--tab">WHAT IS IT?</button>
 
-              {%- if product.metafields.custom.product_main_information__included_products != blank -%}
-                <button data-action="toggle-tab" role="tab" aria-selected="false" aria-controls="product-content-description--tab-4" class="tab-list--tab">{{ 'product.content.whats_included' | t }}</button>
-              {%- endif -%} {% endcomment %}
+             {% else %}
+                  <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-1" class="tab-list--tab active">WHAT IS IT?</button>
 
-              {%- if product.metafields.custom.product_how_to_apply_image_desktop != blank -%}
-              <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-2" class="tab-list--tab">
-                  HOW TO APPLY
-              </button>
-              {% endif %}
+                  {%- if product.metafields.custom.product_how_to_apply_image_desktop != blank -%}
+                  <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-2" class="tab-list--tab {% if product.type == "Blush" %}active{% endif %}">
+                      HOW TO APPLY
+                  </button>
+                  {% endif %}
+             {% endif %}
+
+
+            
 
               {%- if product.metafields.custom.product_trials__side-by-side.size >= 1 -%}
               <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-3" class="tab-list--tab">
@@ -56,21 +59,22 @@
 
             </div>
           </div>
-
-
-           
-
-          {%- render 'product-description--main' product: product, tab: 1  -%}
           
-          {%- render 'product-description--how-to-apply' product: product, tab: 2  -%}
+          {%- if product.type == "Blush" -%}
+                 {%- render 'product-description--how-to-apply' product: product, tab: 2, hidden: false  -%}
+                 {%- render 'product-description--main' product: product, tab: 1, hidden: true  -%}
+          {% else %}
+              {%- render 'product-description--main' product: product, tab: 1, hidden: false  -%}
+              {%- render 'product-description--how-to-apply' product: product, tab: 2, hidden: true  -%}
+          {%- endif -%}
 
-          {%- render 'product-description--clinical-trial' product: product, tab: 3  -%}
+          {%- render 'product-description--clinical-trial' product: product, tab: 3, hidden: true  -%}
 
-          {%- render 'product-description--routine' product: product, tab: 4 -%}
+          {%- render 'product-description--routine' product: product, tab: 4, hidden: true -%}
 
-          {%- render 'product-description--ingredients' product: product, tab: 5 -%}
+          {%- render 'product-description--ingredients' product: product, tab: 5, hidden: true -%}
 
-          {%- render 'product-description--recycle' product: product, tab: 6 -%}
+          {%- render 'product-description--recycle' product: product, tab: 6, hidden: true -%}
 
 
           </div>

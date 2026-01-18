@@ -20,7 +20,7 @@
 
 
 {%- if product.metafields.custom.product_routine__steps-morning != blank or product.metafields.custom.product_routine__steps-evening != blank -%}
-<div class="product-content-description--content-inner tab-panel routine" id="product-content-description--tab-{{ tab }}" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-{{ tab }}" aria-hidden="true">
+<div class="product-content-description--content-inner tab-panel routine" id="product-content-description--tab-{{ tab }}" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-{{ tab }}" aria-hidden="{{ hidden }}">
 <section class="" data-section-type="product-content" data-section-subtype="routine">
   <div class="">
     <div class="product-content-routine product-content-routine-V2 {{ stepsClasses }}">

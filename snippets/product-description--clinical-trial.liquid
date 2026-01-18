@@ -1,5 +1,5 @@
 {%- if product.metafields.custom.product_trials__side-by-side.size >= 1 -%}
-    <div class="product-content-description--content-inner tab-panel clinical-trials" id="product-content-description--tab-{{ tab }}" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-{{ tab }}" aria-hidden="true">
+    <div class="product-content-description--content-inner tab-panel clinical-trials" id="product-content-description--tab-{{ tab }}" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-{{ tab }}" aria-hidden="{{ hidden }}">
 
   <section class="section BeforeAfter {% unless product.metafields.custom.product_trials.size < 2 %}BeforeAfter--hasTabs{% endunless %}" data-section-id="{{ section.id }}" data-section-type="before-after" id="before-after">
 

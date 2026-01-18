@@ -1,6 +1,6 @@
         {%- comment %} CONTENT -  DESCRIPTION {% endcomment -%}
         
-<div class="product-content-description--content-inner tab-panel description" id="product-content-description--tab-1" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-1" aria-hidden="false">
+<div class="product-content-description--content-inner tab-panel description" id="product-content-description--tab-1" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-1" aria-hidden="{{ hidden }}">
 
         <div class="column">
             
@@ -10,9 +10,7 @@
             </div>
 
             <div class="description">
-              <p>
-                {{ product.metafields.custom.whats_this_all_about__description  |  metafield_text }}
-              </p>
+               {{ product.metafields.custom.whats_this_all_about__description | metafield_tag }}
             </div>
 
           

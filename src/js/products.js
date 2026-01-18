@@ -90,4 +90,44 @@ document.addEventListener("DOMContentLoaded", function(event) {
         });
     }
 
+    document.addEventListener('variant:changed', function(event) {
+        var variant = event.detail && event.detail.variant;
+        if (!variant) {
+            return;
+        }
+
+        var handleize = function(value) {
+            if (window.Shopify && typeof Shopify.handleize === "function") {
+                return Shopify.handleize(value);
+            }
+
+            return String(value || "")
+                .toLowerCase()
+                .replace(/[^\w\u00C0-\u024f]+/g, "-")
+                .replace(/^-+|-+$/g, "");
+        };
+
+        var optionHandle = handleize(variant.option1);
+        if (!optionHandle) {
+            return;
+        }
+
+        var form = event.target;
+        var scope = form && typeof form.closest === "function" ? form.closest(".shopify-section") : null;
+        var mediaParents = (scope || document).querySelectorAll(".product-media-desktop.enable-variant-images");
+
+        if (mediaParents.length === 0) {
+            return;
+        }
+
+        mediaParents.forEach(function(parent) {
+            Array.from(parent.classList).forEach(function(className) {
+                if (className.indexOf("current-option-") === 0) {
+                    parent.classList.remove(className);
+                }
+            });
+
+            parent.classList.add("current-option-" + optionHandle);
+        });
+    });
 });

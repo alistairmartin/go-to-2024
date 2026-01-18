@@ -1,24 +1,46 @@
 
    {% comment %} {%- render 'product-media--labels', product: product -%} {% endcomment %}
 
+
+{%- assign variantImages = false -%}
+{%- if product.options[0] == "Shade" -%}
+    {%- assign variantImages = true -%}
+    <style> 
+
+        .product-media-desktop--item {
+            display: none;
+        }
+
+
+        {%- assign option1 = product.options_with_values[0] -%}
+        {%- for value in option1.values -%}
+          .current-option-{{ value | handle }} .option-{{ value | handle }} {
+            display: block;
+          }
+        {%- endfor -%}
+    </style>
+{%- endif -%}
+
 <div class="product__media">
-    <div class="product-media-desktop">
+    <div class="product-media-desktop {% if variantImages %}enable-variant-images current-option-{{ product.selected_or_first_available_variant.options[0]| handle }} {% endif %}">
     {%- for media in product.media -%}
-        <div class="product-media-desktop--item">
-        {%- if  forloop.index == 2 -%}  
-             {%- render 'product-media--labels', product: product -%}
-        {%- endif -%}
+        <div class="product-media-desktop--item {% if variantImages %}option-{{ media.alt | split: "_" | last | handle }}{% endif %}" data-alt="{{ media.alt }}">
         {{-
             media
             | image_url: width: media.width
             | image_tag:
             loading: loading,
             sizes: '(max-width: 999px) calc(100vw - 48px), 640px',
-            widths: '400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800'
+            widths: '400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800',
+            alt: media.alt 
             -}}
 
         </div>
      
     {%- endfor -%}
+    <div class="product-media-desktop-labels">
+        {%- render 'product-media--labels', product: product -%}
+    </div>
+    
     </div>
 </div>

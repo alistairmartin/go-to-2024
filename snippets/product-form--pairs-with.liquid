@@ -29,7 +29,7 @@
               {%- assign largest_image_aspect_ratio = largest_image_aspect_ratio | at_most: product.featured_media.aspect_ratio -%}
 
               {%- capture sizes_attribute -%}(max-width: 740px) 75vw, min({{ 100.0 | divided_by: 3 | ceil }}vw, {{ 1520.0 | divided_by: 3 | ceil }}px){%- endcapture -%}
-              {%- render 'product-item', product: product, reduced_content: true, show_cta: true, sizes_attribute: sizes_attribute, reveal: true, horizontal: true -%}
+              {%- render 'product-item--recommended', product: product, reduced_content: true, show_cta: true, sizes_attribute: sizes_attribute, reveal: true, horizontal: true -%}
             {%- endfor -%}
           </div>
         </div>

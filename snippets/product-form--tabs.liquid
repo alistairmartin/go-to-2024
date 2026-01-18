@@ -18,17 +18,24 @@
 
                     <collapsible-content id="block-product-tabs-1" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" style="overflow: visible;" open>
                       <div class="collapsible__content text-container" itemprop="text">
-                          {% assign product_desc = product.description | split: ' ' %}
+                          {% comment %} {% assign product_desc = product.description | split: ' ' %}
                           <div class="product-content-description--teaser" aria-revealed="{% if product_desc.size > 110 %}false{% else %}true{% endif %}">
                             {{ product.description }}
                           </div>
-
                              {% unless product_desc.size < 110 %}
                               <button type="button" name="button" data-action="toggle-teaser" aria-controls="product-content-description--teaser" class="product-content-description--teaser-open link link--basic">{{ 'product.general.read_more' | t }}</button>
                               <button type="button" name="button" data-action="toggle-teaser" aria-controls="product-content-description--teaser" class="product-content-description--teaser-close hidden link link--basic">{{ 'product.general.show_less' | t }}</button>
 
-                            {% endunless %}
+                            {% endunless %} {% endcomment %}
+                            {{ product.description }}
                       </div>
+
+                      <div class="link-container">
+                        <a href="#learn-more" class="link link--basic">
+                          LEARN MORE
+                        </a>
+                      </div>
+                     
 
                          {% comment %} {% assign skinTypeCounter = 0 %}
                           {%- for tag in product.tags -%}

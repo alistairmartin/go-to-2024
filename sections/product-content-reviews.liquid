@@ -53,6 +53,42 @@
     grid-template-columns: repeat(min(var(--logos-per-row),var(--section-logo-count)),minmax(260px,400px));
   }
 
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} .logo-list--carousel .logo-list__prev-next + .logo-list__list {
+      --logos-per-row: 3;
+      grid-template-columns: none;
+      grid-auto-columns: calc((100% - (var(--logos-gap) * 2)) / 3);
+      margin: 0;
+    }
+
+    #shopify-section-{{ section.id }} .logo-list__prev-next {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    #shopify-section-{{ section.id }}  .prev-next-button--prev {
+      margin-left: -20px !important;
+    }
+
+
+    #shopify-section-{{ section.id }}  .prev-next-button--next {
+      margin-right: -20px !important;
+    }
+
+
+    #shopify-section-{{ section.id }} .logo-list__arrow {
+      width: 32px;
+      height: 32px;
+      background: #FDE4DB;
+      border: none;
+    }
+
+    #shopify-section-{{ section.id }} .logo-list__arrow:disabled {
+      opacity: 0 !important;
+    }
+  }
+
+
   #shopify-section-{{ section.id }} .link--primary {
     text-decoration-color: {{ section.settings.link_underline }} !important;
     color: {{ button_text_color }};
@@ -141,12 +177,13 @@
                 <prev-next-buttons class="logo-list__prev-next hidden-pocket">
                   <button class="logo-list__arrow prev-next-button prev-next-button--prev" disabled>
                     <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
-                    {%- include 'icon' with 'brand-arrow-left', block: true, direction_aware: true -%}
+                    {%- render 'icon' with 'brand-chevron-left', block: true, direction_aware: true -%}
                   </button>
 
                   <button class="logo-list__arrow prev-next-button prev-next-button--next">
                     <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
-                    {%- include 'icon' with 'brand-arrow-right', block: true, direction_aware: true -%}
+                    {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
+                    
                   </button>
                 </prev-next-buttons>
                 {%- endif -%}

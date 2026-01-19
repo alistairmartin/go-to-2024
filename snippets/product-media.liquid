@@ -72,7 +72,8 @@
         "cellSelector": ".product__media-item:not(.is-filtered)",
         "percentPosition": false,
         "pageDots": false,
-        "prevNextButtons": false
+        "prevNextButtons": true,
+        "wrapAround":true
       }
       {%- endcapture -%}
 
@@ -310,6 +311,59 @@
         {%- endfor -%}
         {% comment %} MEDIA GALLERY --- END {% endcomment %}
       </flickity-carousel>
+
+      <template data-product-media-flickity-icon="prev">
+        {%- render 'icon' with 'brand-chevron-left', block: true, direction_aware: true -%}
+      </template>
+      <template data-product-media-flickity-icon="next">
+        {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
+      </template>
+
+      <script>
+        if (!window.productMediaFlickityIconsInitialized) {
+          window.productMediaFlickityIconsInitialized = true;
+          document.addEventListener("flickity:ready", (event) => {
+            const carousel = event.target;
+
+            if (!carousel || !carousel.classList || !carousel.classList.contains("product__media-list")) {
+              return;
+            }
+
+            const wrapper = carousel.closest(".product__media-list-wrapper");
+            if (!wrapper) {
+              return;
+            }
+
+            const prevTemplate = wrapper.querySelector('[data-product-media-flickity-icon="prev"]');
+            const nextTemplate = wrapper.querySelector('[data-product-media-flickity-icon="next"]');
+
+            const replaceIcon = (button, template) => {
+              if (!button || !template || button.querySelector(".product-media__flickity-icon")) {
+                return;
+              }
+
+              const defaultIcon = button.querySelector(".flickity-button-icon");
+              if (defaultIcon) {
+                defaultIcon.remove();
+              }
+
+              const iconWrapper = document.createElement("span");
+              iconWrapper.className = "product-media__flickity-icon";
+              iconWrapper.appendChild(template.content.cloneNode(true));
+              button.appendChild(iconWrapper);
+            };
+
+            replaceIcon(
+              carousel.querySelector(".flickity-prev-next-button.previous"),
+              prevTemplate
+            );
+            replaceIcon(
+              carousel.querySelector(".flickity-prev-next-button.next"),
+              nextTemplate
+            );
+          });
+        }
+      </script>
 
       {%- if section.settings.enable_image_zoom -%}
         <button

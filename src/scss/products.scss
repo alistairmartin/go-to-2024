@@ -136,6 +136,43 @@
   position: sticky;
   top: 90px;
   }
+
+  .flickity-prev-next-button {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    display: flex;
+    height: 32px;
+    justify-content: center;
+    padding: 0;
+    width: 32px;
+    border-radius: 100%;
+
+    svg {
+      border-radius: 100%;
+      width: 32px;
+      height: 32px;
+
+      rect {
+        fill: #FEF9F8;
+      }
+    }
+  }
+
+  .flickity-prev-next-button.previous {
+    display: none;
+  }
+
+  .flickity-prev-next-button.next {
+    right: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+  }
+
+  .product-media__flickity-icon svg {
+    display: block;
+  }
 }
 
 
@@ -2872,7 +2909,7 @@
   }
 }
 
-#subscription_details-modal {
+#loyalty-modal {
   .modal__content {
     width: auto;
   }
@@ -2908,4 +2945,9 @@
     font-size: 16px !important;
     margin: 0 !important;
   }
+}
+
+
+#learn-more {
+  scroll-margin-top: calc(var(--header-height, 0px) * var(--enable-sticky-header) + var(--announcement-bar-height, 0px) * var(--enable-sticky-announcement-bar) + var(--anchor-offset, 0px));
 }

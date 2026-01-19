@@ -17,13 +17,14 @@
           {%- endif -%}
         {%- endfor -%}
 
-
-        {%- if product.metafields.custom.ingredients != blank and ingredientFound -%}
+         {% comment %} {%- if product.metafields.custom.ingredients != blank and ingredientFound -%}
           <div class="popover-buttons">
             <button type="button" is="toggle-button" class="link link--basic hidden-phone" aria-controls="ingredients-glossary-drawer" aria-expanded="false">View All Ingredients</button>
             <button type="button" is="toggle-button" class="link link--basic hidden-tablet-and-up" aria-controls="ingredients-glossary-popover" aria-expanded="false">View All Ingredients</button>
-          </div>
-        {% elsif product.metafields.custom.ingredients != blank %}
+          </div> {% endcomment %}
+
+       
+        {% if product.metafields.custom.ingredients != blank %}
           {%- capture glossaryContent -%}
             {%- assign glossaryMetaobjects = product.metafields.custom.ingredients.value | sort: "title" -%}
             <div class="ingredients-glossary">

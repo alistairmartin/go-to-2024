@@ -39,23 +39,11 @@
                 
 
                 {%- capture product_subscription_content -%}
-                  <div class="go-to-gang-popup">
-
-                    <div class="inner">
-                      <img class="title" src="{{ 'loyalty--go-to-gang-V2-white.svg' | asset_url }}" alt="Go-To Gang" width="275" height="32">
-                      <p class="description">A very special loyalty program that rewards your phenomenal taste in skincare. Earn points, unlock perks and special freebies.</p>
-                      <div class="button-container">
-                        <a href="" class="button button--primary">JOIN NOW/SIGN IN</a>
-                        <a href="https://gotoskincare.com/pages/go-to-gang" class="button button--ternary">LEARN MORE</a>
-                      </div>
-                    </div>
-                   
-                    <img class="background" src="{{ 'loyalty_popup_background.png' | asset_img_url: '450x' }}" alt="Go-To Gang Background" width="450" height="375">
-                  </div>
+                <div class="how-it-works" data-v-e69cc34d=""><p>Set and forget on your Go-To favourites.</p> <p>Want to reorder peach skincare without <em>actually</em> having to reorder peach skincare? Same. So, set up a handy subscription and score <strong>a free gift</strong> from us in every subscription order(<strong>just make sure you add it to the cart the first time around</strong>).</p> <p>Select your preferred schedule, and we’ll automatically ship these products to you*. </p> <p>*You can <em>modify</em> or <em>cancel</em> your subscription at any time. (Even 3:47am.)</p> <p><a href="https://gotoskincare.com/pages/product-subscriptions" title="Learn more." aria-label="Learn more" data-uw-rm-vglnk="" uw-rm-vague-link-id="https://gotoskincare.com/pages/product-subscriptions$learn more"><strong>Learn more</strong>.</a></p></div>
                 {%- endcapture -%}
 
                 {%- assign blockId = "subscription_details" -%}
-                {%- render 'modal', modalId: blockId, buttonId: blockId, content: product_subscription_content, class: "" -%}
+                {%- render 'modal', modalId: blockId, buttonId: blockId, content: product_subscription_content, class: "modal-padding" -%}
 
                 <button class="custom-subscription__link"id="{{ blockId }}">
                   Tell me more

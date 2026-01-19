@@ -1,6 +1,26 @@
 
 <div class="product-info--loyalty">
 
+
+{%- capture product_subscription_content -%}
+    <div class="go-to-gang-popup">
+
+    <div class="inner">
+        <img class="title" src="{{ 'loyalty--go-to-gang-V2-white.svg' | asset_url }}" alt="Go-To Gang" width="275" height="32">
+        <p class="description">A very special loyalty program that rewards your phenomenal taste in skincare. Earn points, unlock perks and special freebies.</p>
+        <div class="button-container">
+        <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="button button--primary">JOIN NOW/SIGN IN</a>
+        <a href="https://gotoskincare.com/pages/go-to-gang" class="button button--ternary">LEARN MORE</a>
+        </div>
+    </div>
+    
+    <img class="background" src="{{ 'loyalty_popup_background.png' | asset_img_url: '450x' }}" alt="Go-To Gang Background" width="450" height="375">
+    </div>
+{%- endcapture -%}
+
+{%- assign blockId = "loyalty_details" -%}
+{%- render 'modal', modalId: blockId, buttonId: blockId, content: product_subscription_content, class: "" -%}
+
 {%- render 'icon' with 'go-to-peach' -%}
 
 {%- if customer -%}
@@ -21,7 +41,11 @@
 
 {% else %}
     {% comment %} <a href="{{ routes.account_register_url }}"></a>Signup or <a href="{{ routes.account_login_url }}">Login</a> Earn earn {{ product.price | divided_by: 100 }} Points {% endcomment %}
-      Earn {{ product.price | divided_by: 100 }} Points  <a href="https://gotoskincare.com/pages/go-to-gang">learn more</a>
+      Earn {{ product.price | divided_by: 100 }} Points  
+        {% comment %} <a href="https://gotoskincare.com/pages/go-to-gang">learn more</a> {% endcomment %}
+       <button class="product-info--loyalty-link" id="{{ blockId }}">
+            learn more
+       </button>
 
 {%- endif -%}
 </div>

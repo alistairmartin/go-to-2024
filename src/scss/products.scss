@@ -1875,7 +1875,7 @@
       }
 
       .product-list__inner--scroller {
-        grid-auto-columns: 74% !important;
+        grid-auto-columns: 69% !important;
          @include media-query($medium-up) {
           grid-auto-columns: 80% !important;
          }
@@ -1939,6 +1939,7 @@
       prev-next-buttons {
         top: 50%;
         transform: translate(0%, -50%);
+        padding: 10px;
 
       .prev-next-button {
           width: 32px;
@@ -1957,7 +1958,7 @@
         .product-list__prev-next {
           display: inline-flex !important;
           position: absolute;
-          right: var(--container-gutter);
+          right:0;
           top: 50%;
           transform: translate(0, -50%);
           width: auto;
@@ -2034,6 +2035,12 @@
     .product-content-ingredients--text {
       margin-left: 0;
       max-width: unset;
+    }
+  }
+
+  .faq__item {
+    &:last-child {
+      border-bottom: 1px solid #e5e5e5;
     }
   }
 
@@ -2124,10 +2131,11 @@
 
         rivo-favorite-button {
           position: absolute;
-          right: 0;
+          right: 0 !important;
           top: 0;
           opacity: 0;
           transition: 500ms all;
+          z-index: 1;
 
           &[data-rivo-favorite-loaded="true"] {
             opacity: 1;
@@ -2138,6 +2146,7 @@
             height: 25px;
             stroke-width: 2px;
             top: 2px !important;
+            right: 0;
           }
         }
     }
@@ -2867,6 +2876,10 @@
   .modal__content {
     width: auto;
   }
+
+  .modal__close-button {
+    z-index: 3;
+  }
 }
 
 
@@ -2878,5 +2891,21 @@
 
   .product-content-routine {
     padding: 30px;
+  }
+}
+
+#ingredients-glossary-mobile-popover {
+  .popover__title {
+      font-weight: normal !important;
+      font-size: 16px;
+      margin-bottom: 0;
+  }
+}
+
+#ingredients-glossary-desktop-drawer {
+  .drawer__title {
+    font-weight: normal !important;
+    font-size: 16px !important;
+    margin: 0 !important;
   }
 }

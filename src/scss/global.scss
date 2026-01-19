@@ -44,7 +44,7 @@ html {
 .link--basic {
   text-transform: uppercase;
   text-decoration: none;
-  padding-bottom: 10px;
+  padding-bottom: 8px;
   transition: 300ms all;
   text-transform: uppercase;
   font-weight: 600;
@@ -1721,8 +1721,8 @@ rivo-favorite-button.rivo-favorite-active svg {
     gap: 2px;
 
     svg {
-      width: 25px;
-      height: 25px;
+      width: 16px;
+      height: 16px;
       color: var(--section-star-colour);
     }
   }
@@ -3103,6 +3103,7 @@ footer {
 
   .footer__item-title {
     font-size: 14px;
+    font-weight: 800;
 
     @include media-query($large-up) {
       font-size: 16px;
@@ -5759,7 +5760,7 @@ button[aria-label="Tolstoy stories: next button"] {
   border-radius: 6px;
   align-items: center;
 
-  a {
+  .product-info--loyalty-link {
     text-decoration: underline;
     text-underline-offset: 3px;
   }
@@ -6160,4 +6161,13 @@ button[aria-label="Tolstoy stories: next button"] {
 
 .product-list__dots {
   display: none !important;
+}
+
+
+#customer-reviews {
+  .heading.h3 {
+      @include media-query($small) {
+        font-size: 40px;
+    }
+  }
 }

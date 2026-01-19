@@ -4379,19 +4379,28 @@ var ProductList = class extends CustomHTMLElement {
       });
     })));
   }
+  _getScrollStep(columnGap) {
+    if (this.dataset.scrollStep === "item") {
+      const firstItem = this.productItems[0] || this.productListInner.firstElementChild;
+      if (firstItem) {
+        return firstItem.getBoundingClientRect().width + columnGap;
+      }
+    }
+    return this.productListInner.clientWidth + columnGap;
+  }
   // Move to previous products (if any)
   previous(event) {
-    const directionFlip = window.themeVariables.settings.direction === "ltr" ? 1 : -1, columnGap = parseInt(getComputedStyle(this).getPropertyValue("--product-list-column-gap"));
+    const directionFlip = window.themeVariables.settings.direction === "ltr" ? 1 : -1, columnGap = parseFloat(getComputedStyle(this).getPropertyValue("--product-list-column-gap")) || 0, scrollStep = this._getScrollStep(columnGap), maxScrollLeft = Math.max(0, this.productListInner.scrollWidth - this.productListInner.clientWidth), currentScrollLeft = this.productListInner.scrollLeft * directionFlip, targetScrollLeft = Math.max(currentScrollLeft - scrollStep, 0), epsilon = 1, scrollDelta = (targetScrollLeft - currentScrollLeft) * directionFlip;
     event.target.nextElementSibling.removeAttribute("disabled");
-    event.target.toggleAttribute("disabled", this.productListInner.scrollLeft * directionFlip - (this.productListInner.clientWidth + columnGap) <= 0);
-    this.productListInner.scrollBy({ left: -(this.productListInner.clientWidth + columnGap) * directionFlip, behavior: "smooth" });
+    event.target.toggleAttribute("disabled", targetScrollLeft <= epsilon);
+    this.productListInner.scrollBy({ left: scrollDelta, behavior: "smooth" });
   }
   // Move to next products (if any)
   next(event) {
-    const directionFlip = window.themeVariables.settings.direction === "ltr" ? 1 : -1, columnGap = parseInt(getComputedStyle(this).getPropertyValue("--product-list-column-gap"));
+    const directionFlip = window.themeVariables.settings.direction === "ltr" ? 1 : -1, columnGap = parseFloat(getComputedStyle(this).getPropertyValue("--product-list-column-gap")) || 0, scrollStep = this._getScrollStep(columnGap), maxScrollLeft = Math.max(0, this.productListInner.scrollWidth - this.productListInner.clientWidth), currentScrollLeft = this.productListInner.scrollLeft * directionFlip, targetScrollLeft = Math.min(currentScrollLeft + scrollStep, maxScrollLeft), epsilon = 1, scrollDelta = (targetScrollLeft - currentScrollLeft) * directionFlip;
     event.target.previousElementSibling.removeAttribute("disabled");
-    event.target.toggleAttribute("disabled", this.productListInner.scrollLeft * directionFlip + (this.productListInner.clientWidth + columnGap) * 2 >= this.productListInner.scrollWidth);
-    this.productListInner.scrollBy({ left: (this.productListInner.clientWidth + columnGap) * directionFlip, behavior: "smooth" });
+    event.target.toggleAttribute("disabled", targetScrollLeft >= maxScrollLeft - epsilon);
+    this.productListInner.scrollBy({ left: scrollDelta, behavior: "smooth" });
   }
   attributeChangedCallback(name) {
     if (!this.staggerApparition) {
@@ -7043,5 +7052,3 @@ focus-trap/dist/focus-trap.esm.js:
   * @license MIT, https://github.com/focus-trap/focus-trap/blob/master/LICENSE
   *)
 */
-
-

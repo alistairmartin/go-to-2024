@@ -1911,7 +1911,12 @@
         display: none !important;
       }
 
+      .scroller {
+        margin-inline: 0;
+      }
+
       .product-list__inner--scroller {
+        padding-inline: 0;
         grid-auto-columns: 69% !important;
          @include media-query($medium-up) {
           grid-auto-columns: 80% !important;
@@ -2919,7 +2924,6 @@
   }
 }
 
-
 .product-reviews {
   
 }
@@ -2950,4 +2954,10 @@
 
 #learn-more {
   scroll-margin-top: calc(var(--header-height, 0px) * var(--enable-sticky-header) + var(--announcement-bar-height, 0px) * var(--enable-sticky-announcement-bar) + var(--anchor-offset, 0px));
+}
+
+#loyalty_details-modal {
+   .modal__close-button {
+    z-index: 3;
+  }
 }

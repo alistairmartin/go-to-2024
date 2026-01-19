@@ -14,7 +14,7 @@
       recommendations-count="{{ section.settings.recommendations_count }}"
       class="section {% unless blends_with_background %}section--flush{% endunless %}"
     >
-      <product-list {% if settings.stagger_products_apparition %}stagger-apparition{% endif %} class="product-list">
+      <product-list {% if settings.stagger_products_apparition %}stagger-apparition{% endif %} class="product-list" data-scroll-step="item">
         {%- assign largest_image_aspect_ratio = 1 -%}
         {%- assign shown_products_count = 0 -%}
 

@@ -1441,6 +1441,7 @@
       justify-content: flex-start;
       align-items: start;
       gap: 25px;
+      max-width: 73%;
     }
 
     .text-position-mobile--above {
@@ -1882,7 +1883,10 @@
        @include media-query($medium-up) {
           max-width: calc(var(--grid-column-width) * 8 + var(--grid-gap) * 7);
        }
-
+       
+       .product-item__aspect-ratio {
+          aspect-ratio: 0.9 !important;
+       }
        
 
       // .product-item__info {
@@ -1917,7 +1921,7 @@
 
       .product-list__inner--scroller {
         padding-inline: 0;
-        grid-auto-columns: 69% !important;
+        grid-auto-columns: 80% !important;
          @include media-query($medium-up) {
           grid-auto-columns: 80% !important;
          }
@@ -2022,7 +2026,7 @@
 
       .product-item__price-atc {
         display: flex;
-        justify-content: space-between;
+        gap: 20px;
         padding-right: 5px;
       }
     }
@@ -2083,6 +2087,10 @@
   .faq__item {
     &:last-child {
       border-bottom: 1px solid #e5e5e5;
+    }
+
+    &:first-child {
+      border-top: 1px solid #e5e5e5;
     }
   }
 
@@ -2282,7 +2290,7 @@
       padding: 60px 30px;
 
       @include media-query($small) {
-        padding: 40px 0px;
+        padding: 40px 10px;
       }
 
       .heading.title {
@@ -2333,7 +2341,7 @@
       padding: 60px 30px;
 
     @include media-query($small) {
-      padding: 40px 0px;
+      padding: 40px 10px;
     }
     
     .product-content-routine {
@@ -2436,7 +2444,7 @@
     @include media-query($small) {
       display: flex;
       flex-direction: column;
-      padding: 40px 0px;
+      padding: 40px 10px;
     }
 
     &[aria-hidden="true"] {
@@ -2471,7 +2479,7 @@
     padding: 60px 30px;
 
     @include media-query($small) {
-      padding: 40px 0px;
+      padding: 40px 10px;
     }
 
     .product-content-doing-our-bit {
@@ -2490,7 +2498,7 @@
      padding: 60px 30px;
 
       @include media-query($small) {
-        padding: 40px 20px;
+        padding: 40px 30px;
       }
 
       #before-after  {
@@ -2959,5 +2967,9 @@
 #loyalty_details-modal {
    .modal__close-button {
     z-index: 3;
+  }
+
+  .modal__content {
+    width: auto;
   }
 }

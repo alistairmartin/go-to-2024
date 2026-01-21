@@ -3517,7 +3517,8 @@ window.customElements.define("cookie-bar", CookieBar);
 // js/custom-element/section/product-recommendations/product-recommendations.js
 var ProductRecommendations = class extends HTMLElement {
   async connectedCallback() {
-    const response = await fetch(`${window.themeVariables.routes.productRecommendationsUrl}?product_id=${this.productId}&limit=${this.recommendationsCount}&section_id=${this.sectionId}&intent=${this.intent}`);
+    // const response = await fetch(`${window.themeVariables.routes.productRecommendationsUrl}?product_id=${this.productId}&limit=${this.recommendationsCount}&section_id=${this.sectionId}&intent=${this.intent}`);
+    const response = await fetch(`${window.themeVariables.routes.productRecommendationsUrl}?product_id=${this.productId}&limit=3&section_id=${this.sectionId}&intent=complementary`);
     const div = document.createElement("div");
     div.innerHTML = await response.text();
     const productRecommendationsElement = div.querySelector("product-recommendations");

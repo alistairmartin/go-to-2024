@@ -1,5 +1,3 @@
-
-
 <section>
   <div class="container">
     <div class="product-content-description-V2" id="learn-more">
@@ -10,7 +8,7 @@
           <div class="tab-list--outer tab-list--outer-main {% if hideTabs == true %}hide{% endif %}">
             <div class="tab-list--inner" role="tablist">
 
-             {%- if product.type == "Blush" -%}
+             {%- if product.type == "Blush" or product.type == "Highlighter" -%}
                   {%- if product.metafields.custom.product_how_to_apply_image_desktop != blank -%}
                   <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-2" class="tab-list--tab active">
                       HOW TO APPLY
@@ -23,7 +21,7 @@
                   <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-1" class="tab-list--tab active">WHAT IS IT?</button>
 
                   {%- if product.metafields.custom.product_how_to_apply_image_desktop != blank -%}
-                  <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-2" class="tab-list--tab {% if product.type == "Blush" %}active{% endif %}">
+                  <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-2" class="tab-list--tab {% if product.type == "Blush" or product.type == "Highlighter" %}active{% endif %}">
                       HOW TO APPLY
                   </button>
                   {% endif %}
@@ -37,8 +35,8 @@
                   CLINICAL TRIALS
               </button>
               {% endif %}
-              
-              {%- if product.metafields.custom.product_routine__steps-morning != blank or product.metafields.custom.product_routine__steps-evening != blank -%}
+
+              {%- if product.metafields.custom.product_routine__steps-morning != blank and product.metafields.custom.product_routine__steps-evening != blank -%}
                <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-4" class="tab-list--tab">
                   {%- render 'icon' with "go-to-sun" -%} AM /  {%- render 'icon' with "go-to-moon" -%} PM
               </button>
@@ -60,7 +58,7 @@
             </div>
           </div>
           
-          {%- if product.type == "Blush" -%}
+          {%- if product.type == "Blush" or product.type == "Highlighter" -%}
                  {%- render 'product-description--how-to-apply' product: product, tab: 2, hidden: false  -%}
                  {%- render 'product-description--main' product: product, tab: 1, hidden: true  -%}
           {% else %}

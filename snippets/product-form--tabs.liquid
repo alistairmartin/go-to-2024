@@ -95,9 +95,10 @@
                 ----------------------------------------------------------------------------------------------------------------
                 HERO INGREDIENTS
                 ----------------------------------------------------------------------------------------------------------------
-                {%- endcomment -%}
+                {%- endcomment -%}  
 
-                  <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                {%- if product.metafields.custom.ingredients != blank -%}
+                   <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
                     <button is="toggle-button" class="collapsible-toggle text--strong" aria-controls="block-product-tabs-2" aria-expanded="false" itemprop="name">
                       <span>HERO INGREDIENTS</span>
                       <span class="animated-plus"></span>
@@ -109,6 +110,9 @@
                       </div>
                     </collapsible-content>
                   </div>
+                {%- endif -%}
+
+                 
 
                 {%- comment -%}
                 ----------------------------------------------------------------------------------------------------------------

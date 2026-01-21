@@ -463,12 +463,24 @@
               </tr>
               {% endif %}
 
-              {%- assign applicationMetafield = productMetafields.application.value | metafield_tag -%}
 
+              {%- if productMetafields.application != blank -%}
+                yes
+                {% else %}
+                no
+              {%- endif -%}
+
+              {{ productMetafields.application.value }}
+
+              {%- assign applicationMetafield = productMetafields.application |  metafield_tag  -%}
+
+              {{ applicationMetafield }}
               {%- if applicationMetafield != blank -%}
               <tr>
-                <td><strong>Application</strong></td>
-                <td>{{ applicationMetafield }}</td>
+                <td><strong>How To Apply</strong></td>
+                <td>{{ applicationMetafield }}
+                  <a href="#learn-more"><u>See complete guide</u></a>
+                </td>
               </tr>
               {% endif %}
 

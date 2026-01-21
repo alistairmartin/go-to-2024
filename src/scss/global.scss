@@ -38,7 +38,7 @@ html {
   line-height: 1;
   text-underline-offset: 4px;
   // text-decoration: underline;
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 1px;
 }
 
 .link--basic {
@@ -6169,5 +6169,25 @@ button[aria-label="Tolstoy stories: next button"] {
       @include media-query($small) {
         font-size: 40px;
     }
+  }
+}
+
+quick-buy-popover {
+  .product-form {
+    row-gap: 5px;
+
+    variant-picker {
+      padding-top: 15px;
+    }
+  }
+}
+
+.product-type--gifts-sets {
+  #product-divider-1 {
+    display: none;
+  }
+
+  [data-block-id="liquid_qnqRpC"] {
+    display: none;
   }
 }

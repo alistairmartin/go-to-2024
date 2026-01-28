@@ -49,7 +49,7 @@
             {%- endif -%}
             
             {%- if vimeoVideoId != blank -%}
-                <div class="product-content-ingredients--video">
+                <div class="product-how-to-apply--video-iframe">
                 {%- assign video_url_transform = 'https://player.vimeo.com/video/' | append: vimeoVideoId | append: '?autoplay=1&loop=1&background=1&muted=1&portrait=0&byline=0' -%}
                 <iframe src="{{ video_url_transform }}" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen>
                 </iframe>

@@ -39,27 +39,32 @@
                 
 
                 {%- capture product_subscription_content -%}
-                <div class="how-it-works" data-v-e69cc34d=""><p>Set and forget on your Go-To favourites.</p> <p>Want to reorder peach skincare without <em>actually</em> having to reorder peach skincare? Same. So, set up a handy subscription and score <strong>a free gift</strong> from us in every subscription order 
-                (<strong>just make sure you add it to the cart the first time around</strong>).</p> <p>Select your preferred schedule, and we’ll automatically ship these products to you*. </p> <p>*You can <em>modify</em> or <em>cancel</em> your subscription at any time. (Even 3:47am.)</p> <p><a href="https://gotoskincare.com/pages/product-subscriptions" title="Learn more." aria-label="Learn more" data-uw-rm-vglnk="" uw-rm-vague-link-id="https://gotoskincare.com/pages/product-subscriptions$learn more"><strong>Learn more</strong>.</a></p></div>
+                <div class="how-it-works text-base"><p>Set and forget on your Go-To favourites.</p> <p>Want to reorder peach skincare without <em>actually</em> having to reorder peach skincare? Same. So, set up a handy subscription and score <strong>a free gift</strong> from us in every subscription order 
+                (<strong>just make sure you add it to the cart the first time around</strong>).</p> <p>Select your preferred schedule, and we’ll automatically ship these products to you*. </p> <p>*You can <em>modify</em> or <em>cancel</em> your subscription at any time. (Even 3:47am.)</p> <p><a href="https://gotoskincare.com/pages/product-subscriptions" title="Learn more." aria-label="Learn more"><strong>Learn more</strong>.</a></p></div>
                 {%- endcapture -%}
 
                 {%- assign blockId = "subscription_details" -%}
                 {%- render 'modal', modalId: blockId, buttonId: blockId, content: product_subscription_content, class: "modal-padding" -%}
 
-                <button class="custom-subscription__link"id="{{ blockId }}">
-                  Tell me more
-                </button>
+                {%- render 'icon', icon: 'go-to-info' -%}
               </label>
 
-              <ul class="custom-subscription__bullets" id="subscribe-details">
-                <li>Free gift on your first order</li>
-                <li>Free delivery on every order</li>
-                <li>Earn Go-to Gang points on every order</li>
-              </ul>
-
+          
               {% if has_subscription_groups > 0 %}
                 <div class="custom-subscription__plans" data-selling-plan-container hidden>
-                  <label class="input__block-label" for="{{ plan_select_id }}">Delivery frequency</label>
+
+                  <ul class="custom-subscription__bullets" id="subscribe-details">
+                    <li>Free gift on your first order</li>
+                    <li>Free delivery on every order</li>
+                    <li>Earn Go-to Gang points on every order</li>
+                    <li>    
+                      <button class="custom-subscription__link"id="{{ blockId }}">
+                      More Info
+                      </button>
+                    </li>
+                  </ul>
+
+                  <label class="input__block-label hidden" for="{{ plan_select_id }}">Delivery frequency</label>
                   <div class="select-wrapper">
                     <select
                       class="select custom-subscription__select"

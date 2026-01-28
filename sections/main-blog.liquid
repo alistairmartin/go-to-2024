@@ -124,7 +124,7 @@
                     {%- capture style -%}grid-area: 4 / 3 / 9 / 4;{%- endcapture -%}
                 {%- endif -%}
     
-                {%- render 'article-item', article: article, heading_size: 'h5', style: style -%}
+                {%- render 'article-item', article: article, heading_size: 'h3', style: style -%}
     
                 {%- if moduloIndex == 5 or forloop.last -%}
                     {% comment %} <!-- Close wrapping after every 6 items or the last item --> {% endcomment %}
@@ -135,7 +135,7 @@
           {% else %}
             <div class="inner-container">
             {%- for article in blog.articles -%}
-              {%- render 'article-item', article: article, heading_size: 'h5', style: style -%}
+              {%- render 'article-item', article: article, heading_size: 'h3', style: style -%}
             {%- endfor -%}
             </div>
           {%- endif -%}

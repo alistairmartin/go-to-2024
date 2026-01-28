@@ -19,12 +19,17 @@
 
         <div class="product-content-doing-our-bit--content-inner tab-panel how-its-made" id="product-content-doing-our-bit-panel-1" role="tabpanel" aria-labelledby="tab-1--doing-our-bit" aria-hidden="false">
           {%- if product.metafields.custom.product_doing_our_bit__how_its_made != blank -%}
-            {{ product.metafields.custom.product_doing_our_bit__how_its_made }}
+            <div class="text-base">
+                {{ product.metafields.custom.product_doing_our_bit__how_its_made }}
+            </div>
+           
           {%- endif -%}
         </div>
         <div class="product-content-doing-our-bit--content-inner tab-panel how-to-recycle" id="product-content-doing-our-bit-panel-2" role="tabpanel" aria-labelledby="tab-2--how-to-recycle" aria-hidden="true">
           {%- if product.metafields.custom.product_doing_our_bit__how_to_recycle != blank -%}
+            <div class="text-base">
             {{ product.metafields.custom.product_doing_our_bit__how_to_recycle }}
+            </div>
           {%- endif -%}
         </div>
       </div>

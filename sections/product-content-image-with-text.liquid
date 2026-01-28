@@ -122,7 +122,7 @@ endif
           {%- endif -%}
 
           {%- if text != blank or button_title != blank -%}
-            <div class="image-overlay__text-container" {% if section.settings.reveal_on_scroll %}reveal{% endif %}>
+            <div class="image-overlay__text-container text-base" {% if section.settings.reveal_on_scroll %}reveal{% endif %}>
               {%- if text != blank-%}
                 {{ text }}
               {%- endif -%}

@@ -485,7 +485,7 @@
         left: 50%;
         top: 76%;
         transform: translate(-50%, -50%);
-        z-index: 3;
+        z-index: 2;
         color: #fff;
         width: 100%;
         text-align: center;
@@ -1432,6 +1432,10 @@
               }
             }
           }
+
+          .link--basic {
+            border-bottom: 1px solid #fff;
+          }
         }
     
         &.color-desktop--black {
@@ -1461,6 +1465,7 @@
 
       @include media-query($medium-up) {
         margin: 0 48px;
+        max-width: var(--max-width-text-desktop);
       }
 
       &.desktop--top {
@@ -1487,7 +1492,6 @@
       justify-content: flex-start;
       align-items: start;
       gap: 25px;
-      max-width: 73%;
     }
 
     .text-position-mobile--above {
@@ -1614,7 +1618,7 @@
   .BeforeAfter__Title {
     font-size: 36px;
     font-family: var(--heading-font-family);
-    font-weight: 400;
+    font-weight: 300;
     margin-bottom: 4px;
     line-height: 1.1;
 
@@ -2285,6 +2289,18 @@
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 16px;
+    scroll-padding-right: 16px;
+
+    &.has-scroll {
+      -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 40px), transparent 100%);
+      mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 40px), transparent 100%);
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+    }
   }
 
   .tab-list--outer-main::-webkit-scrollbar {
@@ -2307,6 +2323,7 @@
     .tab-list--inner {
       gap: 20px;
       width: auto;
+      scroll-snap-type: x mandatory;
 
       @include media-query($small) {
        width: 100%;
@@ -2324,6 +2341,8 @@
       align-items: center;
       gap: 5px;
       min-width: 190px;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
 
       @include media-query($small) {
         min-width: 50vw;
@@ -2335,6 +2354,29 @@
       }
     } 
   
+  }
+
+  .tab-list--scroll-indicator {
+    position: relative;
+    height: 4px;
+    margin: 25px 0 0;
+    background: $gotoGreyLight;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 200ms ease;
+    pointer-events: none;
+  }
+
+  .tab-list--scroll-indicator-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 48px;
+    background: $gotoPinkLight;
+    border-radius: inherit;
+    transform: translateX(0);
+    transition: transform 120ms ease-out, width 120ms ease-out;
   }
 
 
@@ -2879,7 +2921,7 @@
   }
 
   .product-how-to-apply--images {
-    max-width: 50%;
+    max-width: 40%;
 
     @include media-query($small) {
       max-width: 100%;
@@ -2931,7 +2973,7 @@
   }
 
   .product-how-to-apply--video {
-    width: 50%;
+    width: 60%;
 
       @include media-query($small) {
       width: 100%;

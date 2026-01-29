@@ -31,7 +31,7 @@
                       </div>
 
                       <div class="link-container">
-                        <a href="#learn-more" class="link link--basic">
+                        <a href="#learn-more" class="link link--basic learn-more">
                           LEARN MORE
                         </a>
                       </div>
@@ -97,7 +97,7 @@
                 ----------------------------------------------------------------------------------------------------------------
                 {%- endcomment -%}  
 
-                {%- if product.metafields.custom.ingredients != blank -%}
+                {%- if product.metafields.custom.ingredients_featured != blank -%}
                    <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
                     <button is="toggle-button" class="collapsible-toggle text--strong" aria-controls="block-product-tabs-2" aria-expanded="false" itemprop="name">
                       <span>HERO INGREDIENTS</span>

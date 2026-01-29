@@ -24,6 +24,11 @@
     .rte * {
         font-family: Marcel;
         line-height: 1.5;
+        font-size: 14px;
+    }
+
+    h1,h2,h3,h4,h5,h6 {
+        font-weight: bold;
     }
 
     .ordered-list li::marker, .text-container ol li::marker, .rte ol li::marker {

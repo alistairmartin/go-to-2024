@@ -11559,8 +11559,8 @@ shopify-payment-terms {
 }
 
 .product-item-meta__title {
-  -webkit-margin-after: 4px;
-          margin-block-end: 4px;
+  -webkit-margin-after: 6px;
+          margin-block-end: 6px;
   line-height: 1.6;
   display: block;
 }

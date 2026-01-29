@@ -83,6 +83,53 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
   });
 
+  // Product description V2 tab scroll indicator
+  function updateTabScrollIndicator(tabListOuter, indicator, bar) {
+    const maxScroll = tabListOuter.scrollWidth - tabListOuter.clientWidth;
+    const hasScroll = maxScroll > 1;
+    tabListOuter.classList.toggle("has-scroll", hasScroll);
+
+    if (!hasScroll) {
+      indicator.style.opacity = "0";
+      bar.style.transform = "translateX(0px)";
+      return;
+    }
+
+    indicator.style.opacity = "1";
+    const trackWidth = indicator.clientWidth;
+    const visibleRatio = tabListOuter.clientWidth / tabListOuter.scrollWidth;
+    const minBarWidth = 48;
+    const barWidth = Math.max(minBarWidth, Math.round(trackWidth * visibleRatio));
+    bar.style.width = `${barWidth}px`;
+
+    const progress = tabListOuter.scrollLeft / maxScroll;
+    const maxTranslate = Math.max(0, trackWidth - barWidth);
+    bar.style.transform = `translateX(${Math.round(maxTranslate * progress)}px)`;
+  }
+
+  document.querySelectorAll(".product-content-description-V2 .tab-list--outer-main").forEach(function (tabListOuter) {
+    const tabList = tabListOuter.closest(".tab-list");
+    if (!tabList) {
+      return;
+    }
+
+    const indicator = tabList.querySelector(".tab-list--scroll-indicator");
+    const bar = indicator ? indicator.querySelector(".tab-list--scroll-indicator-bar") : null;
+    if (!indicator || !bar) {
+      return;
+    }
+
+    const rafUpdate = function () {
+      requestAnimationFrame(function () {
+        updateTabScrollIndicator(tabListOuter, indicator, bar);
+      });
+    };
+
+    tabListOuter.addEventListener("scroll", rafUpdate, { passive: true });
+    window.addEventListener("resize", rafUpdate);
+    updateTabScrollIndicator(tabListOuter, indicator, bar);
+  });
+
   document.querySelectorAll(".change-custom-variant").forEach(function (button) {
     button.addEventListener('click', function (event) {
       // Get the data-index of the clicked element
@@ -114,6 +161,28 @@ document.addEventListener("DOMContentLoaded", function (event) {
       }
     });
   });
+
+  // Hide Tolstoy + liquid_eUQCzK blocks if Tolstoy notFound/empty after 4s
+  setTimeout(function () {
+    const tolstoyBlock = document.getElementById("shopify-block-AdnlsaHpwSzNydUo4K__tolstoy_shoppable_video_quiz_stories_block_8kd7Bk");
+    if (!tolstoyBlock) {
+      return;
+    }
+
+    const tolstoyStories = tolstoyBlock.querySelector("tolstoy-stories");
+    const status = tolstoyStories ? tolstoyStories.getAttribute("data-status") : null;
+    const isNotFound = status && status.toLowerCase() === "notfound";
+    const isEmpty = tolstoyBlock.childElementCount === 0 && tolstoyBlock.textContent.trim() === "";
+
+    if (!isNotFound && !isEmpty) {
+      return;
+    }
+
+    tolstoyBlock.classList.add("hide");
+    document.querySelectorAll('[data-block-id="liquid_eUQCzK"]').forEach(function (block) {
+      block.classList.add("hide");
+    });
+  }, 2000);
 
 });
 
@@ -194,4 +263,3 @@ function blockTextReadMore(blockId, buttonText) {
     buttonInner.textContent = "Show Less";
   }
 }
-

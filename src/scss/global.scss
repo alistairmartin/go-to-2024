@@ -23,6 +23,10 @@ html {
   padding-bottom: 0 !important;
 }
 
+.rte, .page-content {
+  line-height: 1.5;
+}
+
 .heading--primary {
   font-family: var(--heading-font-family);
 }
@@ -2462,7 +2466,7 @@ rivo-favorite-button.rivo-favorite-active svg {
         margin: 16px 16px 0;
         padding: 5px;
         @include media-query($medium-up) {
-          margin: 32px 0 0 40px;
+          margin: 32px 0 0 0px;
           padding: 0;
 
         }
@@ -2513,7 +2517,7 @@ rivo-favorite-button.rivo-favorite-active svg {
         margin: 32px 0 0 0;
 
         @include media-query($medium-up) {
-          padding-left: 40px;
+          padding-left: 0px;
           padding-top: 0px;
         }
 
@@ -2687,7 +2691,7 @@ rivo-favorite-button.rivo-favorite-active svg {
       strong {
         background-color: var(--color-grey-light);
         padding: 8px;
-        font-size: 16px;
+        font-size: 14px;
         display: block;
         margin-bottom: 4px;
         hyphens: auto;
@@ -2696,7 +2700,7 @@ rivo-favorite-button.rivo-favorite-active svg {
 
         @include media-query($medium-up) {
           margin-bottom: 8px;
-          font-size: 18px;
+          font-size: 14px;
         }
       }
 
@@ -3206,6 +3210,10 @@ footer {
     @include media-query($large-up) {
       // padding-left: 10px;
     }
+  }
+
+  .collapsible__content {
+    line-height: 1.5;
   }
 }
 
@@ -4857,6 +4865,8 @@ product-rerender {
 
   .tabs-nav__item {
     min-width: 145px;
+    font-size: 12px !important;
+    font-weight: 700 !important;
   }
 
   .tabs-nav__position {
@@ -6205,6 +6215,7 @@ button[aria-label="Tolstoy stories: next button"] {
 
 quick-buy-popover {
   .product-form {
+    padding-top: 20px;
     row-gap: 5px;
 
     variant-picker {
@@ -6222,3 +6233,28 @@ quick-buy-popover {
     display: none;
   }
 }
+
+quick-buy-drawer, quick-buy-popover  {
+  [data-block-id="liquid_eUQCzK"], [data-block-id="liquid_4U6L9q"]  {
+    display: none;
+  }
+
+  [aria-label="See complete guide"] {
+    display: none;
+  }
+
+  .learn-more {
+    display: none;
+  }
+}
+
+.product-type--gifts-sets {
+  #shopify-block-AdnlsaHpwSzNydUo4K__tolstoy_shoppable_video_quiz_stories_block_8kd7Bk {
+    display: none;
+  }
+
+  [data-block-id="liquid_eUQCzK"]  {
+    display: none;
+  }
+}
+

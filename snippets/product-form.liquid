@@ -211,12 +211,14 @@
           <div class="block-swatch-list block-swatch-list--custom">
             {%- for product_handle in related_products -%}
               {%- assign related_product = all_products[product_handle] -%}
+              {%- if related_product != blank -%}
               {%- assign related_product_title = related_product.metafields.gts_theme.alternate_title | default: related_product.title -%}
               <div class="block-swatch">
                   <a href="{{ related_product.url }}" class="block-swatch__item  {% if related_product.id == product.id %}is-selected{% endif %}"  title="{{ related_product_title }}" >
                     {{- related_product_title -}}
                   </a>
               </div>
+              {%- endif -%}
             {%- endfor -%}
           </div>
         {%- endif -%}
@@ -435,7 +437,9 @@
       ----------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
       {%- when 'custom_subscription' -%}
-         {%- render 'product-form--custom-subscriptions', product: product -%}
+         {% if context != 'quick-buy' %}
+          {%- render 'product-form--custom-subscriptions', product: product -%}
+         {% endif %}
 
       {%- comment -%}
       ----------------------------------------------------------------------------------------------------------------
@@ -503,15 +507,18 @@
       ----------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
       {%- when 'product_quiz' -%}
-        {%- render 'product-form--quiz' -%}
-    
+        {% if context != 'quick-buy' %}
+          {%- render 'product-form--quiz' -%}
+        {% endif %}
       {%- comment -%}
       ----------------------------------------------------------------------------------------------------------------
       Pairs With
       ----------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
       {%- when 'pairs_with' -%}
-        {%- render 'product-form--pairs-with' -%}
+        {% if context != 'quick-buy' %}
+         {%- render 'product-form--pairs-with' -%}
+        {% endif %}
 
       {%- comment -%}
       ----------------------------------------------------------------------------------------------------------------
@@ -521,15 +528,16 @@
       {%- when 'product_tabs' -%}
         {%- render 'product-form--tabs' -%}
 
-      
         {%- comment -%}
       ----------------------------------------------------------------------------------------------------------------
       Product Tabs
       ----------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
       {%- when 'product_ichange' -%}
-        {%- render 'product-form--ichange' -%}
-
+        
+        {% if context != 'quick-buy' %}
+          {%- render 'product-form--ichange' -%}
+        {% endif %}
       {%- comment -%}
       ----------------------------------------------------------------------------------------------------------------
       BUY BUTTONS
@@ -715,7 +723,7 @@ IMPLEMENTATION NOTE: if during the iteration of the options we have found an opt
     <span class="drawer__overlay"></span>
 
     <header class="drawer__header">
-      <p class="drawer__title heading h6">{{ size_chart_page.title }}</p>
+      <p class="drawer__title heading h5">{{ size_chart_page.title }}</p>
 
       <button type="button" class="drawer__close-button tap-area" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
         {%- render 'icon' with 'close' -%}
@@ -734,7 +742,7 @@ IMPLEMENTATION NOTE: if during the iteration of the options we have found an opt
     <span class="popover__overlay"></span>
 
     <header class="popover__header">
-      <p class="popover__title heading h6">{{ size_chart_page.title }}</p>
+      <p class="popover__title heading h5">{{ size_chart_page.title }}</p>
 
       <button type="button" class="popover__close-button tap-area tap-area--large" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
         {%- render 'icon' with 'close' -%}

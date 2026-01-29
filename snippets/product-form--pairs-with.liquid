@@ -1,4 +1,4 @@
-{% unless template.suffix == 'quick-buy-popover' or template.suffix == 'quick-buy-drawer' %}
+
   {%- unless product.type == "Gifts & Sets" -%}
 <div data-block-type="Pairs With" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
   <div class="product-form--pairs-with">
@@ -50,5 +50,15 @@
     </product-recommendations>
   </div>
 </div>
+{% comment %} {%- if shown_products_count == 0 -%}
+  <style>
+    [data-block-type="Pairs With"] {
+      display: none !important;
+    }
+
+    [data-block-id="liquid_Aj8rUP"] {
+      display: none !important;
+    }
+  </style>
+{%- endif -%}  {% endcomment %}
 {% endunless %}
-{%- endunless -%}

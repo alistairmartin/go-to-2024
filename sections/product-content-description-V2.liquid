@@ -57,6 +57,9 @@
 
             </div>
           </div>
+          <div class="tab-list--scroll-indicator {% if hideTabs == true %}hide{% endif %}" aria-hidden="true">
+            <span class="tab-list--scroll-indicator-bar"></span>
+          </div>
           
           {%- if product.type == "Blush" or product.type == "Highlighter" -%}
                  {%- render 'product-description--how-to-apply' product: product, tab: 2, hidden: false  -%}

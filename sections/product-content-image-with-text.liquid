@@ -19,6 +19,11 @@ for mediaWithText in product.metafields.custom.product_media_with_text__title
     assign image_desktop = product.metafields.custom.product_media_with_text__image_desktop[indexCounter]
     assign image_mobile = product.metafields.custom.product_media_with_text__image_mobile[indexCounter]
     assign vimeo_id = product.metafields.custom.product_media_with_text__vimeo[indexCounter]
+    assign text_max_width_desktop = product.metafields.custom.product_media_with_text__max-width[indexCounter]
+
+    if text_max_width_desktop == "" or text_max_width_desktop == blank
+      assign text_max_width_desktop = 30
+    endif
 
     assign image_mobile_object = image_mobile | first
     assign image_mobile_aspect = image_mobile_object.aspect_ratio
@@ -39,6 +44,7 @@ if image_desktop != blank or image_mobile != blank
   assign imageFound = true
 endif
 -%}
+
 
 {%- if text_color_desktop == "White" -%}
   {%- assign text_color_desktop_value = "255,255,255" -%}
@@ -92,6 +98,10 @@ endif
 
     #shopify-section-{{ section.id }} .image-overlay__image-wrapper {
       padding-bottom: {{ 100.0 | divided_by: image_desktop_aspect }}%;
+    }
+
+    #shopify-section-{{ section.id }} .image-overlay__content {
+        --max-width-text-desktop: {{ text_max_width_desktop }}%;
     }
   }
 </style>

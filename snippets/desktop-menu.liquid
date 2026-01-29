@@ -42,11 +42,13 @@
                   </div>
 
                   {%- if mega_menu_block.settings[image_heading_setting] != '' -%}
-                    <p class="mega-menu__heading heading heading--secondary h6">{{ mega_menu_block.settings[image_heading_setting] }}</p>
+                    {% comment %} <p class="mega-menu__heading heading heading--secondary h6">{{ mega_menu_block.settings[image_heading_setting] }}</p> {% endcomment %}
+                     <p class="mega-menu__text text--small">{{ mega_menu_block.settings[image_heading_setting] }}</p>
+
                   {%- endif -%}
 
                   {%- if mega_menu_block.settings[image_text_setting] != '' -%}
-                    <span class="mega-menu__text text--xxsmall">{{ mega_menu_block.settings[image_text_setting] }}</span>
+                    <span class="mega-menu__text text--small">{{ mega_menu_block.settings[image_text_setting] }}</span>
                   {%- endif -%}
                 {%- endcapture -%}
 

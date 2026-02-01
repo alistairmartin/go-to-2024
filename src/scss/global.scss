@@ -1480,8 +1480,8 @@ rivo-favorite-button.rivo-favorite-active svg {
   .button-wrapper {
     display: flex;
     margin-top: calc(var(--vertical-breather) / 2);
-    // justify-content: center;
-    // align-items: center;
+    justify-content: center;
+    align-items: center;
   }
 
   .article-item__title {
@@ -2372,8 +2372,10 @@ rivo-favorite-button.rivo-favorite-active svg {
 
 .shopify-section--timeline-vertical {
   background: var(--background-color);
+  margin-top: -40px;
   @include media-query($medium-up) {
     position: relative;
+     margin-top: 0px;
     &:after {
       content: "";
       position: absolute;
@@ -2734,6 +2736,12 @@ rivo-favorite-button.rivo-favorite-active svg {
 
     .collapsible-toggle[aria-expanded="true"] {
         background: $gotoPink;
+    }
+
+    .collapsible-toggle.heading {
+      font-weight: 400 !important;
+      font-size: 25px;
+      font-style: italic;
     }
   }
 
@@ -3621,7 +3629,7 @@ footer {
     padding: 10px 10px 10px 0;
 
     @include media-query($medium-up) {
-      width: 33.3%;
+      width: 25%;
     }
 
     img {
@@ -6258,3 +6266,16 @@ quick-buy-drawer, quick-buy-popover  {
   }
 }
 
+
+.tolstoy-stories-container {
+  justify-content: flex-start !important;
+}
+
+.shopify-section--rich-text {
+  .text-container {
+     p {
+      font-size: 14px;
+      line-height: 24px;
+      }
+  }
+}

@@ -207,10 +207,13 @@
           </variant-picker>
         {% else %}
           {%- assign related_products = productMetafields.product_main_information__related_products | split: "|" -%}
+
+
           {%- if related_products != blank -%}
           <div class="block-swatch-list block-swatch-list--custom">
             {%- for product_handle in related_products -%}
-              {%- assign related_product = all_products[product_handle] -%}
+              {%- assign product_handle_handle = product_handle | handle -%}
+              {%- assign related_product = all_products[product_handle_handle] -%}
               {%- if related_product != blank -%}
               {%- assign related_product_title = related_product.metafields.gts_theme.alternate_title | default: related_product.title -%}
               <div class="block-swatch">

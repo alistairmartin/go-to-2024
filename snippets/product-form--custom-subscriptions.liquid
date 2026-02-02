@@ -31,7 +31,7 @@
                 />
                 <span class="custom-subscription__indicator" aria-hidden="true"></span>
                 <span class="custom-subscription__label">
-                  <span class="custom-subscription__label-regular">Subscribe <span class="custom-subscription__label-bold">(with free gifts!)</span></span>
+                  <span class="custom-subscription__label-regular">Subscribe <span class="custom-subscription__label-bold">(free gift included!)</span></span>
                   {% comment %} <strong class="custom-subscription__label-strong">
                     Perk-y and convenient
                   </strong> {% endcomment %}
@@ -39,8 +39,16 @@
                 
 
                 {%- capture product_subscription_content -%}
-                <div class="how-it-works text-base"><p>Set and forget on your Go-To favourites.</p> <p>Want to reorder peach skincare without <em>actually</em> having to reorder peach skincare? Same. So, set up a handy subscription and score <strong>a free gift</strong> from us in every subscription order 
-                (<strong>just make sure you add it to the cart the first time around</strong>).</p> <p>Select your preferred schedule, and we’ll automatically ship these products to you*. </p> <p>*You can <em>modify</em> or <em>cancel</em> your subscription at any time. (Even 3:47am.)</p> <p><a href="https://gotoskincare.com/pages/product-subscriptions" title="Learn more." aria-label="Learn more"><strong>Learn more</strong>.</a></p></div>
+                <div class="how-it-works text-base">
+                  <div class="rte">
+                    {{ pages["subscriptions-faq-pdp"].content }}
+                  </div>
+                  {% comment %} <p>Set and forget on your Go-To favourites.</p> <p>Want to reorder peach skincare without <em>actually</em> having to reorder peach skincare? Same. So, set up a handy subscription and score <strong>a free gift</strong> from us in every subscription order 
+                (<strong>just make sure you add it to the cart the first time around</strong>).</p> <p>Select your preferred schedule, and we’ll automatically ship these products to you*. </p> <p>*You can <em>modify</em> or <em>cancel</em> your subscription at any time. (Even 3:47am.)</p> <p><a href="https://gotoskincare.com/pages/product-subscriptions" title="Learn more." aria-label="Learn more"><strong>Learn more</strong>.</a></p>
+                 {% endcomment %}
+
+                 
+                </div>
                 {%- endcapture -%}
 
                 {%- assign blockId = "subscription_details" -%}
@@ -54,9 +62,9 @@
                 <div class="custom-subscription__plans" data-selling-plan-container hidden>
 
                   <ul class="custom-subscription__bullets" id="subscribe-details">
-                    <li>Free gift on your first order</li>
-                    <li>Free delivery on every order</li>
-                    <li>Earn Go-to Gang points on every order</li>
+                    <li>Free gift with first subscription</li>
+                    <li>Cancel or modify anytime - no stressr</li>
+                    <li>The Gang earns 50 extra points on subscription orders*</li>
                     <li>    
                       <button class="custom-subscription__link"id="{{ blockId }}">
                       More Info

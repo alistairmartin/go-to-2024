@@ -6279,3 +6279,16 @@ quick-buy-drawer, quick-buy-popover  {
       }
   }
 }
+
+
+#subscription_details-modal {
+  .rte {
+    * {
+      margin: 0;
+    }
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

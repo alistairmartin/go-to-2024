@@ -69,6 +69,7 @@
 
     .product-meta__title {
       margin-bottom: 4px;
+
     }
 
     .product-meta__reference {
@@ -2155,6 +2156,7 @@
       font-size: 14px;
       font-weight: 800;
       line-height: 30px;
+      font-family: var(--text-font-family);
     }
 
     p {
@@ -2254,7 +2256,9 @@
     .product-meta__title {
         font-size: 30px;
         margin: 0;
+        font-weight: normal;
         font-style: italic;
+        padding-right: 25px;
     }
 
     .rating__caption {
@@ -2418,6 +2422,11 @@
           display: flex;
           flex-direction: column;
           gap: 20px;
+          margin-right: 40px;
+
+          @include media-query($small) {
+              margin-right: 0;
+          }
         }
 
         .image-column {

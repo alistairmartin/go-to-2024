@@ -218,7 +218,15 @@
               {%- assign related_product_title = related_product.metafields.gts_theme.alternate_title | default: related_product.title -%}
               <div class="block-swatch">
                   <a href="{{ related_product.url }}" class="block-swatch__item  {% if related_product.id == product.id %}is-selected{% endif %}"  title="{{ related_product_title }}" >
-                    {{- related_product_title -}}
+
+                    {%- if related_product.handle == "very-lightweight-moisturiser" -%}
+                      {{- related_product_title | split: "Lightweight" | first -}} Lightweight <br> Moisturiser
+                    {%- elsif related_product.handle == "very-lightweight-moisturiser-refill" -%}
+                      {{- related_product_title | split: "Lightweight" | first -}} Lightweight <br> Moisturiser Refill 
+                    {% else %}
+                      {{- related_product_title -}}
+                    {%- endif -%}
+                    
                   </a>
               </div>
               {%- endif -%}

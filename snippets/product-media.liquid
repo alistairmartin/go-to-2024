@@ -40,9 +40,9 @@
   {%- endfor -%}
 
 
-  {%- if brand == 'go-to' -%}
-      {%- render 'product-media--desktop' -%}
-  {%- endif -%}
+
+  {%- render 'product-media--desktop' -%}
+
 
   <product-media
     filtered-ids="{{ filtered_media_ids | json }}"

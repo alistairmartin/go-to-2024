@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   // Hide Tolstoy + liquid_eUQCzK blocks if Tolstoy notFound/empty after 4s
   setTimeout(function () {
-    const tolstoyBlock = document.getElementById("shopify-block-AdnlsaHpwSzNydUo4K__tolstoy_shoppable_video_quiz_stories_block_8kd7Bk");
+    const tolstoyBlock = document.querySelector('.product-form .shopify-app-block[id*="tolstoy_shoppable_video"]');
     if (!tolstoyBlock) {
       return;
     }
@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     tolstoyBlock.classList.add("hide");
-    document.querySelectorAll('[data-block-id="liquid_eUQCzK"]').forEach(function (block) {
+    document.querySelectorAll('[data-block-id="liquid_line_2"]').forEach(function (block) {
       block.classList.add("hide");
     });
   }, 2000);

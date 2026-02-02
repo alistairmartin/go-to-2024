@@ -1723,6 +1723,12 @@ rivo-favorite-button.rivo-favorite-active svg {
 
 .shopify-section--testimonials-V2 {
 
+  .heading.h2 {
+    @include media-query($small) {
+         text-align: left !important;;
+      }
+  }
+
   .logo-list__item {
     min-width: 240px;
     gap: 15px;
@@ -6232,18 +6238,14 @@ quick-buy-popover {
   }
 }
 
-.product-type--gifts-sets {
-  #product-divider-1 {
-    display: none;
-  }
-
-  [data-block-id="liquid_qnqRpC"] {
+.product-type--gifts-sets {  
+  [data-block-id="liquid_line_1"] {
     display: none;
   }
 }
 
 quick-buy-drawer, quick-buy-popover  {
-  [data-block-id="liquid_eUQCzK"], [data-block-id="liquid_4U6L9q"]  {
+  [data-block-id="liquid_line_1"], [data-block-id="liquid_line_3"]  {
     display: none;
   }
 
@@ -6261,7 +6263,7 @@ quick-buy-drawer, quick-buy-popover  {
     display: none;
   }
 
-  [data-block-id="liquid_eUQCzK"]  {
+  [data-block-id="liquid_line_2"]  {
     display: none;
   }
 }

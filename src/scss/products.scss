@@ -232,6 +232,12 @@
    @media screen and (min-width: 1000px) {
      display: none !important;
   }
+
+  .product__media-item {
+    @media screen and (min-width: 740px) and (max-width: 999px) {
+      padding: 0;
+    }
+  }
 }
 
 @include media-query($small) {
@@ -1424,7 +1430,7 @@
     }
 
     .image-overlay {
-      @include media-query($medium-up) {
+      @media screen and (min-width: 1000px) {
         &.text-position-desktop--top {
           align-items: flex-start;
         }
@@ -1439,7 +1445,7 @@
 
         &.color-desktop--white {
           .link--primary {
-            @include media-query($medium-up) {
+            @media screen and (min-width: 1000px) {
               text-decoration-color: var(--color-primary) !important;
 
               svg {
@@ -1457,7 +1463,7 @@
     
         &.color-desktop--black {
           .link--primary {
-            @include media-query($medium-up) {
+            @media screen and (min-width: 1000px) {
               text-decoration-color: #fff !important;
             }
           }
@@ -1465,7 +1471,7 @@
       }
 
 
-      @include media-query($medium-up) {
+      @media screen and (min-width: 1000px) {
         &.color-mobile--white {
     
         }
@@ -1480,7 +1486,7 @@
       margin: 0;
       max-width: 516px;
 
-      @include media-query($medium-up) {
+      @media screen and (min-width: 1000px) {
         margin: 0 48px;
         max-width: var(--max-width-text-desktop);
       }
@@ -1512,7 +1518,7 @@
     }
 
     .text-position-mobile--above {
-      @include media-query($small) {
+      @media screen and (max-width: 999px) {
       background: unset;
       display: flex;
       flex-direction: column-reverse;
@@ -1535,7 +1541,7 @@
     }
 
     .text-position-mobile--below {
-      @include media-query($small) {
+     @media screen and (max-width: 999px) {
       background: unset;
       display: flex;
       flex-direction: column;
@@ -1543,7 +1549,7 @@
     }
 
     .image-overlay__content-title {
-      @include media-query($small) {
+      @media screen and (max-width: 999px) {
         font-size: 40px;
       }
     }
@@ -2448,6 +2454,7 @@
 
           img {
             width: 100%;
+            min-width: 300px;
           }
         }
       }

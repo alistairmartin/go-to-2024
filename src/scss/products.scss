@@ -228,7 +228,7 @@
 
 // show on tablet at 1000px
 .product__media-inner {
-    display: flex;
+    display: block;
    @media screen and (min-width: 1000px) {
      display: none !important;
   }

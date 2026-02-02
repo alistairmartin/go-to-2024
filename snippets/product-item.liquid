@@ -250,7 +250,15 @@
 
             {%- if product.variants.size > 1 -%}
               {%- for variant in product.variants -%}
-                <span class="option {% if product.media.first.alt contains variant.title %}active{% endif %} {% if product.handle == "transformazing" and forloop.first %}active{% endif %}">{{ variant.title | remove: " AUD" | upcase }}</span>
+                <span class="option {% if product.media.first.alt contains variant.title %}active{% endif %} {% if product.handle == "transformazing" and forloop.first %}active{% endif %}">
+
+                  {%- if product.handle contains "very-" -%}
+                    {{ variant.title | remove: "Very" }}
+                  {%- else -%}
+                    {{ variant.title | remove: " AUD" | upcase }}
+                  {%- endif -%}
+                  
+                </span>
               {%- endfor -%}  
             {%- endif -%}
 
@@ -261,7 +269,12 @@
                 {%- assign related_product = all_products[product_handle] -%}
                 {%- assign related_product_title = related_product.metafields.gts_theme.alternate_title | default: related_product.title -%}
                 <span class="option {% if related_product.id == product.id %}active{% endif %}  ">
+                  {%- if product.handle contains "very-" -%}
+                      {{- related_product_title | upcase | remove: "VERY " -}}
+                  {%- else -%}
                       {{- related_product_title | upcase  -}}
+                  {%- endif -%}
+
                 </span>
               {%- endfor -%}
             {% endif %}

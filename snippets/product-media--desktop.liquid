@@ -18,25 +18,137 @@
             display: block;
           }
         {%- endfor -%}
+
+        .product-media-desktop--item.option-all {
+            display: block;
+        }
     </style>
 {%- endif -%}
 
 <div class="product__media product__media-go-to">
     <div class="product-media-desktop {% if variantImages %}enable-variant-images current-option-{{ product.selected_or_first_available_variant.options[0]| handle }} {% endif %}">
     {%- for media in product.media -%}
-        <div class="product-media-desktop--item {% if variantImages %}option-{{ media.alt | split: "_" | last | handle }}{% endif %}" data-alt="{{ media.alt }}">
-        {{-
-            media
-            | image_url: width: media.width
-            | image_tag:
-            loading: loading,
-            sizes: '(max-width: 999px) calc(100vw - 48px), 640px',
-            widths: '400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800',
-            alt: media.alt 
-            -}}
+        {%- assign media_option_handle = media.alt | split: "_" | last | handle -%}
+        {%- assign media_option_class = '' -%}
+        {%- if variantImages -%}
+          {%- if media_option_handle != blank -%}
+            {%- assign media_option_class = 'option-' | append: media_option_handle -%}
+          {%- elsif media.media_type != 'image' -%}
+            {%- assign media_option_class = 'option-all' -%}
+          {%- endif -%}
+        {%- endif -%}
 
+        <div class="product-media-desktop--item{% if media_option_class != blank %} {{ media_option_class }}{% endif %}" data-alt="{{ media.alt }}" data-media-type="{{ media.media_type }}">
+          {%- case media.media_type -%}
+            {%- when 'image' -%}
+              {{-
+                media
+                | image_url: width: media.width
+                | image_tag:
+                  loading: loading,
+                  sizes: '(max-width: 999px) calc(100vw - 48px), 640px',
+                  widths: '400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800',
+                  alt: media.alt
+              -}}
+
+            {%- when 'video' -%}
+              <native-video class="video-wrapper video-wrapper--native" style="--aspect-ratio: {{ media.aspect_ratio }}">
+                <div class="video-wrapper__poster">
+                  {{
+                    media.preview_image
+                    | image_url: width: media.preview_image.width
+                    | image_tag:
+                      loading: 'lazy',
+                      sizes: '(max-width: 999px) calc(100vw - 48px), 640px',
+                      widths: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200',
+                      class: 'video-wrapper__poster-image'
+                  }}
+                  {%- unless section.settings.enable_video_autoplay -%}
+                    <div class="video-wrapper__poster-content">
+                      <button
+                        type="button"
+                        class="video-wrapper__play-button"
+                        title="{{ 'general.accessibility.play_video' | t | escape }}"
+                      >
+                        {%- render 'icon' with 'play', width: 72, height: 72 -%}
+                      </button>
+                    </div>
+                  {%- endunless -%}
+                </div>
+
+                <template>
+                  {{-
+                    media
+                    | video_tag:
+                      image_size: '1024x',
+                      controls: true,
+                      autoplay: true,
+                      muted: section.settings.enable_video_autoplay,
+                      loop: section.settings.enable_video_looping
+                  -}}
+                </template>
+              </native-video>
+
+            {%- when 'external_video' -%}
+              <external-video provider="{{ media.host | escape }}" class="video-wrapper">
+                <div class="video-wrapper__poster">
+                  {{
+                    media.preview_image
+                    | image_url: width: media.preview_image.width
+                    | image_tag:
+                      loading: 'lazy',
+                      sizes: '(max-width: 999px) calc(100vw - 48px), 640px',
+                      widths: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200',
+                      class: 'video-wrapper__poster-image'
+                  }}
+
+                  {%- unless section.settings.enable_video_autoplay -%}
+                    <div class="video-wrapper__poster-content">
+                      <button
+                        type="button"
+                        class="video-wrapper__play-button"
+                        title="{{ 'general.accessibility.play_video' | t | escape }}"
+                      >
+                        {%- render 'icon' with 'play', width: 72, height: 72 -%}
+                      </button>
+                    </div>
+                  {%- endunless -%}
+                </div>
+
+                <template>
+                  {%- if media.host == 'youtube' -%}
+                    {{-
+                      media
+                      | external_video_url:
+                        enablejsapi: true,
+                        loop: section.settings.enable_video_looping,
+                        mute: section.settings.enable_video_autoplay,
+                        autoplay: true,
+                        playlist: media.external_id
+                      | external_video_tag
+                    -}}
+                  {%- elsif media.host == 'vimeo' -%}
+                    {{-
+                      media
+                      | external_video_url:
+                        autopause: true,
+                        loop: section.settings.enable_video_looping,
+                        muted: section.settings.enable_video_autoplay,
+                        autoplay: true
+                      | external_video_tag
+                    -}}
+                  {%- else -%}
+                    {{- media | external_video_tag: image_size: '1024x' -}}
+                  {%- endif -%}
+                </template>
+              </external-video>
+
+            {%- when 'model' -%}
+              <model-media product-handle="{{ product.handle }}" class="model-wrapper">
+                {{- media | model_viewer_tag: image_size: '1024x', reveal: 'interaction', toggleable: true -}}
+              </model-media>
+          {%- endcase -%}
         </div>
-     
     {%- endfor -%}
     <div class="product-media-desktop-labels">
         {%- render 'product-media--labels', product: product -%}

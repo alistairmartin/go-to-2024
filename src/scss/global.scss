@@ -1040,22 +1040,24 @@ store-header.background-blur {
     .variant-option {
       position: absolute;
       left: 50%;
-      top: -15px;
+      top: -9px;
       transform: translate(-50%,-50%);
       display: flex;
       gap: 10px;
+      width: 100%;
+      justify-content: center;
 
       .option {
-        font-size: 8px;
+        font-size: 8px !important;
         color: var(--color-grey-dark);
       }
 
       .active {
         text-decoration: underline;
-        text-underline-offset: 3px !important;
+        text-underline-offset: 2px !important;
         text-decoration: underline !important;
         text-decoration-color: var(--color-primary) !important;
-        text-decoration-thickness: 3px !important;
+        text-decoration-thickness: 2px !important;
       }
     }
 
@@ -4042,6 +4044,7 @@ product-rerender {
   flex-direction: column;
 }
 
+
 .predictive-search__product-item {
   margin-bottom: 16px;
   padding: 8px 8px 0;
@@ -4064,6 +4067,10 @@ product-rerender {
         text-decoration-color:  $gotoPink !important;
       }
     }
+
+    .product-item-meta__title {
+      font-weight: 400;
+    }
   }
 
   &.product-brand--bro-to {
@@ -4075,6 +4082,10 @@ product-rerender {
       .link--primary {
         border-color:  $brotoRed !important;
       }
+    }
+
+    .product-item-meta__title {
+      font-weight: 400;
     }
   }
 

@@ -166,7 +166,7 @@
 
 .product__media {
   padding: 0;
-  @include media-query($medium-up) {
+  @include media-query($large-up) {
   position: sticky;
   top: 90px;
   }

@@ -55,7 +55,7 @@
       reveal-on-scroll
     {% endif %}
     product-handle="{{ product.handle }}"
-    class="product__media {% if brand == 'go-to' %}hide-desktop{% endif %}"
+    class="product__media product__media-inner {% if brand == 'go-to' %}hide-desktop{% endif %}"
     style="--largest-image-aspect-ratio: {{ largest_image_aspect_ratio }}"
   >
 

@@ -166,6 +166,7 @@
 
 .product__media {
   padding: 0;
+
   @include media-query($large-up) {
   position: sticky;
   top: 90px;
@@ -217,6 +218,21 @@
   }
 }
 
+// desktop - hide at 1000px
+.product__media-go-to {
+  display: none;
+   @media screen and (min-width: 1000px) {
+     display: flex !important;
+  }
+}
+
+// show on tablet at 1000px
+.product__media-inner {
+    display: flex;
+   @media screen and (min-width: 1000px) {
+     display: none !important;
+  }
+}
 
 @include media-query($small) {
 
@@ -1864,12 +1880,9 @@
 
 
 .product-media-desktop {
-  display: none;
+  display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
-  @include media-query($large-up) {
-    display: grid;
-  }
 
   .product-media-desktop--item {
     position: relative;

@@ -21,7 +21,7 @@
     </style>
 {%- endif -%}
 
-<div class="product__media">
+<div class="product__media product__media-go-to">
     <div class="product-media-desktop {% if variantImages %}enable-variant-images current-option-{{ product.selected_or_first_available_variant.options[0]| handle }} {% endif %}">
     {%- for media in product.media -%}
         <div class="product-media-desktop--item {% if variantImages %}option-{{ media.alt | split: "_" | last | handle }}{% endif %}" data-alt="{{ media.alt }}">

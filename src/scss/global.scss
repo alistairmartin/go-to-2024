@@ -1727,7 +1727,7 @@ rivo-favorite-button.rivo-favorite-active svg {
 
   .heading.h2 {
     @include media-query($small) {
-         text-align: left !important;;
+         text-align: left !important;
       }
   }
 
@@ -1751,6 +1751,7 @@ rivo-favorite-button.rivo-favorite-active svg {
     text-align: left;
     font-size: 14px;
     line-height: 24px;
+    width: 100%;
   }
 
   .logo-list__stars {

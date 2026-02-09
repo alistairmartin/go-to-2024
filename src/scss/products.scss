@@ -219,7 +219,7 @@
 }
 
 // desktop - hide at 1000px
-.product__media-go-to {
+.brand-go-to  .product__media-go-to {
   display: none;
    @media screen and (min-width: 1000px) {
      display: flex !important;
@@ -227,7 +227,7 @@
 }
 
 // show on tablet at 1000px
-.product__media-inner {
+.brand-go-to .product__media-inner {
     display: block;
    @media screen and (min-width: 1000px) {
      display: none !important;
@@ -1674,6 +1674,10 @@
     .Button--link {
       margin-top: 12px;
     }
+    
+    strong {
+      font-weight: 800 !important;
+    }
   }
   
   .BeforeAfter__TabButtonsContainer {
@@ -1868,6 +1872,9 @@
     right: 10px;
     top: 10px;
     z-index: 4;
+    display: flex;
+    display: flex;
+    justify-content: flex-end;
 
     @include media-query($medium-up) {
       left: 20px;
@@ -1885,6 +1892,12 @@
   }
 
 
+.brand-bro-to {
+   .product-media-desktop--item {
+      border: 1px solid #d5d5d58f;
+   }
+}
+
 .product-media-desktop {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1892,6 +1905,24 @@
 
   .product-media-desktop--item {
     position: relative;
+  }
+
+  .video-wrapper,
+  .video-wrapper--native {
+    width: 100%;
+    display: block;
+  }
+
+  .video-wrapper video,
+  .video-wrapper iframe,
+  .video-wrapper__poster-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .video-wrapper__poster {
+    z-index: 2;
   }
 
   .product-media--labels {
@@ -1950,7 +1981,7 @@
     .product-form--pairs-with {
         max-width: calc(100vw - 32px);
 
-       @include media-query($medium-up) {
+       @include media-query($large-up) {
           max-width: calc(var(--grid-column-width) * 8 + var(--grid-gap) * 7);
        }
        
@@ -2345,8 +2376,13 @@
 
     .tab-list--inner {
       gap: 20px;
-      width: auto;
+      // width: auto;
       scroll-snap-type: x mandatory;
+
+      @include media-query($large-up) {
+       width: auto;
+      }
+
 
       @include media-query($small) {
        width: 100%;
@@ -2944,7 +2980,7 @@
     gap: 80px;
     flex-direction: row;
 
-    @include media-query($small) {
+    @include media-query($large-down) {
         flex-direction: column;
     }
   }
@@ -2952,7 +2988,7 @@
   .product-how-to-apply--images {
     max-width: 40%;
 
-    @include media-query($small) {
+    @include media-query($large-down) {
       max-width: 100%;
     }
   }
@@ -2976,7 +3012,7 @@
       max-height: 150px;
       object-fit: cover;
 
-      @include media-query($small) {
+      @include media-query($large-down) {
             min-height: 150px;
             min-width: 120px;
             max-width: 120px;
@@ -2990,7 +3026,7 @@
 
     .product-how-to-apply--item-title {
       font-size: 20px;
-      @include media-query($small) {
+      @include media-query($large-down) {
         margin-bottom: 10px;
       }
     }
@@ -3004,7 +3040,7 @@
   .product-how-to-apply--video {
     width: 60%;
 
-      @include media-query($small) {
+      @include media-query($large-down) {
       width: 100%;
     }
 

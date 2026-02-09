@@ -462,6 +462,8 @@
             {%- if productMetafields.product_tag_line != blank -%}
               <h2 class="product-form--details-title h5 heading heading--primary">{{ productMetafields.product_tag_line }}</h2>
             {%- endif -%}
+
+            {%- assign foundTableDetails = false -%}
             
             <table class="product-form--details-table">
               {%- if productMetafields.product_suitable_for != blank -%}
@@ -469,6 +471,7 @@
                 <td><strong>Suitable for</strong></td>
                 <td>{{ productMetafields.product_suitable_for }}</td>
               </tr>
+               {%- assign foundTableDetails = true -%}
               {% endif %}
 
               {%- if productMetafields.product_good_to_know != blank -%}
@@ -476,6 +479,7 @@
                 <td><strong>Good To Know</strong></td>
                 <td>{{ productMetafields.product_good_to_know }}</td>
               </tr>
+              {%- assign foundTableDetails = true -%}
               {% endif %}
 
               {% assign application_html = productMetafields.application | metafield_tag | strip_html  %}
@@ -487,6 +491,7 @@
                   <a href="#learn-more"><u>See complete guide</u></a>
                 </td>
               </tr>
+              {%- assign foundTableDetails = true -%}
               {% endif %}
 
               {%- if productMetafields.product_use_it_am != blank or productMetafields.product_use_it_pm != blank  -%}
@@ -500,8 +505,17 @@
                   
                 </td>
               </tr>
+              {%- assign foundTableDetails = true -%}
               {% endif %}
             </table>
+            
+              {%- if foundTableDetails == false -%}
+                <style>
+                  .product-form--details-table {display: none;}
+                  
+                  [data-block-id="liquid_line_3"] {display:none !important;}
+                </style>
+              {%- endif -%}
           </div>
     
     {%- comment -%}

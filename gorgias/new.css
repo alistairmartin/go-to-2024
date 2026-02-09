@@ -9,112 +9,112 @@
   }
   
   @font-face {
-    font-family: TTCommons;
+    font-family: Marcel;
     font-display: swap;
-    src: url(//gotoskincare.com/cdn/shop/files/TTCommons-Regular.woff?v=14494651156001179862) format("woff"), url(//gotoskincare.com/cdn/shop/files/TTCommons-Regular.woff2?v=5511574600830859714) format("woff2");
+    src: url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-Regular.woff) format("woff"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-Regular.woff2) format("woff2");
     font-style: normal;
     font-weight: 400
 }
 
 @font-face {
-    font-family: TTCommons;
+    font-family: Marcel;
     font-display: swap;
-    src: url(//gotoskincare.com/cdn/shop/files/TTCommons-Italic.woff?v=5385207858103468928) format("woff"), url(//gotoskincare.com/cdn/shop/files/TTCommons-Italic.woff2?v=2514842856518439034) format("woff2");
+    src: url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-Italic.woff) format("woff"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-Italic.woff2) format("woff2");
     font-style: italic;
     font-weight: 400
 }
 
 @font-face {
-    font-family: TTCommons;
+    font-family: Marcel;
     font-display: swap;
-    src: url(//gotoskincare.com/cdn/shop/files/TTCommons-Medium.woff?v=2768805166583498804) format("woff"), url(//gotoskincare.com/cdn/shop/files/TTCommons-Medium.woff2?v=3415246728794888773) format("woff2");
+    src: url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-Medium.woff) format("woff"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-Medium.woff2) format("woff2");
     font-style: normal;
     font-weight: 500
 }
 
 @font-face {
-    font-family: TTCommons;
+    font-family: Marcel;
     font-display: swap;
-    src: url(//gotoskincare.com/cdn/shop/files/TTCommons-DemiBold.woff?v=5912097853951157414) format("woff"), url(//gotoskincare.com/cdn/shop/files/TTCommons-DemiBold.woff2?v=401869704518313269) format("woff2");
+    src: url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-Semibold.woff) format("woff"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-Semibold.woff2) format("woff2");
     font-style: normal;
     font-weight: 600
 }
 
 @font-face {
-    font-family: TTCommons;
+    font-family: Marcel;
     font-display: swap;
-    src: url(//gotoskincare.com/cdn/shop/files/TTCommons-DemiBoldItalic.woff?v=5287864643026500583) format("woff"), url(//gotoskincare.com/cdn/shop/files/TTCommons-DemiBoldItalic.woff2?v=6220050233597062936) format("woff2");
+    src: url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-SemiboldItalic.woff) format("woff"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-SemiboldItalic.woff2) format("woff2");
     font-style: italic;
     font-weight: 600
 }
 
 @font-face {
-    font-family: TTCommons;
+    font-family: Marcel;
     font-display: swap;
-    src: url(//gotoskincare.com/cdn/shop/files/TTCommons-Bold.woff?v=5748919247516458362) format("woff"), url(//gotoskincare.com/cdn/shop/files/TTCommons-Bold.woff2?v=18225381122947418974) format("woff2");
+    src: url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-Bold.woff) format("woff"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-Bold.woff2) format("woff2");
     font-style: normal;
     font-weight: 700
 }
 
 @font-face {
-    font-family: TTCommons;
+    font-family: Marcel;
     font-display: swap;
-    src: url(//gotoskincare.com/cdn/shop/files/TTCommons-BoldItalic.woff?v=7068843626550908199) format("woff"), url(//gotoskincare.com/cdn/shop/files/TTCommons-BoldItalic.woff2?v=5257587206503724108) format("woff2");
+    src: url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-BoldItalic.woff) format("woff"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-BoldItalic.woff2) format("woff2");
     font-weight: 700;
     font-style: italic
 }
 
 @font-face {
-    font-family: TTCommons;
+    font-family: Marcel;
     font-display: swap;
-    src: url(//gotoskincare.com/cdn/shop/files/TTCommons-ExtraBold.woff?v=7769574749516797054) format("woff"), url(//gotoskincare.com/cdn/shop/files/TTCommons-ExtraBold.woff2?v=327588667808280988) format("woff2");
+    src: url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-Extrabold.woff) format("woff"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-Extrabold.woff2) format("woff2");
     font-weight: 800
 }
 
 @font-face {
-    font-family: TTCommons;
+    font-family: Marcel;
     font-display: swap;
-    src: url(//gotoskincare.com/cdn/shop/files/TTCommons-ExtraBoldItalic.woff?v=2990087942008803563) format("woff"), url(//gotoskincare.com/cdn/shop/files/TTCommons-ExtraBoldItalic.woff2?v=15898570924593351682) format("woff2");
+    src: url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-ExtraboldItalic.woff) format("woff"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/MNKYMarcel-ExtraboldItalic.woff2) format("woff2");
     font-weight: 800;
     font-style: italic
 }
 
 @font-face {
-    font-family: Moderno FB;
+    font-family: Benton;
     font-display: swap;
-    src: url(//gotoskincare.com/cdn/shop/files/Moderno-FB-Regular.eot?v=5070133742441747087) format("embedded-opentype"), url(//gotoskincare.com/cdn/shop/files/Moderno-FB-Regular.woff?v=5396380398494224414) format("woff"), url(//gotoskincare.com/cdn/shop/files/Moderno-FB-Regular.woff2?v=6434209350466938859) format("woff2");
+    src: url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/BentonModernD-Regular.eot?v=1764665775) format("embedded-opentype"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/BentonModernD-Regular.woff?v=1764665775) format("woff"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/BentonModernD-Regular.woff2?v=1764665775) format("woff2");
     font-weight: 400;
     font-style: normal
 }
 
 @font-face {
-    font-family: Moderno FB;
+    font-family: Benton;
     font-display: swap;
-    src: url(//gotoskincare.com/cdn/shop/files/Moderno-FB-Light.eot?v=14499521044783133292) format("embedded-opentype"), url(//gotoskincare.com/cdn/shop/files/Moderno-FB-Light.woff?v=7610326413834713888) format("woff"), url(//gotoskincare.com/cdn/shop/files/Moderno-FB-Light.woff2?v=16264328680368073707) format("woff2");
+    src: url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/BentonModernD-Light.eot?v=1764665775) format("embedded-opentype"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/BentonModernD-Light.woff?v=1764665775) format("woff"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/BentonModernD-Light.woff2?v=1764665775) format("woff2");
     font-weight: 300;
     font-style: normal
 }
 
 @font-face {
-    font-family: Moderno FB;
+    font-family: Benton;
     font-display: swap;
-    src: url(//gotoskincare.com/cdn/shop/files/Moderno-FB-Light-Italic.eot?v=6862812772093391635) format("embedded-opentype"), url(//gotoskincare.com/cdn/shop/files/Moderno-FB-Light-Italic.woff?v=1081792942907321970) format("woff"), url(//gotoskincare.com/cdn/shop/files/Moderno-FB-Light-Italic.woff2?v=10217913620064617397) format("woff2");
+    src: url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/BentonModernD-LightIt.eot?v=1764665776) format("embedded-opentype"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/BentonModernD-LightIt.woff?v=1764665775) format("woff"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/BentonModernD-LightIt.woff2?v=1764665775) format("woff2");
     font-weight: 300;
     font-style: italic
 }
 
 @font-face {
-    font-family: Moderno FB;
+    font-family: Benton;
     font-display: swap;
-    src: url(//gotoskincare.com/cdn/shop/files/Moderno-FB-Bold.eot?v=8487195225200948560) format("embedded-opentype"), url(//gotoskincare.com/cdn/shop/files/Moderno-FB-Bold.woff?v=13161444189334576530) format("woff"), url(//gotoskincare.com/cdn/shop/files/Moderno-FB-Bold.woff2?v=4990368247183018003) format("woff2");
+    src: url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/BentonModDisp-Bold.eot?v=1764665775) format("embedded-opentype"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/BentonModDisp-Bold.woff?v=1751957208) format("woff"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/BentonModDisp-Bold.woff2?v=1751957207) format("woff2");
     font-weight: 700;
     font-style: normal
 }
 
 @font-face {
-    font-family: Moderno FB;
+    font-family: Benton;
     font-display: swap;
-    src: url(//gotoskincare.com/cdn/shop/files/Moderno-FB-Bold-Italic.eot?v=14924891295707121516) format("embedded-opentype"), url(//gotoskincare.com/cdn/shop/files/Moderno-FB-Bold-Italic.woff?v=3167225946638073139) format("woff"), url(//gotoskincare.com/cdn/shop/files/Moderno-FB-Bold-Italic.woff2?v=1590875279210486692) format("woff2");
+    src: url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/BentonModDisp-BoldItalic.eot?v=1764665775) format("embedded-opentype"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/BentonModDisp-BoldItalic.woff?v=1751957208) format("woff"), url(https://cdn.shopify.com/s/files/1/0014/3232/2131/files/BentonModDisp-BoldItalic.woff2?v=1751957207) format("woff2");
     font-weight: 700;
     font-style: italic
 }
@@ -124,14 +124,14 @@ img[alt="banner image"] {
 }
 
 * {
-  font-family: TTCommons, "Nunito Sans", sans-serif !important;
+  font-family: Marcel, "Nunito Sans", sans-serif !important;
 }
     h1,h2,h3,h4,h5,h6 {
-font-family: Moderno FB, Montserrat, sans-serif !important;
+font-family: Benton, Montserrat, sans-serif !important;
     }
     
     .banner-text {
-      font-family: TTCommons, "Nunito Sans", sans-serif !important;
+      font-family: Marcel, "Nunito Sans", sans-serif !important;
       font-weight: 800 !important;
     }
     
@@ -140,7 +140,7 @@ font-family: Moderno FB, Montserrat, sans-serif !important;
     }
     
     h5 {
-           font-family: TTCommons, "Nunito Sans", sans-serif !important;
+           font-family: Marcel, "Nunito Sans", sans-serif !important;
       font-weight: bold !important;
     }
     

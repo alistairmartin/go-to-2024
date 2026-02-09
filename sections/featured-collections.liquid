@@ -199,7 +199,7 @@
                 {%- endif -%}
 
 
-                {%- if collection.products_count >= 5 -%}
+                {%- if products_shown >= 5 -%}
                 <prev-next-buttons class="product-list__prev-next hidden-pocket" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
                   <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled>
                     <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>

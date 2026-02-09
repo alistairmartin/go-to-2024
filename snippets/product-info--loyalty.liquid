@@ -1,6 +1,7 @@
 
 <div class="product-info--loyalty">
-
+{%- assign selected_variant = product.selected_or_first_available_variant -%}
+{%- assign points_multiplier = 1 -%}
 
 {%- capture product_subscription_content -%}
     <div class="go-to-gang-popup">
@@ -24,28 +25,26 @@
 {%- render 'icon' with 'go-to-peach' -%}
 
 {%- if customer -%}
-
     {%- for tag in customer.tags -%}
         {%- if tag contains "Rivo VIP Tier: Peach Friend" -%}
-            {%- assign peachFriendCustomer = true -%}{% break %}
+            {%- assign points_multiplier = 2 -%}
+            {%- break -%}
         {%- endif -%}
     {%- endfor -%}
-
-    <div class="product-info--loyalty-text">
-    {%- if peachFriendCustomer -%}
-        Earn {{ product.price | times: 2 | divided_by: 100 }} Points! <br><span class="small">Plus 50 Points On Recurring Subscriptions!</span>
-    {% else  %} 
-        Earn {{ product.price | divided_by: 100 }} Points! <br><span class="small">Plus 50 Points On Recurring Subscriptions!</span>
-    {%- endif -%}
-    </div>
-
-{% else %}
-    {% comment %} <a href="{{ routes.account_register_url }}"></a>Signup or <a href="{{ routes.account_login_url }}">Login</a> Earn earn {{ product.price | divided_by: 100 }} Points {% endcomment %}
-      Earn {{ product.price | divided_by: 100 }} Points  
-        {% comment %} <a href="https://gotoskincare.com/pages/go-to-gang">learn more</a> {% endcomment %}
-       <button class="product-info--loyalty-link" id="{{ blockId }}">
-            learn more
-       </button>
-
 {%- endif -%}
+
+{%- assign loyalty_points = selected_variant.price | times: points_multiplier | divided_by: 100 -%}
+
+<div class="product-info--loyalty-text" data-loyalty-points data-points-multiplier="{{ points_multiplier }}">
+    Earn <span data-loyalty-points-value>{{ loyalty_points }}</span> Points!
+    {%- if customer -%}
+        <br><span class="small">Plus 50 Points On Recurring Subscriptions!</span>
+    {%- endif -%}
+</div>
+
+{%- unless customer -%}
+   <button class="product-info--loyalty-link" id="{{ blockId }}">
+        learn more
+   </button>
+{%- endunless -%}
 </div>

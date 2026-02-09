@@ -30,11 +30,14 @@
                             {{ product.description }}
                       </div>
 
+                      {%- unless product.handle == "nifty-fifty-fluid" -%}
                       <div class="link-container">
                         <a href="#learn-more" class="link link--basic learn-more">
                           LEARN MORE
                         </a>
                       </div>
+                      {%- endunless -%}
+                 
                      
 
                          {% comment %} {% assign skinTypeCounter = 0 %}

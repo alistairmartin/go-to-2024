@@ -263,10 +263,12 @@
             {%- endif -%}
 
             {%- assign related_products = product.metafields.custom.product_main_information__related_products | split: "|" -%}
+            
             {%- if related_products != blank -%}
 
               {%- for product_handle in related_products -%}
-                {%- assign related_product = all_products[product_handle] -%}
+                {%- assign product_handle_handle = product_handle | handle -%}
+                {%- assign related_product = all_products[product_handle_handle] -%}
                 {%- assign related_product_title = related_product.metafields.gts_theme.alternate_title | default: related_product.title -%}
                 <span class="option {% if related_product.id == product.id %}active{% endif %}  ">
                   {%- if product.handle contains "very-" -%}

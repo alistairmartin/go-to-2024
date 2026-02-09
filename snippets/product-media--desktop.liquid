@@ -3,7 +3,7 @@
 
 
 {%- assign variantImages = false -%}
-{%- if product.options[0] == "Shade" -%}
+{%- if product.options[0] == "Shade" or product.handle == "very-useful-face-cream" or product.handle == "transformazing" -%}
     {%- assign variantImages = true -%}
     <style> 
 
@@ -60,7 +60,7 @@
                     | image_tag:
                       loading: 'lazy',
                       sizes: '(max-width: 999px) calc(100vw - 48px), 640px',
-                      widths: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200',
+                      widths: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600',
                       class: 'video-wrapper__poster-image'
                   }}
                   {%- unless section.settings.enable_video_autoplay -%}
@@ -98,7 +98,7 @@
                     | image_tag:
                       loading: 'lazy',
                       sizes: '(max-width: 999px) calc(100vw - 48px), 640px',
-                      widths: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200',
+                      widths: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600',
                       class: 'video-wrapper__poster-image'
                   }}
 

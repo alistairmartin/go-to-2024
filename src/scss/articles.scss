@@ -80,6 +80,19 @@
             grid-auto-columns: 52vw !important;
         }
     }
+
+    .product-list__prev-next {
+        transform: translate(0, -50%) !important;
+        top: 50% !important;
+    }
+
+    .product-item {
+        background: #fff !important;
+        border-radius: var(--image-border-radius) !important;
+        box-shadow: 1px 1px 1px #9b9b9b49, -1px -1px 1px #9b9b9b24;
+        margin-right: 1px;
+        margin-left: 2px;
+    }
 }
 
 

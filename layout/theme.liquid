@@ -110,6 +110,12 @@
     {% section 'swatch-colours' %}
     {% section 'header--content-square' %}
     {% render 'header--cart-clear' %}
+
+
+    {%- if collection.handle == "moisturisers" -%}
+       {%- render 'seo--collection-moisturisers' -%}
+    {%- endif -%}
+   
   </head>
 
   {%- assign feature_classes = 'header-position--top' -%}

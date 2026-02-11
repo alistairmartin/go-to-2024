@@ -115,6 +115,27 @@
                   </div>
                 {%- endif -%}
 
+                {%- comment -%}
+                ----------------------------------------------------------------------------------------------------------------
+                FRAGRANCES 
+                ----------------------------------------------------------------------------------------------------------------
+                {%- endcomment -%}  
+
+              {%- if product.metafields.accentuate.product_key_fragrances__head != blank -%}
+                   <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <button is="toggle-button" class="collapsible-toggle text--strong" aria-controls="block-product-tabs-3" aria-expanded="false" itemprop="name">
+                      <span>SCENT NOTES</span>
+                      <span class="animated-plus"></span>
+                    </button>
+
+                    <collapsible-content id="block-product-tabs-3" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                      <div class="collapsible__content text-container" itemprop="text">
+                        {%- render 'product-form--tab-fragrances' -%}
+                      </div>
+                    </collapsible-content>
+                  </div>
+                {%- endif -%}
+
                  
 
                 {%- comment -%}
@@ -124,12 +145,12 @@
                 {%- endcomment -%}
 
                   <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-                    <button is="toggle-button" class="collapsible-toggle text--strong " aria-controls="block-product-tabs-3" aria-expanded="false" itemprop="name">
+                    <button is="toggle-button" class="collapsible-toggle text--strong " aria-controls="block-product-tabs-4" aria-expanded="false" itemprop="name">
                       <span>SHIPPING & RETURNS</span>
                       <span class="animated-plus"></span>
                     </button>
 
-                    <collapsible-content id="block-product-tabs-3" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                    <collapsible-content id="block-product-tabs-4" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
                       <div class="collapsible__content text-container" itemprop="text">
                         <div class="rte text-base">
                           {{ pages['shipping-returns-pdp'].content }}

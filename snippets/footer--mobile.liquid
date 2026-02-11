@@ -36,7 +36,7 @@
 
 
     <div class="faq">
-    <div class="faq__wrapper" itemscope itemtype="https://schema.org/FAQPage">
+    <div class="faq__wrapper">
     {%- for block in section.blocks -%}
         {%- case block.type -%}
         {%- when 'links' -%}
@@ -45,14 +45,14 @@
             {%- if menu != blank -%}
         
         
-                    <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-                    <button is="toggle-button" class="collapsible-toggle text--strong heading heading--secondary heading--xsmall" aria-controls="block-{{ section.id }}-{{ block.id }}" aria-expanded="false" itemprop="name">
+                    <div class="faq__item">
+                    <button is="toggle-button" class="collapsible-toggle text--strong heading heading--secondary heading--xsmall" aria-controls="block-{{ section.id }}-{{ block.id }}" aria-expanded="false">
                         {{- block.settings.menu_title -}}
                         <span class="animated-plus"></span>
                     </button>
 
-                    <collapsible-content id="block-{{ section.id }}-{{ block.id }}" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" {{ block.shopify_attributes }}>
-                        <div class="collapsible__content" itemprop="text">
+                    <collapsible-content id="block-{{ section.id }}-{{ block.id }}" class="collapsible anchor" {{ block.shopify_attributes }}>
+                        <div class="collapsible__content">
                         
                         
                         <ul class="linklist list--unstyled" role="list">

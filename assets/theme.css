@@ -5166,6 +5166,64 @@ input:checked + .popover__choice-label:is(:lang(ae), :lang(ar), :lang(arc), :lan
   position: relative;
 }
 
+.modal.modal-custom .modal__overlay {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .35s ease, visibility .35s ease;
+}
+
+.modal.modal-custom[open] > .modal__overlay {
+  opacity: .3;
+  visibility: visible;
+}
+
+.modal.modal-custom .modal__content {
+  opacity: 0;
+  transform: none !important;
+  transition: opacity .35s ease !important;
+  will-change: opacity;
+}
+
+.modal.modal-custom[open] .modal__content {
+  opacity: 1;
+  transform: none !important;
+}
+
+@keyframes modal-custom-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-custom-overlay-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: .3;
+  }
+}
+
+.modal.modal-custom[open] > .modal__overlay {
+  animation: modal-custom-overlay-fade-in .35s ease both;
+}
+
+.modal.modal-custom[open] .modal__content {
+  animation: modal-custom-fade-in .35s ease both;
+}
+
+@keyframes modal-custom-inner-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 @media screen and (max-width: 740px) {
   .modal {
     touch-action: manipulation;
@@ -5177,6 +5235,30 @@ input:checked + .popover__choice-label:is(:lang(ae), :lang(ar), :lang(arc), :lan
 
   .modal[open] {
     transform: translateY(0);
+  }
+
+  .modal.modal-custom {
+    transform: none !important;
+    transition: visibility .25s ease-in-out;
+  }
+
+  .modal.modal-custom[open] {
+    transform: none !important;
+  }
+
+  .modal.modal-custom .modal__content-inner {
+    transform: translateY(100%);
+    will-change: transform;
+  }
+
+  .modal.modal-custom[open] .modal__content-inner {
+    animation: modal-custom-inner-slide-up .45s cubic-bezier(.22, .61, .36, 1) both;
+  }
+
+  .modal.modal-custom[open] > .modal__overlay {
+    opacity: 0;
+    visibility: visible;
+    animation: modal-custom-overlay-fade-in .35s ease both .45s;
   }
 
   .modal__content {
@@ -5216,6 +5298,7 @@ input:checked + .popover__choice-label:is(:lang(ae), :lang(ar), :lang(arc), :lan
     opacity: 1;
     transform: scale(1);
   }
+
 }
 
 .color-swatch-list {
@@ -13437,6 +13520,3 @@ product-rerender {
 .timeline__item {
   scroll-snap-align: center;
 }
-
-
-

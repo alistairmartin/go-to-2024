@@ -2,12 +2,62 @@
 {%- render 'modal', modalId: modalId, content: block.settings.modal_content, buttonId: buttonId -%} {% endcomment %}
 
 <script>
-    document.addEventListener("DOMContentLoaded", function(event) {
-      document.getElementById('{{ buttonId }}').addEventListener('click', function(event) {
-      event.preventDefault(); 
-      document.getElementById('{{ modalId }}-modal').setAttribute('open', true);
+    document.addEventListener("DOMContentLoaded", function() {
+      var button = document.getElementById('{{ buttonId }}');
+      var modal = document.getElementById('{{ modalId }}-modal');
+      if (!button || !modal) {
+        return;
+      }
+
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        modal.open = true;
       });
     });
+
+    (function() {
+      if (window.__modalCustomFadeInit) {
+        return;
+      }
+      window.__modalCustomFadeInit = true;
+
+      document.addEventListener('openable-element:open', function(event) {
+        var target = event.target;
+        if (!target || !target.classList || !target.classList.contains('modal-custom')) {
+          return;
+        }
+
+        var overlay = target.querySelector('.modal__overlay');
+        var content = target.querySelector('.modal__content');
+
+        if (overlay && overlay.animate) {
+          var isMobile = window.matchMedia('(max-width: 740px)').matches;
+          overlay.animate([{ opacity: 0 }, { opacity: 0.3 }], {
+            duration: 350,
+            easing: 'ease',
+            fill: 'forwards',
+            delay: isMobile ? 450 : 0
+          });
+        }
+
+        if (content && content.animate) {
+          content.animate([{ opacity: 0 }, { opacity: 1 }], {
+            duration: 350,
+            easing: 'ease',
+            fill: 'forwards'
+          });
+        }
+
+        var inner = target.querySelector('.modal__content-inner');
+        if (inner && inner.animate && window.matchMedia('(max-width: 740px)').matches) {
+          inner.animate([{ transform: 'translateY(100%)' }, { transform: 'translateY(0)' }], {
+            duration: 450,
+            easing: 'cubic-bezier(.22, .61, .36, 1)',
+            fill: 'forwards'
+          });
+        }
+      });
+    })();
   </script>
 
 <modal-content section="{{ modalId }}" id="{{ modalId }}-modal" class="modal modal-custom" {% if content_square_id != blank %}data-content-square="{{ content_square_id }}"{% endif %}>
@@ -23,4 +73,3 @@
     </div>
   </div>
 </modal-content>
-

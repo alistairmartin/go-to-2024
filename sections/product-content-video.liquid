@@ -7,71 +7,15 @@
   {% assign vimeoVideoIdMobile = product.metafields.custom.product_video_with_title__vimeo %}
 {%- endif -%}
 
-{%- if product.metafields.custom.product_video_with_title__vimeo != blank -%}
-<section class="section">
-  <div class="container container--no-padding-mobile">
-    <div id="product-content-video-{{ section.id | remove: '-' }}" class="product-content-video">
-      <div class="product-content-video--image">
-        {% comment %} <svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M48 96C74.5097 96 96 74.5097 96 48C96 21.4903 74.5097 0 48 0C21.4903 0 0 21.4903 0 48C0 74.5097 21.4903 96 48 96ZM35.863 64.0632L64.001 47.4355L35.863 30.8078V64.0632Z" fill="white"/>
-        </svg> {% endcomment %}
-        <svg width="65" height="65" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M32.5 5.41675C27.1434 5.41675 21.9071 7.00516 17.4533 9.98111C12.9994 12.9571 9.52811 17.1869 7.47823 22.1357C5.42836 27.0846 4.89202 32.5301 5.93704 37.7838C6.98205 43.0374 9.56149 47.8632 13.3492 51.6509C17.1368 55.4386 21.9626 58.018 27.2163 59.063C32.4699 60.108 37.9155 59.5717 42.8643 57.5218C47.8132 55.472 52.043 52.0006 55.0189 47.5468C57.9949 43.0929 59.5833 37.8567 59.5833 32.5001C59.5833 28.9434 58.8828 25.4216 57.5217 22.1357C56.1606 18.8498 54.1657 15.8642 51.6508 13.3493C49.1359 10.8344 46.1502 8.83941 42.8643 7.47834C39.5784 6.11728 36.0566 5.41675 32.5 5.41675ZM27.0833 44.6876V20.3126L43.3333 32.5001L27.0833 44.6876Z" fill="white"/>
-        </svg>
+{%- assign shopifyVideo = product.metafields.custom.product_video_with_title__video -%}
+{%- assign shopifyVideoMobile = product.metafields.custom.product_video_with_title__video_mobile -%}
 
-        <div class="product-content-video--image-title-overlay">
-          {{ product.title }}
-        </div>
-
-        <div class="product-content-video--image-text">
-          {%- if product.metafields.custom.product_video_with_title__title != blank -%}
-          <p class="text--bold">{{ product.metafields.custom.product_video_with_title__title }}</p>
-          {%- else -%}
-          <p class="text--bold">{{ section.settings.title }}</p>
-          {%- endif -%}
-        </div>
-        {%- if product.metafields.custom.product_video_with_title__image_desktop != blank or product.metafields.custom.product_video_with_title__image_mobile != blank -%}
-          {% include "responsive-image-metafields", src_desktop: product.metafields.custom.product_video_with_title__image_desktop, src_mobile: product.metafields.custom.product_video_with_title__image_mobile %}
-        {%- endif -%}
-      </div>
-      <div class="product-content-video--video hidden">
-        <div id="video-{{ section.id | remove: '-' }}">
-        </div>
-      </div>
-    </div>
-  </div>
-  <script>
-    if (window.innerWidth > 469) {
-      var videoOptions{{ section.id | remove: '-' }} = {
-          id: {{ vimeoVideoId }},
-          quality: "720p",
-          background: false,
-          loop: true,
-          autoplay:false,
-          muted: true
-      };
-    } else {
-      var videoOptions{{ section.id | remove: '-' }} = {
-          id: {{ vimeoVideoIdMobile }},
-          quality: "360p",
-          background: false,
-          loop: true,
-          autoplay:false,
-          muted: true
-      };
-    }
-    document.addEventListener("DOMContentLoaded", function(event) {
-      var videoSection{{ section.id | remove: "-" }} = new Vimeo.Player('video-{{ section.id | remove: "-" }}', videoOptions{{ section.id | remove: '-' }});
-      console.log(videoSection{{ section.id | remove: "-" }})
-      $("#product-content-video-{{ section.id | remove: '-' }} .product-content-video--image").on( "click", function() {
-        $(this).addClass("hidden")
-        $("#product-content-video-{{ section.id | remove: '-' }} .product-content-video--video").removeClass("hidden");
-        videoSection{{ section.id | remove: "-" }}.play();
-      });
-  });
-  </script>
-</section>
+{%- if shopifyVideo != blank or shopifyVideoMobile != blank -%}
+  {%- include 'product-content-video--shopify' -%}
+{% elsif product.metafields.custom.product_video_with_title__vimeo != blank and vimeoVideoId != blank -%}
+  {%- include 'product-content-video--vimeo' -%}
 {%- endif -%}
+
 {% schema %}
   {
     "name": "Prod. Con: Video",

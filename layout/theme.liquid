@@ -111,11 +111,10 @@
     {% section 'header--content-square' %}
     {% render 'header--cart-clear' %}
 
-
-    {%- if collection.handle == "moisturisers" -%}
-       {%- render 'seo--collection-moisturisers' -%}
-    {%- endif -%}
-   
+    {%- render 'seo--collection-moisturisers' -%}
+    {%- render 'seo--collection-redness' -%}
+    {%- render 'seo--collection-teen' -%}
+  
   </head>
 
   {%- assign feature_classes = 'header-position--top' -%}
@@ -127,6 +126,14 @@
   {%- if settings.enable_compact_mobile_header -%}
     {% assign feature_classes = feature_classes | append: ' compact-mobile-header' %}
   {%- endif -%}
+
+
+
+    {%- unless product.tags contains 'no-waitlist' -%}
+      {%- if product.available == false -%}
+         {% assign feature_classes = feature_classes | append: ' product-unavailable' %}
+      {%- endif -%}
+    {%- endunless -%}
 
   {% capture template_classes %} template-{{ template.name }} template-{{ template.name }}--{{ template.suffix }} {{ template.name }}--{{ page_title | handle }} product--{{ product.handle }} product-type--{{ product.type | handle }}{% endcapture %}
   {%- assign feature_classes = feature_classes | append: template_classes -%}

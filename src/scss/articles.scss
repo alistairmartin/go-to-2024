@@ -21,10 +21,16 @@
 
 
   .article__content {
-    .rte * {
+    .rte {
         font-family: Marcel;
         line-height: 1.5;
         font-size: 14px;
+
+        h1,h2,h3,h4,h5,h6 {
+        font-family: Marcel;
+        line-height: 1.5;
+        font-size: 14px;
+        }
     }
 
     .product-item__label-list .label {
@@ -83,7 +89,7 @@
 
     .product-list__prev-next {
         transform: translate(0, -50%) !important;
-        top: 50% !important;
+        top: 67% !important;
     }
 
     .product-item {

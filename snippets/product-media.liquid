@@ -209,10 +209,11 @@
 
               {%- when 'video' -%}
                 <native-video
+                  {% if section.settings.enable_video_autoplay %}autoplay{% endif %}
                   class="video-wrapper video-wrapper--native"
                   style="--aspect-ratio: {{ media.aspect_ratio }}"
                 >
-           
+                  {%- unless section.settings.enable_video_autoplay -%}
                     <div class="video-wrapper__poster">
                       {{
                         media.preview_image
@@ -223,7 +224,6 @@
                           widths: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600',
                           class: 'video-wrapper__poster-image'
                       }}
-                      {%- unless section.settings.enable_video_autoplay -%}
                       <div class="video-wrapper__poster-content">
                         <button
                           type="button"
@@ -233,9 +233,8 @@
                           {%- render 'icon' with 'play', width: 72, height: 72 -%}
                         </button>
                       </div>
-                      {%- endunless -%}
                     </div>
-            
+                  {%- endunless -%}
 
                   <template>
                     {{-
@@ -245,13 +244,14 @@
                         controls: true,
                         autoplay: true,
                         muted: section.settings.enable_video_autoplay,
+                        playsinline: section.settings.enable_video_autoplay,
                         loop: section.settings.enable_video_looping
                     -}}
                   </template>
                 </native-video>
 
               {%- when 'external_video' -%}
-                <external-video provider="{{ media.host | escape }}" class="video-wrapper">
+                <external-video {% if section.settings.enable_video_autoplay %}autoplay{% endif %} provider="{{ media.host | escape }}" class="video-wrapper{% if section.settings.enable_video_autoplay %} video-wrapper--inert{% endif %}">
                   {%- unless section.settings.enable_video_autoplay -%}
                     <div class="video-wrapper__poster">
                       {{

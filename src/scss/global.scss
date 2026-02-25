@@ -2606,8 +2606,9 @@ rivo-favorite-button.rivo-favorite-active svg {
       img {
         margin-right: 12px;
         border-radius: var(--image-border-radius);
-        width: 40px;
-        height: 40px;
+        width: 80px;
+        height: 120px;
+        object-fit: cover;
       }
     }
 
@@ -3362,7 +3363,7 @@ footer {
       align-items: flex-start;
       gap: 30px;
       max-width: 520px;
-      padding: 120px 40px;
+      padding: 40px 20px;
 
       #back-in-stock-modal-title {
         text-decoration: underline;
@@ -3665,6 +3666,9 @@ footer {
   }
 }
 
+.quick-buy-product {
+  gap: 10px;
+}
 
 product-rerender {
 
@@ -6304,5 +6308,15 @@ quick-buy-drawer, quick-buy-popover  {
     display: flex;
     flex-direction: column;
     gap: 10px;
+  }
+}
+
+.mobile-toolbar__item--sort {
+  height: 40px !important;
+}
+
+.template-product.product-unavailable {
+  .cart-notification--error {
+    display: none;
   }
 }

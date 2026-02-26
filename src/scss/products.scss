@@ -1557,7 +1557,7 @@
   }
 
   .product-sticky-form {
-    z-index: 3;
+    z-index: 4;
     // box-shadow: 0 -4px 10px #cdcdcd40;
     // background-color: #fde4db80;
     // background: linear-gradient(180deg, rgba(242,242,242,0) 0%, rgba(253,228,219,0.8) 100%);
@@ -2527,7 +2527,7 @@
     }
 
     .product-content-routine--text__switcher-moon {
-      z-index: 4;
+      z-index: 3;
       transform: unset !important;
       display: flex;
       justify-content: center;
@@ -2543,7 +2543,7 @@
     }
 
     .product-content-routine--text__switcher-sun {
-      z-index: 4;
+      z-index: 3;
       transform: unset !important;
       display: flex;
       justify-content: center;

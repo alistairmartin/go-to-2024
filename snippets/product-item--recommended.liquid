@@ -116,8 +116,22 @@
       </div>
     {%- endif -%}
 
+    {%- assign pairsWithProductImages = product.metafields.custom.pairs_with_product_image.value -%}
+    {%- assign pairsWithImagePrimary = false -%}
+    {%- assign pairsWithImageSecondary = false -%}
+
+    {%- for pairsWithImage in pairsWithProductImages -%}
+         {%- if forloop.first -%}
+            {%- assign pairsWithImagePrimary = pairsWithImage.image -%}
+        {% else %}
+            {%- assign pairsWithImageSecondary = pairsWithImage.image -%}
+         {%- endif -%}
+    {%- endfor -%}
+
     <a href="{{ product.url }}" data-instant class="product-item__aspect-ratio aspect-ratio {% if settings.product_image_size != 'natural' %}aspect-ratio--{{ settings.product_image_size }}{% endif %}" style="padding-bottom: {{ 100.0 | divided_by: product.featured_media.preview_image.aspect_ratio }}%; --aspect-ratio: {{ product.featured_media.preview_image.aspect_ratio }}">
-      {%- if product.featured_media -%}
+      {%- if pairsWithImagePrimary != blank or pairsWithImagePrimary != false -%}
+          {{ pairsWithImagePrimary | image_url: width: pairsWithImagePrimary.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '200,300,400,500,600,700,800,900,1000,1100,1200', class: 'product-item__primary-image', data-media-id: pairsWithImagePrimary.id }}
+      {%- elsif product.featured_media -%}
         {{ product.featured_media | image_url: width: product.featured_media.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '200,300,400,500,600,700,800,900,1000,1100,1200', class: 'product-item__primary-image', data-media-id: product.featured_media.id }}
       {%- endif -%}
 
@@ -140,7 +154,9 @@
         {%- endfor -%}
       {%- endif -%}
 
-      {%- if settings.show_secondary_image and product.media.size > 1 and hide_secondary_image != true -%}
+      {%- if settings.show_secondary_image and hide_secondary_image != true and pairsWithImageSecondary != false -%}
+          {{- pairsWithImageSecondary | image_url: width: pairsWithImageSecondary.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '200,300,400,500,600,700,800,900,1000,1100,1200', class: 'product-item__secondary-image' -}}
+      {%- elsif settings.show_secondary_image and product.media.size > 1 and hide_secondary_image != true -%}
         {%- assign next_media = product.media[product.featured_media.position] | default: product.media[1] -%}
         {{- next_media | image_url: width: next_media.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '200,300,400,500,600,700,800,900,1000,1100,1200', class: 'product-item__secondary-image' -}}
       {%- endif -%}

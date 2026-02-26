@@ -6320,3 +6320,11 @@ quick-buy-drawer, quick-buy-popover  {
     display: none;
   }
 }
+
+.shopify-block .globo-form-app .dismiss {
+  z-index: 3 !important;
+}
+
+.globo-app-extension, .globo-form-app {
+  z-index: 3 !important;
+}

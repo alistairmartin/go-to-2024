@@ -134,12 +134,19 @@
 
 @font-face {
   font-family: 'Marcel';
-  src: url('{{ "MNKYMarcel-Medium.woff2" | file_url }}') format('woff2'),
-       url('{{ "MNKYMarcel-Medium.woff" | file_url }}') format('woff');
+  src: url('{{ "MNKYMarcel-MediumV2.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-MediumV2.woff" | file_url }}') format('woff');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
-}
+} @font-face {
+  font-family: 'Marcel';
+  src: url('{{ "MNKYMarcel-MediumItalicV2.woff2" | file_url }}') format('woff2'),
+       url('{{ "MNKYMarcel-MediumItalicV2.woff" | file_url }}') format('woff');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+} 
 
 @font-face {
   font-family: 'Marcel';
@@ -201,15 +208,6 @@ font-weight: 700;
        url('{{ "MNKYMarcel-Extralight.woff" | file_url }}') format('woff');
   font-weight: 200;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Marcel';
-  src: url('{{ "MNKYMarcel-MediumItalic.woff2" | file_url }}') format('woff2'),
-       url('{{ "MNKYMarcel-MediumItalic.woff" | file_url }}') format('woff');
-  font-weight: 500;
-  font-style: italic;
   font-display: swap;
 }
 

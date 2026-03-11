@@ -3,7 +3,14 @@
 
 
 {%- assign variantImages = false -%}
-{%- if product.options[0] == "Shade" or product.handle == "very-useful-face-cream" or product.handle == "transformazing" -%}
+
+{%- for image in product.images -%}
+  {%- if image.alt contains "#size_" -%}
+    {%- assign hasVariantImages = true -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if product.options[0] == "Shade" or product.handle == "very-useful-face-cream" or product.handle == "transformazing" or hasVariantImages -%}
     {%- assign variantImages = true -%}
     <style> 
 

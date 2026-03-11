@@ -1754,6 +1754,17 @@ rivo-favorite-button.rivo-favorite-active svg {
     width: 100%;
   }
 
+  .logo-list__text-disclaimer {
+    color: #a0a0a0;
+    width: 100%;
+    font-size: 11px;
+
+    @include media-query($small) {
+          margin-top: 30px;
+          margin-bottom: -15px;
+      }
+  }
+
   .logo-list__stars {
     display: flex;
     width: 100%;

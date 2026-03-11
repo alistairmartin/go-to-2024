@@ -99,6 +99,14 @@
   }
 </style>
 
+{%- assign reviewCounter = 0 -%}
+{% for review_title in product.metafields.custom.product_main_information__review_description %}
+  {%- if product.metafields.custom.product_main_information__review_description[forloop.index0] != blank -%}
+    {%- assign reviewCounter = reviewCounter | plus: 1 -%}    
+  {%- endif -%}
+{% endfor %}
+
+{%- if reviewCounter > 0 -%}
 <section class="section {% unless blends_with_background or is_boxed %}section--flush{% endunless %}">
   <div class="section__color-wrapper">
     <div class="container {% unless blends_with_background %}vertical-breather{% endunless %}">
@@ -112,10 +120,7 @@
         {%- endif -%}
       </header>
 
-      {%- assign reviewCounter = 0 -%}
-      {% for review_title in product.metafields.custom.product_main_information__review_title %}
-        {%- assign reviewCounter = reviewCounter | plus: 1 -%}
-      {% endfor %}
+     
 
       {%- capture section_content -%}
         <div class="logo-list__list {% if reviewCounter <= 3 %}no-scroll{% endif %} hide-mobile--grid">
@@ -128,6 +133,10 @@
                 </div>
 
                 {% comment %} review_title {% endcomment %}
+
+                {%- assign innerReviewCount = innerReviewCount | plus: 1 -%}
+
+                {% if product.handle == "very-luxe-repair-mask" %}<div class="logo-list__text-disclaimer"><i>Review submitted under the product’s former name.</i></div>{% endif %}
                 <div class="logo-list__text text--large">{{ product.metafields.custom.product_main_information__review_description[forloop.index0] | strip_html }}</div>
                 <div class="logo-list__reviewer text--large">{{ product.metafields.custom.product_main_information__review_author[forloop.index0] }}</div>
 
@@ -161,6 +170,8 @@
                   {%- render 'icon' with "rating-star" -%}
                 {%- endfor -%}
               </div>
+              
+            {% if product.handle == "very-luxe-repair-mask" %}<div class="logo-list__text-disclaimer"><i>Review submitted under the product’s former name.</i></div>{% endif %}
               <div class="product-reviews-mobile__text text--large">{{ product.metafields.custom.product_main_information__review_description[forloop.index0] | strip_html }}</div>
               <div class="product-reviews-mobile__reviewer text--large">{{ product.metafields.custom.product_main_information__review_author[forloop.index0] }}</div>
             </div>
@@ -204,6 +215,8 @@
     </div>
   </div>
 </section>
+{%- endif -%}
+
 
 {% schema %}
 {

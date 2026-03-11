@@ -8,7 +8,14 @@
       PAIRS WELL WITH
     </h2>
 
-    <div
+    {{ product.metafields.shopify--discovery--product_recommendation.complementary_products }}
+
+
+    <product-recommendations
+      section-id="{{ section.id }}"
+      intent="complementary"
+      product-id="{{ product.id }}"
+      recommendations-count="10"
       class="section {% unless blends_with_background %}section--flush{% endunless %}"
     >
       <product-list {% if settings.stagger_products_apparition %}stagger-apparition{% endif %} class="product-list" data-scroll-step="item">
@@ -17,7 +24,7 @@
 
         <div class="scroller">
           <div class="product-list__inner product-list__inner--scroller product-list__inner--desktop-no-scroller hide-scrollbar">
-            {%- for product in product.metafields.shopify--discovery--product_recommendation.complementary_products.value -%}
+            {%- for product in recommendations.products -%}
 
 
               {%- assign shown_products_count = shown_products_count | plus: 1 -%}
@@ -42,7 +49,7 @@
             </prev-next-buttons>
             
       </product-list>
-    </div>
+    </product-recommendations>
   </div>
 </div>
 {% comment %} {%- if shown_products_count == 0 -%}

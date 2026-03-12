@@ -661,14 +661,19 @@
 
 
                   {%- if soldOutProduct == true -%}
-                    <button id="AddToCart" type="submit" is="loader-button" data-product-add-to-cart-button data-button-content="{{ 'product.form.add_to_cart' | t | escape }}" class="product-form__add-button button button--ternary button--full" disabled>
-                        {{- 'product.form.sold_out' | t -}}
+                    <button id="AddToCart" type="submit" is="loader-button" data-product-add-to-cart-button data-button-content="{{ 'product.form.add_to_cart' | t | escape }}" class="product-form__add-button button button--primary button--full" disabled>
+
+                      {%- if  product.handle == "nifty-fifty-fluid" -%} 
+                        COMING SOON
+                      {% else %}
+                       {{- 'product.form.sold_out' | t -}}
+                      {% endif %}
                   </button>
 
                   {% else  %}
                     <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')"  class="button button--primary back-in-stock {% if showBackInStock == false or soldOutProduct == true %}hide{% endif %}">WAITLIST ME</button>
 
-                    <button id="AddToCart" type="submit" is="loader-button" {% unless block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}data-use-primary{% endunless %} data-product-add-to-cart-button data-button-content="{% if product.template_suffix == 'pre-order' %}{{ 'product.form.pre_order' | t | escape }}{% else %}{{ 'product.form.add_to_cart' | t | escape }}{% endif %}" class="product-form__add-button button {% if showBackInStock == true %}hide{% endif %} {% unless product.selected_or_first_available_variant.available %}button--ternary{% else %}{% if block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}button--secondary{% else %}button--primary{% endif %}{% endunless %} button--full" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+                    <button id="AddToCart" type="submit" is="loader-button" {% unless block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}data-use-primary{% endunless %} data-product-add-to-cart-button data-button-content="{% if product.template_suffix == 'pre-order' %}{{ 'product.form.pre_order' | t | escape }}{% else %}{{ 'product.form.add_to_cart' | t | escape }}{% endif %}" class="product-form__add-button button {% if showBackInStock == true %}hide{% endif %} {% unless product.selected_or_first_available_variant.available %}button--primary{% else %}{% if block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}button--secondary{% else %}button--primary{% endif %}{% endunless %} button--full" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
                       {%- if product.selected_or_first_available_variant == nil -%}
                         {{- 'product.form.unavailable' | t -}}
                       {%- elsif product.selected_or_first_available_variant.available -%}
@@ -678,7 +683,7 @@
                           {{- 'product.form.add_to_cart' | t -}}
                         {%- endif -%}
                       {%- else -%}
-                          {{- 'product.form.sold_out' | t -}}       
+                           {%- if  product.handle == "nifty-fifty-fluid" -%}COMING SOON{% else %}{{- 'product.form.sold_out' | t -}}{%- endif -%}
                       {%- endif -%}
                     </button>
                   {%- endif -%}

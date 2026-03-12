@@ -141,7 +141,7 @@
 
 {%- capture quick_buy_product_info_below -%}
   {%- if product.metafields.global.description_tag != blank -%}
-    <p>{{ product.metafields.global.description_tag }}</p>
+    <p class="hide-mobile description text-base">{{ product.metafields.global.description_tag }}</p>
   {%- endif -%}
 
   {% assign skinTypeCounter = 0 %}
@@ -248,6 +248,11 @@
 
       <div class="popover__content popover__content--no-padding">
         {%- render 'product-form', product: product, product_form_id: product_form_id, context: 'quick-buy' -%}
+
+        <div class="popover__content-mobile-product">
+            {{- quick_buy_product_info_below -}}
+        </div>
+        
       </div>
 
     </product-rerender>

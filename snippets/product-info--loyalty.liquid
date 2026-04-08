@@ -37,7 +37,7 @@
 
 <div class="product-info--loyalty-text" data-loyalty-points data-points-multiplier="{{ points_multiplier }}">
     Earn <span data-loyalty-points-value>{{ loyalty_points }}</span> Points!
-    {%- if customer -%}
+    {%- if customer and product.selling_plan_groups.size > 0 -%}
         <br><span class="small">Plus 50 Points On Recurring Subscriptions!</span>
     {%- endif -%}
 </div>

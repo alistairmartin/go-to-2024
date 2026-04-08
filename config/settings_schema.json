@@ -1285,6 +1285,81 @@
       }
     ]
   },
+    {
+    "name": "Cart (Image Banner)",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Australia (AU 🇦🇺)"
+      },
+       {
+        "type": "image_picker",
+        "id": "image_desktop_AU",
+        "label": "Image Desktop (AU)"
+      },
+       {
+        "type": "image_picker",
+        "id": "image_mobile_AU",
+        "label": "Image Mobile (AU)"
+      },
+      {
+        "type": "header",
+        "content": "New Zealand (NZ 🇳🇿)"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_desktop_NZ",
+        "label": "Image Desktop (NZ)"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile_NZ",
+        "label": "Image Mobile (NZ)"
+      },
+      {
+        "type": "header",
+        "content": "Great Britain (GB 🇬🇧)"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_desktop_GB",
+        "label": "Image Desktop (GB)"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile_GB",
+        "label": "Image Mobile (GB)"
+      },
+      {
+        "type": "header",
+        "content": "Europe (EU 🇪🇺)"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_desktop_EU",
+        "label": "Image Desktop (EU)"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile_EU",
+        "label": "Image Mobile (EU)"
+      },
+      {
+        "type": "header",
+        "content": "United States (US 🇺🇸)"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_desktop_US",
+        "label": "Image Desktop (US)"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile_US",
+        "label": "Image Mobile (US)"
+      }
+    ]
+  },
   {
     "name": "Cart",
     "settings": [

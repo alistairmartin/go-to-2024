@@ -12,7 +12,11 @@
 
           <div class="product-whats-included--container">
           {% assign whatsIncludedProducts = product.metafields.custom.product_main_information__included_products | split: "|" %}
-          {%- for whatsIncludedProductHandle in whatsIncludedProducts -%}
+
+            {%- assign variable_name = value -%}
+          {%- for whatsIncludedProductHandleize in whatsIncludedProducts -%}
+
+            {%- assign whatsIncludedProductHandle = whatsIncludedProductHandleize | handle -%}
 
             {% assign whatsIncludedProduct = all_products[whatsIncludedProductHandle] %}
             <div class="product-whats-included--item">

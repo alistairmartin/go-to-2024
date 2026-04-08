@@ -1018,6 +1018,19 @@ store-header.background-blur {
 }
 
 
+.header-position--top.template-product {
+  #chat-button {
+    opacity: 0;
+  }
+}
+
+.template-product {
+  #chat-button {
+    opacity: 1;
+    transition: 200ms all;
+  }
+}
+
 
 .product-item  {
   padding-bottom: 10px;
@@ -6342,4 +6355,17 @@ quick-buy-drawer, quick-buy-popover  {
 
 .popover__content-mobile-product {
   padding: 10px 24px;
+}
+
+.product-form-callout {
+  border: 1px solid $gotoBlack;
+  background: $gotoPinkLight;
+  border-radius: 10px;
+  width: 100%;
+  img {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+    display: block;
+  }
 }

@@ -273,6 +273,7 @@ updateCartAttributes(cartAttributes);
       {%- render 'cart--free-shipping' -%}
       {%- render 'mini-cart--gifts' -%}
       {%- render 'mini-cart--byo-bundle-message' -%}
+      {%- render 'cart--image-banner' -%}
 
       <form id="mini-cart-form" action="{{ routes.cart_url }}" novalidate method="post">
         <input type="hidden" name="checkout">

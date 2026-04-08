@@ -1,0 +1,31 @@
+{% if localization.market.handle == 'au' %}
+  {% assign image_desktop = settings.image_desktop_AU %}
+  {% assign image_mobile = settings.image_mobile_AU %}
+{% elsif localization.market.handle == 'nz' %}
+  {% assign image_desktop = settings.image_desktop_NZ %}
+  {% assign image_mobile = settings.image_mobile_NZ %}
+{% elsif localization.market.handle == 'gb' %}
+  {% assign image_desktop = settings.image_desktop_GB %}
+  {% assign image_mobile = settings.image_mobile_GB %}
+{% elsif localization.market.handle == 'eu' %}
+  {% assign image_desktop = settings.image_desktop_EU %}
+  {% assign image_mobile = settings.image_mobile_EU %}
+{% elsif localization.market.handle == 'us' %}
+  {% assign image_desktop = settings.image_desktop_US %}
+  {% assign image_mobile = settings.image_mobile_US %}
+{% endif %}
+
+{% if image_desktop or image_mobile %}
+  <div class="cart-image-banner">
+    {% if image_desktop %}
+      <div class="cart-image-banner__desktop hide-mobile">
+        {{ image_desktop | image_url: width: 1200 | image_tag: loading: 'lazy', alt: image_desktop.alt }}
+      </div>
+    {% endif %}
+    {% if image_mobile %}
+      <div class="cart-image-banner__mobile hide-desktop">
+        {{ image_mobile | image_url: width: 600 | image_tag: loading: 'lazy', alt: image_mobile.alt }}
+      </div>
+    {% endif %}
+  </div>
+{% endif %}

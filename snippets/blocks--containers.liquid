@@ -41,6 +41,8 @@
 
       {%- if block.settings.max_width_enabled_desktop == "enabled" -%}
         --max-width-desktop: {{ block.settings.max_width_value_desktop }}px;
+      {%- elsif block.settings.max_width_enabled_desktop == "percentage" -%}
+        --max-width-desktop: {{ block.settings.max_width_value_desktop_percent }}%;
       {% elsif block.settings.page_width == "large"  %}
         --max-width-desktop: 1800px;
       {% elsif block.settings.page_width == "medium" %}

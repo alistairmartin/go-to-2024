@@ -1,0 +1,19 @@
+{%- liquid
+  assign gwp = product.metafields.custom.gwp_callout.value
+-%}
+
+{%- if gwp != blank -%}
+  <div class="product-form-callout product-form-callout--metaobject">
+    <div class="product-form-callout__text">
+      {{ gwp.text | metafield_tag }}
+    </div>
+
+    {%- if gwp.image != blank -%}
+      {{ gwp.image | image_url: width: 600 | image_tag: loading: 'lazy', class: 'product-form-callout__image hide-mobile', alt: gwp.admin_title }}
+    {%- endif -%}
+
+    {%- if gwp.image_mobile != blank -%}
+      {{ gwp.image_mobile | image_url: width: 400 | image_tag: loading: 'lazy', class: 'product-form-callout__image hide-desktop', alt: gwp.admin_title }}
+    {%- endif -%}
+  </div>
+{%- endif -%}

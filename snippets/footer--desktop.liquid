@@ -46,7 +46,12 @@
 
           <div class="footer-logo {{ brand }}">
             {%- if brand == "go-to" -%}
-              {%- render 'svg--logo-go-to-black' -%}
+              {%- if section.settings.enable_white_logo -%}
+                {%- render 'svg--logo-go-to' -%}
+              {% else %}
+                {%- render 'svg--logo-go-to-black' -%}
+              {%- endif -%}
+     
           {%- elsif brand == "bro-to" -%}
             {%- render 'svg--logo-bro-to' -%}
           {%- elsif brand == "gro-to" -%}

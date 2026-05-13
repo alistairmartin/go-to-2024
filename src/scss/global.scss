@@ -23,6 +23,26 @@ html {
   padding-bottom: 0 !important;
 }
 
+.custom-cursor {
+  &, *, *::before, *::after {
+    cursor: url('CURSOR-SLEEP.png') 0 0, auto;
+  }
+
+  a, button, [role="button"], input[type="submit"], input[type="button"], input[type="reset"],
+  label[for], select, summary, [tabindex]:not([tabindex="-1"]),
+  .cursor-pointer {
+    cursor: url('CURSOR-SLEEP.png') 0 0, pointer;
+
+    &:hover {
+      cursor: url('CURSOR-SLEEP-Inverse.png') 0 0, pointer;
+    }
+  }
+
+  :disabled, [disabled], [aria-disabled="true"] {
+    cursor: url('CURSOR-SLEEP-Inverse.png') 0 0, not-allowed;
+  }
+}
+
 .rte, .page-content {
   line-height: 1.5;
 }
@@ -1224,16 +1244,6 @@ rivo-favorite-button.rivo-favorite-active svg {
     }
   }
 
-  .header {
-    background: $gotoPink;
-
-    .header__linklist-link {
-      &:hover {
-        color: #fff;
-      }
-    }
-  }
-  
   .product-brand--bro-to {
     .label {
       border-radius: 0;
@@ -5494,8 +5504,14 @@ product-item[data-title="Face Hero"] {
 
 
 .shopify-section--gallery {
-  video { 
+  video {
     border-radius: var(--image-border-radius);
+  }
+
+  .gallery__item-title {
+    display: block;
+    width: 100%;
+    margin-top: 16px;
   }
 
   .no-container {
@@ -5919,6 +5935,12 @@ button[aria-label="Tolstoy stories: next button"] {
   .button {
     display: table;
     margin: 32px auto 0;
+  }
+
+  .gallery__item-title {
+    display: block;
+    width: 100%;
+    margin-top: 16px;
   }
 
   .gallery__caption {
@@ -6368,4 +6390,37 @@ quick-buy-drawer, quick-buy-popover  {
     margin: 0 auto;
     display: block;
   }
+}
+
+.product-form-callout.product-form-callout--metaobject {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 25px;
+  border-radius: 12px;
+  overflow: visible;
+
+  .product-form-callout__text {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 14px;
+    line-height: 25px;
+  }
+
+  .product-form-callout__image {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 150px;
+    max-height: 130px;
+    margin: -28px -8px -28px 0;
+    object-fit: contain;
+    display: block;
+  }
+}
+
+
+footer.footer .klaviyo-form * {
+  font-family: "Marcel", sans-serif !important;
 }

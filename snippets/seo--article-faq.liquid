@@ -1,0 +1,8 @@
+{%- liquid
+  assign faq = article.metafields.custom.faq_schema.value
+-%}
+{%- if faq != blank -%}
+<script type="application/ld+json">
+{{ faq | json | replace: '</', '<\/' }}
+</script>
+{%- endif -%}

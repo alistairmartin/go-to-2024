@@ -1,0 +1,349 @@
+{%- if section.settings.enable_section -%}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data-10-year-range.min.js" defer></script>
+
+  <style>
+    #shopify-section-{{ section.id }} {
+      --cpb-bg: {{ section.settings.bar_background }};
+      --cpb-text: {{ section.settings.text_color }};
+    }
+
+    .cpb {
+      display: block;
+      width: 100%;
+      background-color: var(--cpb-bg);
+      color: var(--cpb-text);
+      font-family: var(--text-font-family);
+      text-align: center;
+    }
+
+    .cpb__row {
+      padding: 14px 20px;
+      line-height: 1.5;
+    }
+
+    .cpb__row--top {
+      padding-bottom: 14px;
+    }
+
+    .cpb__row--bottom {
+      padding-top: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .cpb__title {
+      margin: 0;
+      font-weight: 500;
+    }
+
+    .cpb__countdown {
+      margin: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cpb__toggle {
+      background: transparent;
+      border: 0;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .cpb__image-wrap {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 400ms ease;
+    }
+
+    .cpb[data-open="true"] .cpb__image-wrap {
+      grid-template-rows: 1fr;
+    }
+
+    .cpb__image-inner {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .cpb__image-link,
+    .cpb__image-block {
+      display: block;
+      width: 100%;
+      line-height: 0;
+    }
+
+    .cpb__image {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    @media (max-width: 740px) {
+      .cpb__row {
+        padding: 12px 16px;
+      }
+    }
+  </style>
+
+  <collapsible-promo-banner
+    class="cpb"
+    data-open="false"
+    data-end="{{ section.settings.countdown_date | escape }}"
+    data-timezone="{{ section.settings.timezone | escape }}"
+    data-hide-after="{% if section.settings.hide_after_countdown %}1{% else %}0{% endif %}"
+    data-open-text="{{ section.settings.open_text | escape }}"
+    data-close-text="{{ section.settings.close_text | escape }}"
+  >
+    {%- if section.settings.bar_title != blank -%}
+      <div class="cpb__row cpb__row--top">
+        <p class="cpb__title">{{ section.settings.bar_title | escape }}</p>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.background_image != blank -%}
+      <div
+        id="cpb-image-{{ section.id }}"
+        class="cpb__image-wrap"
+      >
+        <div class="cpb__image-inner">
+          {%- capture image_tag -%}
+            {{-
+              section.settings.background_image
+              | image_url: width: section.settings.background_image.width
+              | image_tag:
+                loading: 'eager',
+                sizes: '100vw',
+                widths: '600,800,1000,1200,1400,1600,1800,2000,2400,2800,3200',
+                class: 'cpb__image'
+            -}}
+          {%- endcapture -%}
+
+          {%- if section.settings.image_link != blank -%}
+            <a href="{{ section.settings.image_link }}" class="cpb__image-link">
+              {{- image_tag -}}
+            </a>
+          {%- else -%}
+            <div class="cpb__image-block">
+              {{- image_tag -}}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="cpb__row cpb__row--bottom">
+      {%- if section.settings.enable_countdown_timer -%}
+        <p class="cpb__countdown" data-countdown></p>
+      {%- endif -%}
+
+      <button
+        type="button"
+        class="cpb__toggle"
+        data-action="toggle"
+        aria-expanded="false"
+        {% if section.settings.background_image != blank %}aria-controls="cpb-image-{{ section.id }}"{% endif %}
+      >
+        {{- section.settings.open_text | escape -}}
+      </button>
+    </div>
+  </collapsible-promo-banner>
+
+  <script>
+    (function () {
+      if (window.customElements.get('collapsible-promo-banner')) return;
+
+      class CollapsiblePromoBanner extends HTMLElement {
+        connectedCallback() {
+          this.toggleBtn = this.querySelector('[data-action="toggle"]');
+          this.imageWrap = this.querySelector('.cpb__image-wrap');
+          this.countdownEls = this.querySelectorAll('[data-countdown]');
+          this.openText = this.dataset.openText || 'Open';
+          this.closeText = this.dataset.closeText || 'Close';
+
+          if (this.toggleBtn) {
+            this.toggleBtn.addEventListener('click', () => this.toggle());
+          }
+
+          this.startCountdown();
+        }
+
+        toggle() {
+          const isOpen = this.dataset.open === 'true';
+          const next = !isOpen;
+          this.dataset.open = next ? 'true' : 'false';
+          this.toggleBtn.setAttribute('aria-expanded', next ? 'true' : 'false');
+          this.toggleBtn.textContent = next ? this.closeText : this.openText;
+        }
+
+        startCountdown() {
+          if (!this.countdownEls.length) return;
+
+          const endRaw = this.dataset.end;
+          const tz = this.dataset.timezone || 'Australia/Sydney';
+          const hideAfter = this.dataset.hideAfter === '1';
+
+          if (!endRaw) return;
+
+          if (typeof moment === 'undefined') {
+            const wait = setInterval(() => {
+              if (typeof moment !== 'undefined') {
+                clearInterval(wait);
+                this._runCountdown(endRaw, tz, hideAfter);
+              }
+            }, 100);
+            return;
+          }
+
+          this._runCountdown(endRaw, tz, hideAfter);
+        }
+
+        _runCountdown(endRaw, tz, hideAfter) {
+          const endTime = moment.tz(endRaw, tz);
+
+          const tick = () => {
+            const now = moment.tz(tz);
+            const duration = moment.duration(endTime.diff(now));
+
+            if (duration.asSeconds() <= 0) {
+              clearInterval(this._intervalId);
+              this.countdownEls.forEach((el) => (el.innerHTML = ''));
+              if (hideAfter) this.style.display = 'none';
+              return;
+            }
+
+            const days = duration.days();
+            const hours = duration.hours();
+            const minutes = duration.minutes();
+            const seconds = duration.seconds();
+
+            const parts = [];
+            if (days > 0) parts.push(days + (days === 1 ? ' Day' : ' Days'));
+            parts.push(hours + (hours === 1 ? ' hour' : ' hours'));
+            parts.push(minutes + ' min');
+            parts.push(seconds + ' sec');
+
+            const text = parts.join(', ');
+            this.countdownEls.forEach((el) => (el.innerHTML = text));
+          };
+
+          tick();
+          this._intervalId = setInterval(tick, 1000);
+        }
+      }
+
+      window.customElements.define('collapsible-promo-banner', CollapsiblePromoBanner);
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collapsible Promo Banner",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_section",
+      "label": "Show section",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Top row"
+    },
+    {
+      "type": "text",
+      "id": "bar_title",
+      "label": "Title",
+      "default": "Lucky Dip On Now!"
+    },
+    {
+      "type": "header",
+      "content": "Expanding image"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Image",
+      "info": "Reveals between the top and bottom rows when expanded. Put any campaign text directly in the image. 2400 x 800 .jpg recommended."
+    },
+    {
+      "type": "url",
+      "id": "image_link",
+      "label": "Image link",
+      "info": "Optional. Wraps the image in a link."
+    },
+    {
+      "type": "header",
+      "content": "Bottom row"
+    },
+    {
+      "type": "text",
+      "id": "open_text",
+      "label": "Open link text",
+      "default": "Open"
+    },
+    {
+      "type": "text",
+      "id": "close_text",
+      "label": "Close link text",
+      "default": "Close"
+    },
+    {
+      "type": "header",
+      "content": "Countdown"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_countdown_timer",
+      "label": "Enable countdown timer",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_after_countdown",
+      "label": "Hide section after countdown ends",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "countdown_date",
+      "label": "Countdown end date & time",
+      "default": "May 31, 2026 23:59:00",
+      "info": "Format: Sep 21, 2024 15:30:00. Entered in the timezone below."
+    },
+    {
+      "type": "text",
+      "id": "timezone",
+      "label": "Timezone",
+      "default": "Australia/Sydney",
+      "info": "E.g. Australia/Sydney, Europe/London, America/Los_Angeles"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bar_background",
+      "label": "Bar background",
+      "default": "#f4d4cb"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Bar text",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collapsible Promo Banner"
+    }
+  ]
+}
+{% endschema %}

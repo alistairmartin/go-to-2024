@@ -46,7 +46,7 @@ BRAND SELECTOR
 
 
 
-
+For Shopify Theme CLI development. ALso update shopify.theme.toml.
 ```
-shopify theme dev -e au
+shopify theme dev -e development
 ```

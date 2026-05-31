@@ -3,74 +3,47 @@
     --section-background: {{ section.settings.background }};
     --border-color-setting: {{ section.settings.border_color }};
   }
-</style> 
 
+  #shopify-section-{{ section.id }} .link-bar {
+    text-align: left;
+  }
 
-{%- for block in section.blocks -%}
-  {% assign collectionHandles = block.settings.collection_list %}
+  #shopify-section-{{ section.id }} .link-bar__linklist {
+    gap: 15px;
+  }
 
-  {%- for collectionHandle in collectionHandles -%}
-    {%- if collectionHandle.handle == collection.handle -%}
-      {%- assign main_text = block.settings.main_text -%}
-      {% assign collectionFound = true %}
-      {% break %}
-    {%- endif -%}
-  {%- endfor -%}
-{%- endfor -%}
+  #shopify-section-{{ section.id }} .link-bar__title,
+  #shopify-section-{{ section.id }} .link-bar__linklist a {
+    font-size: 14px;
+    line-height: 18px;
+  }
 
-{%- if collectionFound == true -%}
+  #shopify-section-{{ section.id }} .link-bar__linklist a {
+    display: inline-block;
+    padding: 6px 10px;
+    font-weight: 500;
+    color: #282828;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+  }
 
-  <section>
-    <div class="{% if section.settings.enable_container %}container{% endif %}">
-      <div class="page-header">
-        <link-bar class="link-bar">
-          <div class="container">
-            <div class="link-bar__wrapper">
+  #shopify-section-{{ section.id }} .link-bar__linklist a:hover {
+    background: #fef9f8;
+  }
 
-              {%- if main_text != blank -%}
-                <span class="link-bar__title heading heading--small text--subdued">{{ main_text }}</span>
-              {%- endif -%}
+  #shopify-section-{{ section.id }} .link-bar__link-item:first-child a {
+    padding-left: 0;
+  }
 
-              <div class="link-bar__scroller hide-scrollbar">
-                <ul class="link-bar__linklist list--unstyled" role="list">
-                  {%- for block in section.blocks -%}
+  #shopify-section-{{ section.id }} .link-bar__link-item--selected a {
+    text-decoration: underline;
+    text-decoration-color: #181818;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
+</style>
 
-                    {% assign collectionHandles = block.settings.collection_list %}
-
-                    {%- for collectionHandle in collectionHandles -%}
-                      {%- if collectionHandle.handle == collection.handle -%}
-
-                        {%- for i in (1..20) -%}
-                          {% capture textId %}text{{ i }}{% endcapture %}
-                          {% capture linkId %}url{{ i }}{% endcapture %}
-                          {%- assign textSetting = block.settings[textId] -%}
-                          {%- assign LinkSetting = block.settings[linkId] -%}
-
-                          {%- if textSetting != blank -%}
-                            <li class="link-bar__link-item {% if canonical_url contains LinkSetting %}link-bar__link-item--selected text--underlined{% endif %}">
-                              <a href="{{ LinkSetting }}">
-                                {{ textSetting }}
-                              </a>
-                            </li>
-                          {%- endif -%}
-                       
-
-                        {%- endfor -%}
-                        {% break %}
-                      {%- endif -%}
-                    {%- endfor -%}
-
-                  {%- endfor -%}
-
-                </ul>
-              </div>
-            </div>
-          </div>
-        </link-bar>
-      </div>
-    </div>
-  </section>
-{%- endif -%}
+{% content_for 'blocks' %}
 
 {% schema %}
   {
@@ -96,251 +69,7 @@
       }
     ],
     "blocks": [
-      {
-        "name": "Collection",
-        "type": "collection",
-        "settings": [
-          {
-            "type": "textarea",
-            "id": "title",
-            "label": "Admin Title"
-          },
-          {
-            "type": "collection_list",
-            "id": "collection_list",
-            "label": "Collections"
-          },
-          {
-            "type": "text",
-            "id": "main_text",
-            "label": "Navigation Title",
-            "info": "Optional"
-          },
-          {
-            "type": "header",
-            "content": "Link #1"
-          },
-          {
-            "type": "url",
-            "id": "url1",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text1",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #2"
-          }, {
-            "type": "url",
-            "id": "url2",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text2",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #3"
-          }, {
-            "type": "url",
-            "id": "url3",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text3",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #4"
-          }, {
-            "type": "url",
-            "id": "url4",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text4",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #5"
-          }, {
-            "type": "url",
-            "id": "url5",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text5",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #6"
-          }, {
-            "type": "url",
-            "id": "url6",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text6",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #7"
-          }, {
-            "type": "url",
-            "id": "url7",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text7",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #8"
-          }, {
-            "type": "url",
-            "id": "url8",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text8",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #9"
-          }, {
-            "type": "url",
-            "id": "url9",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text9",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #10"
-          }, {
-            "type": "url",
-            "id": "url10",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text10",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #11"
-          }, {
-            "type": "url",
-            "id": "url11",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text11",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #12"
-          }, {
-            "type": "url",
-            "id": "url12",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text12",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #13"
-          }, {
-            "type": "url",
-            "id": "url13",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text13",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #14"
-          }, {
-            "type": "url",
-            "id": "url14",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text14",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #15"
-          }, {
-            "type": "url",
-            "id": "url15",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text15",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #16"
-          }, {
-            "type": "url",
-            "id": "url16",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text16",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #17"
-          }, {
-            "type": "url",
-            "id": "url17",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text17",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #18"
-          }, {
-            "type": "url",
-            "id": "url18",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text18",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #19"
-          }, {
-            "type": "url",
-            "id": "url19",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text19",
-            "label": "Text"
-          }, {
-            "type": "header",
-            "content": "Link #20"
-          }, {
-            "type": "url",
-            "id": "url20",
-            "label": "URL"
-          }, {
-            "type": "text",
-            "id": "text20",
-            "label": "Text"
-          }
-
-        ]
-      }
+      { "type": "_collection-navigation-select" }
     ],
     "presets": [
       {

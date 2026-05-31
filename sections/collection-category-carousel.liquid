@@ -71,55 +71,150 @@
     position: absolute;
     left: 0;
     bottom: 0;
-    margin: 16px;
-    padding: 10px 28px;
+    padding: 15px;
     background: {{ section.settings.label_background }};
     color: {{ section.settings.label_text_color }};
     font-family: var(--heading-font-family);
     font-style: italic;
-    font-size: 20px;
-    line-height: 1.1;
+    font-size: 18px;
+    line-height: 1;
     white-space: nowrap;
   }
 
   @media screen and (max-width: 740px) {
     #shopify-section-{{ section.id }} .category-card__label {
-      margin: 10px;
-      padding: 6px 18px;
-      font-size: 16px;
+      padding: 10px 12px;
+      font-size: 15px;
     }
+  }
+
+  /* Carousel wrapper sits flush with the container — no centered text-container */
+  #shopify-section-{{ section.id }} .category-carousel {
+    text-align: left;
+  }
+
+  /* Left-align cards: drop the 28px scroller indent and any centering */
+  #shopify-section-{{ section.id }} .category-carousel .product-list__inner {
+    justify-content: flex-start;
+  }
+
+  #shopify-section-{{ section.id }} .category-carousel .product-list__inner--scroller {
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+  }
+
+  /* Prev/next arrows — match Figma "Icon/Arrow Button": 45px Barely Pink circle,
+     elevation shadow, no border. Background comes from the chevron SVG's own rect.
+     Vertically centered and held 40px (the container gutter) inside the container. */
+  #shopify-section-{{ section.id }} .category-carousel .product-list__prev-next {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding-inline: var(--container-gutter);
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .category-carousel .product-list__arrow {
+    pointer-events: auto;
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .category-carousel .product-list__arrow svg {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px -4px rgba(52, 52, 52, 0.16), 0 1px 2px 0 rgba(52, 52, 52, 0.24);
+  }
+
+  #shopify-section-{{ section.id }} .category-carousel .product-list__arrow svg rect {
+    fill: #FEF9F8;
+  }
+
+  /* Hide an arrow once it can't go further — so the prev arrow is hidden until
+     you've scrolled right (and the next arrow hides at the end). visibility keeps
+     its slot so the opposite arrow stays pinned to its edge. */
+  #shopify-section-{{ section.id }} .category-carousel .product-list__arrow[disabled] {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* Right-side breakout (desktop): cards keep their container width, but the row
+     bleeds out to the viewport's right edge so the next card peeks past the
+     container line. Left edge stays aligned to the container. Declared after the
+     base arrow rule so this width wins over the base width:100%. */
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} .category-carousel {
+      margin-inline-end: calc(-1 * var(--container-outer-width));
+    }
+
+    #shopify-section-{{ section.id }} .category-carousel .product-list__inner--scroller {
+      grid-auto-columns: calc(var(--container-inner-width) / var(--section-products-per-row) - var(--product-list-column-gap) * (var(--section-products-per-row) - 1) / var(--section-products-per-row));
+      /* Breathing room after the last card so it lands at the container edge
+         (not jammed against the screen) when scrolled to the end. */
+      padding-inline-end: var(--container-outer-width);
+    }
+
+    /* Constrain the arrow bar to the container width so the arrows stay inside it
+       (40px in via the padding-inline above) instead of riding the bled-out edge. */
+    #shopify-section-{{ section.id }} .category-carousel .product-list__prev-next {
+      width: var(--container-inner-width);
+    }
+  }
+
+  /* Hide arrows entirely when content fits without scrolling */
+  #shopify-section-{{ section.id }} .category-carousel[data-no-scroll] .product-list__prev-next {
+    display: none;
   }
 </style>
 
 <section class="section {% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %} {% unless blends_with_background %}section--flush{% endunless %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
   <div class="section__color-wrapper">
     <div class="container {% unless blends_with_background %}vertical-breather{% endunless %}">
-      {%- if section.settings.title != blank or section.settings.subheading != blank or section.settings.content != blank -%}
-        <header class="section__header {% if section.settings.content != blank %}section__header--tight{% endif %} text-{{ section.settings.header_text_alignment }}">
-          <div class="text-container">
-            {%- if section.settings.subheading != blank -%}
-              <h2 class="heading heading--small" style="color: rgb(var(--heading-color));">{{ section.settings.subheading }}</h2>
-            {%- endif -%}
-
-            {%- if section.settings.title != blank -%}
-              <h3 class="heading h2" style="color: rgb(var(--heading-color));">{{ section.settings.title }}</h3>
-            {%- endif -%}
-
-            {%- if section.settings.content != blank -%}
-              <div class="content">{{ section.settings.content }}</div>
-            {%- endif -%}
-          </div>
-        </header>
-      {%- endif -%}
-
       {% content_for 'blocks' %}
     </div>
   </div>
 </section>
 
+<script>
+  (function () {
+    var section = document.getElementById('shopify-section-{{ section.id }}');
+    if (!section) return;
+    var carousel = section.querySelector('.category-carousel');
+    if (!carousel) return;
+    var scroller = carousel.querySelector('.product-list__inner');
+    if (!scroller) return;
+
+    function update() {
+      var canScroll = scroller.scrollWidth - scroller.clientWidth > 1;
+      carousel.toggleAttribute('data-no-scroll', !canScroll);
+    }
+
+    update();
+    window.addEventListener('resize', update);
+    if (window.ResizeObserver) {
+      new ResizeObserver(update).observe(scroller);
+    }
+  })();
+</script>
+
 {% schema %}
 {
-  "name": "Category carousel",
+  "name": "Collection Category",
   "class": "shopify-section--category-carousel",
   "max_blocks": 12,
   "disabled_on": {
@@ -145,38 +240,6 @@
       "type": "checkbox",
       "id": "hide_desktop",
       "label": "Hide Desktop?"
-    },
-    {
-      "type": "header",
-      "content": "Text"
-    },
-    {
-      "type": "select",
-      "id": "header_text_alignment",
-      "label": "Header Text Alignment",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "left"
-    },
-    {
-      "type": "text",
-      "id": "subheading",
-      "label": "Subheading"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Heading",
-      "default": "Shop All"
-    },
-    {
-      "type": "richtext",
-      "id": "content",
-      "label": "Content",
-      "default": "<p>Australia's go-to for skincare. We'll get you that \"whoa, nice skin!\" effect.</p>"
     },
     {
       "type": "header",
@@ -254,7 +317,7 @@
   ],
   "presets": [
     {
-      "name": "Category carousel",
+      "name": "Collection Category",
       "blocks": [
         { "type": "_category-carousel-collections" }
       ]

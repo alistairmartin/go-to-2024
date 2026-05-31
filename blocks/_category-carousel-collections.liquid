@@ -11,7 +11,7 @@
 {%- endif -%}
 
 {%- if show_collections -%}
-  <product-list data-scroll-step="item" class="product-list product-list--center category-carousel" {{ block.shopify_attributes }}>
+  <product-list data-scroll-step="item" class="product-list category-carousel" {{ block.shopify_attributes }}>
     <div class="scroller">
       <div class="product-list__inner product-list__inner--scroller hide-scrollbar">
         {% content_for 'blocks' %}
@@ -22,12 +22,12 @@
       <prev-next-buttons class="product-list__prev-next">
         <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled>
           <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
-          {%- render 'icon' with 'brand-arrow-left', block: true, direction_aware: true -%}
+          {%- render 'icon' with 'brand-chevron-left', block: true, direction_aware: true -%}
         </button>
 
         <button class="product-list__arrow prev-next-button prev-next-button--next">
           <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
-          {%- render 'icon' with 'brand-arrow-right', block: true, direction_aware: true -%}
+          {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
         </button>
       </prev-next-buttons>
     {%- endif -%}
@@ -48,12 +48,8 @@
   ],
   "presets": [
     {
-      "name": "Collections",
+      "name": "Collection Select",
       "blocks": [
-        { "type": "_category-carousel-card" },
-        { "type": "_category-carousel-card" },
-        { "type": "_category-carousel-card" },
-        { "type": "_category-carousel-card" },
         { "type": "_category-carousel-card" }
       ]
     }

@@ -360,6 +360,18 @@
     }
 }
 
+.cart-notification--error {
+  .cart-notification__wrapper,
+  .cart-notification__wrapper .cart-notification__heading,
+  .cart-notification__close {
+    color: #fff;
+  }
+
+  .cart-notification__wrapper .cart-notification__heading {
+    font-family: var(--text-font-family);
+  }
+}
+
 .line-item[data-properties*="Promo:"] {
   .line-item__quantity {
     display: none;

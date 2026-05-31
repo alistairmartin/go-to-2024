@@ -433,6 +433,66 @@
   </div>
 </section>
 
+<script>
+  (function () {
+    if (!window.customElements) return;
+
+    window.customElements.whenDefined('line-item-quantity').then(function () {
+      var LineItemQuantity = window.customElements.get('line-item-quantity');
+      if (!LineItemQuantity || LineItemQuantity.prototype.__cartPageErrorPatch) return;
+      LineItemQuantity.prototype.__cartPageErrorPatch = true;
+
+      LineItemQuantity.prototype._updateFromLink = async function (link) {
+        var changeUrl = new URL(link, window.location.origin);
+        var params = changeUrl.searchParams;
+        var line = params.get('line');
+        var id = params.get('id');
+        var quantity = parseInt(params.get('quantity'));
+        var self = this;
+        var input = self.querySelector('input[name="updates[]"]');
+        var previousValue = input ? input.getAttribute('value') : null;
+
+        self.dispatchEvent(new CustomEvent('line-item-quantity:change:start', {
+          bubbles: true,
+          detail: { newLineQuantity: quantity }
+        }));
+
+        try {
+          var response = await fetch('/cart/change.js', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ line: line, id: id, quantity: quantity })
+          });
+
+          if (response.ok) {
+            window.location.reload();
+            return;
+          }
+
+          var errorData = await response.json().catch(function () { return {}; });
+          var message = errorData.description || errorData.message || 'Unable to update quantity.';
+
+          if (input && previousValue != null) input.value = previousValue;
+
+          self.dispatchEvent(new CustomEvent('line-item-quantity:change:end', { bubbles: true }));
+          document.documentElement.dispatchEvent(new CustomEvent('cart-notification:show', {
+            bubbles: true,
+            detail: { status: 'error', error: message }
+          }));
+        } catch (e) {
+          if (input && previousValue != null) input.value = previousValue;
+          self.dispatchEvent(new CustomEvent('line-item-quantity:change:end', { bubbles: true }));
+          document.documentElement.dispatchEvent(new CustomEvent('cart-notification:show', {
+            bubbles: true,
+            detail: { status: 'error', error: 'Unable to update quantity. Please try again.' }
+          }));
+        }
+      };
+    });
+  })();
+</script>
+
 {% schema %}
 {
   "name": "Cart",

@@ -1,0 +1,31 @@
+{%- assign text = block.settings.text -%}
+{%- assign url = block.settings.url -%}
+
+{%- if text != blank -%}
+  <li class="link-bar__link-item {% if canonical_url contains url %}link-bar__link-item--selected{% endif %}" {{ block.shopify_attributes }}>
+    <a href="{{ url }}">
+      {{ text }}
+    </a>
+  </li>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Link",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "URL"
+    }
+  ],
+  "presets": [
+    { "name": "Link" }
+  ]
+}
+{% endschema %}

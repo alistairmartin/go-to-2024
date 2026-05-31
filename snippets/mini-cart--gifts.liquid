@@ -8,6 +8,8 @@
       {%- render 'mini-cart--gifts-min-spend-plus-buy-x', block: block, javascriptCode: false  -%}
     {%- elsif block.type == "subscription_gift" -%}
       {%- render 'mini-cart--gifts-subscription-gift', block: block, javascriptCode: false -%}
+    {%- elsif block.type == "tiered_progress" -%}
+      {%- render 'mini-cart--tiered-progress', block: block -%}
     {%- endif -%}
   {%- endfor -%}
   </div>

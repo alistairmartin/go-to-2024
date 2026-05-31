@@ -1,5 +1,5 @@
-{%- assign fontHeading = "ModernoFB" -%}
-{%- assign fontBody = "TTCommons" -%}
+{%- assign fontHeading = "Benton" -%}
+{%- assign fontBody = "Marcel" -%}
 
 <style>
   :root {
@@ -14,8 +14,9 @@
     --color-secondary: #FDE4DB;
     --color-ternary: #fff7f5;
 
-    --color-black: #181818;
-    --color-grey-dark: #484848;
+    --color-black: #000000;
+    /* --color-black: #181818; */
+    --color-grey-dark: #282828;
     --color-grey: #DCE0E4;
     --color-grey-light: #F2F2F2;
 
@@ -29,7 +30,7 @@
 
     --color-button-ternary-text: #181818;
     --color-button-ternary-background: #ffffff;
-    --color-button-ternary-shadow: #181818;
+    --color-button-ternary-shadow: #f9c6ba;
 
     --heading-color: {{ settings.heading_color.red }}, {{ settings.heading_color.green }}, {{ settings.heading_color.blue }};
     --text-color: {{ settings.text_color.red }}, {{ settings.text_color.green }}, {{ settings.text_color.blue }};
@@ -66,25 +67,25 @@
 
     --base-font-size: {{ settings.text_font_size }}px;
     --heading-font-family: "{{ fontHeading }}";
-    --heading-font-weight: bold;
+    --heading-font-weight: 300;
     --heading-font-style: "normal";
     --heading-text-transform: "{{ settings.heading_text_transform }}";
     --text-font-family: "{{ fontBody }}";
-    --text-font-weight: 400;
+    --text-font-weight: 300;
     --text-font-style: "normal";
-    --text-font-bold-weight: bold;
+    --text-font-bold-weight: 600;
 
     /* Typography (font size) */
-    --heading-xxsmall-font-size: 12px;
-    --heading-xsmall-font-size: 16px;
-    --heading-small-font-size: 20px;
-    --heading-large-font-size: 48px;
-    --heading-h1-font-size: 48px;
-    --heading-h2-font-size: 36px;
-    --heading-h3-font-size: 24px;
-    --heading-h4-font-size: 20px;
-    --heading-h5-font-size: 16px;
-    --heading-h6-font-size: 12px;
+    --heading-xxsmall-font-size: 10px;
+    --heading-xsmall-font-size: 14px;
+    --heading-small-font-size: 16px;
+    --heading-large-font-size: 44px;
+    --heading-h1-font-size: 44px;
+    --heading-h2-font-size: 32px;
+    --heading-h3-font-size: 20px;
+    --heading-h4-font-size: 16px;
+    --heading-h5-font-size: 12px;
+    --heading-h6-font-size: 10px;
 
     --heading-h1-line-height: 56px;
     --heading-h2-line-height: 40px;
@@ -143,7 +144,7 @@
     
 
     {%- if product -%}
-    --container-max-width: 1400px;
+    --container-max-width: 1800px;
     {% else %}
     --container-max-width: 1800px;
     {%- endif -%}
@@ -208,23 +209,42 @@
       --product-list-block-spacing: 48px;
 
       /* Typography */
-      --heading-xxsmall-font-size: 16px;
-      --heading-xsmall-font-size: 18px;
-      --heading-small-font-size: 20px;
-      --heading-large-font-size: 64px;
-      --heading-h1-font-size: 64px;
-      --heading-h2-font-size: 48px;
-      --heading-h3-font-size: 36px;
-      --heading-h4-font-size: 24px;
-      --heading-h5-font-size: 20px;
-      --heading-h6-font-size: 16px;
+      --heading-xxsmall-font-size: 14px;
+      --heading-xsmall-font-size: 14px;
+      --heading-small-font-size: 16px;
+      --heading-large-font-size: 60px;
+      --heading-h1-font-size: 60px;
+      --heading-h2-font-size: 44px;
+      --heading-h3-font-size: 32px;
+      --heading-h4-font-size: 20px;
+      --heading-h5-font-size: 16px;
+      --heading-h6-font-size: 12px;
 
-      --heading-h1-line-height: 56px;
+      --heading-h1-line-height: 70px;
       --heading-h2-line-height: 56px;
       --heading-h3-line-height: 40px;
       --heading-h4-line-height: 32px;
       --heading-h5-line-height: 24px;
       --heading-h6-line-height: 18px;
+
+      /* --heading-xxsmall-font-size: 14px;
+      --heading-xsmall-font-size: 14px;
+      --heading-small-font-size: 16px;
+      --heading-large-font-size: 60px;
+
+      --heading-h1-font-size: 72px;
+      --heading-h2-font-size: 48px;
+      --heading-h3-font-size: 42px;
+      --heading-h4-font-size: 36px;
+      --heading-h5-font-size: 26px;
+      --heading-h6-font-size: 20px;
+
+      --heading-h1-line-height: 62px;
+      --heading-h2-line-height: 72px;
+      --heading-h3-line-height: 63px;
+      --heading-h4-line-height: 54px;
+      --heading-h5-line-height: 39px;
+      --heading-h6-line-height: 30px; */
     }
   }
 

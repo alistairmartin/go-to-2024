@@ -20,7 +20,7 @@
         {%- if product.type == "GWP" -%}
         <div class="product-item-meta__title">{{ product.title }}</div>
         {%- else -%}
-        <a href="{{ product.url }}" class="product-item-meta__title">{{ product.title }}</a>
+        <a href="{{ product.url }}" class="product-item-meta__title heading--primary">{{ product.title }}</a>
         {%- endif -%}
     
 
@@ -133,7 +133,7 @@
   </div>
 
   {%- if product.metafields.global.description_tag != blank -%}
-    <p class="hide-desktop description">{{ product.metafields.global.description_tag }}</p>
+    <p class="hide-desktop description text-base">{{ product.metafields.global.description_tag }}</p>
   {%- endif -%}
 
 {%- endcapture -%}
@@ -141,7 +141,7 @@
 
 {%- capture quick_buy_product_info_below -%}
   {%- if product.metafields.global.description_tag != blank -%}
-    <p>{{ product.metafields.global.description_tag }}</p>
+    <p class="hide-mobile description text-base">{{ product.metafields.global.description_tag }}</p>
   {%- endif -%}
 
   {% assign skinTypeCounter = 0 %}
@@ -216,7 +216,7 @@
 
     <product-rerender id="quick-buy-drawer-{{ product_form_id }}" observe-form="{{ product_form_id }}">
       <header class="drawer__header">
-        <p class="drawer__title heading h6">{{ 'product.form.choose_options' | t }}</p>
+        <p class="drawer__title heading h5">{{ 'product.form.choose_options' | t }}</p>
 
         <button type="button" class="drawer__close-button tap-area" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
           {%- render 'icon' with 'close' -%}
@@ -248,6 +248,11 @@
 
       <div class="popover__content popover__content--no-padding">
         {%- render 'product-form', product: product, product_form_id: product_form_id, context: 'quick-buy' -%}
+
+        <div class="popover__content-mobile-product">
+            {{- quick_buy_product_info_below -}}
+        </div>
+        
       </div>
 
     </product-rerender>

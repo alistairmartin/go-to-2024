@@ -60,8 +60,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
   document.querySelectorAll("button[data-action='toggle-tab']").forEach(function (button) {
     button.addEventListener("click", function () {
       console.log('clicked');
-      let targetElement = document.getElementById(this.getAttribute("aria-controls"));
-      let tabList = this.closest(".tab-list").querySelectorAll(".tab-list--tab");
+      const tabListEl = this.closest(".tab-list");
+      const targetElement = document.getElementById(this.getAttribute("aria-controls"));
+      const tabList = Array.from(tabListEl.querySelectorAll(".tab-list--tab")).filter((tab) => tab.closest(".tab-list") === tabListEl);
+      const tabPanels = Array.from(tabListEl.querySelectorAll(".tab-panel")).filter((panel) => panel.closest(".tab-list") === tabListEl);
 
       console.log(targetElement);
 
@@ -73,12 +75,59 @@ document.addEventListener("DOMContentLoaded", function (event) {
       this.setAttribute("aria-selected", true);
       this.classList.add("active");
 
-      this.closest(".tab-list").querySelectorAll(".tab-panel").forEach(function (panel) {
+      tabPanels.forEach(function (panel) {
         panel.setAttribute("aria-hidden", true);
       });
 
       targetElement.setAttribute("aria-hidden", false);
     });
+  });
+
+  // Product description V2 tab scroll indicator
+  function updateTabScrollIndicator(tabListOuter, indicator, bar) {
+    const maxScroll = tabListOuter.scrollWidth - tabListOuter.clientWidth;
+    const hasScroll = maxScroll > 1;
+    tabListOuter.classList.toggle("has-scroll", hasScroll);
+
+    if (!hasScroll) {
+      indicator.style.opacity = "0";
+      bar.style.transform = "translateX(0px)";
+      return;
+    }
+
+    indicator.style.opacity = "1";
+    const trackWidth = indicator.clientWidth;
+    const visibleRatio = tabListOuter.clientWidth / tabListOuter.scrollWidth;
+    const minBarWidth = 48;
+    const barWidth = Math.max(minBarWidth, Math.round(trackWidth * visibleRatio));
+    bar.style.width = `${barWidth}px`;
+
+    const progress = tabListOuter.scrollLeft / maxScroll;
+    const maxTranslate = Math.max(0, trackWidth - barWidth);
+    bar.style.transform = `translateX(${Math.round(maxTranslate * progress)}px)`;
+  }
+
+  document.querySelectorAll(".product-content-description-V2 .tab-list--outer-main").forEach(function (tabListOuter) {
+    const tabList = tabListOuter.closest(".tab-list");
+    if (!tabList) {
+      return;
+    }
+
+    const indicator = tabList.querySelector(".tab-list--scroll-indicator");
+    const bar = indicator ? indicator.querySelector(".tab-list--scroll-indicator-bar") : null;
+    if (!indicator || !bar) {
+      return;
+    }
+
+    const rafUpdate = function () {
+      requestAnimationFrame(function () {
+        updateTabScrollIndicator(tabListOuter, indicator, bar);
+      });
+    };
+
+    tabListOuter.addEventListener("scroll", rafUpdate, { passive: true });
+    window.addEventListener("resize", rafUpdate);
+    updateTabScrollIndicator(tabListOuter, indicator, bar);
   });
 
   document.querySelectorAll(".change-custom-variant").forEach(function (button) {
@@ -112,6 +161,28 @@ document.addEventListener("DOMContentLoaded", function (event) {
       }
     });
   });
+
+  // Hide Tolstoy + liquid_eUQCzK blocks if Tolstoy notFound/empty after 4s
+  setTimeout(function () {
+    const tolstoyBlock = document.querySelector('.product-form .shopify-app-block[id*="tolstoy_shoppable_video"]');
+    if (!tolstoyBlock) {
+      return;
+    }
+
+    const tolstoyStories = tolstoyBlock.querySelector("tolstoy-stories");
+    const status = tolstoyStories ? tolstoyStories.getAttribute("data-status") : null;
+    const isNotFound = status && status.toLowerCase() === "notfound";
+    const isEmpty = tolstoyBlock.childElementCount === 0 && tolstoyBlock.textContent.trim() === "";
+
+    if (!isNotFound && !isEmpty) {
+      return;
+    }
+
+    tolstoyBlock.classList.add("hide");
+    document.querySelectorAll('[data-block-id="liquid_line_2"]').forEach(function (block) {
+      block.classList.add("hide");
+    });
+  }, 2000);
 
 });
 
@@ -192,5 +263,3 @@ function blockTextReadMore(blockId, buttonText) {
     buttonInner.textContent = "Show Less";
   }
 }
-
-

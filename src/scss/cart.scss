@@ -38,7 +38,8 @@
   
     .product-item-meta__title {
       line-height: 1;
-      font-size: 14px;
+      font-size: 12px;
+      font-weight: bold;
     }
 
     .line-item__remove-button {
@@ -47,12 +48,12 @@
     }
 
     .product-item-meta__subtitle {
-      font-size: 14px;
+      font-size: 12px;
     }
   
     .price  {
       font-weight: 600;
-      font-size: 14px;
+      font-size: 12px;
       line-height: 1;
       color: var(--color-grey-dark);
     }
@@ -196,7 +197,7 @@
         max-width: 250px;
         width: 250px;
         border: 1px solid var(--color-grey);
-        padding: 16px 8px 16px;
+        padding: 8px 8px 16px;
         border-radius: var(--image-border-radius);
 
         @include media-query($small) {
@@ -205,7 +206,7 @@
 
         .product-item__link {
           margin: 0;
-          font-size: 12px;
+          font-size: 10px;
         }
 
         .product-item-meta__title {
@@ -216,7 +217,7 @@
         }
 
         .product-item-meta__subtitle {
-          font-size: 12px !important;
+          font-size: 11px !important;
         }
 
         .product-item__label-list {
@@ -226,17 +227,26 @@
         .price-list {
           position: absolute;
           right: 10px;
-          bottom: 0;
+          bottom: 5px;
           display: flex;
           flex-direction: column;
           align-items: flex-end;
           justify-content: flex-start;
           height: 32px !important;
 
+
+          @include media-query($small) {
+             bottom: 5px;
+          }
+
           .price {
             margin: 0;
-            font-size: 12px;
+            font-size: 11px;
           }
+        }
+
+        .rating__stars {
+          gap: 0;
         }
       }
     }
@@ -350,6 +360,18 @@
     }
 }
 
+.cart-notification--error {
+  .cart-notification__wrapper,
+  .cart-notification__wrapper .cart-notification__heading,
+  .cart-notification__close {
+    color: #fff;
+  }
+
+  .cart-notification__wrapper .cart-notification__heading {
+    font-family: var(--text-font-family);
+  }
+}
+
 .line-item[data-properties*="Promo:"] {
   .line-item__quantity {
     display: none;
@@ -400,7 +422,7 @@
 .mini-cart--gifts-error {
   margin: 10px 20px 0;
   padding: 10px;
-  font-size: 14px;
+  font-size: 12px;
   text-align: center;
   background: var(--color-primary);
   border-radius: 8px;
@@ -457,7 +479,7 @@
 .cart-message-BYO {
   display: block;
   width: 100%;
-  font-size: 14px;
+  font-size: 12px;
   padding: 10px 0;
   text-align: center;
   background: $gotoPink;
@@ -465,5 +487,13 @@
   a, .link { 
     margin-left: 5px;
     display: inline-block;
+  }
+}
+
+
+
+.brand-bro-to {
+  .property--promo.brand--go-to-skincare {
+    color: #fff !important;
   }
 }

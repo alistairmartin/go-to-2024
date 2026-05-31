@@ -5,6 +5,33 @@
   {% endif %}
 
 {%- assign classes = "" -%}
+{%- assign video_ratio_desktop_value = block.settings.video_aspect_ratio_desktop | default: 1 -%}
+{%- assign video_ratio_mobile_value = block.settings.video_aspect_ratio_mobile | default: 1 -%}
+
+{%- if block.settings.video_source == "shopify" -%}
+  {%- if video_ratio_desktop_value == "auto" -%}
+    {%- if block.settings.video_desktop != blank -%}
+      {%- assign video_ratio_desktop_value = 1.0 | divided_by: block.settings.video_desktop.aspect_ratio -%}
+    {%- elsif block.settings.video_mobile != blank -%}
+      {%- assign video_ratio_desktop_value = 1.0 | divided_by: block.settings.video_mobile.aspect_ratio -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- if video_ratio_mobile_value == "auto" -%}
+    {%- if block.settings.video_mobile != blank -%}
+      {%- assign video_ratio_mobile_value = 1.0 | divided_by: block.settings.video_mobile.aspect_ratio -%}
+    {%- elsif block.settings.video_desktop != blank -%}
+      {%- assign video_ratio_mobile_value = 1.0 | divided_by: block.settings.video_desktop.aspect_ratio -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if video_ratio_desktop_value == "auto" -%}
+  {%- assign video_ratio_desktop_value = 1 -%}
+{%- endif -%}
+{%- if video_ratio_mobile_value == "auto" -%}
+  {%- assign video_ratio_mobile_value = 1 -%}
+{%- endif -%}
 
 {%- capture styles -%}
   <style>
@@ -33,8 +60,8 @@
     --max-width-mobile: {{ block.settings.max_width_value_mobile }}%;
     --max-width-desktop: {{ block.settings.max_width_value_desktop }}%;
 
-    --video-aspect-ratio-mobile: {{ block.settings.video_aspect_ratio_mobile | times: 100.000 }}%;
-    --video-aspect-ratio-desktop: {{ block.settings.video_aspect_ratio_desktop | times: 100.000 }}%;
+    --video-aspect-ratio-mobile: {{ video_ratio_mobile_value | times: 100.000 }}%;
+    --video-aspect-ratio-desktop: {{ video_ratio_desktop_value | times: 100.000 }}%;
 
     --split-slide-mobile-height: {{ block.settings.split_slide_min_height_mobile | default: 0 }}vh;
   }
@@ -43,6 +70,14 @@
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.5s ease;
+  }
+
+  .custom-slideshow--slide-video>video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
 </style>
@@ -147,8 +182,29 @@
 
         {%- if block.settings.background_media == "video" -%}
           <div class="custom-slideshow--slide-video" id="video-container-{{ block.id }}">
-            <div class="video-poster-overlay" id="poster-{{ block.id }}"></div>
-            <div id="video-{{ block.id }}"></div>
+            {%- if block.settings.video_source == "shopify" -%}
+              {%- assign desktop_video = block.settings.video_desktop -%}
+              {%- assign mobile_video = block.settings.video_mobile -%}
+              {%- if desktop_video == blank and mobile_video != blank -%}
+                {%- assign desktop_video = mobile_video -%}
+                {%- assign mobile_video = blank -%}
+              {%- endif -%}
+
+              {%- if desktop_video != blank -%}
+                {%- assign desktop_video_class = "" -%}
+                {%- if mobile_video != blank -%}
+                  {%- assign desktop_video_class = "hide-mobile" -%}
+                {%- endif -%}
+                {{ desktop_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: desktop_video_class }}
+
+                {%- if mobile_video != blank -%}
+                  {{ mobile_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: "hide-desktop" }}
+                {%- endif -%}
+              {%- endif -%}
+            {%- else -%}
+              <div class="video-poster-overlay" id="poster-{{ block.id }}"></div>
+              <div id="video-{{ block.id }}"></div>
+            {%- endif -%}
           </div>
       {% else %}    
           {%- capture class_attribute -%}{% if block.settings.mobile_image != blank %}hide-mobile{% endif %}{%- endcapture -%}
@@ -186,8 +242,29 @@
     <a href="{{ block.settings.url }}">
       {%- if block.settings.background_media == "video" -%}
         <div class="custom-slideshow--slide-video" id="video-container-{{ block.id }}">
-          <div class="video-poster-overlay" id="poster-{{ block.id }}"></div>
-          <div id="video-{{ block.id }}"></div>
+          {%- if block.settings.video_source == "shopify" -%}
+            {%- assign desktop_video = block.settings.video_desktop -%}
+            {%- assign mobile_video = block.settings.video_mobile -%}
+            {%- if desktop_video == blank and mobile_video != blank -%}
+              {%- assign desktop_video = mobile_video -%}
+              {%- assign mobile_video = blank -%}
+            {%- endif -%}
+
+            {%- if desktop_video != blank -%}
+              {%- assign desktop_video_class = "" -%}
+              {%- if mobile_video != blank -%}
+                {%- assign desktop_video_class = "hide-mobile" -%}
+              {%- endif -%}
+              {{ desktop_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: desktop_video_class }}
+
+              {%- if mobile_video != blank -%}
+                {{ mobile_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: "hide-desktop" }}
+              {%- endif -%}
+            {%- endif -%}
+          {%- else -%}
+            <div class="video-poster-overlay" id="poster-{{ block.id }}"></div>
+            <div id="video-{{ block.id }}"></div>
+          {%- endif -%}
         </div>
       {% else %}
   
@@ -214,7 +291,7 @@
 
 </div>
 
-  {%- if block.settings.background_media == "video" -%}
+  {%- if block.settings.background_media == "video" and block.settings.video_source == "vimeo" -%}
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       var videoId{{ block.id }} = "{{ block.settings.video_url_desktop | remove: 'https://vimeo.com/' }}";
@@ -347,9 +424,37 @@
           "content": "--- 🎥 VIDEO  ---"
         },
         {
+          "type": "select",
+          "id": "video_source",
+          "label": "Video source",
+          "default": "vimeo",
+          "options": [
+            {
+              "value": "vimeo",
+              "label": "Vimeo"
+            },
+            {
+              "value": "shopify",
+              "label": "Shopify"
+            }
+          ]
+        },
+        {
+          "type": "video",
+          "id": "video_desktop",
+          "label": "Shopify video (Desktop)",
+          "info": "Used when Video source is Shopify."
+        },
+        {
+          "type": "video",
+          "id": "video_mobile",
+          "label": "Shopify video (Mobile)",
+          "info": "Optional. Used when Video source is Shopify."
+        },
+        {
           "type": "video_url",
           "id": "video_url_desktop",
-          "label": "Video (Desktop)",
+          "label": "Vimeo video (Desktop)",
           "accept": [
             "vimeo"
           ]
@@ -359,6 +464,10 @@
           "id": "video_aspect_ratio_desktop",
           "label": "Video aspect ratio (Desktop)",
           "options": [
+            {
+              "value": "auto",
+              "label": "Auto (Shopify only)"
+            },
             {
               "value": "1",
               "label": "Square (1:1)"
@@ -380,7 +489,7 @@
         {
           "type": "video_url",
           "id": "video_url_mobile",
-          "label": "Video (Mobile)",
+          "label": "Vimeo video (Mobile)",
           "accept": [
             "vimeo"
           ]
@@ -390,6 +499,10 @@
           "id": "video_aspect_ratio_mobile",
           "label": "Video aspect ratio (Mobile)",
           "options": [
+            {
+              "value": "auto",
+              "label": "Auto (Shopify only)"
+            },
             {
               "value": "1",
               "label": "Square (1:1)"

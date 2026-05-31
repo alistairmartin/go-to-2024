@@ -1,0 +1,136 @@
+
+{%- if product.metafields.custom.make_it_a_set != blank -%}
+
+  <style>
+    .product-whats-included--item-text {
+      gap: 0 !important;
+    }
+    .product-whats-included--item-text * {
+      font-size: 11px !important;
+    }
+    .product-form--make-it-a-set--actions {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 20px;
+    }
+  </style>
+
+<div data-block-type="Make It A Set" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+  <div class="product-form--make-it-a-set">
+
+    <h2 class="heading h6 heading--secondary text--bold-medium">
+      MAKE IT A SET (INCLUDES {{ product.title |  upcase }})
+    </h2>
+
+    <div class="product-whats-included">
+    <div class="product-whats-included--container">
+      {%- for setProduct in product.metafields.custom.make_it_a_set.value -%}
+        {%- unless setProduct.available -%}{%- continue -%}{%- endunless -%}
+        {%- assign popoverId = 'make-it-a-set-' | append: setProduct.id -%}
+
+        {%- capture popoverContent -%}
+          {%- assign includedProductHandles = setProduct.metafields.custom.product_main_information__included_products | split: "|" -%}
+          {%- for includedHandle in includedProductHandles -%}
+            {%- assign includedProductHandle = includedHandle | handle -%}
+            {%- assign includedProduct = all_products[includedProductHandle] -%}
+            <div class="product-whats-included--item">
+              <div class="product-whats-included--item-image">
+                {{ includedProduct.featured_image | image_url: width: "300" | image_tag }}
+              </div>
+              <div class="product-whats-included--item-text">
+                <p class="heading h5 title"><i>{{ includedProduct.title }}</i></p>
+                {%- if includedProduct.metafields.custom.product_subtitle__description != blank -%}
+                  <p>{{ includedProduct.metafields.custom.product_subtitle__description }}</p>
+                {%- endif -%}
+                {%- if includedProduct.metafields.custom.product_subtitle__measurement != blank -%}
+                  <p class="text--small">{{ includedProduct.metafields.custom.product_subtitle__measurement }}</p>
+                {%- endif -%}
+                {%- unless includedProduct.template_suffix == "hidden" or includedProduct.tags contains "hidden" -%}
+                  <a href="{{ includedProduct.url }}" class="link link--basic">VIEW PRODUCT {%- render 'icon' with "brand-arrow-right" -%}</a>
+                {%- endunless -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endcapture -%}
+
+        <div class="product-whats-included--item">
+          <div class="product-whats-included--item-image">
+            {{ setProduct.featured_image | image_url: width: "400" | image_tag }}
+          </div>
+          <div class="product-whats-included--item-text">
+            <p class="heading h5 title"><i>{{ setProduct.title }}</i></p>
+            {%- if setProduct.metafields.custom.product_subtitle__description != blank -%}
+              <p>{{ setProduct.metafields.custom.product_subtitle__description }}</p>
+            {%- endif -%}
+            {%- if setProduct.description != blank -%}
+              <p>{{ setProduct.description }}</p>
+            {%- endif -%}
+
+            <div class="product-form--make-it-a-set--actions">
+              <div class="popover-buttons">
+                <button type="button" is="toggle-button" class="link link--basic hidden-phone" aria-controls="{{ popoverId }}-drawer" aria-expanded="false">What's Included {%- render 'icon' with 'brand-chevron-right' -%}</button>
+                <button type="button" is="toggle-button" class="link link--basic hidden-tablet-and-up" aria-controls="{{ popoverId }}-popover" aria-expanded="false">What's Included {%- render 'icon' with 'brand-chevron-right' -%}</button>
+              </div>
+
+              {%- assign atc_id = 'make-it-a-set-atc-' | append: setProduct.id -%}
+              {%- if setProduct.variants.size == 1 -%}
+                {%- form 'product', setProduct, is: 'product-form', id: atc_id -%}
+                  <input type="hidden" name="quantity" value="1">
+                  <input type="hidden" name="id" value="{{ setProduct.first_available_variant.id }}">
+                  <button type="submit" is="loader-button" class="product-item__link link--animated link link--primary">
+                    {{ 'collection.product.add_to_cart_short' | t }}
+                  </button>
+                {%- endform -%}
+              {%- else -%}
+                {%- assign atc_qb_id = 'make-it-a-set-qb-' | append: setProduct.id -%}
+                <button type="button" is="toggle-button" loader aria-controls="{{ atc_qb_id }}-drawer" aria-expanded="false" class="product-item__link link--animated link link--primary hidden-phone">{{ 'collection.product.add_to_cart_short' | t }}</button>
+                <button type="button" is="toggle-button" loader aria-controls="{{ atc_qb_id }}-popover" aria-expanded="false" class="product-item__link link--animated link link--primary hidden-tablet-and-up">{{ 'collection.product.add_to_cart_short' | t }}</button>
+                <quick-buy-popover id="{{ atc_qb_id }}-popover" href="{{ setProduct.url }}?view=quick-buy-popover" class="popover popover--quick-buy hidden-tablet-and-up"></quick-buy-popover>
+                <quick-buy-drawer id="{{ atc_qb_id }}-drawer" href="{{ setProduct.url }}?view=quick-buy-drawer" class="drawer drawer--large drawer--quick-buy hidden-phone"></quick-buy-drawer>
+              {%- endif -%}
+            </div>
+
+            <drawer-content id="{{ popoverId }}-drawer" class="drawer drawer--large hidden-phone">
+              <span class="drawer__overlay"></span>
+              <header class="drawer__header">
+                <p class="drawer__title heading h5">What's Included</p>
+                <button type="button" class="drawer__close-button tap-area" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
+                  {%- render 'icon' with 'close' -%}
+                </button>
+              </header>
+              <div class="drawer__content drawer__content--padded-start">
+                <div class="product-whats-included product-whats-included--popover">
+                  <div class="product-whats-included--container">
+                    {{ popoverContent }}
+                  </div>
+                </div>
+              </div>
+            </drawer-content>
+
+            <popover-content id="{{ popoverId }}-popover" class="popover hidden-lap-and-up">
+              <span class="popover__overlay"></span>
+              <header class="popover__header">
+                <p class="popover__title heading h5">What's Included</p>
+                <button type="button" class="popover__close-button tap-area tap-area--large" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
+                  {%- render 'icon' with 'close' -%}
+                </button>
+              </header>
+              <div class="popover__content">
+                <div class="product-whats-included product-whats-included--popover">
+                  <div class="product-whats-included--container">
+                    {{ popoverContent }}
+                  </div>
+                </div>
+              </div>
+            </popover-content>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    </div>
+
+  </div>
+</div>
+
+{%- endif -%}

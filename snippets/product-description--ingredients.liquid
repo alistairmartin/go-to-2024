@@ -1,0 +1,57 @@
+    {%- if product.metafields.accentuate.product_main_information__whats_in_it != blank -%}
+
+        
+        <div class="product-content-description--content-inner tab-panel whats-in-it" id="product-content-description--tab-{{ tab }}" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-{{ tab }}" aria-hidden="{{ hidden }}">
+
+
+        <div class="whats-in-it--text">
+
+        <div class="text">
+          {{ product.metafields.accentuate.product_main_information__whats_in_it }}
+        </div>
+     
+
+        {%- for tag in product.tags -%}
+          {%- if tag contains 'ing_' -%}
+            {%- assign ingredientFound = true -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+         {% comment %} {%- if product.metafields.custom.ingredients != blank and ingredientFound -%}
+          <div class="popover-buttons">
+            <button type="button" is="toggle-button" class="link link--basic hidden-phone" aria-controls="ingredients-glossary-drawer" aria-expanded="false">View All Ingredients</button>
+            <button type="button" is="toggle-button" class="link link--basic hidden-tablet-and-up" aria-controls="ingredients-glossary-popover" aria-expanded="false">View All Ingredients</button>
+          </div> {% endcomment %}
+
+       
+        {% if product.metafields.custom.ingredients != blank %}
+          {%- capture glossaryContent -%}
+            {%- assign glossaryMetaobjects = product.metafields.custom.ingredients.value | sort: "title" -%}
+            <div class="ingredients-glossary">
+            <div class="ingredients-glossary--description ">
+            {% for metaobject in glossaryMetaobjects %}
+              <div class="ingredients-glossary--description-item">
+                <strong>{{ metaobject.title }}</strong>
+                <div>
+                  {{ metaobject.description | metafield_tag }}
+                </div>
+            </div>
+            {% endfor %}  
+            </div>
+            </div>
+          {%- endcapture -%}
+
+          {%- assign popoverTitle = "Ingredients For " | append: product.title -%}
+          {%- render 'popover', popoverId: "ingredients-glossary-content", popoverTitle: popoverTitle, popoverButton: "View All Ingredients", popoverContent: glossaryContent, button: "basic", hide_icon: true -%}
+  
+        {%- endif -%}
+        </div>
+
+        <div class="whats-in-it--images">
+          {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_main_information__whats_in_it_image_1, src_mobile: product.metafields.custom.product_main_information__whats_in_it_image_1 %}
+          {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_main_information__whats_in_it_image_2, src_mobile: product.metafields.custom.product_main_information__whats_in_it_image_2 %}
+        </div>
+ 
+
+        </div>
+        {%- endif -%}

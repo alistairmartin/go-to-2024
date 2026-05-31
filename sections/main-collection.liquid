@@ -289,6 +289,7 @@
           {%- endif -%}
 
           {%- paginate collection.products by section.settings.products_per_page -%}
+            {%- render 'structured-data-collection', collection: collection, items_limit: section.settings.products_per_page -%}
             <product-list {% if settings.stagger_products_apparition %}stagger-apparition{% endif %} class="product-facet__product-list product-list anchor {% if section.settings.enable_background %}product-list__background{% endif %}">
               {%- if section.settings.filter_position == 'always_visible' and section.settings.show_filters and collection.filters != empty -%}
                 {%- assign sidebar_width = 305 -%}

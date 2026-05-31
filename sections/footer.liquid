@@ -1,6 +1,19 @@
 {%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
 <style>
-  #shopify-section-{{ section.id }} .footer { 
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'social_media' -%}
+      #shopify-section-{{ section.id }} .social-media-alt .social-media__link {
+        {%- if block.settings.social_icon_background != blank -%}
+          background: {{ block.settings.social_icon_background }};
+        {%- endif -%}
+        {%- if block.settings.social_icon_color != blank -%}
+          color: {{ block.settings.social_icon_color }};
+        {%- endif -%}
+      }
+    {%- endif -%}
+  {%- endfor -%}
+
+  #shopify-section-{{ section.id }} .footer {
 
     {%- if brand == "go-to" -%}
     {%- assign border_color = settings.footer_background | color_mix: settings.footer_text_color, 85 -%}
@@ -59,6 +72,12 @@
   "class": "shopify-section--footer shopify-section--faq",
   "max_blocks": 5,
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_white_logo",
+      "label": "Enable White Logo",
+      "info": "Go-To Only."
+    },
     {
       "type": "checkbox",
       "id": "show_payment_icons",
@@ -193,6 +212,22 @@
           "id": "content",
           "label": "Content",
           "default": "<p>To configure social media, go to your social media settings. Change this text in the theme editor.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Icon colours"
+        },
+        {
+          "type": "color",
+          "id": "social_icon_background",
+          "label": "Icon background",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "social_icon_color",
+          "label": "Icon colour",
+          "default": "#000000"
         }
       ]
     },

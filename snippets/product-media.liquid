@@ -1,3 +1,5 @@
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+
 {%- if product.media.size > 0 -%}
   {%- assign selected_media = product.selected_variant.featured_media | default: product.featured_media -%}
 
@@ -37,6 +39,13 @@
     {%- assign largest_image_aspect_ratio = largest_image_aspect_ratio | at_most: media.preview_image.aspect_ratio -%}
   {%- endfor -%}
 
+
+  {%- if brand == "go-to" -%}
+      {%- render 'product-media--desktop' -%}
+  {%- endif -%}
+
+
+
   <product-media
     filtered-ids="{{ filtered_media_ids | json }}"
     form-id="{{ product_form_id }}"
@@ -48,10 +57,9 @@
       reveal-on-scroll
     {% endif %}
     product-handle="{{ product.handle }}"
-    class="product__media"
+    class="product__media product__media-inner"
     style="--largest-image-aspect-ratio: {{ largest_image_aspect_ratio }}"
   >
-    {%- render 'product-media--wishlist', product: product -%}
 
     <div class="product__media-list-wrapper" style="max-width: {{ max_width }}px">
 
@@ -66,7 +74,8 @@
         "cellSelector": ".product__media-item:not(.is-filtered)",
         "percentPosition": false,
         "pageDots": false,
-        "prevNextButtons": false
+        "prevNextButtons": true,
+        "wrapAround":true
       }
       {%- endcapture -%}
 
@@ -200,10 +209,11 @@
 
               {%- when 'video' -%}
                 <native-video
+                  {% if section.settings.enable_video_autoplay %}autoplay{% endif %}
                   class="video-wrapper video-wrapper--native"
                   style="--aspect-ratio: {{ media.aspect_ratio }}"
                 >
-           
+                  {%- unless section.settings.enable_video_autoplay -%}
                     <div class="video-wrapper__poster">
                       {{
                         media.preview_image
@@ -211,10 +221,9 @@
                         | image_tag:
                           loading: 'lazy',
                           sizes: '(max-width: 999px) calc(100vw - 48px), 640px',
-                          widths: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200',
+                          widths: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600',
                           class: 'video-wrapper__poster-image'
                       }}
-                      {%- unless section.settings.enable_video_autoplay -%}
                       <div class="video-wrapper__poster-content">
                         <button
                           type="button"
@@ -224,9 +233,8 @@
                           {%- render 'icon' with 'play', width: 72, height: 72 -%}
                         </button>
                       </div>
-                      {%- endunless -%}
                     </div>
-            
+                  {%- endunless -%}
 
                   <template>
                     {{-
@@ -236,13 +244,14 @@
                         controls: true,
                         autoplay: true,
                         muted: section.settings.enable_video_autoplay,
+                        playsinline: section.settings.enable_video_autoplay,
                         loop: section.settings.enable_video_looping
                     -}}
                   </template>
                 </native-video>
 
               {%- when 'external_video' -%}
-                <external-video provider="{{ media.host | escape }}" class="video-wrapper">
+                <external-video {% if section.settings.enable_video_autoplay %}autoplay{% endif %} provider="{{ media.host | escape }}" class="video-wrapper{% if section.settings.enable_video_autoplay %} video-wrapper--inert{% endif %}">
                   {%- unless section.settings.enable_video_autoplay -%}
                     <div class="video-wrapper__poster">
                       {{
@@ -251,7 +260,7 @@
                         | image_tag:
                           loading: 'lazy',
                           sizes: '(max-width: 999px) calc(100vw - 48px), 640px',
-                          widths: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200',
+                          widths: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600',
                           class: 'video-wrapper__poster-image'
                       }}
 
@@ -305,6 +314,59 @@
         {% comment %} MEDIA GALLERY --- END {% endcomment %}
       </flickity-carousel>
 
+      <template data-product-media-flickity-icon="prev">
+        {%- render 'icon' with 'brand-chevron-left', block: true, direction_aware: true -%}
+      </template>
+      <template data-product-media-flickity-icon="next">
+        {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
+      </template>
+
+      <script>
+        if (!window.productMediaFlickityIconsInitialized) {
+          window.productMediaFlickityIconsInitialized = true;
+          document.addEventListener("flickity:ready", (event) => {
+            const carousel = event.target;
+
+            if (!carousel || !carousel.classList || !carousel.classList.contains("product__media-list")) {
+              return;
+            }
+
+            const wrapper = carousel.closest(".product__media-list-wrapper");
+            if (!wrapper) {
+              return;
+            }
+
+            const prevTemplate = wrapper.querySelector('[data-product-media-flickity-icon="prev"]');
+            const nextTemplate = wrapper.querySelector('[data-product-media-flickity-icon="next"]');
+
+            const replaceIcon = (button, template) => {
+              if (!button || !template || button.querySelector(".product-media__flickity-icon")) {
+                return;
+              }
+
+              const defaultIcon = button.querySelector(".flickity-button-icon");
+              if (defaultIcon) {
+                defaultIcon.remove();
+              }
+
+              const iconWrapper = document.createElement("span");
+              iconWrapper.className = "product-media__flickity-icon";
+              iconWrapper.appendChild(template.content.cloneNode(true));
+              button.appendChild(iconWrapper);
+            };
+
+            replaceIcon(
+              carousel.querySelector(".flickity-prev-next-button.previous"),
+              prevTemplate
+            );
+            replaceIcon(
+              carousel.querySelector(".flickity-prev-next-button.next"),
+              nextTemplate
+            );
+          });
+        }
+      </script>
+
       {%- if section.settings.enable_image_zoom -%}
         <button
           {% if selected_media.media_type != 'image' %}
@@ -348,7 +410,7 @@
           {%- render 'icon' with 'nav-arrow-left', direction_aware: true -%}
         </button>
 
-        {%- unless section.settings.show_thumbnails_on_mobile -%}
+        {% comment %} {%- unless section.settings.show_thumbnails_on_mobile -%} {% endcomment %}
           <div class="dots-nav dots-nav--centered hidden-lap-and-up">
             {%- if featured_selected_image > 0 -%}
               {%- for media in product.media -%}
@@ -404,7 +466,7 @@
               </button>
             {%- endfor -%}
           </div>
-        {%- endunless -%}
+        {% comment %} {%- endunless -%} {% endcomment %}
 
         <scroll-shadow class="product__thumbnail-scroll-shadow {% unless section.settings.show_thumbnails_on_mobile %}hidden-pocket{% endunless %}">
           <div class="product__thumbnail-list hide-scrollbar">

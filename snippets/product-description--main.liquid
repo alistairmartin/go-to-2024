@@ -1,0 +1,75 @@
+        {%- comment %} CONTENT -  DESCRIPTION {% endcomment -%}
+        
+<div class="product-content-description--content-inner tab-panel description" id="product-content-description--tab-1" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-1" aria-hidden="{{ hidden }}">
+
+        <div class="column">
+            
+          <div class="text-column">
+            <div class="h2 heading title">
+              {{ product.metafields.custom.whats_this_all_about__title |  metafield_text }}
+            </div>
+
+            <div class="description">
+               {{ product.metafields.custom.whats_this_all_about__description2.value }}
+            </div>
+
+          
+          {% assign skinTypeCounter = 0 %}
+          {%- for tag in product.tags -%}
+            {%- if tag contains "skintype_" -%}
+              {%- unless tag contains "jebbit" -%}
+                {% assign skinTypeFound = true %}
+                {%- assign skinTypeCounter = skinTypeCounter | plus: 1 -%}
+              {%- endunless -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+  
+          {%- if skinTypeFound == true -%}
+          <div class="perfect-for">
+            <h3 class="text--bold">{{ 'product.content.plays_nice_with' | t }}</h3>
+            <div class="perfect-for--container items-{{ skinTypeCounter }}">
+              {%- for tag in product.tags -%}
+                {%- if tag contains "skintype_" -%}
+                  {%- unless tag contains "jebbit" -%}
+                  {% assign icon = tag | remove: "skintype_" %}
+                  {% render "product-content-icons--perfect-for", icon: icon %}
+                  {%- endunless -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        {% assign badgeCounter = 0 %}
+        {%- for tag in product.tags -%}
+          {%- if tag contains "badge_" -%}
+            {% assign badgeFound = true %}
+            {%- assign badgeCounter = badgeCounter | plus: 1 -%}
+            {% break %}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if badgeFound -%}
+          <div class="who-is-it-for">
+            <h3 class="text--bold">{{ 'product.content.good_to_know' | t }}</h3>
+            <div class="who-is-it-for--container items-{{ badgeCounter }}">
+              {%- for tag in product.tags -%}
+                {%- if tag contains "badge_" -%}
+                  {%- unless tag contains "jebbit" -%}
+                  {% assign icon = tag | remove: "badge_" %}
+                  {% render "product-content-icons--good-to-know", icon: icon %}
+                  {%- endunless -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        </div>
+
+        <div class="image-column">
+            {% render "responsive-image-metafields", src_desktop: product.metafields.custom.whats_this_all_about__image_desktop, src_mobile: product.metafields.custom.whats_this_all_about__image_desktop %}
+        </div>
+    </div>
+</div>

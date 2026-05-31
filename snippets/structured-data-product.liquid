@@ -1,0 +1,90 @@
+{%- liquid
+  assign price_currency = cart.currency.iso_code | default: shop.currency
+  assign primary_variant = product.selected_or_first_available_variant
+  assign base_url = shop.url | append: product.url
+  assign use_all_variants = product.variants.size <= 30
+  assign has_rating = product.metafields.reviews.rating.value != blank
+-%}
+
+{%- capture product_images -%}
+  {%- if product.images.size > 0 -%}
+    {%- for image in product.images limit: 6 -%}
+      {{ image | image_url: width: 1200 | prepend: 'https:' | json }}{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  {%- elsif product.featured_image -%}
+    {{ product.featured_image | image_url: width: 1200 | prepend: 'https:' | json }}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- capture product_optional_fields -%}
+  {%- if product.vendor != blank -%}
+  ,"brand": {
+    "@type": "Brand",
+    "name": {{ product.vendor | json }}
+  }
+  {%- endif -%}
+  {%- if primary_variant.sku != blank -%}
+  ,"sku": {{ primary_variant.sku | json }}
+  {%- endif -%}
+  {%- if product.type != blank -%}
+  ,"category": {{ product.type | json }}
+  {%- endif -%}
+  {%- if request.locale.iso_code != blank -%}
+  ,"inLanguage": {{ request.locale.iso_code | json }}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- capture aggregate_rating -%}
+  {%- if has_rating -%}
+  ,"aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": {{ product.metafields.reviews.rating.value.rating | json }},
+    "reviewCount": {{ product.metafields.reviews.rating_count.value | default: 0 | json }}
+  }
+  {%- endif -%}
+{%- endcapture -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "@id": {{ base_url | append: "#product" | json }},
+  "name": {{ product.title | strip_html | json }},
+  "url": {{ base_url | json }},
+  "description": {{ product.description | strip_html | strip | json }},
+  "image": [{{ product_images | strip_newlines }}]{{ product_optional_fields | strip_newlines }},
+  "offers": {%- if use_all_variants -%}[
+    {%- for variant in product.variants -%}
+    {
+      "@type": "Offer",
+      "price": {{ variant.price | divided_by: 100.0 | json }},
+      "priceCurrency": {{ price_currency | json }},
+      "availability": "https://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+      "url": {{ base_url | append: "?variant=" | append: variant.id | json }},
+      {%- if variant.sku != blank -%}
+      "sku": {{ variant.sku | json }},
+      {%- endif -%}
+      "itemCondition": "https://schema.org/NewCondition",
+      "seller": {
+        "@type": "Organization",
+        "name": {{ shop.name | json }}
+      }
+    }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]{%- else -%}{
+      "@type": "Offer",
+      "price": {{ primary_variant.price | divided_by: 100.0 | json }},
+      "priceCurrency": {{ price_currency | json }},
+      "availability": "https://schema.org/{% if primary_variant.available %}InStock{% else %}OutOfStock{% endif %}",
+      "url": {{ base_url | append: "?variant=" | append: primary_variant.id | json }},
+      {%- if primary_variant.sku != blank -%}
+      "sku": {{ primary_variant.sku | json }},
+      {%- endif -%}
+      "itemCondition": "https://schema.org/NewCondition",
+      "seller": {
+        "@type": "Organization",
+        "name": {{ shop.name | json }}
+      }
+  }{%- endif -%}{{ aggregate_rating | strip_newlines }}
+}
+</script>

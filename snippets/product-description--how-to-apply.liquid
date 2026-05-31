@@ -1,0 +1,71 @@
+
+
+{%- if product.metafields.custom.product_how_to_apply_image_desktop != blank -%}
+<div class="product-content-description--content-inner tab-panel how-to-apply" id="product-content-description--tab-{{ tab }}" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-{{ tab }}" aria-hidden="{{ hidden }}">
+<section class="section product-how-to-apply">
+  <div class="container">
+
+  <div class="product-how-to-apply--inner">
+
+        <div class="product-how-to-apply--images">
+
+                {% comment %} <h3 class="heading h2 text-align--left">How To Apply</h3> {% endcomment %}
+
+                <div class="product-how-to-apply--items">
+
+                {%- assign itemCounter = 0 -%}
+                    {% for productItem in product.metafields.custom.product_how_to_apply_image_desktop %}
+
+                        {%- liquid
+                        assign imageDesktopObject = product.metafields.custom.product_how_to_apply_image_desktop[forloop.index0]
+                        assign imageMobileObject = product.metafields.product_how_to_apply_image_mobile[forloop.index0]
+                        assign titleObject = product.metafields.custom.product_how_to_apply_title[forloop.index0]
+                        assign descriptionObject = product.metafields.custom.product_how_to_apply_description[forloop.index0] 
+                -%}
+                
+                    <div class="product-how-to-apply--item">
+                        
+                        {% render "responsive-image-metafields", src_desktop: imageDesktopObject, src_mobile: imageMobileObject %}
+
+                        <div class="product-how-to-apply--item-container">
+                        <h4 class="product-how-to-apply--item-title text--bold heading--primary">{{ titleObject }}</h4>
+                        <div class="product-how-to-apply--item-description">
+                            {{ descriptionObject }}
+                        </div>
+                        </div>
+
+                    </div>
+
+                    {%- assign itemCounter = itemCounter | plus: 1 -%}
+                    {%- endfor -%}
+                </div>
+
+        </div>
+
+            <div class="product-how-to-apply--video">
+
+                {%- if product.metafields.custom.how_to_apply_video_id_desktop != blank -%}
+                {% assign vimeoVideoId = product.metafields.custom.how_to_apply_video_id_desktop %}
+            {%- endif -%}
+            
+            {%- if vimeoVideoId != blank -%}
+                <div class="product-how-to-apply--video-iframe">
+                {%- assign video_url_transform = 'https://player.vimeo.com/video/' | append: vimeoVideoId | append: '?autoplay=1&loop=1&background=1&muted=1&portrait=0&byline=0' -%}
+                <iframe src="{{ video_url_transform }}" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen>
+                </iframe>
+                </div>
+            {%- endif -%}
+
+            </div>
+        
+        </div>
+  </div>
+</section>
+
+ <style>
+  #shopify-section-{{ block.id }} .product-how-to-apply {
+    --gridDesktop: {{ itemCounter }};
+  }
+</style>
+</div>
+{%- endif -%}

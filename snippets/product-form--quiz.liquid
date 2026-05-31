@@ -1,0 +1,30 @@
+     {%- if product.metafields.custom.product_quiz_title != balnk -%}
+          <div data-block-type="product_quiz" data-block-id="{{ block.id }}" {{ block.shopify_attributes }} class="product-form--quiz">
+            <div class="product-quiz--inner">
+              <h3>{{  product.metafields.custom.product_quiz_title }}</h3>
+              <p>{{  product.metafields.custom.product_quiz_description }}</p>
+
+              {%- assign product_quiz_link_type =  product.metafields.custom.product_quiz_link_type -%}
+
+
+              {%- if product_quiz_link_type == "Popup" -%}
+              {%- capture modalContent -%}
+                  <div class="rte ">
+                    {{ product.metafields.custom.product_quiz_popup }}
+                  </div>
+                {%- endcapture -%}
+              {%- render 'modal', modalId: "open-product-quiz", buttonId: "open-product-quiz" content: modalContent -%}
+              {%- endif -%}
+
+              <div class="button-container">
+                {%- if product_quiz_link_type == "Link" -%}
+                  <a href="{{  product.metafields.custom.quiz_link }}" class="link link--primary">{{  product.metafields.custom.product_quiz_button_text }}</a>
+                {%- endif -%}
+
+                {%- if product_quiz_link_type == "Popup" -%}
+                  <button id="open-product-quiz"class="link link--primary">{{  product.metafields.custom.product_quiz_button_text }}</button>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+          {%- endif -%}

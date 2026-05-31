@@ -1,0 +1,115 @@
+{%- assign noTabsFound = true -%}
+
+<section>
+  <div class="container">
+    <div class="product-content-description-V2" id="learn-more">
+
+
+        
+        <div class="tab-list">
+          <div class="tab-list--outer tab-list--outer-main {% if hideTabs == true %}hide{% endif %}">
+            <div class="tab-list--inner" role="tablist">
+
+             {%- if product.type == "Blush" or product.type == "Highlighter" -%}
+                  {%- if product.metafields.custom.product_how_to_apply_image_desktop != blank -%}
+                  <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-2" class="tab-list--tab active">
+                      HOW TO APPLY
+                  </button>
+                    {%- assign noTabsFound = false -%}
+                  {% endif %}
+
+                  <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-1" class="tab-list--tab">WHAT IS IT?</button>
+                  
+             {% else %}
+                  <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-1" class="tab-list--tab active">WHAT IS IT?</button>
+
+                  {%- if product.metafields.custom.product_how_to_apply_image_desktop != blank -%}
+                  <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-2" class="tab-list--tab {% if product.type == "Blush" or product.type == "Highlighter" %}active{% endif %}">
+                      HOW TO APPLY
+                  </button>
+                    {%- assign noTabsFound = false -%}
+                  {% endif %}
+             {% endif %}
+
+
+            
+
+              {%- if product.metafields.custom.product_trials__side-by-side.size >= 1 -%}
+              <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-3" class="tab-list--tab">
+                  CLINICAL TRIALS
+              </button>
+              {%- assign noTabsFound = false -%}
+              {% endif %}
+
+              {%- if product.metafields.custom.product_routine__steps-morning != blank and product.metafields.custom.product_routine__steps-evening != blank -%}
+               <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-4" class="tab-list--tab">
+                  {%- render 'icon' with "go-to-sun" -%} AM /  {%- render 'icon' with "go-to-moon" -%} PM
+              </button>
+               {%- assign noTabsFound = false -%}
+              {% endif %}
+
+              {%- if product.metafields.accentuate.product_main_information__whats_in_it != blank -%}
+              <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-5" class="tab-list--tab">
+                  WHAT'S IN IT?
+              </button>
+               {%- assign noTabsFound = false -%}
+              {% endif %}
+
+              {%- if product.metafields.custom.product_doing_our_bit__how_its_made != blank or product.metafields.custom.product_doing_our_bit__how_to_recycle != blank -%}
+              <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-6" class="tab-list--tab">
+                  REUSE & RECYCLE
+              </button>
+               {%- assign noTabsFound = false -%}
+              {% endif %}
+
+
+            </div>
+          </div>
+          <div class="tab-list--scroll-indicator {% if hideTabs == true %}hide{% endif %}" aria-hidden="true">
+            <span class="tab-list--scroll-indicator-bar"></span>
+          </div>
+          
+          {%- if product.type == "Blush" or product.type == "Highlighter" -%}
+                 {%- render 'product-description--how-to-apply' product: product, tab: 2, hidden: false  -%}
+                 {%- render 'product-description--main' product: product, tab: 1, hidden: true  -%}
+          {% else %}
+              {%- render 'product-description--main' product: product, tab: 1, hidden: false  -%}
+              {%- render 'product-description--how-to-apply' product: product, tab: 2, hidden: true  -%}
+          {%- endif -%}
+
+          {%- render 'product-description--clinical-trial' product: product, tab: 3, hidden: true  -%}
+
+          {%- render 'product-description--routine' product: product, tab: 4, hidden: true -%}
+
+          {%- render 'product-description--ingredients' product: product, tab: 5, hidden: true -%}
+
+          {%- render 'product-description--recycle' product: product, tab: 6, hidden: true -%}
+
+
+          </div>
+
+      
+    </div>
+  </div>
+
+</section>
+
+{%- if noTabsFound == true and product.metafields.custom.whats_this_all_about__description2.value != blank -%}
+  <style>
+    .learn-more{display: none !important;}
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Prod. Con: Description V2",
+  "class": "shopify-section--product-content-description",
+  "settings": [],
+  "presets":[
+    {
+      "name": "Prod. Con: Description V2",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

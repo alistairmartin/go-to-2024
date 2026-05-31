@@ -9,6 +9,11 @@
     color: var(--font-color-mobile);
     font-weight: var(--font-weight-mobile) !important;
 
+    &:last-child {
+      margin-block-end: var(--margin-bottom-mobile) !important;
+      -webkit-margin-after: var(--margin-bottom-mobile) !important;
+    }
+
     @include media-query($medium-up) {
       font-family: var(--font-family-desktop);
       text-align: var(--font-alignment-desktop);
@@ -16,6 +21,11 @@
       margin-bottom: var(--margin-bottom-desktop) !important;
       color: var(--font-color-desktop);
       font-weight: var(--font-weight-desktop)  !important;
+
+      &:last-child {
+        margin-block-end: var(--margin-bottom-desktop) !important;
+        -webkit-margin-after: var(--margin-bottom-desktop) !important;
+      }
     }
 
     &.blocks--text-custom {

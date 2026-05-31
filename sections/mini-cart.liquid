@@ -273,6 +273,7 @@ updateCartAttributes(cartAttributes);
       {%- render 'cart--free-shipping' -%}
       {%- render 'mini-cart--gifts' -%}
       {%- render 'mini-cart--byo-bundle-message' -%}
+      {%- render 'cart--image-banner' -%}
 
       <form id="mini-cart-form" action="{{ routes.cart_url }}" novalidate method="post">
         <input type="hidden" name="checkout">
@@ -470,7 +471,7 @@ updateCartAttributes(cartAttributes);
 
                 <line-item-quantity class="line-item__quantity">
 
-                  {%- unless line_item.product.type == "Gift" or line_item.product.type == "GWP" -%}
+                  {%- unless line_item.product.type == "Gift" or line_item.product.type == "GWP" or line_item.product.tags contains "limit-1" -%}
                   <div class="quantity-selector quantity-selector--small">
                     <a href="{{ routes.cart_change_url }}?quantity={{ line_item.quantity | minus: 1 }}&line={{ forloop.index }}" class="quantity-selector__button" aria-label="{{ 'cart.general.decrease_quantity' | t | escape }}" data-no-instant>
                       {%- render 'icon' with 'minus' -%}
@@ -1187,6 +1188,147 @@ updateCartAttributes(cartAttributes);
           "type": "text",
           "id": "block_checkout_button_no",
           "label": "No Thank You Button"
+        }
+      ]
+    },
+    {
+      "type": "tiered_progress",
+      "name": "Tiered Progress bar",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Admin Title",
+          "info": "Only Admin Will See This."
+        },
+        {
+          "type": "paragraph",
+          "content": "Heads up: thresholds are per-currency (AUD / GBP / EUR / USD). If you leave a currency blank for every tier, the bar will be hidden for customers checking out in that currency."
+        },
+        {
+          "type": "header",
+          "content": "Enable For Brand's Cart"
+        },
+        {
+          "type": "checkbox",
+          "id": "go-to",
+          "label": "🟪 Go-To"
+        },
+        {
+          "type": "checkbox",
+          "id": "bro-to",
+          "label": "🟥 Bro-To"
+        },
+        {
+          "type": "checkbox",
+          "id": "gro-to",
+          "label": "🟩 Gro-To"
+        },
+        {
+          "type": "header",
+          "content": "Tier 1"
+        },
+        {
+          "type": "text",
+          "id": "tier1_text",
+          "label": "Tier 1 Label",
+          "info": "Shown at the marker. Use [amount] to insert the threshold for the visitor's currency. e.g. \"Spend [amount] get 20% off\""
+        },
+        {
+          "type": "number",
+          "id": "tier1_threshold_AUD",
+          "label": "Tier 1 Threshold (AUD)"
+        },
+        {
+          "type": "number",
+          "id": "tier1_threshold_GBP",
+          "label": "Tier 1 Threshold (GBP)"
+        },
+        {
+          "type": "number",
+          "id": "tier1_threshold_EUR",
+          "label": "Tier 1 Threshold (EUR)"
+        },
+        {
+          "type": "number",
+          "id": "tier1_threshold_USD",
+          "label": "Tier 1 Threshold (USD)"
+        },
+        {
+          "type": "header",
+          "content": "Tier 2"
+        },
+        {
+          "type": "text",
+          "id": "tier2_text",
+          "label": "Tier 2 Label",
+          "info": "Use [amount] to insert the tier threshold."
+        },
+        {
+          "type": "number",
+          "id": "tier2_threshold_AUD",
+          "label": "Tier 2 Threshold (AUD)"
+        },
+        {
+          "type": "number",
+          "id": "tier2_threshold_GBP",
+          "label": "Tier 2 Threshold (GBP)"
+        },
+        {
+          "type": "number",
+          "id": "tier2_threshold_EUR",
+          "label": "Tier 2 Threshold (EUR)"
+        },
+        {
+          "type": "number",
+          "id": "tier2_threshold_USD",
+          "label": "Tier 2 Threshold (USD)"
+        },
+        {
+          "type": "header",
+          "content": "Tier 3"
+        },
+        {
+          "type": "text",
+          "id": "tier3_text",
+          "label": "Tier 3 Label",
+          "info": "Use [amount] to insert the tier threshold."
+        },
+        {
+          "type": "number",
+          "id": "tier3_threshold_AUD",
+          "label": "Tier 3 Threshold (AUD)"
+        },
+        {
+          "type": "number",
+          "id": "tier3_threshold_GBP",
+          "label": "Tier 3 Threshold (GBP)"
+        },
+        {
+          "type": "number",
+          "id": "tier3_threshold_EUR",
+          "label": "Tier 3 Threshold (EUR)"
+        },
+        {
+          "type": "number",
+          "id": "tier3_threshold_USD",
+          "label": "Tier 3 Threshold (USD)"
+        },
+        {
+          "type": "header",
+          "content": "Progress Bar"
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "Background",
+          "default": "#FDE4DB"
+        },
+        {
+          "type": "color",
+          "id": "fill_color",
+          "label": "Fill Colour",
+          "default": "#181818"
         }
       ]
     },

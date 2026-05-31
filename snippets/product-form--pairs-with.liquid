@@ -1,0 +1,59 @@
+
+  {%- unless product.type == "Gifts & Sets" -%}
+<div data-block-type="Pairs With" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+  <div class="product-form--pairs-with">
+
+
+    <h2 class="heading h6 heading--secondary text--bold-medium">
+      PAIRS WELL WITH
+    </h2>
+
+    <div
+      class="section {% unless blends_with_background %}section--flush{% endunless %}"
+    >
+      <product-list {% if settings.stagger_products_apparition %}stagger-apparition{% endif %} class="product-list" data-scroll-step="item">
+        {%- assign largest_image_aspect_ratio = 1 -%}
+        {%- assign shown_products_count = 0 -%}
+
+        <div class="scroller">
+          <div class="product-list__inner product-list__inner--scroller product-list__inner--desktop-no-scroller hide-scrollbar">
+            {%- for product in product.metafields.shopify--discovery--product_recommendation.complementary_products.value -%}
+
+
+              {%- assign shown_products_count = shown_products_count | plus: 1 -%}
+              {%- assign largest_image_aspect_ratio = largest_image_aspect_ratio | at_most: product.featured_media.aspect_ratio -%}
+
+              {%- capture sizes_attribute -%}(max-width: 740px) 75vw, min({{ 100.0 | divided_by: 3 | ceil }}vw, {{ 1520.0 | divided_by: 3 | ceil }}px){%- endcapture -%}
+              {%- render 'product-item--recommended', product: product, reduced_content: true, show_cta: true, sizes_attribute: sizes_attribute, reveal: true, horizontal: true, showHiddenProduct: true -%}
+            {%- endfor -%}
+          </div>
+        </div>
+
+              <prev-next-buttons class="product-list__prev-next hidden-pocket" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
+              <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled data-action="prev">
+                <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
+                {%- render 'icon' with 'brand-chevron-left', block: true, direction_aware: true -%}
+              </button>
+
+              <button class="product-list__arrow prev-next-button prev-next-button--next" data-action="next">
+                <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
+                {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
+              </button>
+            </prev-next-buttons>
+            
+      </product-list>
+    </div>
+  </div>
+</div>
+{% comment %} {%- if shown_products_count == 0 -%}
+  <style>
+    [data-block-type="Pairs With"] {
+      display: none !important;
+    }
+
+    [data-block-id="liquid_Aj8rUP"] {
+      display: none !important;
+    }
+  </style>
+{%- endif -%}  {% endcomment %}
+{% endunless %}

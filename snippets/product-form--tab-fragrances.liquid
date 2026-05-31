@@ -1,0 +1,34 @@
+{%- assign headValue = product.metafields.accentuate.product_key_fragrances__head -%}
+{%- assign heartValue = product.metafields.accentuate.product_key_fragrances__heart -%}
+{%- assign baseValue = product.metafields.accentuate.product_key_fragrances__base -%}
+
+
+  <div class="product-content-ingredients">      
+    <div class="product-content-ingredients--text">
+      <div class="">
+
+        {%- if headValue != blank -%}
+          <div class="product-content-ingredients--text-item">
+            <p class="heading h6 text--bold">HEAD</p>
+            {{ headValue | metafield_tag }}
+          </div>
+          {%- endif -%}
+
+          {%- if heartValue != blank -%}
+          <div class="product-content-ingredients--text-item">
+            <p class="heading h6 text--bold">HEART</p>
+            {{ heartValue | metafield_tag }}
+          </div>
+          {%- endif -%}
+           
+          {%- if baseValue != blank -%}
+          <div class="product-content-ingredients--text-item">
+            <p class="heading h6 text--bold">BASE</p>
+            {{ baseValue | metafield_tag }}
+          </div>
+          {%- endif -%}
+ 
+      </div>
+
+    </div>
+  </div>

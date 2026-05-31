@@ -92,8 +92,8 @@
           </div>
 
           {% unless product_desc.size < 110 %}
-            <button type="button" name="button" data-action="toggle-teaser" aria-controls="product-content-description--teaser" class="product-content-description--teaser-open link">{{ 'product.general.read_more' | t }}</button>
-            <button type="button" name="button" data-action="toggle-teaser" aria-controls="product-content-description--teaser" class="product-content-description--teaser-close hidden link">{{ 'product.general.show_less' | t }}</button>
+            <button type="button" name="button" data-action="toggle-teaser" aria-controls="product-content-description--teaser" class="product-content-description--teaser-open link link--basic">{{ 'product.general.read_more' | t }}</button>
+            <button type="button" name="button" data-action="toggle-teaser" aria-controls="product-content-description--teaser" class="product-content-description--teaser-close hidden link link--basic">{{ 'product.general.show_less' | t }}</button>
 
           {% endunless %}
 
@@ -110,6 +110,7 @@
   
           {%- if skinTypeFound == true -%}
           <div class="perfect-for">
+            {% comment %} <h3 class="text--bold">{{ 'product.content.plays_nice_with' | t }}</h3> {% endcomment %}
             <h3 class="text--bold">{{ 'product.content.plays_nice_with' | t }}</h3>
             <div class="perfect-for--container items-{{ skinTypeCounter }}">
               {%- for tag in product.tags -%}

@@ -1,0 +1,100 @@
+ {%- assign subscription_groups = product.selling_plan_groups -%}
+          {%- assign has_subscription_groups = subscription_groups.size -%}
+          {%- assign plan_select_id = 'selling-plan-' | append: section.id | append: '-' | append: product.id | append: '-' | append: block.id -%}
+
+          {%- if has_subscription_groups > 0 -%}
+          <div data-block-type="custom_subscription" data-block-id="{{ block.id }}" {{ block.shopify_attributes }} class="product-form--custom-subscription">
+            <fieldset class="custom-subscription" role="radiogroup" aria-label="Purchase options">
+              <label class="custom-subscription__row">
+                <input
+                  class="custom-subscription__radio"
+                  type="radio"
+                  name="purchase_option"
+                  value="one_time"
+                  form="{{ product_form_id }}"
+                  checked
+                />
+                <span class="custom-subscription__indicator" aria-hidden="true"></span>
+                <span class="custom-subscription__label">One-time purchase</span>
+              </label>
+
+              <div class="custom-subscription__divider" aria-hidden="true"></div>
+
+              <label class="custom-subscription__row custom-subscription__row--with-link">
+                <input
+                  class="custom-subscription__radio"
+                  type="radio"
+                  name="purchase_option"
+                  value="subscribe"
+                  form="{{ product_form_id }}"
+                  {% unless has_subscription_groups > 0 %}disabled{% endunless %}
+                />
+                <span class="custom-subscription__indicator" aria-hidden="true"></span>
+                <span class="custom-subscription__label">
+                  <span class="custom-subscription__label-regular">Subscribe <span class="custom-subscription__label-bold">(free gift included!)</span></span>
+                  {% comment %} <strong class="custom-subscription__label-strong">
+                    Perk-y and convenient
+                  </strong> {% endcomment %}
+                </span>
+                
+
+                {%- capture product_subscription_content -%}
+                <div class="how-it-works text-base">
+                  <div class="rte">
+                    {{ pages["subscriptions-faq-pdp"].content }}
+                  </div>
+                  {% comment %} <p>Set and forget on your Go-To favourites.</p> <p>Want to reorder peach skincare without <em>actually</em> having to reorder peach skincare? Same. So, set up a handy subscription and score <strong>a free gift</strong> from us in every subscription order 
+                (<strong>just make sure you add it to the cart the first time around</strong>).</p> <p>Select your preferred schedule, and we’ll automatically ship these products to you*. </p> <p>*You can <em>modify</em> or <em>cancel</em> your subscription at any time. (Even 3:47am.)</p> <p><a href="https://gotoskincare.com/pages/product-subscriptions" title="Learn more." aria-label="Learn more"><strong>Learn more</strong>.</a></p>
+                 {% endcomment %}
+
+                 
+                </div>
+                {%- endcapture -%}
+
+                {%- assign blockId = "subscription_details" -%}
+                {%- render 'modal', modalId: blockId, buttonId: blockId, content: product_subscription_content, class: "modal-padding" -%}
+
+                {%- render 'icon', icon: 'go-to-info' -%}
+              </label>
+
+          
+              {% if has_subscription_groups > 0 %}
+                <div class="custom-subscription__plans" data-selling-plan-container hidden>
+
+                  <ul class="custom-subscription__bullets" id="subscribe-details">
+                    <li>Free gift with first subscription</li>
+                    <li><a href="https://gotoskincare.com/pages/go-to-gang" class="custom-subscription__link">50 extra points</a>  on subscription orders*</li>
+                    <li>Cancel or modify anytime — no stress</li>
+                    <li>    
+                      <button class="custom-subscription__link" id="{{ blockId }}">
+                      More Info
+                      </button>
+                    </li>
+                  </ul>
+
+                  <label class="input__block-label hidden" for="{{ plan_select_id }}">Delivery frequency</label>
+                  <div class="select-wrapper">
+                    <select
+                      class="select custom-subscription__select"
+                      id="{{ plan_select_id }}"
+                      name="selling_plan"
+                      form="{{ product_form_id }}"
+                      data-selling-plan-select
+                      disabled
+                    >
+                      {% for selling_plan_group in subscription_groups %}
+                        {% for selling_plan in selling_plan_group.selling_plans %}
+                          <option value="{{ selling_plan.id }}">
+                            {{ selling_plan_group.name }} 
+                            {% comment %} - {{ selling_plan.name }} {% endcomment %}
+                          </option>
+                        {% endfor %}
+                      {% endfor %}
+                    </select>
+                    {%- render 'icon' with 'chevron' -%}
+                  </div>
+                </div>
+              {% endif %}
+            </fieldset>
+          </div>
+          {%- endif -%}

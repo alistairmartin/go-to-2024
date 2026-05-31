@@ -1,0 +1,36 @@
+{%- assign card = block.settings.card -%}
+{%- assign desktop_image = card.image.value | default: card.image -%}
+{%- assign card_url = card.collection_url.value.url | default: card.collection_url.url | default: '#' -%}
+{%- assign card_label = card.title.value | default: card.title -%}
+
+{%- capture sizes_attribute -%}(max-width: 740px) {{ section.settings.mobile_card_width }}vw, calc(min(100vw - 80px, 1520px) / {{ section.settings.cards_per_row }}){%- endcapture -%}
+
+<a href="{{ card_url }}" class="category-card image-zoom" {{ block.shopify_attributes }}>
+  {%- if desktop_image != blank -%}
+    {{ desktop_image | image_url: width: desktop_image.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '300,400,500,600,700,800,1000,1200', class: 'category-card__image', alt: card_label }}
+  {%- else -%}
+    {%- capture placeholder -%}collection-{% cycle '1', '2', '3', '4', '5', '6' %}{%- endcapture -%}
+    {{ placeholder | placeholder_svg_tag: 'category-card__image placeholder-background' }}
+  {%- endif -%}
+
+  {%- if card_label != blank -%}
+    <span class="category-card__label">{{ card_label }}</span>
+  {%- endif -%}
+</a>
+
+{% schema %}
+{
+  "name": "Card",
+  "settings": [
+    {
+      "type": "metaobject",
+      "id": "card",
+      "label": "Card",
+      "metaobject_type": "collection_category_card"
+    }
+  ],
+  "presets": [
+    { "name": "Card" }
+  ]
+}
+{% endschema %}

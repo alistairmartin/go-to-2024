@@ -1,0 +1,60 @@
+{%- assign show = false -%}
+{%- for col in block.settings.collection_list -%}
+  {%- if col.handle == collection.handle -%}
+    {%- assign show = true -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if show -%}
+  <section {{ block.shopify_attributes }}>
+    <div class="{% if section.settings.enable_container %}container{% endif %}">
+      <div class="page-header">
+        <link-bar class="link-bar">
+          <div class="container">
+            <div class="link-bar__wrapper">
+
+              {%- if block.settings.main_text != blank -%}
+                <span class="link-bar__title heading heading--small text--subdued">{{ block.settings.main_text }}</span>
+              {%- endif -%}
+
+              <div class="link-bar__scroller hide-scrollbar">
+                <ul class="link-bar__linklist list--unstyled" role="list">
+                  {% content_for 'blocks' %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </link-bar>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collection select",
+  "blocks": [{ "type": "_collection-navigation-link" }],
+  "settings": [
+    {
+      "type": "collection_list",
+      "id": "collection_list",
+      "label": "Collections"
+    },
+    {
+      "type": "text",
+      "id": "main_text",
+      "label": "Navigation Title",
+      "info": "Optional"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection select",
+      "blocks": [
+        { "type": "_collection-navigation-link" }
+      ]
+    }
+  ]
+}
+{% endschema %}

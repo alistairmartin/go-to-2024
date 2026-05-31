@@ -550,6 +550,10 @@
             {
               "value": "enabled",
               "label": "Custom Width"
+            },
+            {
+              "value": "percentage",
+              "label": "Custom Percent"
             }
           ]
         },
@@ -561,7 +565,17 @@
           "step": 20,
           "unit": "px",
           "default": 400,
-          "label": "Max Width (Pixels)"
+          "label": "Max Width (px)"
+        },
+        {
+          "type": "range",
+          "id": "max_width_value_desktop_percent",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 50,
+          "label": "Max Width (%)"
         },
         {
           "type": "select",
@@ -1579,6 +1593,10 @@
             {
               "value": "700",
               "label": "Bold (700)"
+            },
+            {
+              "value": "800",
+              "label": "Black (800)"
             }
           ],
           "default": "400"
@@ -1745,6 +1763,10 @@
             {
               "value": "700",
               "label": "Bold (700)"
+            },
+            {
+              "value": "800",
+              "label": "Black (800)"
             }
           ],
           "default": "400"

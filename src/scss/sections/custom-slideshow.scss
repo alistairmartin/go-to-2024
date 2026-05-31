@@ -355,6 +355,10 @@
 
       &.split-slide--position-right {
         direction: rtl; 
+
+        .blocks--text-custom {
+          direction: ltr;
+        }
       }
 
       .split-slide-carousel {

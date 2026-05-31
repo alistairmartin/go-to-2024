@@ -1,3 +1,5 @@
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+
 {%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
   {%- assign blends_with_background = false -%}
 {%- else -%}
@@ -43,6 +45,73 @@
     width: auto;
   }
 
+  {%- if section.settings.cards_per_view_desktop > 0 -%}
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} scrollable-content .container,
+    #shopify-section-{{ section.id }} scrollable-content .no-container {
+      padding-left: 0;
+      padding-right: 0;
+      margin-left: 0;
+      max-width: none;
+    }
+    #shopify-section-{{ section.id }} .gallery__list {
+      padding-left: {{ section.settings.cards_per_view_padding_desktop }}px;
+      padding-right: {{ section.settings.cards_per_view_padding_desktop }}px;
+    }
+    #shopify-section-{{ section.id }} .gallery__item {
+      width: calc((100vw - {{ section.settings.cards_per_view_padding_desktop | times: 2 }}px - ({{ section.settings.cards_per_view_desktop }} - 1) * {{ section.settings.cards_per_view_gap_desktop }}px) / {{ section.settings.cards_per_view_desktop }});
+    }
+    #shopify-section-{{ section.id }} .gallery__item:not(:first-child) {
+      margin-inline-start: {{ section.settings.cards_per_view_gap_desktop }}px;
+    }
+    #shopify-section-{{ section.id }} .gallery__list::after {
+      flex: 0 0 0;
+    }
+    #shopify-section-{{ section.id }} video {
+      width: 100%;
+      height: auto;
+    }
+    #shopify-section-{{ section.id }} .gallery__image {
+      width: 100%;
+      height: auto;
+    }
+  }
+  {%- endif -%}
+
+  #shopify-section-{{ section.id }} .section__header .heading:not(.heading--small) {
+    text-align: {{ section.settings.title_text_align_desktop }};
+    font-size: {{ section.settings.title_font_size_desktop }}px;
+    font-weight: {{ section.settings.title_font_weight_desktop }};
+    font-style: {{ section.settings.title_font_style_desktop }};
+    margin-bottom: {{ section.settings.title_margin_bottom_desktop }}px;
+  }
+
+  #shopify-section-{{ section.id }} .section__header .heading--small {
+    text-align: {{ section.settings.subheading_text_align_desktop }};
+    font-size: {{ section.settings.subheading_font_size_desktop }}px;
+    font-weight: {{ section.settings.subheading_font_weight_desktop }};
+    font-style: {{ section.settings.subheading_font_style_desktop }};
+    margin-bottom: {{ section.settings.subheading_margin_bottom_desktop }}px;
+  }
+
+  @media screen and (max-width: 740px) {
+    #shopify-section-{{ section.id }} .section__header .heading:not(.heading--small) {
+      text-align: {{ section.settings.title_text_align_mobile }};
+      font-size: {{ section.settings.title_font_size_mobile }}px;
+      font-weight: {{ section.settings.title_font_weight_mobile }};
+      font-style: {{ section.settings.title_font_style_mobile }};
+      margin-bottom: {{ section.settings.title_margin_bottom_mobile }}px;
+    }
+
+    #shopify-section-{{ section.id }} .section__header .heading--small {
+      text-align: {{ section.settings.subheading_text_align_mobile }};
+      font-size: {{ section.settings.subheading_font_size_mobile }}px;
+      font-weight: {{ section.settings.subheading_font_weight_mobile }};
+      font-style: {{ section.settings.subheading_font_style_mobile }};
+      margin-bottom: {{ section.settings.subheading_margin_bottom_mobile }}px;
+    }
+  }
+
   {%- for block in section.blocks -%}
 
     {%- if block.settings.enable_media_height -%}
@@ -50,6 +119,43 @@
           height: {{ block.settings.media_height }}vw;
         }
     {%- endif -%}
+
+    #block-{{ block.id }} .gallery__item-title {
+      text-align: {{ block.settings.title_text_align_desktop }};
+      font-size: {{ block.settings.title_font_size_desktop }}px;
+      font-weight: {{ block.settings.title_font_weight_desktop }};
+      font-style: {{ block.settings.title_font_style_desktop }};
+      margin-bottom: {{ block.settings.title_margin_bottom_desktop }}px;
+      {%- if brand == "go-to" -%}{%- if block.settings.title_font_family_desktop == "primary" -%}font-family:"Benton";{%- elsif block.settings.title_font_family_desktop == "secondary" -%}font-family:"Marcel";{%- endif -%}{%- elsif brand == "bro-to" -%}{%- if block.settings.title_font_family_desktop == "primary" -%}font-family:"MillerDisplay";{%- elsif block.settings.title_font_family_desktop == "secondary" -%}font-family:"FFMarkWebPro";{%- endif -%}{%- elsif brand == "gro-to" -%}{%- if block.settings.title_font_family_desktop == "primary" -%}font-family:"ProximaNova";{%- elsif block.settings.title_font_family_desktop == "secondary" -%}font-family:"SofiaProSoft";{%- endif -%}{%- endif -%}
+    }
+
+    #block-{{ block.id }} .gallery__caption {
+      text-align: {{ block.settings.caption_text_align_desktop }};
+      font-size: {{ block.settings.caption_font_size_desktop }}px;
+      font-weight: {{ block.settings.caption_font_weight_desktop }};
+      font-style: {{ block.settings.caption_font_style_desktop }};
+      margin-bottom: {{ block.settings.caption_margin_bottom_desktop }}px;
+      {%- if brand == "go-to" -%}{%- if block.settings.caption_font_family_desktop == "primary" -%}font-family:"Benton";{%- elsif block.settings.caption_font_family_desktop == "secondary" -%}font-family:"Marcel";{%- endif -%}{%- elsif brand == "bro-to" -%}{%- if block.settings.caption_font_family_desktop == "primary" -%}font-family:"MillerDisplay";{%- elsif block.settings.caption_font_family_desktop == "secondary" -%}font-family:"FFMarkWebPro";{%- endif -%}{%- elsif brand == "gro-to" -%}{%- if block.settings.caption_font_family_desktop == "primary" -%}font-family:"ProximaNova";{%- elsif block.settings.caption_font_family_desktop == "secondary" -%}font-family:"SofiaProSoft";{%- endif -%}{%- endif -%}
+    }
+
+    @media screen and (max-width: 740px) {
+      #block-{{ block.id }} .gallery__item-title {
+        text-align: {{ block.settings.title_text_align_mobile }};
+        font-size: {{ block.settings.title_font_size_mobile }}px;
+        font-weight: {{ block.settings.title_font_weight_mobile }};
+        font-style: {{ block.settings.title_font_style_mobile }};
+        margin-bottom: {{ block.settings.title_margin_bottom_mobile }}px;
+        {%- if brand == "go-to" -%}{%- if block.settings.title_font_family_mobile == "primary" -%}font-family:"Benton";{%- elsif block.settings.title_font_family_mobile == "secondary" -%}font-family:"Marcel";{%- endif -%}{%- elsif brand == "bro-to" -%}{%- if block.settings.title_font_family_mobile == "primary" -%}font-family:"MillerDisplay";{%- elsif block.settings.title_font_family_mobile == "secondary" -%}font-family:"FFMarkWebPro";{%- endif -%}{%- elsif brand == "gro-to" -%}{%- if block.settings.title_font_family_mobile == "primary" -%}font-family:"ProximaNova";{%- elsif block.settings.title_font_family_mobile == "secondary" -%}font-family:"SofiaProSoft";{%- endif -%}{%- endif -%}
+      }
+      #block-{{ block.id }} .gallery__caption {
+        text-align: {{ block.settings.caption_text_align_mobile }};
+        font-size: {{ block.settings.caption_font_size_mobile }}px;
+        font-weight: {{ block.settings.caption_font_weight_mobile }};
+        font-style: {{ block.settings.caption_font_style_mobile }};
+        margin-bottom: {{ block.settings.caption_margin_bottom_mobile }}px;
+        {%- if brand == "go-to" -%}{%- if block.settings.caption_font_family_mobile == "primary" -%}font-family:"Benton";{%- elsif block.settings.caption_font_family_mobile == "secondary" -%}font-family:"Marcel";{%- endif -%}{%- elsif brand == "bro-to" -%}{%- if block.settings.caption_font_family_mobile == "primary" -%}font-family:"MillerDisplay";{%- elsif block.settings.caption_font_family_mobile == "secondary" -%}font-family:"FFMarkWebPro";{%- endif -%}{%- elsif brand == "gro-to" -%}{%- if block.settings.caption_font_family_mobile == "primary" -%}font-family:"ProximaNova";{%- elsif block.settings.caption_font_family_mobile == "secondary" -%}font-family:"SofiaProSoft";{%- endif -%}{%- endif -%}
+      }
+    }
 
   {%- endfor -%}
   
@@ -61,13 +167,15 @@
     <div class="container container-header">
       {%- if section.settings.subheading != blank or section.settings.title != blank -%}
         <header class="section__header container text-container text-{{ section.settings.header_text_alignment }}">
+      
+          {%- if section.settings.title != blank -%}
+            <h3 class="heading {{ section.settings.heading_html }} heading--{{ section.settings.font_family_title }}">{{ section.settings.title | escape }}</h3>
+          {%- endif -%}
+
           {%- if section.settings.subheading != blank -%}
             <h2 class="heading heading--small">{{ section.settings.subheading | escape }}</h2>
           {%- endif -%}
   
-          {%- if section.settings.title != blank -%}
-            <h3 class="heading {{ section.settings.heading_html }} heading--{{ section.settings.font_family_title }}">{{ section.settings.title | escape }}</h3>
-          {%- endif -%}
         </header>
       {%- endif -%}
     </div>
@@ -112,6 +220,10 @@
                     {{ block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000', class: 'gallery__image' }}
                   {%- else -%}
                     {{- 'image' | placeholder_svg_tag: 'gallery__image gallery__image placeholder-background' -}}
+                  {%- endif -%}
+
+                  {%- if block.settings.title != blank -%}
+                    <p class="gallery__item-title">{{ block.settings.title | escape }}</p>
                   {%- endif -%}
 
                   {%- if block.settings.caption != blank -%}
@@ -201,12 +313,297 @@
         },
         {
           "type": "header",
-          "content": "Text"
+          "content": "Title"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "header",
+          "content": "Title - Desktop"
+        },
+        {
+          "type": "range",
+          "id": "title_font_size_desktop",
+          "min": 8,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size",
+          "default": 24
+        },
+        {
+          "type": "select",
+          "id": "title_font_weight_desktop",
+          "label": "Font Weight",
+          "options": [
+            { "value": "300", "label": "Light (300)" },
+            { "value": "400", "label": "Normal (400)" },
+            { "value": "500", "label": "Medium (500)" },
+            { "value": "600", "label": "Semi Bold (600)" },
+            { "value": "700", "label": "Bold (700)" },
+            { "value": "800", "label": "Extra Bold (800)" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "select",
+          "id": "title_font_style_desktop",
+          "label": "Font Style",
+          "options": [
+            { "value": "normal", "label": "Normal" },
+            { "value": "italic", "label": "Italic" }
+          ],
+          "default": "normal"
+        },
+        {
+          "type": "select",
+          "id": "title_font_family_desktop",
+          "label": "Font Family",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" }
+          ],
+          "default": "primary"
+        },
+        {
+          "type": "select",
+          "id": "title_text_align_desktop",
+          "label": "Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "title_margin_bottom_desktop",
+          "min": 0,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "label": "Margin Bottom",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Title - Mobile"
+        },
+        {
+          "type": "range",
+          "id": "title_font_size_mobile",
+          "min": 8,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size",
+          "default": 20
+        },
+        {
+          "type": "select",
+          "id": "title_font_weight_mobile",
+          "label": "Font Weight",
+          "options": [
+            { "value": "300", "label": "Light (300)" },
+            { "value": "400", "label": "Normal (400)" },
+            { "value": "500", "label": "Medium (500)" },
+            { "value": "600", "label": "Semi Bold (600)" },
+            { "value": "700", "label": "Bold (700)" },
+            { "value": "800", "label": "Extra Bold (800)" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "select",
+          "id": "title_font_style_mobile",
+          "label": "Font Style",
+          "options": [
+            { "value": "normal", "label": "Normal" },
+            { "value": "italic", "label": "Italic" }
+          ],
+          "default": "normal"
+        },
+        {
+          "type": "select",
+          "id": "title_font_family_mobile",
+          "label": "Font Family",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" }
+          ],
+          "default": "primary"
+        },
+        {
+          "type": "select",
+          "id": "title_text_align_mobile",
+          "label": "Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "title_margin_bottom_mobile",
+          "min": 0,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "label": "Margin Bottom",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Caption"
         },
         {
           "type": "richtext",
           "id": "caption",
           "label": "Caption"
+        },
+        {
+          "type": "header",
+          "content": "Caption - Desktop"
+        },
+        {
+          "type": "range",
+          "id": "caption_font_size_desktop",
+          "min": 8,
+          "max": 60,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size",
+          "default": 16
+        },
+        {
+          "type": "select",
+          "id": "caption_font_weight_desktop",
+          "label": "Font Weight",
+          "options": [
+            { "value": "300", "label": "Light (300)" },
+            { "value": "400", "label": "Normal (400)" },
+            { "value": "500", "label": "Medium (500)" },
+            { "value": "600", "label": "Semi Bold (600)" },
+            { "value": "700", "label": "Bold (700)" },
+            { "value": "800", "label": "Extra Bold (800)" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "select",
+          "id": "caption_font_style_desktop",
+          "label": "Font Style",
+          "options": [
+            { "value": "normal", "label": "Normal" },
+            { "value": "italic", "label": "Italic" }
+          ],
+          "default": "normal"
+        },
+        {
+          "type": "select",
+          "id": "caption_font_family_desktop",
+          "label": "Font Family",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" }
+          ],
+          "default": "primary"
+        },
+        {
+          "type": "select",
+          "id": "caption_text_align_desktop",
+          "label": "Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "caption_margin_bottom_desktop",
+          "min": 0,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "label": "Margin Bottom",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Caption - Mobile"
+        },
+        {
+          "type": "range",
+          "id": "caption_font_size_mobile",
+          "min": 8,
+          "max": 60,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size",
+          "default": 16
+        },
+        {
+          "type": "select",
+          "id": "caption_font_weight_mobile",
+          "label": "Font Weight",
+          "options": [
+            { "value": "300", "label": "Light (300)" },
+            { "value": "400", "label": "Normal (400)" },
+            { "value": "500", "label": "Medium (500)" },
+            { "value": "600", "label": "Semi Bold (600)" },
+            { "value": "700", "label": "Bold (700)" },
+            { "value": "800", "label": "Extra Bold (800)" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "select",
+          "id": "caption_font_style_mobile",
+          "label": "Font Style",
+          "options": [
+            { "value": "normal", "label": "Normal" },
+            { "value": "italic", "label": "Italic" }
+          ],
+          "default": "normal"
+        },
+        {
+          "type": "select",
+          "id": "caption_font_family_mobile",
+          "label": "Font Family",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" }
+          ],
+          "default": "primary"
+        },
+        {
+          "type": "select",
+          "id": "caption_text_align_mobile",
+          "label": "Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "caption_margin_bottom_mobile",
+          "min": 0,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "label": "Margin Bottom",
+          "default": 0
         },
         {
         "type": "header",
@@ -231,6 +628,41 @@
     }
   ],
   "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "cards_per_view_desktop",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "label": "Cards Per View (Desktop)",
+      "info": "Set to 0 to use natural card widths",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "cards_per_view_gap_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Cards Per View Spacing (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "cards_per_view_padding_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Cards Per View Side Padding (Desktop)",
+      "info": "Left/right padding applied when Cards Per View is active",
+      "default": 0
+    },
       {
         "type": "checkbox",
         "id": "hide_mobile",
@@ -337,6 +769,242 @@
         }
       ],
       "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Title - Desktop"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_desktop",
+      "min": 8,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "title_font_weight_desktop",
+      "label": "Font Weight",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra Bold (800)" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "title_font_style_desktop",
+      "label": "Font Style",
+      "options": [
+        { "value": "normal", "label": "Normal" },
+        { "value": "italic", "label": "Italic" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "title_text_align_desktop",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "title_margin_bottom_desktop",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Subheading - Desktop"
+    },
+    {
+      "type": "range",
+      "id": "subheading_font_size_desktop",
+      "min": 8,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "subheading_font_weight_desktop",
+      "label": "Font Weight",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra Bold (800)" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "subheading_font_style_desktop",
+      "label": "Font Style",
+      "options": [
+        { "value": "normal", "label": "Normal" },
+        { "value": "italic", "label": "Italic" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "subheading_text_align_desktop",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "subheading_margin_bottom_desktop",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Title - Mobile"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_mobile",
+      "min": 8,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "title_font_weight_mobile",
+      "label": "Font Weight",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra Bold (800)" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "title_font_style_mobile",
+      "label": "Font Style",
+      "options": [
+        { "value": "normal", "label": "Normal" },
+        { "value": "italic", "label": "Italic" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "title_text_align_mobile",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "title_margin_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Subheading - Mobile"
+    },
+    {
+      "type": "range",
+      "id": "subheading_font_size_mobile",
+      "min": 8,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Font Size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "subheading_font_weight_mobile",
+      "label": "Font Weight",
+      "options": [
+        { "value": "300", "label": "Light (300)" },
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi Bold (600)" },
+        { "value": "700", "label": "Bold (700)" },
+        { "value": "800", "label": "Extra Bold (800)" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "subheading_font_style_mobile",
+      "label": "Font Style",
+      "options": [
+        { "value": "normal", "label": "Normal" },
+        { "value": "italic", "label": "Italic" }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "subheading_text_align_mobile",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "subheading_margin_bottom_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
     },
     {
       "type": "header",

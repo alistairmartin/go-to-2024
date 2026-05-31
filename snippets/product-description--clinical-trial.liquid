@@ -1,0 +1,153 @@
+{%- if product.metafields.custom.product_trials__side-by-side.size >= 1 -%}
+    <div class="product-content-description--content-inner tab-panel clinical-trials" id="product-content-description--tab-{{ tab }}" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-{{ tab }}" aria-hidden="{{ hidden }}">
+
+  <section class="section BeforeAfter {% unless product.metafields.custom.product_trials.size < 2 %}BeforeAfter--hasTabs{% endunless %}" data-section-id="{{ section.id }}" data-section-type="before-after" id="before-after">
+
+      <div class="BeforeAfter__Container">
+        <div class="BeforeAfter__SliderWrapper">
+
+          {%- if product.metafields.custom.product_trials__side-by-side.size == 1 -%}
+            {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_trials__side-by-side[0] , src_mobile: product.metafields.custom.product_trials__side-by-side[0], reveal: false, %}
+          {% else %}
+            <div class="custom-carousel carousel" data-flickity='{ "cellSelector": ".carousel-cell", "prevNextButtons": true, "wrapAround": true, "autoPlay": true, "resize": true, "lazyLoad": true, "draggable": ">1"  }'>
+              {%- for block in product.metafields.custom.product_trials__trial_title -%}
+                <div class="carousel-cell">
+                  {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_trials__side-by-side[forloop.index0] , src_mobile: product.metafields.custom.product_trials__side-by-side[forloop.index0], reveal: false, %}
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+
+        </div>
+        <div class="BeforeAfter__TextContainer">
+          <h2 class="BeforeAfter__Title">{{ product.metafields.custom.product_trials__title }}</h2>
+          <div class="BeforeAfter__Description">
+            {{ product.metafields.custom.product_trials__description }}
+            {%- unless product.metafields.custom.product_trials__modal_button_text == blank -%}
+              <button class="link link--basic" id="open-trials">
+                {{ product.metafields.custom.product_trials__modal_button_text }}
+              </button>
+
+              {%- capture modalContent -%}
+                <div class="rte ">
+                  {{ product.metafields.custom.product_trials__modal_content }}
+                </div>
+              {%- endcapture -%}
+              {%- render 'modal', modalId: "open-trials", buttonId: "open-trials" content: modalContent -%}
+            {%- endunless -%}
+          </div>
+        </div>
+      </div>
+
+  </section>
+    </div>
+
+
+<style>
+  #shopify-section-{{ section.id }} {
+    background: {{ section.settings.section_background }};
+  }
+
+  #shopify-section-{{ section.id }} .BeforeAfter__Container {
+    background: {{ section.settings.text_background }};
+  }
+  
+  #shopify-section-{{ section.id }} .BeforeAfter__Title {
+    font-size: {{ section.settings.title_font_size-mobile }}px;
+  }
+
+  #shopify-section-{{ section.id }} .BeforeAfter__Description {
+    font-size: {{ section.settings.description_font_size-mobile }}px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    #shopify-section-{{ section.id }} .BeforeAfter__Title {
+      font-size: {{ section.settings.title_font_size-desktop }}px;
+    }
+  
+    #shopify-section-{{ section.id }} .BeforeAfter__Description {
+      font-size: {{ section.settings.description_font_size-desktop }}px;
+    }
+  }
+</style>
+
+{%- if product.metafields.custom.product_trials__side-by-side.size > 1 -%}
+<script>
+(function() {
+  var tabId = "product-content-description--tab-{{ tab }}";
+  var tabPanel = document.getElementById(tabId);
+
+  function getFlickityInstance(carousel) {
+    if (window.Flickity && typeof window.Flickity.data === "function") {
+      var instance = window.Flickity.data(carousel);
+      if (instance) return instance;
+    }
+
+    if (carousel && carousel.flickity) {
+      return carousel.flickity;
+    }
+
+    return null;
+  }
+
+  function refreshCarousel() {
+    if (!tabPanel || tabPanel.getAttribute("aria-hidden") === "true") return false;
+
+    var carousel = tabPanel.querySelector(".custom-carousel");
+    if (!carousel) return false;
+
+    var flickityInstance = getFlickityInstance(carousel);
+
+    if (flickityInstance && typeof flickityInstance.resize === "function") {
+      if (typeof flickityInstance.reloadCells === "function") {
+        flickityInstance.reloadCells();
+      }
+      flickityInstance.resize();
+      if (typeof flickityInstance.reposition === "function") {
+        flickityInstance.reposition();
+      }
+      if (typeof flickityInstance.lazyLoad === "function") {
+        flickityInstance.lazyLoad();
+      }
+    }
+
+    return true;
+  }
+
+  function onTabShow() {
+    requestAnimationFrame(function() {
+      if (!refreshCarousel()) return;
+      window.dispatchEvent(new Event("resize"));
+      setTimeout(function() {
+        if (!refreshCarousel()) return;
+        window.dispatchEvent(new Event("resize"));
+      }, 80);
+    });
+  }
+
+  if (tabPanel && typeof MutationObserver !== "undefined") {
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.attributeName === "aria-hidden" && tabPanel.getAttribute("aria-hidden") === "false") {
+          onTabShow();
+        }
+      });
+    });
+    observer.observe(tabPanel, { attributes: true, attributeFilter: ["aria-hidden"] });
+  }
+
+  var tabButton = document.querySelector('[aria-controls="' + tabId + '"]');
+  if (tabButton) {
+    tabButton.addEventListener("click", onTabShow);
+  }
+
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    onTabShow();
+  } else {
+    window.addEventListener("load", onTabShow);
+  }
+})();
+</script>
+{%- endif -%}
+
+{%- endif -%}

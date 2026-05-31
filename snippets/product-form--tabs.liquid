@@ -1,0 +1,163 @@
+
+
+  
+        <div class="faq product-faq">
+          <div class="faq__wrapper" itemscope itemtype="https://schema.org/FAQPage">
+    
+                {%- comment -%}
+                ----------------------------------------------------------------------------------------------------------------
+                What Is It?
+                ----------------------------------------------------------------------------------------------------------------
+                {%- endcomment -%}
+
+                  <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <button is="toggle-button" class="collapsible-toggle text--strong" aria-controls="block-product-tabs-1" aria-expanded="true" itemprop="name">
+                      <span>WHAT IS IT?</span>
+                      <span class="animated-plus"></span>
+                    </button>
+
+                    <collapsible-content id="block-product-tabs-1" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" style="overflow: visible;" open>
+                      <div class="collapsible__content text-container" itemprop="text">
+                          {% comment %} {% assign product_desc = product.description | split: ' ' %}
+                          <div class="product-content-description--teaser" aria-revealed="{% if product_desc.size > 110 %}false{% else %}true{% endif %}">
+                            {{ product.description }}
+                          </div>
+                             {% unless product_desc.size < 110 %}
+                              <button type="button" name="button" data-action="toggle-teaser" aria-controls="product-content-description--teaser" class="product-content-description--teaser-open link link--basic">{{ 'product.general.read_more' | t }}</button>
+                              <button type="button" name="button" data-action="toggle-teaser" aria-controls="product-content-description--teaser" class="product-content-description--teaser-close hidden link link--basic">{{ 'product.general.show_less' | t }}</button>
+
+                            {% endunless %} {% endcomment %}
+                            {{ product.description }}
+                      </div>
+
+                      {%- unless product.handle == "nifty-fifty-fluid" -%}
+                      <div class="link-container">
+                        <a href="#learn-more" class="link link--basic learn-more">
+                          LEARN MORE
+                        </a>
+                      </div>
+                      {%- endunless -%}
+                 
+                     
+
+                         {% comment %} {% assign skinTypeCounter = 0 %}
+                          {%- for tag in product.tags -%}
+                            {%- if tag contains "skintype_" -%}
+                              {%- unless tag contains "jebbit" -%}
+                                {% assign skinTypeFound = true %}
+                                {%- assign skinTypeCounter = skinTypeCounter | plus: 1 -%}
+                              {%- endunless -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+
+                  
+                          {%- if skinTypeFound == true -%}
+                          <div class="perfect-for">
+                            <h3 class="text--bold">{{ 'product.content.plays_nice_with' | t }}</h3>
+                            <div class="perfect-for--container items-{{ skinTypeCounter }}">
+                              {%- for tag in product.tags -%}
+                                {%- if tag contains "skintype_" -%}
+                                  {%- unless tag contains "jebbit" -%}
+                                  {% assign icon = tag | remove: "skintype_" %}
+                                  {% render "product-content-icons--perfect-for", icon: icon %}
+                                  {%- endunless -%}
+                                {%- endif -%}
+                              {%- endfor -%}
+                            </div>
+                          </div>
+                        {%- endif -%}
+
+                        {% assign badgeCounter = 0 %}
+                        {%- for tag in product.tags -%}
+                          {%- if tag contains "badge_" -%}
+                            {% assign badgeFound = true %}
+                            {%- assign badgeCounter = badgeCounter | plus: 1 -%}
+                            {% break %}
+                          {%- endif -%}
+                        {%- endfor -%}
+
+                        {%- if badgeFound -%}
+                          <div class="who-is-it-for">
+                            <h3 class="text--bold">{{ 'product.content.good_to_know' | t }}</h3>
+                            <div class="who-is-it-for--container items-{{ badgeCounter }}">
+                              {%- for tag in product.tags -%}
+                                {%- if tag contains "badge_" -%}
+                                  {%- unless tag contains "jebbit" -%}
+                                  {% assign icon = tag | remove: "badge_" %}
+                                  {% render "product-content-icons--good-to-know", icon: icon %}
+                                  {%- endunless -%}
+                                {%- endif -%}
+                              {%- endfor -%}
+                            </div>
+                          </div>
+                        {%- endif -%} {% endcomment %}
+                    </collapsible-content>
+                  </div>
+
+                {%- comment -%}
+                ----------------------------------------------------------------------------------------------------------------
+                HERO INGREDIENTS
+                ----------------------------------------------------------------------------------------------------------------
+                {%- endcomment -%}  
+
+                {%- if product.metafields.custom.ingredients_featured != blank -%}
+                   <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <button is="toggle-button" class="collapsible-toggle text--strong" aria-controls="block-product-tabs-2" aria-expanded="false" itemprop="name">
+                      <span>HERO INGREDIENTS</span>
+                      <span class="animated-plus"></span>
+                    </button>
+
+                    <collapsible-content id="block-product-tabs-2" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                      <div class="collapsible__content text-container" itemprop="text">
+                            {%- render 'product-form--tab-ingredients' -%}
+                      </div>
+                    </collapsible-content>
+                  </div>
+                {%- endif -%}
+
+                {%- comment -%}
+                ----------------------------------------------------------------------------------------------------------------
+                FRAGRANCES 
+                ----------------------------------------------------------------------------------------------------------------
+                {%- endcomment -%}  
+
+              {%- if product.metafields.accentuate.product_key_fragrances__head != blank -%}
+                   <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <button is="toggle-button" class="collapsible-toggle text--strong" aria-controls="block-product-tabs-3" aria-expanded="false" itemprop="name">
+                      <span>SCENT NOTES</span>
+                      <span class="animated-plus"></span>
+                    </button>
+
+                    <collapsible-content id="block-product-tabs-3" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                      <div class="collapsible__content text-container" itemprop="text">
+                        {%- render 'product-form--tab-fragrances' -%}
+                      </div>
+                    </collapsible-content>
+                  </div>
+                {%- endif -%}
+
+                 
+
+                {%- comment -%}
+                ----------------------------------------------------------------------------------------------------------------
+                SHIPPING & RETURNS
+                ----------------------------------------------------------------------------------------------------------------
+                {%- endcomment -%}
+
+                  <div class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <button is="toggle-button" class="collapsible-toggle text--strong " aria-controls="block-product-tabs-4" aria-expanded="false" itemprop="name">
+                      <span>SHIPPING & RETURNS</span>
+                      <span class="animated-plus"></span>
+                    </button>
+
+                    <collapsible-content id="block-product-tabs-4" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                      <div class="collapsible__content text-container" itemprop="text">
+                        <div class="rte text-base">
+                          {{ pages['shipping-returns-pdp'].content }}
+                        </div>      
+                      </div>
+                    </collapsible-content>
+                  </div>
+          </div>
+        </div>
+

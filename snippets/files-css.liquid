@@ -1,6 +1,6 @@
 {% comment %} {%- render "fonts" -%} {% endcomment %}
- {%- render "fonts--original" -%}
-{% comment %} {%- render "fonts--original-V2" -%} {% endcomment %}
+ {% comment %} {%- render "fonts--original" -%} {% endcomment %}
+{%- render "fonts--original-V2" -%}
 {%- render "fonts--custom" -%}
 
 <link rel="stylesheet" href="{{ 'global.css' | asset_url }}">
@@ -45,9 +45,9 @@
     <link rel="stylesheet" href="{{ 'brand--gro-to.css' | asset_url }}">
 {%- endif -%}
 
-{%- if product -%}
-    <link rel="stylesheet" href="{{ 'products.css' | asset_url }}">
-  {%- endif -%}
+
+<link rel="stylesheet" href="{{ 'products.css' | asset_url }}">
+
 
   {%- if product -%}
     {%- render 'okendo-reviews-css', brand: brand -%}

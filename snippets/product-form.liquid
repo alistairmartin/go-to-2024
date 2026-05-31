@@ -1,6 +1,9 @@
+{%- assign currentMarket = localization.market.handle | upcase -%}
 {%- assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ',' -%}
 {%- assign color_white_label = 'general.label.white' | t | downcase -%}
 {%- assign size_label_list = 'general.label.size' | t | replace: ', ', ',' | downcase | split: ',' -%}
+
+{%- assign productMetafields = product.metafields.custom -%}
 
 <div class="product-form">
 
@@ -59,10 +62,10 @@
   
               <div class="product-form__option-selector" data-selector-type="{{ selector_type | replace: '_', '-' | escape }}">
                 <div class="product-form__option-info">
-                  <span class="product-form__option-name">{{ option.name |  upcase }}:</span>
+                  <span class="product-form__option-name">{{ option.name | capitalize }}:</span>
 
                   {%- if selector_type != 'dropdown' -%}
-                    <span id="{{ option_id }}-value" class="product-form__option-value">{{ option.selected_value | upcase }}</span>
+                    <span id="{{ option_id }}-value" class="product-form__option-value">{{ option.selected_value | capitalize }}</span>
                   {%- endif -%}
 
                   {%- if size_chart_page != blank and size_label_list contains option_downcase -%}
@@ -203,17 +206,30 @@
             </noscript>
           </variant-picker>
         {% else %}
-          {%- assign related_products = product.metafields.custom.product_main_information__related_products | split: "|" -%}
+          {%- assign related_products = productMetafields.product_main_information__related_products | split: "|" -%}
+
+
           {%- if related_products != blank -%}
           <div class="block-swatch-list block-swatch-list--custom">
             {%- for product_handle in related_products -%}
-              {%- assign related_product = all_products[product_handle] -%}
+              {%- assign product_handle_handle = product_handle | handle -%}
+              {%- assign related_product = all_products[product_handle_handle] -%}
+              {%- if related_product != blank -%}
               {%- assign related_product_title = related_product.metafields.gts_theme.alternate_title | default: related_product.title -%}
               <div class="block-swatch">
                   <a href="{{ related_product.url }}" class="block-swatch__item  {% if related_product.id == product.id %}is-selected{% endif %}"  title="{{ related_product_title }}" >
-                    {{- related_product_title -}}
+
+                    {%- if related_product.handle == "very-lightweight-moisturiser" -%}
+                      {{- related_product_title | split: "Lightweight" | first -}} Lightweight <br> Moisturiser
+                    {%- elsif related_product.handle == "very-lightweight-moisturiser-refill" -%}
+                      {{- related_product_title | split: "Lightweight" | first -}} Lightweight <br> Moisturiser Refill 
+                    {% else %}
+                      {{- related_product_title -}}
+                    {%- endif -%}
+                    
                   </a>
               </div>
+              {%- endif -%}
             {%- endfor -%}
           </div>
         {%- endif -%}
@@ -363,14 +379,14 @@
       ----------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
       {%- when 'product_usp_mobile' -%}
-        {%- if product.metafields.custom.product_usp__text != blank and context != 'quick-buy' -%}
+        {%- if productMetafields.product_usp__text != blank and context != 'quick-buy' -%}
           <section>
             <div class="product-USP hide-desktop">
-              {% assign USPtextSize = product.metafields.custom.product_usp__text | size %}
+              {% assign USPtextSize = productMetafields.product_usp__text | size %}
 
-              <h3 class="heading {% if USPtextSize > 100 %}product-USP--title__smallx{% elsif USPtextSize > 40 %}product-USP--title__small{% endif %}">{{ product.metafields.custom.product_usp__text | remove: "<p>" | remove: "</p>" }}</h3>
+              <h3 class="heading {% if USPtextSize > 100 %}product-USP--title__smallx{% elsif USPtextSize > 40 %}product-USP--title__small{% endif %}">{{ productMetafields.product_usp__text | remove: "<p>" | remove: "</p>" }}</h3>
 
-              {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_usp__image_desktop, src_mobile: product.metafields.custom.product_usp__image_mobile %}
+              {% render "responsive-image-metafields", src_desktop: productMetafields.product_usp__image_desktop, src_mobile: productMetafields.product_usp__image_mobile %}
             </div>
           </section>
         {%- endif -%}
@@ -378,13 +394,13 @@
 
 
       {%- when 'product_usp_desktop' -%}
-        {%- if product.metafields.custom.product_usp__text != blank and context != 'quick-buy' -%}
+        {%- if productMetafields.product_usp__text != blank and context != 'quick-buy' -%}
         <div class="product-USP hide-mobile">
 
-            {% assign USPtextSize = product.metafields.custom.product_usp__text | size %}
+            {% assign USPtextSize = productMetafields.product_usp__text | size %}
 
-            <h3 class="heading {% if USPtextSize > 40 %}product-USP--title__small{% endif %}">{{ product.metafields.custom.product_usp__text | remove: "<p>" | remove: "</p>" }}</h3>
-            {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_usp__image_desktop, src_mobile: product.metafields.custom.product_usp__image_mobile %}
+            <h3 class="heading {% if USPtextSize > 40 %}product-USP--title__small{% endif %}">{{ productMetafields.product_usp__text | remove: "<p>" | remove: "</p>" }}</h3>
+            {% render "responsive-image-metafields", src_desktop: productMetafields.product_usp__image_desktop, src_mobile: productMetafields.product_usp__image_mobile %}
         </div>
         {%- endif -%}
         
@@ -428,6 +444,157 @@
 
       {%- comment -%}
       ----------------------------------------------------------------------------------------------------------------
+      CUSTOM SUBSCRIPTION
+      ----------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- when 'custom_subscription' -%}
+         {% if context != 'quick-buy' %}
+          {%- render 'product-form--custom-subscriptions', product: product, product_form_id: product_form_id -%}
+         {% endif %}
+
+      {%- comment -%}
+      ----------------------------------------------------------------------------------------------------------------
+      PRODUCT DETAILS
+      ----------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- when 'product_details' -%}
+          <div data-block-type="product_details" data-block-id="{{ block.id }}" {{ block.shopify_attributes }} class="product-form--details">
+            {%- if productMetafields.product_tag_line != blank -%}
+              <h2 class="product-form--details-title h5 heading heading--primary">{{ productMetafields.product_tag_line }}</h2>
+            {%- endif -%}
+
+            {%- assign foundTableDetails = false -%}
+            
+            <table class="product-form--details-table">
+              {%- if productMetafields.product_suitable_for != blank -%}
+              <tr>
+                <td><strong>Suitable for</strong></td>
+                <td>{{ productMetafields.product_suitable_for }}</td>
+              </tr>
+               {%- assign foundTableDetails = true -%}
+              {% endif %}
+
+              {%- if productMetafields.product_good_to_know != blank -%}
+              <tr>
+                <td><strong>Good To Know</strong></td>
+                <td>{{ productMetafields.product_good_to_know }}</td>
+              </tr>
+              {%- assign foundTableDetails = true -%}
+              {% endif %}
+
+              {% assign application_html = productMetafields.application | metafield_tag | strip_html  %}
+              {%- assign applicationMetafield = productMetafields.application |  metafield_tag  -%}
+              {%- if application_html != blank -%}
+              <tr>
+                <td><strong>How To Apply</strong></td>
+                <td>{{ applicationMetafield }}
+                  {%- unless product.handle contains "into-the-" -%}
+                     <a href="#learn-more"><u>See complete guide</u></a>
+                  {%- endunless -%}
+                </td>
+              </tr>
+              {%- assign foundTableDetails = true -%}
+              {% endif %}
+
+              {%- if productMetafields.product_use_it_am != blank or productMetafields.product_use_it_pm != blank  -%}
+              <tr>
+                <td><strong>Use it</strong></td>
+                <td>
+                  <div class="column">
+                    {%- if productMetafields.product_use_it_am != blank -%}<span>{{ productMetafields.product_use_it_am }}</span>{%- endif -%}
+                    {%- if productMetafields.product_use_it_pm != blank -%}<span>{{ productMetafields.product_use_it_pm }}</span>{% endif %}
+                  </div>
+                  
+                </td>
+              </tr>
+              {%- assign foundTableDetails = true -%}
+              {% endif %}
+            </table>
+            
+              {%- if foundTableDetails == false -%}
+                <style>
+                  .product-form--details-table {display: none;}
+                  
+                  [data-block-id="liquid_line_3"] {display:none !important;}
+                </style>
+              {%- endif -%}
+          </div>
+    
+    {%- comment -%}
+    ----------------------------------------------------------------------------------------------------------------
+    PRODUCT WHAT'S INCLUDED
+    ----------------------------------------------------------------------------------------------------------------
+    {%- endcomment -%}
+    {%- when 'product_whats_included' -%}
+        {%- render 'product-form--whats-included' -%}
+
+      {%- comment -%}
+      ----------------------------------------------------------------------------------------------------------------
+      PRODUCT QUIZ
+      ----------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- when 'product_quiz' -%}
+        {% if context != 'quick-buy' %}
+          {%- render 'product-form--quiz' -%}
+        {% endif %}
+      {%- comment -%}
+      ----------------------------------------------------------------------------------------------------------------
+      Pairs With
+      ----------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- when 'pairs_with' -%}
+        {% if context != 'quick-buy' %}
+         {%- render 'product-form--pairs-with' -%}
+        {% endif %}
+
+      {%- comment -%}
+      ----------------------------------------------------------------------------------------------------------------
+      Make It A Set
+      ----------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- when 'make_it_a_set' -%}
+        {% if context != 'quick-buy' %}
+          {%- render 'product-form--make-it-a-set', block: block -%}
+        {% endif %}
+
+      {%- comment -%}
+      ----------------------------------------------------------------------------------------------------------------
+      Product Tabs
+      ----------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+
+      {%- when 'product_tabs' -%}
+        {%- render 'product-form--tabs' -%}
+
+
+      {%- comment -%}
+      ----------------------------------------------------------------------------------------------------------------
+      Callout
+      ----------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- when 'callout' -%}
+          {%- render 'product-form--callout', block: block -%}
+
+      {%- comment -%}
+      ----------------------------------------------------------------------------------------------------------------
+      Callout Metaobject 
+      ----------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- when 'callout_metaobject' -%}
+          {%- render 'product-form--callout-metaobject', block: block -%}
+      
+      {%- comment -%}
+      ----------------------------------------------------------------------------------------------------------------
+      Product Tabs
+      ----------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- when 'product_ichange' -%}
+        {% if context != 'quick-buy' %}
+          {%- render 'product-form--ichange' -%}
+        {% endif %}
+
+      {%- comment -%}
+      ----------------------------------------------------------------------------------------------------------------
       BUY BUTTONS
       ----------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
@@ -438,6 +605,28 @@
           {%- if product.gift_card? and block.settings.show_gift_card_recipient -%}
             {%- assign recipient_feature_active = true -%}
           {%- endif -%}
+
+          <div class="product-form__buy-quantity">
+
+          {% comment %} {%- if request.page_type != 'password' and product.available -%}
+          <div class="product-form__quantity" {{ block.shopify_attributes }}>
+            <span class="product-form__quantity-label visually-hidden">{{ 'product.form.quantity' | t }}:</span>
+
+            <quantity-selector class="quantity-selector">
+              <button type="button" class="quantity-selector__button">
+                <span class="visually-hidden">{{ 'cart.general.decrease_quantity' | t }}</span>
+                {%- render 'icon' with 'minus-big' -%}
+              </button>
+
+              <input type="text" form="{{ product_form_id }}" is="input-number" class="quantity-selector__input" inputmode="numeric" name="quantity" autocomplete="off" min="1" value="1" size="2" aria-label="{{ 'product.form.quantity' | t | escape }}">
+
+              <button type="button" class="quantity-selector__button">
+                <span class="visually-hidden">{{ 'cart.general.increase_quantity' | t }}</span>
+                {%- render 'icon' with 'plus-big' -%}
+              </button>
+            </quantity-selector>
+          </div>
+           {%- endif -%} {% endcomment %}
 
           <div data-block-type="buy-buttons" data-block-id="{{ block.id }}" class="product-form__buy-buttons" {{ block.shopify_attributes }}>
             {%- form 'product', product, is: 'product-form', id: product_form_id -%}
@@ -502,14 +691,19 @@
 
 
                   {%- if soldOutProduct == true -%}
-                    <button id="AddToCart" type="submit" is="loader-button" data-product-add-to-cart-button data-button-content="{{ 'product.form.add_to_cart' | t | escape }}" class="product-form__add-button button button--ternary button--full" disabled>
-                        {{- 'product.form.sold_out' | t -}}
+                    <button id="AddToCart" type="submit" is="loader-button" data-product-add-to-cart-button data-button-content="{{ 'product.form.add_to_cart' | t | escape }}" class="product-form__add-button button button--primary button--full" disabled>
+
+                      {%- if  product.handle == "nifty-fifty-fluid" -%} 
+                        COMING SOON
+                      {% else %}
+                       {{- 'product.form.sold_out' | t -}}
+                      {% endif %}
                   </button>
 
                   {% else  %}
                     <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')"  class="button button--primary back-in-stock {% if showBackInStock == false or soldOutProduct == true %}hide{% endif %}">WAITLIST ME</button>
 
-                    <button id="AddToCart" type="submit" is="loader-button" {% unless block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}data-use-primary{% endunless %} data-product-add-to-cart-button data-button-content="{% if product.template_suffix == 'pre-order' %}{{ 'product.form.pre_order' | t | escape }}{% else %}{{ 'product.form.add_to_cart' | t | escape }}{% endif %}" class="product-form__add-button button {% if showBackInStock == true %}hide{% endif %} {% unless product.selected_or_first_available_variant.available %}button--ternary{% else %}{% if block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}button--secondary{% else %}button--primary{% endif %}{% endunless %} button--full" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+                    <button id="AddToCart" type="submit" is="loader-button" {% unless block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}data-use-primary{% endunless %} data-product-add-to-cart-button data-button-content="{% if product.template_suffix == 'pre-order' %}{{ 'product.form.pre_order' | t | escape }}{% else %}{{ 'product.form.add_to_cart' | t | escape }}{% endif %}" class="product-form__add-button button {% if showBackInStock == true %}hide{% endif %} {% unless product.selected_or_first_available_variant.available %}button--primary{% else %}{% if block.settings.show_payment_button and template.suffix != 'quick-buy-popover' %}button--secondary{% else %}button--primary{% endif %}{% endunless %} button--full" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
                       {%- if product.selected_or_first_available_variant == nil -%}
                         {{- 'product.form.unavailable' | t -}}
                       {%- elsif product.selected_or_first_available_variant.available -%}
@@ -519,7 +713,7 @@
                           {{- 'product.form.add_to_cart' | t -}}
                         {%- endif -%}
                       {%- else -%}
-                          {{- 'product.form.sold_out' | t -}}       
+                           {%- if  product.handle == "nifty-fifty-fluid" -%}COMING SOON{% else %}{{- 'product.form.sold_out' | t -}}{%- endif -%}
                       {%- endif -%}
                     </button>
                   {%- endif -%}
@@ -544,16 +738,27 @@
 
             {%- endform -%}
           </div>
+          </div>
         {%- endif -%}
 
-        {%- if context != 'quick-buy' -%}
+         {%- if currentMarket == "AU" -%}
+          <div class="product-form__free-shipping">
+            Free Shipping On All AU Orders
+          </div>
+            
+        {%- endif -%}
+
+
+        {% comment %} {%- if context != 'quick-buy' -%}
           <store-pickup data-block-type="pickup-availability" data-block-id="{{ block.id }}" class="product-form__store-availability-container">
             {%- render 'store-availability', product_variant: product.selected_or_first_available_variant -%}
           </store-pickup>
-        {%- endif -%}
+        {%- endif -%} {% endcomment %}
     {%- endcase -%}
   {%- endfor -%}
 
+
+ 
   {%- comment -%}
   IMPLEMENTATION NOTE: under rare circumstances, merchant may want to show selectors but hide the add to cart button. This
   is however problematic as elements changed based on this. So if we detect there is no buy buttons block, we add an empty one
@@ -578,7 +783,7 @@ IMPLEMENTATION NOTE: if during the iteration of the options we have found an opt
     <span class="drawer__overlay"></span>
 
     <header class="drawer__header">
-      <p class="drawer__title heading h6">{{ size_chart_page.title }}</p>
+      <p class="drawer__title heading h5">{{ size_chart_page.title }}</p>
 
       <button type="button" class="drawer__close-button tap-area" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
         {%- render 'icon' with 'close' -%}
@@ -597,7 +802,7 @@ IMPLEMENTATION NOTE: if during the iteration of the options we have found an opt
     <span class="popover__overlay"></span>
 
     <header class="popover__header">
-      <p class="popover__title heading h6">{{ size_chart_page.title }}</p>
+      <p class="popover__title heading h5">{{ size_chart_page.title }}</p>
 
       <button type="button" class="popover__close-button tap-area tap-area--large" data-action="close" title="{{ 'general.accessibility.close' | t | escape }}">
         {%- render 'icon' with 'close' -%}

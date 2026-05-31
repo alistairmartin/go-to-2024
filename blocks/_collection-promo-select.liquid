@@ -1,0 +1,36 @@
+{%- assign show = false -%}
+{%- for col in block.settings.collection_list -%}
+  {%- if col.handle == collection.handle -%}
+    {%- assign show = true -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if show -%}
+  <div {{ block.shopify_attributes }}>
+    {% content_for 'blocks' %}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collection select",
+  "blocks": [{ "type": "_collection-promo-banner" }],
+  "settings": [
+    {
+      "type": "collection_list",
+      "id": "collection_list",
+      "label": "Collections",
+      "info": "The banner(s) below will only show on these collection pages."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection select",
+      "blocks": [
+        { "type": "_collection-promo-banner" }
+      ]
+    }
+  ]
+}
+{% endschema %}

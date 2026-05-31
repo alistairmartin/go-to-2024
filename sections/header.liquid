@@ -125,6 +125,40 @@ z-index: 4;
   {%- endif -%}
 }
 
+.go-to #shopify-section-{{ section.id }} .header {
+  background: {{ section.settings.goto_header_background }};
+}
+
+{%- if section.settings.goto_nav_color != blank -%}
+  .go-to #shopify-section-{{ section.id }} {
+    --header-text-color: {{ section.settings.goto_nav_color.red }}, {{ section.settings.goto_nav_color.green }}, {{ section.settings.goto_nav_color.blue }};
+  }
+  .go-to #shopify-section-{{ section.id }} .header__icon-wrapper svg {
+    fill: {{ section.settings.goto_nav_color }};
+  }
+  .go-to #shopify-section-{{ section.id }} .cart-link .header__cart-count {
+    color: {{ section.settings.goto_nav_color }};
+  }
+{%- endif -%}
+
+{%- if section.settings.broto_header_background != blank -%}
+  .bro-to #shopify-section-{{ section.id }} .header {
+    background: {{ section.settings.broto_header_background }};
+  }
+{%- endif -%}
+
+{%- if section.settings.broto_nav_color != blank -%}
+  .bro-to #shopify-section-{{ section.id }} {
+    --header-text-color: {{ section.settings.broto_nav_color.red }}, {{ section.settings.broto_nav_color.green }}, {{ section.settings.broto_nav_color.blue }};
+  }
+  .bro-to #shopify-section-{{ section.id }} .header__icon-wrapper svg {
+    fill: {{ section.settings.broto_nav_color }};
+  }
+  .bro-to #shopify-section-{{ section.id }} .cart-link .header__cart-count {
+    color: {{ section.settings.broto_nav_color }};
+  }
+{%- endif -%}
+
 {%- if request.page_type == '404' -%}
   .shopify-section--404 {
     /* For the 404 page, we re-use the same colors as the header for design reason */
@@ -788,6 +822,29 @@ z-index: 4;
         "id": "enable_blur_background_header",
         "label": "Enable",
         "info": "Will slightly blur the background."
+      }, {
+        "type": "header",
+        "content": "Go-To brand colours"
+      }, {
+        "type": "color",
+        "id": "goto_header_background",
+        "label": "Header background",
+        "default": "#f9c6b9"
+      }, {
+        "type": "color",
+        "id": "goto_nav_color",
+        "label": "Navigation & icon colour"
+      }, {
+        "type": "header",
+        "content": "Bro-To brand colours"
+      }, {
+        "type": "color",
+        "id": "broto_header_background",
+        "label": "Header background"
+      }, {
+        "type": "color",
+        "id": "broto_nav_color",
+        "label": "Navigation & icon colour"
       }
     ],
     "blocks": [

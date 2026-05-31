@@ -1,0 +1,281 @@
+{%- if block.settings.enable_banner -%}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data-10-year-range.min.js" defer></script>
+
+  <style>
+    #cpb-{{ block.id }} {
+      --cpb-bg: {{ block.settings.bar_background }};
+      --cpb-text: {{ block.settings.text_color }};
+    }
+  </style>
+
+  <collection-promo-banner
+    id="cpb-{{ block.id }}"
+    class="cpb"
+    {{ block.shopify_attributes }}
+    data-open="false"
+    data-end="{{ block.settings.countdown_date | escape }}"
+    data-timezone="{{ block.settings.timezone | escape }}"
+    data-hide-after="{% if block.settings.hide_after_countdown %}1{% else %}0{% endif %}"
+    data-open-text="{{ block.settings.open_text | escape }}"
+    data-close-text="{{ block.settings.close_text | escape }}"
+  >
+    {%- if block.settings.bar_title != blank -%}
+      <div class="cpb__row cpb__row--top">
+        <p class="cpb__title">{{ block.settings.bar_title | escape }}</p>
+      </div>
+    {%- endif -%}
+
+    {%- if block.settings.background_image != blank or block.blocks.size > 0 -%}
+      <div
+        id="cpb-image-{{ block.id }}"
+        class="cpb__image-wrap"
+      >
+        <div class="cpb__image-inner">
+          {%- if block.settings.background_image != blank -%}
+            {%- capture image_tag -%}
+              {{-
+                block.settings.background_image
+                | image_url: width: block.settings.background_image.width
+                | image_tag:
+                  loading: 'eager',
+                  sizes: '100vw',
+                  widths: '600,800,1000,1200,1400,1600,1800,2000,2400,2800,3200',
+                  class: 'cpb__image'
+              -}}
+            {%- endcapture -%}
+
+            {%- if block.settings.image_link != blank -%}
+              <a href="{{ block.settings.image_link }}" class="cpb__image-link">
+                {{- image_tag -}}
+              </a>
+            {%- else -%}
+              <div class="cpb__image-block">
+                {{- image_tag -}}
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+
+          {%- if block.blocks.size > 0 -%}
+            <div class="cpb__blocks{% if block.settings.background_image != blank %} cpb__blocks--overlay{% endif %}">
+              {% content_for 'blocks' %}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="cpb__row cpb__row--bottom">
+      {%- if block.settings.enable_countdown_timer -%}
+        <p class="cpb__countdown" data-countdown></p>
+      {%- endif -%}
+
+      <button
+        type="button"
+        class="cpb__toggle"
+        data-action="toggle"
+        aria-expanded="false"
+        {% if block.settings.background_image != blank or block.blocks.size > 0 %}aria-controls="cpb-image-{{ block.id }}"{% endif %}
+      >
+        {{- block.settings.open_text | escape -}}
+      </button>
+    </div>
+  </collection-promo-banner>
+
+  <script>
+    (function () {
+      if (window.customElements.get('collection-promo-banner')) return;
+
+      class CollectionPromoBanner extends HTMLElement {
+        connectedCallback() {
+          this.toggleBtn = this.querySelector('[data-action="toggle"]');
+          this.imageWrap = this.querySelector('.cpb__image-wrap');
+          this.countdownEls = this.querySelectorAll('[data-countdown]');
+          this.openText = this.dataset.openText || 'Open';
+          this.closeText = this.dataset.closeText || 'Close';
+
+          if (this.toggleBtn) {
+            this.toggleBtn.addEventListener('click', () => this.toggle());
+          }
+
+          this.startCountdown();
+        }
+
+        toggle() {
+          const isOpen = this.dataset.open === 'true';
+          const next = !isOpen;
+          this.dataset.open = next ? 'true' : 'false';
+          this.toggleBtn.setAttribute('aria-expanded', next ? 'true' : 'false');
+          this.toggleBtn.textContent = next ? this.closeText : this.openText;
+        }
+
+        startCountdown() {
+          if (!this.countdownEls.length) return;
+
+          const endRaw = this.dataset.end;
+          const tz = this.dataset.timezone || 'Australia/Sydney';
+          const hideAfter = this.dataset.hideAfter === '1';
+
+          if (!endRaw) return;
+
+          if (typeof moment === 'undefined') {
+            const wait = setInterval(() => {
+              if (typeof moment !== 'undefined') {
+                clearInterval(wait);
+                this._runCountdown(endRaw, tz, hideAfter);
+              }
+            }, 100);
+            return;
+          }
+
+          this._runCountdown(endRaw, tz, hideAfter);
+        }
+
+        _runCountdown(endRaw, tz, hideAfter) {
+          const endTime = moment.tz(endRaw, tz);
+
+          const tick = () => {
+            const now = moment.tz(tz);
+            const duration = moment.duration(endTime.diff(now));
+
+            if (duration.asSeconds() <= 0) {
+              clearInterval(this._intervalId);
+              this.countdownEls.forEach((el) => (el.innerHTML = ''));
+              if (hideAfter) this.style.display = 'none';
+              return;
+            }
+
+            const days = duration.days();
+            const hours = duration.hours();
+            const minutes = duration.minutes();
+            const seconds = duration.seconds();
+
+            const parts = [];
+            if (days > 0) parts.push(days + (days === 1 ? ' Day' : ' Days'));
+            parts.push(hours + (hours === 1 ? ' hour' : ' hours'));
+            parts.push(minutes + ' min');
+            parts.push(seconds + ' sec');
+
+            const text = parts.join(', ');
+            this.countdownEls.forEach((el) => (el.innerHTML = text));
+          };
+
+          tick();
+          this._intervalId = setInterval(tick, 1000);
+        }
+      }
+
+      window.customElements.define('collection-promo-banner', CollectionPromoBanner);
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Promo banner",
+  "blocks": [
+    { "type": "_promo-container" }
+  ],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_banner",
+      "label": "Show banner",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Top row"
+    },
+    {
+      "type": "text",
+      "id": "bar_title",
+      "label": "Title",
+      "default": "Lucky Dip On Now!"
+    },
+    {
+      "type": "header",
+      "content": "Expanding image"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Image",
+      "info": "Reveals between the top and bottom rows when expanded. Put any campaign text directly in the image. 2400 x 800 .jpg recommended."
+    },
+    {
+      "type": "url",
+      "id": "image_link",
+      "label": "Image link",
+      "info": "Optional. Wraps the image in a link."
+    },
+    {
+      "type": "header",
+      "content": "Bottom row"
+    },
+    {
+      "type": "text",
+      "id": "open_text",
+      "label": "Open link text",
+      "default": "Open"
+    },
+    {
+      "type": "text",
+      "id": "close_text",
+      "label": "Close link text",
+      "default": "Close"
+    },
+    {
+      "type": "header",
+      "content": "Countdown"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_countdown_timer",
+      "label": "Enable countdown timer",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_after_countdown",
+      "label": "Hide banner after countdown ends",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "countdown_date",
+      "label": "Countdown end date & time",
+      "default": "May 31, 2026 23:59:00",
+      "info": "Format: Sep 21, 2024 15:30:00. Entered in the timezone below."
+    },
+    {
+      "type": "text",
+      "id": "timezone",
+      "label": "Timezone",
+      "default": "Australia/Sydney",
+      "info": "E.g. Australia/Sydney, Europe/London, America/Los_Angeles"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bar_background",
+      "label": "Bar background",
+      "default": "#f4d4cb"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Bar text",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo banner"
+    }
+  ]
+}
+{% endschema %}

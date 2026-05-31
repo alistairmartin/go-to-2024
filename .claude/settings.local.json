@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(python3 -c ' *)",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/alistairmartin/Dropbox/go-to-2024/assets/CURSOR-SLEEP.png /Users/alistairmartin/Dropbox/go-to-2024/assets/CURSOR-SLEEP-Inverse.png)"
+    ]
+  }
+}

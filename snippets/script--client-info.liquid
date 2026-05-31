@@ -1,0 +1,61 @@
+<script>
+  (function () {
+    var ATTR_KEY = '_client_info';
+    var SESSION_KEY = 'client_info_sent';
+
+    function collect() {
+      var nav = window.navigator || {};
+      var scr = window.screen || {};
+      var conn = nav.connection || nav.mozConnection || nav.webkitConnection || {};
+
+      return {
+        ts: new Date().toISOString(),
+        ua: (nav.userAgent || '').slice(0, 300),
+        platform: nav.platform || '',
+        lang: nav.language || '',
+        vendor: nav.vendor || '',
+        cookies: nav.cookieEnabled,
+        dnt: nav.doNotTrack || '',
+        vw: window.innerWidth,
+        vh: window.innerHeight,
+        sw: scr.width,
+        sh: scr.height,
+        dpr: window.devicePixelRatio || 1,
+        tz: (Intl.DateTimeFormat().resolvedOptions().timeZone) || '',
+        net: conn.effectiveType || '',
+        saveData: !!conn.saveData,
+        ref: (document.referrer || '').slice(0, 200),
+        path: location.pathname + location.search
+      };
+    }
+
+    function send() {
+      try { if (sessionStorage.getItem(SESSION_KEY)) return; } catch (e) {}
+
+      var payload = {};
+      payload[ATTR_KEY] = JSON.stringify(collect()).slice(0, 4500);
+
+      fetch('/cart/update.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ attributes: payload })
+      }).then(function () {
+        try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (e) {}
+      }).catch(function () { /* swallow — diagnostic only */ });
+    }
+
+    if (document.readyState === 'complete') {
+      setTimeout(send, 1500);
+    } else {
+      window.addEventListener('load', function () { setTimeout(send, 1500); });
+    }
+
+    // Refresh at checkout click so the snapshot reflects the device used to convert.
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest && e.target.closest('[name="checkout"], a[href*="/checkout"]');
+      if (!t) return;
+      try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
+      send();
+    }, true);
+  })();
+</script>

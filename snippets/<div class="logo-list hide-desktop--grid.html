@@ -1,0 +1,13 @@
+   <div class="product-reviews-mobile hide-desktop--grid">
+          {% for review_title in product.metafields.custom.product_main_information__review_title %}
+                      <div class="product-reviews-mobile__item">
+                <div class="product-reviews-mobile__stars">
+                {%- for i in (1..5) -%}
+                    {%- render 'icon' with "rating-star" -%}
+                {%- endfor -%}
+                </div>
+                <div class="product-reviews-mobile__text text--large">{{ product.metafields.custom.product_main_information__review_description[forloop.index0] | strip_html }}</div>
+                <div class="product-reviews-mobile__reviewer text--large">{{ product.metafields.custom.product_main_information__review_author[forloop.index0] }}</div>
+              </div>
+          {%- endfor -%}
+        </div>

@@ -1,0 +1,97 @@
+
+
+{%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+
+  {% assign startOnevening = false %}
+
+
+
+{% if product.metafields.custom.product_routine__steps-morning != blank %}
+{% assign stepsClasses = "active--morning" %}
+{% else %}
+{% assign stepsClasses = "active--evening" %}
+{% endif %}
+
+
+{% if product.metafields.custom.product_routine__start_on_evening == "true" %}
+  {% assign stepsClasses = "active--evening" %}
+{% endif %}
+
+
+
+{%- if product.metafields.custom.product_routine__steps-morning != blank or product.metafields.custom.product_routine__steps-evening != blank -%}
+<div class="product-content-description--content-inner tab-panel routine" id="product-content-description--tab-{{ tab }}" role="tabpanel" tabindex="0" aria-labelledby="product-content-description--tab-{{ tab }}" aria-hidden="{{ hidden }}">
+<section class="" data-section-type="product-content" data-section-subtype="routine">
+  <div class="">
+    <div class="product-content-routine product-content-routine-V2 {{ stepsClasses }}">
+      <div class="product-content-routine--text">
+        {%- if product.metafields.custom.product_routine__steps-morning != blank and product.metafields.custom.product_routine__steps-evening != blank -%}
+          <div class="product-content-routine--text__switcher-outer">
+
+            <button class="product-content-routine--text__switcher">
+              <div class="product-content-routine--text__switcher-circle"></div>
+         
+                {% comment %} <svg class="product-content-routine--text__switcher-moon" width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M48.9998 29.8433C48.6327 33.8151 47.1421 37.6003 44.7023 40.7558C42.2626 43.9114 38.9746 46.3069 35.2231 47.6619C31.4716 49.017 27.4117 49.2756 23.5186 48.4075C19.6255 47.5395 16.0601 45.5806 13.2396 42.7601C10.4192 39.9397 8.4603 36.3743 7.59222 32.4812C6.72415 28.588 6.98277 24.5282 8.33784 20.7767C9.69291 17.0252 12.0884 13.7372 15.2439 11.2974C18.3995 8.85766 22.1846 7.36705 26.1564 7C23.8311 10.146 22.7121 14.022 23.003 17.9233C23.2939 21.8246 24.9754 25.4918 27.7417 28.2581C30.508 31.0243 34.1752 32.7058 38.0765 32.9968C41.9777 33.2877 45.8538 32.1687 48.9998 29.8433Z" fill="#484848" stroke="#484848" stroke-width="5.66667" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg> {% endcomment %}
+
+                <div class="product-content-routine--text__switcher-moon">
+                 {%- render 'icon' with "go-to-moon" -%} PM
+                </div>
+
+                
+            <div class="product-content-routine--text__switcher-sun">
+                    {%- render 'icon' with "go-to-sun" -%} AM
+            </div>
+               
+
+            </button>
+          </div>
+        {% endif %}
+
+        <div class="product-content-routine--text__morning">
+          <h3 class="SectionHeader__Heading heading h3">
+            {%- if product.metafields.custom.product_routine__title_morning != blank -%}
+              {{ product.metafields.custom.product_routine__title_morning }}
+            {%- else -%}
+              {{ section.settings.title_morning }}
+            {%- endif -%}
+          </h3>
+
+          <div class="product-content-routine--text__morning-text">
+            {{ product.metafields.custom.product_routine__steps-morning }}
+          </div>
+        </div>
+
+        <div class="product-content-routine--text__evening">
+          <h3 class="SectionHeader__Heading heading h3">
+            {%- if product.metafields.custom.product_routine__title_evening != blank -%}
+              {{ product.metafields.custom.product_routine__title_evening }}
+            {%- else -%}
+              {{ section.settings.title_evening }}
+            {%- endif -%}
+          </h3>
+          <div class="product-content-routine--text__evening-text">
+            {{ product.metafields.custom.product_routine__steps-evening }}
+          </div>
+        </div>
+
+      </div>
+
+      <div class="product-content-routine--image">
+        <div class="product-content-routine--image__morning">
+          {%- if product.metafields.custom.product_routine__image_desktop_morning != blank or product.metafields.custom.product_routine__image_mobile_morning != blank -%}
+            {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_routine__image_desktop_morning, src_mobile: product.metafields.custom.product_routine__image_mobile_morning %}
+          {%- endif -%}
+        </div>
+        <div class="product-content-routine--image__evening">
+          {%- if product.metafields.custom.product_routine__image_desktop_evening != blank or product.metafields.custom.product_routine__image_mobile_evening != blank -%}
+            {% render "responsive-image-metafields", src_desktop: product.metafields.custom.product_routine__image_desktop_evening, src_mobile: product.metafields.custom.product_routine__image_mobile_evening %}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ </div>
+{%- endif -%}

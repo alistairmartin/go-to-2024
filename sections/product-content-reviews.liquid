@@ -1,0 +1,382 @@
+{%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
+  {%- assign blends_with_background = false -%}
+{%- else -%}
+  {%- assign blends_with_background = true -%}
+{%- endif -%}
+
+
+<style>
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color = settings.heading_color -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_background == 'rgba(0,0,0,0)' -%}
+      {%- assign button_background = settings.primary_button_background -%}
+    {%- else -%}
+      {%- assign button_background = section.settings.button_background -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign button_text_color = settings.primary_button_text_color -%}
+    {%- else -%}
+      {%- assign button_text_color = section.settings.button_text_color -%}
+    {%- endif -%}
+
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --primary-button-background: {{ button_background.red }}, {{ button_background.green }}, {{ button_background.blue }};
+    --primary-button-text-color: {{ button_text_color.red }}, {{ button_text_color.green }}, {{ button_text_color.blue }};
+
+    --prev-next-button-background: {{ settings.background.red }}, {{ settings.background.green }}, {{ settings.background.blue }};
+    --prev-next-button-color: {{ settings.text_color.red }}, {{ settings.text_color.green }}, {{ settings.text_color.blue }};
+
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+    --section-logo-count: 6; 
+
+    --section-star-colour: {{ section.settings.stars_colour }};
+  }
+
+  #shopify-section-{{ section.id }} .logo-list__list {
+    --logos-gap: 5px;
+    --logos-per-row: 3;
+    grid-template-columns: repeat(min(var(--logos-per-row),var(--section-logo-count)),minmax(260px,400px));
+  }
+
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} .logo-list--carousel .logo-list__prev-next + .logo-list__list {
+      --logos-per-row: 3;
+      grid-template-columns: none;
+      grid-auto-columns: calc((100% - (var(--logos-gap) * 2)) / 3);
+      margin: 0;
+    }
+
+    #shopify-section-{{ section.id }} .logo-list__prev-next {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    #shopify-section-{{ section.id }}  .prev-next-button--prev {
+      margin-left: -20px !important;
+    }
+
+
+    #shopify-section-{{ section.id }}  .prev-next-button--next {
+      margin-right: -20px !important;
+    }
+
+
+    #shopify-section-{{ section.id }} .logo-list__arrow {
+      width: 32px;
+      height: 32px;
+      background: #FDE4DB;
+      border: none;
+    }
+
+    #shopify-section-{{ section.id }} .logo-list__arrow:disabled {
+      opacity: 0 !important;
+    }
+  }
+
+
+  #shopify-section-{{ section.id }} .link--primary {
+    text-decoration-color: {{ section.settings.link_underline }} !important;
+    color: {{ button_text_color }};
+  }
+
+  #shopify-section-{{ section.id }} .link--primary svg path {
+    fill: {{ button_text_color }};
+  }
+</style>
+
+{%- assign reviewCounter = 0 -%}
+{% for review_title in product.metafields.custom.product_main_information__review_description %}
+  {%- if product.metafields.custom.product_main_information__review_description[forloop.index0] != blank -%}
+    {%- assign reviewCounter = reviewCounter | plus: 1 -%}    
+  {%- endif -%}
+{% endfor %}
+
+{%- if reviewCounter > 0 -%}
+<section class="section {% unless blends_with_background or is_boxed %}section--flush{% endunless %}">
+  <div class="section__color-wrapper">
+    <div class="container {% unless blends_with_background %}vertical-breather{% endunless %}">
+      <header class="section__header text-container text-{{ section.settings.header_text_alignment }}">
+        {%- if section.settings.subheading != blank -%}
+          <h2 class="heading heading--small">{{ section.settings.subheading | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.title != blank -%}
+          <h3 class="heading h3">{{ section.settings.title | escape }}</h3>
+        {%- endif -%}
+      </header>
+
+     
+
+      {%- capture section_content -%}
+        <div class="logo-list__list {% if reviewCounter <= 3 %}no-scroll{% endif %} hide-mobile--grid">
+          {% for review_title in product.metafields.custom.product_main_information__review_title %}
+            <div class="logo-list__item">
+                <div class="logo-list__stars">
+                {%- for i in (1..5) -%}
+                    {%- render 'icon' with "rating-star" -%}
+                {%- endfor -%}
+                </div>
+
+                {% comment %} review_title {% endcomment %}
+
+                {%- assign innerReviewCount = innerReviewCount | plus: 1 -%}
+
+                {% if product.handle == "very-luxe-repair-mask" %}<div class="logo-list__text-disclaimer"><i>Review submitted under the product’s former name.</i></div>{% endif %}
+                <div class="logo-list__text text--large">{{ product.metafields.custom.product_main_information__review_description[forloop.index0] | strip_html }}</div>
+                <div class="logo-list__reviewer text--large">{{ product.metafields.custom.product_main_information__review_author[forloop.index0] }}</div>
+
+            
+              {% comment %} <div class="product-reviews--item">
+                <p class="product-reviews--item-author">{{ product.metafields.custom.product_main_information__review_author[forloop.index0] }}</p>
+                <div class="product-reviews--item-stars">
+                  <svg width="96" height="16" viewBox="0 0 96 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 0L9.79611 5.52786H15.6085L10.9062 8.94427L12.7023 14.4721L8 11.0557L3.29772 14.4721L5.09383 8.94427L0.391548 5.52786H6.20389L8 0Z" fill="#181818"/>
+                    <path d="M48 0L49.7961 5.52786H55.6085L50.9062 8.94427L52.7023 14.4721L48 11.0557L43.2977 14.4721L45.0938 8.94427L40.3915 5.52786H46.2039L48 0Z" fill="#181818"/>
+                    <path d="M28 0L29.7961 5.52786H35.6085L30.9062 8.94427L32.7023 14.4721L28 11.0557L23.2977 14.4721L25.0938 8.94427L20.3915 5.52786H26.2039L28 0Z" fill="#181818"/>
+                    <path d="M68 0L69.7961 5.52786H75.6085L70.9062 8.94427L72.7023 14.4721L68 11.0557L63.2977 14.4721L65.0938 8.94427L60.3915 5.52786H66.2039L68 0Z" fill="#181818"/>
+                    <path d="M88 0L89.7961 5.52786H95.6085L90.9062 8.94427L92.7023 14.4721L88 11.0557L83.2977 14.4721L85.0938 8.94427L80.3915 5.52786H86.2039L88 0Z" fill="#181818"/>
+                  </svg>
+                </div>
+                <p class="product-reviews--item-title">{{ review_title }}</p>
+                <p class="product-reviews--item-review text--small">{{ product.metafields.custom.product_main_information__review_description[forloop.index0] | strip_html }}</p>
+              </div> {% endcomment %}
+              </div>
+          {%- endfor -%}
+
+        </div>
+
+        <flickity-carousel
+          class="product-reviews-mobile product-reviews-mobile-carousel hide-desktop"
+          flickity-config='{"cellSelector":".product-reviews-mobile__item","cellAlign":"left","contain":true,"wrapAround":true,"prevNextButtons":true,"pageDots":false,"adaptiveHeight":true,"draggable":">1","selectedAttraction":0.02,"friction":0.28}'>
+          {% for review_title in product.metafields.custom.product_main_information__review_title %}
+            <div class="product-reviews-mobile__item">
+              <div class="product-reviews-mobile__stars">
+                {%- for i in (1..5) -%}
+                  {%- render 'icon' with "rating-star" -%}
+                {%- endfor -%}
+              </div>
+              
+            {% if product.handle == "very-luxe-repair-mask" %}<div class="logo-list__text-disclaimer"><i>Review submitted under the product’s former name.</i></div>{% endif %}
+              <div class="product-reviews-mobile__text text--large">{{ product.metafields.custom.product_main_information__review_description[forloop.index0] | strip_html }}</div>
+              <div class="product-reviews-mobile__reviewer text--large">{{ product.metafields.custom.product_main_information__review_author[forloop.index0] }}</div>
+            </div>
+          {%- endfor -%}
+        </flickity-carousel>
+      {%- endcapture -%}
+
+  
+        <div class="scroller">
+          <div class="scroller__inner">
+            <logo-list {% if section.settings.reveal_on_scroll %}reveal-on-scroll{% endif %} class="logo-list logo-list--carousel">
+
+              {%- if reviewCounter > 3 -%}
+                <prev-next-buttons class="logo-list__prev-next hidden-pocket">
+                  <button class="logo-list__arrow prev-next-button prev-next-button--prev" disabled>
+                    <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
+                    {%- render 'icon' with 'brand-chevron-left', block: true, direction_aware: true -%}
+                  </button>
+
+                  <button class="logo-list__arrow prev-next-button prev-next-button--next">
+                    <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
+                    {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
+                    
+                  </button>
+                </prev-next-buttons>
+                {%- endif -%}
+
+              {{- section_content -}}
+            </logo-list>
+          </div>
+        </div>
+
+
+
+        <div class="section__footer">
+       <a class="link link--basic" href="#customer-reviews">
+          Read more reviews        
+          </a>
+        </div>
+
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+
+{% schema %}
+{
+  "name": "Prod. Con: Reviews",
+  "class": "shopify-section--testimonials-V2 product-reviews",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "reveal_on_scroll",
+      "label": "Reveal on scroll",
+      "info": "Show animation when section becomes visible.",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "header_text_alignment",
+      "label": "Header Text Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Customer Testimonials"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+        "type": "radio",
+        "id": "button_style",
+        "label": "Button Style",
+        "options": [
+          {
+          "value": "button--primary",
+          "label": "Button"
+        },
+        {
+            "value": "button--secondary",
+            "label": "Button (Secondary)"
+        },
+        {
+            "value": "button--ternary",
+            "label": "Button (Ternary)"
+        },
+        {
+            "value": "button--ternary-white",
+            "label": "Button (Ternary - White)"
+        },
+        {
+            "value": "button--outline",
+            "label": "Button (Outline)"
+        },
+        {
+            "value": "link",
+            "label": "Link"
+        },
+        {
+            "value": "link-with-arrow",
+            "label": "Link (With Arrow)"
+        },
+        {
+            "value": "link-with-arrow-white",
+            "label": "White Link (With Arrow)"
+        }
+      ],
+    "default": "button--primary"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button / Label text",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "link_underline",
+      "label": "Link Underline",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "stars_colour",
+      "label": "Stars Colour",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Review",
+      "type": "review",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "reviewer",
+          "label": "Reviewer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Prod. Con: Reviews"
+    }
+  ]
+}
+{% endschema %}

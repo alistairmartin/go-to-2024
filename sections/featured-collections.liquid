@@ -43,6 +43,30 @@
     --primary-button-background: {{ button_background.red }}, {{ button_background.green }}, {{ button_background.blue }};
     --primary-button-text-color: {{ button_text_color.red }}, {{ button_text_color.green }}, {{ button_text_color.blue }};
 
+    {%- if section.settings.subheading_color_mobile == 'rgba(0,0,0,0)' -%}
+      {%- assign subheading_color_mobile = heading_color -%}
+    {%- else -%}
+      {%- assign subheading_color_mobile = section.settings.subheading_color_mobile -%}
+    {%- endif -%}
+    {%- if section.settings.heading_color_mobile == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color_mobile = heading_color -%}
+    {%- else -%}
+      {%- assign heading_color_mobile = section.settings.heading_color_mobile -%}
+    {%- endif -%}
+    {%- if section.settings.subheading_color_desktop == 'rgba(0,0,0,0)' -%}
+      {%- assign subheading_color_desktop = heading_color -%}
+    {%- else -%}
+      {%- assign subheading_color_desktop = section.settings.subheading_color_desktop -%}
+    {%- endif -%}
+    {%- if section.settings.heading_color_desktop == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color_desktop = heading_color -%}
+    {%- else -%}
+      {%- assign heading_color_desktop = section.settings.heading_color_desktop -%}
+    {%- endif -%}
+
+    --section-subheading-color: {{ subheading_color_mobile.red }}, {{ subheading_color_mobile.green }}, {{ subheading_color_mobile.blue }};
+    --section-heading-color: {{ heading_color_mobile.red }}, {{ heading_color_mobile.green }}, {{ heading_color_mobile.blue }};
+
     --prev-next-button-background: {{ settings.background.red }}, {{ settings.background.green }}, {{ settings.background.blue }};
     --prev-next-button-color: {{ settings.text_color.red }}, {{ settings.text_color.green }}, {{ settings.text_color.blue }};
 
@@ -54,6 +78,8 @@
   @media screen and (min-width: 741px) {
     #shopify-section-{{ section.id }} {
       --section-products-per-row: {{ section.settings.products_per_row | at_most: 3 }};
+      --section-subheading-color: {{ subheading_color_desktop.red }}, {{ subheading_color_desktop.green }}, {{ subheading_color_desktop.blue }};
+      --section-heading-color: {{ heading_color_desktop.red }}, {{ heading_color_desktop.green }}, {{ heading_color_desktop.blue }};
     }
   }
 
@@ -113,11 +139,11 @@
           {%- if section.settings.title != blank or section.settings.subheading != blank or section.settings.content != blank -%}
             <div class="text-container">
               {%- if section.settings.subheading != blank -%}
-                <h2 class="heading heading--small heading--{{ section.settings.font_family_subtitle }}">{{ section.settings.subheading }}</h2>
+                <h2 class="heading heading--small heading--{{ section.settings.font_family_subtitle }}" style="color: rgb(var(--section-subheading-color));">{{ section.settings.subheading }}</h2>
               {%- endif -%}
 
               {%- if section.settings.title != blank -%}
-                <h3 class="heading h3 heading--{{ section.settings.font_family_title }}">{{ section.settings.title }}</h3>
+                <h3 class="heading h2 heading--{{ section.settings.font_family_title }}" style="color: rgb(var(--section-heading-color));">{{ section.settings.title }}</h3>
               {%- endif -%}
 
               {%- if section.settings.content != blank -%}
@@ -199,7 +225,7 @@
                 {%- endif -%}
 
 
-                {%- if collection.products_count >= 5 -%}
+                {%- if products_shown >= 5 -%}
                 <prev-next-buttons class="product-list__prev-next hidden-pocket" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
                   <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled>
                     <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
@@ -852,6 +878,34 @@
       "type": "color",
       "id": "text_color",
       "label": "Text",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color_mobile",
+      "label": "Subheading (Mobile)",
+      "info": "Defaults to Text color if not set.",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "heading_color_mobile",
+      "label": "Heading (Mobile)",
+      "info": "Defaults to Text color if not set.",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color_desktop",
+      "label": "Subheading (Desktop)",
+      "info": "Defaults to Text color if not set.",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "heading_color_desktop",
+      "label": "Heading (Desktop)",
+      "info": "Defaults to Text color if not set.",
       "default": "rgba(0,0,0,0)"
     },
     {

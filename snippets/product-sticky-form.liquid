@@ -40,11 +40,12 @@
 
               <div class="product-sticky-form__info">
                 <div class="product-sticky-form__bottom-info">
-                  <span class="product-sticky-form__title"><strong>{{ product.title }}</strong></span>
+                  <span class="product-sticky-form__title heading--primary">{{ product.title }}</span>
                   <span class="square-separator square-separator--subdued"></span>
 
                 {%- if product.metafields.custom.product_subtitle__description != blank -%}
-                  {{- product.metafields.custom.product_subtitle__description -}}
+                  <span class="product-sticky-form__description">{{- product.metafields.custom.product_subtitle__description -}}</span>
+                  
                    <span class="square-separator square-separator--subdued"></span>
                 {%- endif -%}
 

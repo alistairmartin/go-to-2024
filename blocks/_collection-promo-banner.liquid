@@ -13,7 +13,8 @@
     id="cpb-{{ block.id }}"
     class="cpb"
     {{ block.shopify_attributes }}
-    data-open="false"
+    data-default-desktop="{% if block.settings.open_by_default_desktop %}true{% else %}false{% endif %}"
+    data-default-mobile="{% if block.settings.open_by_default_mobile %}true{% else %}false{% endif %}"
     data-end="{{ block.settings.countdown_date | escape }}"
     data-timezone="{{ block.settings.timezone | escape }}"
     data-hide-after="{% if block.settings.hide_after_countdown %}1{% else %}0{% endif %}"
@@ -26,38 +27,77 @@
       </div>
     {%- endif -%}
 
-    {%- if block.settings.background_image != blank or block.blocks.size > 0 -%}
+    {%- liquid
+      assign has_desktop = false
+      if block.settings.video != blank or block.settings.background_image != blank
+        assign has_desktop = true
+      endif
+
+      assign has_mobile = false
+      if block.settings.video_mobile != blank or block.settings.background_image_mobile != blank
+        assign has_mobile = true
+      endif
+
+      assign has_media = false
+      if has_desktop or has_mobile
+        assign has_media = true
+      endif
+    -%}
+
+    {%- if has_media or block.blocks.size > 0 -%}
       <div
         id="cpb-image-{{ block.id }}"
         class="cpb__image-wrap"
       >
-        <div class="cpb__image-inner">
-          {%- if block.settings.background_image != blank -%}
-            {%- capture image_tag -%}
-              {{-
-                block.settings.background_image
-                | image_url: width: block.settings.background_image.width
-                | image_tag:
-                  loading: 'eager',
-                  sizes: '100vw',
-                  widths: '600,800,1000,1200,1400,1600,1800,2000,2400,2800,3200',
-                  class: 'cpb__image'
-              -}}
+        <div class="cpb__image-inner{% if has_mobile %} cpb__image-inner--has-mobile{% endif %}">
+          {%- if has_media -%}
+            {%- capture desktop_media -%}
+              {%- if block.settings.video != blank -%}
+                {{- block.settings.video | video_tag: image_size: '1100x', autoplay: true, loop: true, muted: true, controls: false, class: 'cpb__image cpb__media cpb__media--desktop' -}}
+              {%- elsif block.settings.background_image != blank -%}
+                {{-
+                  block.settings.background_image
+                  | image_url: width: block.settings.background_image.width
+                  | image_tag:
+                    loading: 'eager',
+                    sizes: '100vw',
+                    widths: '600,800,1000,1200,1400,1600,1800,2000,2400,2800,3200',
+                    class: 'cpb__image cpb__media cpb__media--desktop'
+                -}}
+              {%- endif -%}
             {%- endcapture -%}
+
+            {%- capture mobile_media -%}
+              {%- if block.settings.video_mobile != blank -%}
+                {{- block.settings.video_mobile | video_tag: image_size: '800x', autoplay: true, loop: true, muted: true, controls: false, class: 'cpb__image cpb__media cpb__media--mobile' -}}
+              {%- elsif block.settings.background_image_mobile != blank -%}
+                {{-
+                  block.settings.background_image_mobile
+                  | image_url: width: block.settings.background_image_mobile.width
+                  | image_tag:
+                    loading: 'eager',
+                    sizes: '100vw',
+                    widths: '600,800,1000,1200,1400,1600',
+                    class: 'cpb__image cpb__media cpb__media--mobile'
+                -}}
+              {%- endif -%}
+            {%- endcapture -%}
+
+            {%- capture media_markup -%}{{ desktop_media }}{{ mobile_media }}{%- endcapture -%}
 
             {%- if block.settings.image_link != blank -%}
               <a href="{{ block.settings.image_link }}" class="cpb__image-link">
-                {{- image_tag -}}
+                {{- media_markup -}}
               </a>
             {%- else -%}
               <div class="cpb__image-block">
-                {{- image_tag -}}
+                {{- media_markup -}}
               </div>
             {%- endif -%}
           {%- endif -%}
 
           {%- if block.blocks.size > 0 -%}
-            <div class="cpb__blocks{% if block.settings.background_image != blank %} cpb__blocks--overlay{% endif %}">
+            <div class="cpb__blocks{% if has_media %} cpb__blocks--overlay{% endif %}">
               {% content_for 'blocks' %}
             </div>
           {%- endif -%}
@@ -75,7 +115,7 @@
         class="cpb__toggle"
         data-action="toggle"
         aria-expanded="false"
-        {% if block.settings.background_image != blank or block.blocks.size > 0 %}aria-controls="cpb-image-{{ block.id }}"{% endif %}
+        {% if has_media or block.blocks.size > 0 %}aria-controls="cpb-image-{{ block.id }}"{% endif %}
       >
         {{- block.settings.open_text | escape -}}
       </button>
@@ -98,15 +138,52 @@
             this.toggleBtn.addEventListener('click', () => this.toggle());
           }
 
+          // In the theme editor the block re-renders on every change, which would
+          // collapse the banner and hide whatever the merchant is editing. Force it
+          // open so the expanding content stays visible while they work.
+          if (window.Shopify && window.Shopify.designMode) {
+            this.dataset.open = 'true';
+          }
+
+          // The open-by-default state is breakpoint-dependent (data-default-desktop /
+          // data-default-mobile, resolved in CSS). Keep the toggle label in sync when
+          // the viewport crosses the breakpoint before the visitor has toggled.
+          this._mq = window.matchMedia('(max-width: 740px)');
+          const onBreakpointChange = () => {
+            if (!this.dataset.open) this.updateButton();
+          };
+          if (this._mq.addEventListener) {
+            this._mq.addEventListener('change', onBreakpointChange);
+          } else if (this._mq.addListener) {
+            this._mq.addListener(onBreakpointChange); // Safari < 14
+          }
+
+          this.updateButton();
           this.startCountdown();
         }
 
+        // Effective open state: an explicit toggle (data-open) wins; otherwise fall
+        // back to the breakpoint's open-by-default setting. Mirrors the CSS resolution.
+        isOpen() {
+          if (this.dataset.open === 'true') return true;
+          if (this.dataset.open === 'false') return false;
+          const mobile = window.matchMedia('(max-width: 740px)').matches;
+          return mobile
+            ? this.dataset.defaultMobile === 'true'
+            : this.dataset.defaultDesktop === 'true';
+        }
+
+        updateButton() {
+          if (!this.toggleBtn) return;
+          const open = this.isOpen();
+          this.toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          this.toggleBtn.textContent = open ? this.closeText : this.openText;
+        }
+
         toggle() {
-          const isOpen = this.dataset.open === 'true';
-          const next = !isOpen;
+          const next = !this.isOpen();
           this.dataset.open = next ? 'true' : 'false';
-          this.toggleBtn.setAttribute('aria-expanded', next ? 'true' : 'false');
-          this.toggleBtn.textContent = next ? this.closeText : this.openText;
+          this.updateButton();
         }
 
         startCountdown() {
@@ -174,7 +251,8 @@
 {
   "name": "Promo banner",
   "blocks": [
-    { "type": "_promo-container" }
+    { "type": "_promo-container" },
+    { "type": "containers" }
   ],
   "settings": [
     {
@@ -195,19 +273,55 @@
     },
     {
       "type": "header",
-      "content": "Expanding image"
+      "content": "Expanding media",
+      "info": "Reveals between the top and bottom rows when expanded. If a video is set it takes priority over the image for that breakpoint. Mobile media is optional — desktop media is used on mobile when no mobile media is set."
     },
     {
       "type": "image_picker",
       "id": "background_image",
-      "label": "Image",
-      "info": "Reveals between the top and bottom rows when expanded. Put any campaign text directly in the image. 2400 x 800 .jpg recommended."
+      "label": "Desktop image",
+      "info": "Put any campaign text directly in the image. 2400 x 800 .jpg recommended."
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Mobile image",
+      "info": "Optional. Shown on screens 740px and under. Recommend a more square crop, e.g. 1080 x 1080."
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Desktop video",
+      "info": "Optional. Autoplays muted and looped. Takes priority over the desktop image."
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Mobile video",
+      "info": "Optional. Shown on screens 740px and under. Takes priority over the mobile image."
     },
     {
       "type": "url",
       "id": "image_link",
-      "label": "Image link",
-      "info": "Optional. Wraps the image in a link."
+      "label": "Media link",
+      "info": "Optional. Wraps the image or video in a link."
+    },
+    {
+      "type": "header",
+      "content": "Default state",
+      "info": "Whether the expanding media/content shows on load before the visitor taps the toggle. In the theme editor the banner is always kept open so you can see your changes."
+    },
+    {
+      "type": "checkbox",
+      "id": "open_by_default_desktop",
+      "label": "Open by default on desktop",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "open_by_default_mobile",
+      "label": "Open by default on mobile",
+      "default": false
     },
     {
       "type": "header",
@@ -245,7 +359,7 @@
       "type": "text",
       "id": "countdown_date",
       "label": "Countdown end date & time",
-      "default": "May 31, 2026 23:59:00",
+      "default": "May 31, 2027 23:59:00",
       "info": "Format: Sep 21, 2024 15:30:00. Entered in the timezone below."
     },
     {

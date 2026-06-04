@@ -52,7 +52,7 @@
     display: block;
     overflow: hidden;
     border-radius: {{ section.settings.card_radius }}px;
-    aspect-ratio: {{ section.settings.card_aspect_ratio }};
+    aspect-ratio: 5 / 4;
     text-decoration: none;
     color: inherit;
     scroll-snap-align: start;
@@ -141,16 +141,41 @@
     box-shadow: 0 2px 4px -4px rgba(52, 52, 52, 0.16), 0 1px 2px 0 rgba(52, 52, 52, 0.24);
   }
 
+  /* Kill the theme's slide-across (translateX) keyframe on hover — the only
+     hover feedback here is the opacity fade on the button. */
+  #shopify-section-{{ section.id }} .category-carousel .product-list__arrow:hover svg {
+    animation: none;
+  }
+
   #shopify-section-{{ section.id }} .category-carousel .product-list__arrow svg rect {
     fill: #FEF9F8;
   }
 
   /* Hide an arrow once it can't go further — so the prev arrow is hidden until
-     you've scrolled right (and the next arrow hides at the end). visibility keeps
-     its slot so the opposite arrow stays pinned to its edge. */
-  #shopify-section-{{ section.id }} .category-carousel .product-list__arrow[disabled] {
-    visibility: hidden;
+     you've scrolled right (and the next arrow hides at the end). opacity:0 (rather
+     than visibility:hidden) lets it fade out/in over the .2s opacity transition,
+     while still keeping its layout slot so the opposite arrow stays pinned to its
+     edge. The :hover-scoped selector beats the carousel-hover rule below, which
+     would otherwise force a disabled arrow back to full opacity. */
+  #shopify-section-{{ section.id }} .category-carousel .product-list__arrow[disabled],
+  #shopify-section-{{ section.id }} .category-carousel:hover .product-list__arrow[disabled] {
+    opacity: 0 !important;
     pointer-events: none;
+  }
+
+  /* The theme only reveals these arrows on hover, and that whole mechanism
+     lives in a min-width:1000 query — so by default (and on touch, where there
+     is no hover) the arrows never show. Pin them visible at every width. The
+     [disabled] rule above still wins on specificity, so the prev arrow stays
+     hidden until you've scrolled right. */
+  #shopify-section-{{ section.id }} .category-carousel .product-list__arrow {
+    opacity: 0.7 !important;
+    visibility: visible;
+    transform: none;
+  }
+
+  #shopify-section-{{ section.id }} .category-carousel:hover .product-list__arrow {
+    opacity: 1 !important;
   }
 
   /* Right-side breakout (desktop): cards keep their container width, but the row
@@ -176,13 +201,60 @@
     }
   }
 
+  /* On mobile the theme sets `min-width: min-content` on the scroller, which
+     makes it expand to the full width of all its cards. The inner element
+     therefore has scrollWidth === clientWidth (nothing overflows *inside* it —
+     the overflow lands on the outer .scroller instead), so native swipe works
+     but the arrows' scrollBy() — which targets this inner element — is a no-op.
+     Constrain it to the container (as it already is at >=1000px, where the
+     arrows work) so it becomes the scroll container the arrows can drive. */
+  @media screen and (max-width: 999px) {
+    #shopify-section-{{ section.id }} .category-carousel .product-list__inner--scroller {
+      min-width: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-left: 10px;
+    }
+  }
+
   /* Hide arrows entirely when content fits without scrolling */
-  #shopify-section-{{ section.id }} .category-carousel[data-no-scroll] .product-list__prev-next {
+  /* #shopify-section-{{ section.id }} .category-carousel[data-no-scroll] .product-list__prev-next {
     display: none;
+  } */
+
+  /* Page-load reveal — mirrors the product-item stagger (opacity 0→1 +
+     translateY→0, 600ms ease, staggered). Plays once the carousel scrolls into
+     view; the per-card delay is set inline by the script below. */
+  @keyframes category-card-reveal {
+    from { opacity: 0; transform: translateY(60px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media screen and (max-width: 999px) {
+    @keyframes category-card-reveal {
+      from { opacity: 0; transform: translateY(35px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  }
+  #shopify-section-{{ section.id }} .category-carousel.is-reveal-ready .category-card {
+    opacity: 0;
+  }
+  #shopify-section-{{ section.id }} .category-carousel .category-card--reveal {
+    opacity: 1;
+    animation: category-card-reveal 600ms ease both;
+    animation-delay: var(--cat-reveal-delay, 0ms);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    @keyframes category-card-reveal {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    #shopify-section-{{ section.id }} .category-carousel .category-card--reveal {
+      animation-delay: 0ms;
+    }
   }
 </style>
 
-<section class="section {% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %} {% unless blends_with_background %}section--flush{% endunless %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
+<section class=" {% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %} {% unless blends_with_background %}section--flush{% endunless %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
   <div class="section__color-wrapper">
     <div class="container {% unless blends_with_background %}vertical-breather{% endunless %}">
       {% content_for 'blocks' %}
@@ -200,14 +272,45 @@
     if (!scroller) return;
 
     function update() {
+      // Skip while the carousel is laid out at zero width — e.g. in a hidden
+      // tab, or mid-injection in the theme editor. Measuring then would wrongly
+      // conclude the content fits and hide the arrows for good.
+      if (scroller.clientWidth === 0) return;
       var canScroll = scroller.scrollWidth - scroller.clientWidth > 1;
       carousel.toggleAttribute('data-no-scroll', !canScroll);
     }
 
     update();
+    // Re-measure after the first layout pass and once images/fonts have loaded,
+    // so an early zero-width or pre-layout reading can't leave the arrows hidden.
+    requestAnimationFrame(update);
+    window.addEventListener('load', update);
     window.addEventListener('resize', update);
     if (window.ResizeObserver) {
       new ResizeObserver(update).observe(scroller);
+    }
+
+    // Page-load reveal — mirror the product-item stagger: hold the cards hidden,
+    // then fade + slide each up once the carousel scrolls into view, with the
+    // same decelerating per-card delay (100·i − min(3·i², 100·i)).
+    var cards = Array.prototype.slice.call(scroller.querySelectorAll('.category-card'));
+    if (cards.length) {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      carousel.classList.add('is-reveal-ready');
+      var play = function () {
+        cards.forEach(function (card, i) {
+          var delay = reduce ? 0 : 100 * i - Math.min(3 * i * i, 100 * i);
+          card.style.setProperty('--cat-reveal-delay', Math.max(0, delay) + 'ms');
+          card.classList.add('category-card--reveal');
+        });
+      };
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries, obs) {
+          if (entries[0].isIntersecting) { play(); obs.disconnect(); }
+        }, { threshold: 0.1 }).observe(carousel);
+      } else {
+        play();
+      }
     }
   })();
 </script>

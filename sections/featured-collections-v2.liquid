@@ -1,0 +1,561 @@
+{%- comment -%} Count only the collection tabs — never nested content-card blocks. {%- endcomment -%}
+{%- assign tab_blocks = section.blocks | where: 'type', 'featured-collection' -%}
+{%- assign tab_count = tab_blocks.size -%}
+
+{%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
+  {%- assign blends_with_background = false -%}
+{%- else -%}
+  {%- assign blends_with_background = true -%}
+{%- endif -%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    {%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+      {%- assign section_background = settings.background -%}
+    {%- else -%}
+      {%- assign section_background = section.settings.background -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color = settings.heading_color -%}
+      {%- assign text_color = settings.text_color -%}
+    {%- else -%}
+      {%- assign heading_color = section.settings.text_color -%}
+      {%- assign text_color = section.settings.text_color -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_background == 'rgba(0,0,0,0)' -%}
+      {%- assign button_background = settings.primary_button_background -%}
+    {%- else -%}
+      {%- assign button_background = section.settings.button_background -%}
+    {%- endif -%}
+
+    {%- if section.settings.button_text_color == 'rgba(0,0,0,0)' -%}
+      {%- assign button_text_color = settings.primary_button_text_color -%}
+    {%- else -%}
+      {%- assign button_text_color = section.settings.button_text_color -%}
+    {%- endif -%}
+
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --primary-button-background: {{ button_background.red }}, {{ button_background.green }}, {{ button_background.blue }};
+    --primary-button-text-color: {{ button_text_color.red }}, {{ button_text_color.green }}, {{ button_text_color.blue }};
+
+    {%- if section.settings.subheading_color_mobile == 'rgba(0,0,0,0)' -%}
+      {%- assign subheading_color_mobile = heading_color -%}
+    {%- else -%}
+      {%- assign subheading_color_mobile = section.settings.subheading_color_mobile -%}
+    {%- endif -%}
+    {%- if section.settings.heading_color_mobile == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color_mobile = heading_color -%}
+    {%- else -%}
+      {%- assign heading_color_mobile = section.settings.heading_color_mobile -%}
+    {%- endif -%}
+    {%- if section.settings.subheading_color_desktop == 'rgba(0,0,0,0)' -%}
+      {%- assign subheading_color_desktop = heading_color -%}
+    {%- else -%}
+      {%- assign subheading_color_desktop = section.settings.subheading_color_desktop -%}
+    {%- endif -%}
+    {%- if section.settings.heading_color_desktop == 'rgba(0,0,0,0)' -%}
+      {%- assign heading_color_desktop = heading_color -%}
+    {%- else -%}
+      {%- assign heading_color_desktop = section.settings.heading_color_desktop -%}
+    {%- endif -%}
+
+    --section-subheading-color: {{ subheading_color_mobile.red }}, {{ subheading_color_mobile.green }}, {{ subheading_color_mobile.blue }};
+    --section-heading-color: {{ heading_color_mobile.red }}, {{ heading_color_mobile.green }}, {{ heading_color_mobile.blue }};
+
+    --prev-next-button-background: {{ settings.background.red }}, {{ settings.background.green }}, {{ settings.background.blue }};
+    --prev-next-button-color: {{ settings.text_color.red }}, {{ settings.text_color.green }}, {{ settings.text_color.blue }};
+
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+    --section-products-per-row: 2;
+    --section-products-per-row-mobile: {{ section.settings.mobile_products_per_rows }}vw;
+  }
+
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} {
+      --section-products-per-row: {{ section.settings.products_per_row | at_most: 3 }};
+      --section-subheading-color: {{ subheading_color_desktop.red }}, {{ subheading_color_desktop.green }}, {{ subheading_color_desktop.blue }};
+      --section-heading-color: {{ heading_color_desktop.red }}, {{ heading_color_desktop.green }}, {{ heading_color_desktop.blue }};
+    }
+  }
+
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} {
+      --section-products-per-row: {{ section.settings.products_per_row | at_most: 4 }};
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    #shopify-section-{{ section.id }} {
+      --section-products-per-row: {{ section.settings.products_per_row }};
+    }
+  }
+
+  {%- if section.settings.enable_background -%}
+  #shopify-section-{{ section.id }} .product-list__inner {
+    {%- if brand == 'bro-to' -%}
+      --product-list-block-spacing: 8px;
+      --product-list-column-gap: 8px;
+    {%- else %}
+      --product-list-block-spacing: 8px;
+      --product-list-column-gap: 8px;
+    {%- endif -%}
+
+  }
+
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} .product-list__inner {
+      {%- if brand == 'bro-to' -%}
+      --product-list-block-spacing: 24px;
+      --product-list-column-gap: 24px;
+    {%- else %}
+      --product-list-block-spacing: 8px;
+      --product-list-column-gap: 8px;
+    {%- endif -%}
+  }
+  }
+  {%- endif -%}
+
+
+  #shopify-section-{{ section.id }} .section__footer {
+    --flex-justify-content-mobile: {{ section.settings.flex_justify_content_mobile }};
+    --flex-justify-content-desktop: {{ section.settings.flex_justify_content_desktop }};
+  }
+
+</style>
+
+<section class="section {% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %} {% unless blends_with_background %}section--flush{% endunless %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
+  <div class="section__color-wrapper">
+    <div class="container {% unless blends_with_background %}vertical-breather{% endunless %}">
+      {%- if tab_count > 1 or section.settings.title != blank or section.settings.subheading != blank or section.settings.content != blank -%}
+        <header class="section__header {% if section.settings.content != blank %}section__header--tight{% endif %} text-{{ section.settings.header_text_alignment }}">
+          {%- if section.settings.title != blank or section.settings.subheading != blank or section.settings.content != blank -%}
+            <div class="text-container">
+              {%- if section.settings.subheading != blank -%}
+                <h2 class="heading heading--small heading--{{ section.settings.font_family_subtitle }}" style="color: rgb(var(--section-subheading-color));">{{ section.settings.subheading }}</h2>
+              {%- endif -%}
+
+              {%- if section.settings.title != blank -%}
+                <h3 class="heading h2 heading--{{ section.settings.font_family_title }}" style="color: rgb(var(--section-heading-color));">{{ section.settings.title }}</h3>
+              {%- endif -%}
+
+              {%- if section.settings.content != blank -%}
+                <div class="content">
+                  {{- section.settings.content -}}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if tab_count > 1 -%}
+            <tabs-nav class="tabs-nav tabs-nav--center tabs-nav--edge2edge">
+              <scrollable-content class="tabs-nav__scroller hide-scrollbar">
+                <div class="tabs-nav__scroller-inner">
+                  <div class="tabs-nav__item-list">
+                    {%- assign tab_index = 0 -%}
+                    {%- for block in section.blocks -%}
+                      {%- if block.type != 'featured-collection' -%}{%- continue -%}{%- endif -%}
+                      {%- assign tab_index = tab_index | plus: 1 -%}
+                      {%- capture on_boarding_title -%}{{ 'general.onboarding.collection_title' | t }} {{ tab_index }}{%- endcapture -%}
+
+                      <button type="button" class="tabs-nav__item heading heading--small" aria-expanded="{% if tab_index == 1 %}true{% else %}false{% endif %}" aria-controls="block-{{ section.id }}-{{ block.id }}" {{ block.shopify_attributes }}>
+                        {{- block.settings.label | default: block.settings.collection.title | default: on_boarding_title -}}
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                </div>
+              </scrollable-content>
+            </tabs-nav>
+          {%- endif -%}
+        </header>
+      {%- endif -%}
+
+      <div class="featured-collections">
+        {% content_for 'blocks' %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%}
+  Set initial tab visibility by DOM order: first <product-list> shown, the rest
+  hidden until the theme <tabs-nav> reveals them on click (it only toggles
+  `hidden`, never sets the initial state). A single tab is always shown. Runs
+  here — not in the block — because `section.blocks` is empty inside a block
+  rendered via `content_for`, so the block can't tell whether it is the first.
+{%- endcomment -%}
+<script>
+  (function () {
+    var section = document.getElementById('shopify-section-{{ section.id }}');
+    if (!section) return;
+    function syncPanels() {
+      var holder = section.querySelector('.featured-collections');
+      if (!holder) return;
+      var panels = Array.prototype.slice.call(holder.querySelectorAll('product-list'));
+      panels.forEach(function (panel, i) {
+        panel.hidden = panels.length > 1 && i !== 0;
+      });
+    }
+    syncPanels();
+    document.addEventListener('shopify:section:load', function (e) {
+      if (e.target && e.target.id === section.id) syncPanels();
+    });
+  })();
+</script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document
+      .querySelectorAll('#shopify-section-{{ section.id }} .product-list__inner--scroller')
+      .forEach((scroller) => {
+        const dotsContainer = scroller.parentElement.querySelector('.product-list__dots');
+        if (!dotsContainer) return;
+        const totalItems = scroller.querySelectorAll('.product-item, .product-item-placeholder').length;
+        const itemsPerRow = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--section-products-per-row')) || 2;
+        const pageCount = Math.ceil(totalItems / itemsPerRow);
+
+        // Create dots
+        for (let i = 0; i < pageCount; i++) {
+          const dot = document.createElement('span');
+          dot.classList.add('dot');
+          if (i === 0) dot.classList.add('active');
+          dotsContainer.appendChild(dot);
+        }
+
+        const dots = dotsContainer.querySelectorAll('span');
+
+        scroller.addEventListener('scroll', () => {
+          const scrollLeft = scroller.scrollLeft;
+          const scrollWidth = scroller.scrollWidth - scroller.clientWidth;
+          const pageIndex = Math.round((scrollLeft / scrollWidth) * (pageCount - 1));
+
+          dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === pageIndex);
+          });
+        });
+      });
+  });
+</script>
+
+
+
+<style>
+  .product-list__dots {
+    display: none;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .product-list__dots .dot {
+    display: block;
+    width: 8px;
+    height: 8px;
+    background: transparent;
+    border-radius: 50%;
+    border: 1px solid #000;
+  }
+  .product-list__dots .dot.active {
+    background: #f9c6b9;
+    border: 1px solid transparent;
+  }
+
+@media screen and (min-width: 999px) {
+    .product-list__dots {
+      display: flex;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Featured collections V2",
+  "class": "shopify-section--featured-collections",
+  "max_blocks": 5,
+  "disabled_on": {
+    "templates": ["password"],
+    "groups": ["header", "custom.overlay"]
+  },
+  "blocks": [
+    { "type": "featured-collection" }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "id",
+      "label": "ID",
+      "info": "Optional. Used with in-page navigation."
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_mobile",
+      "label": "Hide Mobile?"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_desktop",
+      "label": "Hide Desktop?"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hidden_products",
+      "label": "Show Hidden Products",
+      "info": "For Testing Purposes Only!"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "select",
+      "id": "header_text_alignment",
+      "label": "Header Text Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Your title"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Collection"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "select",
+      "id": "font_family_subtitle",
+      "label": "Font Family (Subtitle)",
+      "info": "For Section Header",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "select",
+      "id": "font_family_title",
+      "label": "Font Family (Title)",
+      "info": "For Section Header",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "label": "Products to show",
+      "min": 4,
+      "max": 50,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "mobile_products_per_rows",
+      "label": "Products per row (mobile)",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "default": 52,
+      "unit": "%",
+      "info": "Percentage of the Window Width. Default 52%."
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "label": "Products per row (desktop)",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "stack_products",
+      "label": "Stack products",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show add to cart below info",
+      "info": "If enabled, we recommend using 4 products per row at maximum.",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color_mobile",
+      "label": "Subheading (Mobile)",
+      "info": "Defaults to Text color if not set.",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "heading_color_mobile",
+      "label": "Heading (Mobile)",
+      "info": "Defaults to Text color if not set.",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color_desktop",
+      "label": "Subheading (Desktop)",
+      "info": "Defaults to Text color if not set.",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "heading_color_desktop",
+      "label": "Heading (Desktop)",
+      "info": "Defaults to Text color if not set.",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_background",
+      "label": "Enable White Product Card",
+      "info": "Will make the background of the product card white, enabling the use of the background setting to be used on the section for contrast."
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    },
+        {
+      "type": "header",
+      "content": "Button Position"
+    },
+    {
+      "type": "select",
+      "id": "flex_justify_content_desktop",
+      "label": "Button Position (Desktop)",
+      "info": "Position the button (Left, Center, Right)",
+      "default": "center",
+      "options": [
+      {
+        "value": "unset",
+        "label": "Unset"
+      },
+      {
+        "value": "flex-start",
+        "label": "Left"
+      },
+      {
+        "value": "center",
+        "label": "Center"
+      },
+      {
+        "value": "flex-end",
+        "label": "Right"
+      }
+  ]
+  },
+    {
+      "type": "select",
+      "id": "flex_justify_content_mobile",
+      "label": "Button Position (Mobile)",
+      "info": "Position the button (Left, Center, Right)",
+      "default": "center",
+      "options": [
+      {
+        "value": "unset",
+        "label": "Unset"
+      },
+      {
+        "value": "flex-start",
+        "label": "Left"
+      },
+      {
+        "value": "center",
+        "label": "Center"
+      },
+      {
+        "value": "flex-end",
+        "label": "Right"
+      }
+  ]
+}
+  ],
+  "presets": [
+    {
+      "name": "Featured collections V2",
+      "blocks": [
+        {
+          "type": "featured-collection"
+        }
+      ],
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

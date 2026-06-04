@@ -1,6 +1,9 @@
    {%- capture styles -%}
       <style>
           #shopify-block-{{ block.id }} {
+            display: flex;
+            justify-content: var(--flex-justify-content-mobile);
+
             --margin-top-desktop: {{ block.settings.margin_top_desktop }}px;
             --margin-bottom-desktop: {{ block.settings.margin_bottom_desktop }}px;
   
@@ -18,6 +21,12 @@
               --button-color-text-desktop: {{ block.settings.button_color_desktop }};
 
           }
+
+          @media (min-width: 740px) {
+            #shopify-block-{{ block.id }} {
+              justify-content: var(--flex-justify-content-desktop);
+            }
+          }
       </style>
       {%- endcapture -%}
       {{- styles | strip_newlines | remove:" " | strip -}}
@@ -32,12 +41,47 @@
           {%- assign classes = classes | append: " flex-content--desktop" -%}
       {%- endunless -%}
   
-      {%- if block.settings.modal_content != blank -%}
-        <button class="blocks--button {{ classes }} {% if block.settings.button_style contains "link" %}link--{% if block.settings.button_style == 'link-with-arrow-white' %}secondary{% else %}primary{% endif %}{% else %}button {{ block.settings.button_style }}{% endif %} {% if block.settings.hide_desktop %}hide-desktop{% endif %} {% if block.settings.hide_mobile %}hide-mobile{% endif %}" id="block-{{ block.id }}" {% if  block.settings.content_square_id %}data-content-square="{{ block.settings.content_square_id }}"{% endif %}>{{ block.settings.button_text }} {% if block.settings.button_style == "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</button>
-      {%- else -%}
-        <a class="blocks--button {{ classes }} {% if block.settings.button_style contains "link" %}link--{% if block.settings.button_style == 'link-with-arrow-white' %}secondary{% else %}primary{% endif %}{% else %}button {{ block.settings.button_style }}{% endif %} {% if block.settings.hide_desktop %}hide-desktop{% endif %} {% if block.settings.hide_mobile %}hide-mobile{% endif %}" href="{{ block.settings.button_link }}" id="block-{{ block.id }}">{{ block.settings.button_text }} {% if block.settings.button_style contains "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</a>
+      {%- comment -%} Resolve per-breakpoint styles. Mobile falls back to the desktop style unless overridden. {%- endcomment -%}
+      {%- assign desktop_style = block.settings.button_style -%}
+      {%- assign mobile_style = block.settings.button_style_mobile -%}
+      {%- if mobile_style == blank or mobile_style == "inherit" -%}
+        {%- assign mobile_style = desktop_style -%}
       {%- endif -%}
 
+      {%- comment -%} Render once when styles match, otherwise render a desktop + mobile element toggled by hide classes. {%- endcomment -%}
+      {%- if mobile_style == desktop_style -%}
+        {%- assign button_breakpoints = "both" | split: "," -%}
+      {%- else -%}
+        {%- assign button_breakpoints = "desktop,mobile" | split: "," -%}
+      {%- endif -%}
+
+      {%- for breakpoint in button_breakpoints -%}
+        {%- assign hide_class = "" -%}
+        {%- case breakpoint -%}
+          {%- when "mobile" -%}
+            {%- assign current_style = mobile_style -%}
+            {%- assign id_suffix = "--mobile" -%}
+            {%- assign hide_class = "hide-desktop" -%}
+          {%- when "desktop" -%}
+            {%- assign current_style = desktop_style -%}
+            {%- assign id_suffix = "" -%}
+            {%- assign hide_class = "hide-mobile" -%}
+          {%- else -%}
+            {%- assign current_style = desktop_style -%}
+            {%- assign id_suffix = "" -%}
+        {%- endcase -%}
+
+        {%- if block.settings.hide_desktop -%}{%- assign hide_class = hide_class | append: " hide-desktop" -%}{%- endif -%}
+        {%- if block.settings.hide_mobile -%}{%- assign hide_class = hide_class | append: " hide-mobile" -%}{%- endif -%}
+
+        {%- capture style_class -%}{% if current_style contains "link" %}link--{% if current_style == 'link-with-arrow-white' %}secondary{% elsif current_style == 'link-black' %}black{% elsif current_style == 'link-white' %}white{% else %}primary{% endif %}{% else %}button {{ current_style }}{% endif %}{%- endcapture -%}
+
+        {%- if block.settings.modal_content != blank -%}
+          <button class="blocks--button {{ classes }} {{ style_class }} {{ hide_class }}" id="block-{{ block.id }}{{ id_suffix }}" {% if block.settings.content_square_id %}data-content-square="{{ block.settings.content_square_id }}"{% endif %}>{{ block.settings.button_text }} {% if current_style contains "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</button>
+        {%- else -%}
+          <a class="blocks--button {{ classes }} {{ style_class }} {{ hide_class }}" href="{{ block.settings.button_link }}" id="block-{{ block.id }}{{ id_suffix }}">{{ block.settings.button_text }} {% if current_style contains "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</a>
+        {%- endif -%}
+      {%- endfor -%}
 
       {% schema %}
         {
@@ -73,7 +117,8 @@
           {
               "type": "radio",
               "id": "button_style",
-              "label": "Button Style",
+              "label": "Button Style (Desktop)",
+              "info": "Used on desktop, and on mobile unless overridden in the Mobile settings below.",
               "options": [
                 {
                 "value": "button--primary",
@@ -100,6 +145,14 @@
                   "label": "Link"
               },
               {
+                  "value": "link-black",
+                  "label": "Link (Black Underline)"
+              },
+              {
+                  "value": "link-white",
+                  "label": "Link (White Underline)"
+              },
+              {
                   "value": "link-with-arrow",
                   "label": "Link (With Arrow)"
               },
@@ -121,7 +174,7 @@
           },
           {
           "type": "header",
-          "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---",
+          "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---"
           },
           {
               "type": "header",
@@ -193,6 +246,59 @@
           {
               "type": "header",
               "content": "--- 📱 MOBILE SETTINGS 📱 ---"
+          },
+          {
+              "type": "select",
+              "id": "button_style_mobile",
+              "label": "Button Style (Mobile)",
+              "info": "Overrides the desktop style on mobile. Leave as ‘Same as desktop’ to inherit.",
+              "default": "inherit",
+              "options": [
+                {
+                  "value": "inherit",
+                  "label": "Same as desktop"
+                },
+                {
+                  "value": "button--primary",
+                  "label": "Button"
+                },
+                {
+                  "value": "button--secondary",
+                  "label": "Button (Secondary)"
+                },
+                {
+                  "value": "button--ternary",
+                  "label": "Button (Ternary)"
+                },
+                {
+                  "value": "button--ternary-white",
+                  "label": "Button (Ternary - White)"
+                },
+                {
+                  "value": "button--outline",
+                  "label": "Button (Outline)"
+                },
+                {
+                  "value": "link",
+                  "label": "Link"
+                },
+                {
+                  "value": "link-black",
+                  "label": "Link (Black Underline)"
+                },
+                {
+                  "value": "link-white",
+                  "label": "Link (White Underline)"
+                },
+                {
+                  "value": "link-with-arrow",
+                  "label": "Link (With Arrow)"
+                },
+                {
+                  "value": "link-with-arrow-white",
+                  "label": "White Link (With Arrow)"
+                }
+              ]
           },
           {
               "type": "range",

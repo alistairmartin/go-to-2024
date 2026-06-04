@@ -1,0 +1,47 @@
+{%- assign article = articles[block.settings.article] -%}
+{%- assign card_url = article.url | default: '#' -%}
+{%- assign card_image = article.image -%}
+
+{%- capture sizes_attribute -%}(max-width: 740px) {{ section.settings.mobile_card_width }}vw, calc(min(100vw - 80px, 1520px) / {{ section.settings.cards_per_row }}){%- endcapture -%}
+
+<div class="blog-card" {{ block.shopify_attributes }}>
+  <a href="{{ card_url }}" class="blog-card__image-link image-zoom">
+    {%- if card_image != blank -%}
+      {{ card_image | image_url: width: card_image.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '300,400,500,600,700,800,1000,1200', class: 'blog-card__image', alt: article.title }}
+    {%- else -%}
+      {{ 'image' | placeholder_svg_tag: 'blog-card__image placeholder-background' }}
+    {%- endif -%}
+  </a>
+
+  <div class="blog-card__content">
+    {%- if section.settings.show_category and article.tags.size > 0 -%}
+      <span class="blog-card__category heading heading--xsmall">{{ article.tags.first }}</span>
+    {%- endif -%}
+
+    {%- if article.title != blank -%}
+      <h3 class="blog-card__title">
+        <a href="{{ card_url }}">{{ article.title }}</a>
+      </h3>
+    {%- endif -%}
+
+    {%- if section.settings.show_read_more -%}
+      <a href="{{ card_url }}" class="blog-card__read-more link">{{ section.settings.read_more_text | default: 'Read more' }}</a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog card",
+  "settings": [
+    {
+      "type": "article",
+      "id": "article",
+      "label": "Article"
+    }
+  ],
+  "presets": [
+    { "name": "Blog card" }
+  ]
+}
+{% endschema %}

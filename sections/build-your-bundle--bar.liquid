@@ -7,7 +7,11 @@
       <p id="total-label">Total</p>
       <p class="build-your-bundle--cost-container" aria-labelledby="total-label">{{ cart.currency.symbol }}<span class="build-your-bundle--cost">0.00</span></p>
     </div>
-    <button class="button button--primary add-bundle-to-cart under" disabled aria-describedby="bundle-instructions">
+    <button class="button button--primary add-bundle-to-cart under" disabled aria-describedby="bundle-instructions"
+      {%- if section.settings.free_gift != blank and section.settings.free_gift.selected_or_first_available_variant -%}
+        data-gift-id="{{ section.settings.free_gift.selected_or_first_available_variant.id }}"
+      {%- endif -%}
+    >
       <span class="before-text" data-tooltip="Add At Least 4 items to your bundle above." id="bundle-instructions">Add At Least 4 Items </span>
       <span class="text">ADD BUNDLE TO CART</span>
       <span class="loading-text" aria-live="polite">
@@ -35,6 +39,16 @@
         "id": "main_text",
         "label": "Navigation Title",
         "info": "Optional"
+      },
+      {
+        "type": "header",
+        "content": "Free Gift"
+      },
+      {
+        "type": "product",
+        "id": "free_gift",
+        "label": "Free Gift Product",
+        "info": "Optional. This product is added to the cart alongside the bundle. Apply your own discount to make it free."
       }
     ],
     "blocks": [

@@ -109,7 +109,7 @@ html {
   align-items: center;
   // text-decoration-skip-ink: none;
 
-  border-bottom: 5px solid var(--color-primary);
+  border-bottom: 3px solid var(--color-primary);
 
   &[aria-busy="true"]{
     border-bottom: none;
@@ -132,7 +132,7 @@ html {
   }
 
   &:after {
-    height: 5px;
+    height: 3px;
     bottom: -5px;
   }
 
@@ -210,7 +210,7 @@ section {
   text-underline-offset: 5px !important;
   text-decoration: underline !important;
   text-decoration-color: #fff !important;
-  text-decoration-thickness: 5px !important;
+  text-decoration-thickness: 3px !important;
   text-transform: uppercase;
   font-weight: bold;
   display: flex;
@@ -244,7 +244,7 @@ section {
   text-underline-offset: 5px;
   text-decoration: underline;
   text-decoration-color: rgb(var(--text-color));
-  text-decoration-thickness: 5px;
+  text-decoration-thickness: 3px;
   text-transform: uppercase;
   font-weight: bold;
 
@@ -255,6 +255,85 @@ section {
   &:hover {
     text-decoration-color: rgb(var(--text-color));
     color: rgb(var(--text-color));
+  }
+}
+
+/* Same treatment as .link--primary but with a black underline instead of peach. */
+.link--black {
+  text-decoration: none;
+  padding-bottom: 3px;
+  transition: 300ms all;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  border-bottom: 3px solid #{$gotoBlack};
+
+  &[aria-busy="true"] {
+    border-bottom: none;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    margin-left: 5px;
+    margin-top: -4px;
+  }
+
+  &:hover {
+    color: rgb(var(--text-color));
+  }
+
+  &:after {
+    height: 5px;
+    bottom: -5px;
+  }
+
+  &:disabled {
+    color: var(--color-grey-dark) !important;
+    border-bottom-color: var(--color-grey-dark) !important;
+  }
+}
+
+/* Same treatment as .link--black but white text/underline for use on dark backgrounds. */
+.link--white {
+  text-decoration: none;
+  padding-bottom: 3px;
+  transition: 300ms all;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: #fff;
+
+  border-bottom: 5px solid #fff;
+
+  &[aria-busy="true"] {
+    border-bottom: none;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    margin-left: 5px;
+    margin-top: -4px;
+  }
+
+  &:hover {
+    color: #fff;
+  }
+
+  &:after {
+    height: 5px;
+    bottom: -5px;
+  }
+
+  &:disabled {
+    color: var(--color-grey-dark) !important;
+    border-bottom-color: var(--color-grey-dark) !important;
   }
 }
 
@@ -351,7 +430,7 @@ section {
 
 .bro-to {
   .label--waitlist {
-    color: $brotoBlue !important;
+    color: #fff !important;
   }
 }
 
@@ -3456,6 +3535,9 @@ footer {
     }
 
     h1.heading {
+      font-size: 40px;
+      font-style: italic;
+      line-height: 1;
       @include media-query($small) {
         font-size: 32px;
       }
@@ -3463,17 +3545,25 @@ footer {
 
     h2.heading {
       margin: 0;
+      font-size: 16px;
+      line-height: 1.5;
     }
 
     .page-header__text-wrapper {
-      margin-bottom: 16px;
+      margin-bottom: 32px;
       margin-top: 32px;
 
       .metafield-rich_text_field {
-        font-weight: normal;
+        font-weight: 300;
       }
     }
-   
+
+    @include media-query($small) {
+      .container {
+        padding-inline: 10px;
+      }
+    }
+
   }
 
 
@@ -3508,7 +3598,6 @@ footer {
     section {
       background-color: var(--section-background);
     }
-  
   }  
 
   .product-list__background {
@@ -5095,6 +5184,12 @@ product-rerender {
   }
 }
 
+.product-facet__filter-item {
+  .checkbox-container {
+    margin-bottom: 14px;
+  }
+}
+
 .product-facet__filter-item.custom-tags {
   .checkbox-container label {
     text-transform: capitalize !important;
@@ -6307,6 +6402,16 @@ quick-buy-popover {
 }
 
 quick-buy-drawer, quick-buy-popover  {
+  // Make the Add to Cart button span the full drawer width — the button
+  // carries `button--full` (100%) but its inline custom-element wrappers
+  // shrink to content, so stretch them too.
+  .product-form__buy-buttons,
+  .product-form__payment-container,
+  .product-form__add-button {
+    display: block;
+    width: 100%;
+  }
+
   [data-block-id="liquid_line_1"], [data-block-id="liquid_line_3"]  {
     display: none;
   }

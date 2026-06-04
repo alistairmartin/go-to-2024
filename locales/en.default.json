@@ -175,6 +175,7 @@
       "from_price_html": "From {{ price_min }}",
       "add_to_cart": "+ Add to cart",
       "add_to_cart_short": "+ Add to cart",
+      "add_to_cart_shorter": "+ Add",
       "quick_view": "Select {{ quick_view_title }}",
       "available_colors_count": {
         "one": "{{ count }} color available",

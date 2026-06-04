@@ -1,7 +1,15 @@
-{%- if section.settings.enable_section -%}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data-10-year-range.min.js" defer></script>
+{%- comment -%}
+  Behaviour (toggle + countdown) and moment-timezone loading live in
+  src/js/products.js (class CollapsiblePromoBanner) — shared with the
+  blocks/_promo-banner-card.liquid grid card so there is ONE definition of the
+  <collapsible-promo-banner> custom element. Defining it inline here used to win
+  the customElements.define() race (inline parser scripts run before the deferred
+  products.min.js) and shadowed the bundled version with an older class that
+  couldn't survive the grid card's slotCards move. products.min.js is loaded
+  globally via snippets/files-js.liquid, so this section is covered everywhere.
+{%- endcomment -%}
 
+{%- if section.settings.enable_section -%}
   <style>
     #shopify-section-{{ section.id }} {
       --cpb-bg: {{ section.settings.bar_background }};
@@ -61,7 +69,17 @@
       transition: max-height 400ms ease;
     }
 
+    /* Explicit toggle always wins, at any width. */
     .cpb[data-open="true"] .cpb__image-wrap {
+      max-height: 1200px;
+    }
+
+    .cpb[data-open="false"] .cpb__image-wrap {
+      max-height: 0;
+    }
+
+    /* Open-by-default (per breakpoint) until the visitor toggles. */
+    .cpb[data-default-desktop="true"]:not([data-open]) .cpb__image-wrap {
       max-height: 1200px;
     }
 
@@ -80,6 +98,20 @@
       display: block;
       width: 100%;
       height: auto;
+    }
+
+    .cpb__media--mobile {
+      display: none;
+    }
+
+    @media (max-width: 740px) {
+      .cpb__image-inner--has-mobile .cpb__media--desktop {
+        display: none;
+      }
+
+      .cpb__image-inner--has-mobile .cpb__media--mobile {
+        display: block;
+      }
     }
 
     .cpb__blocks {
@@ -107,12 +139,22 @@
         padding-left: 16px;
         padding-right: 16px;
       }
+
+      /* The desktop default does not apply on mobile; the mobile default governs. */
+      .cpb[data-default-desktop="true"]:not([data-open]) .cpb__image-wrap {
+        max-height: 0;
+      }
+
+      .cpb[data-default-mobile="true"]:not([data-open]) .cpb__image-wrap {
+        max-height: 1200px;
+      }
     }
   </style>
 
   <collapsible-promo-banner
     class="cpb"
-    data-open="false"
+    data-default-desktop="{% if section.settings.open_by_default_desktop %}true{% else %}false{% endif %}"
+    data-default-mobile="{% if section.settings.open_by_default_mobile %}true{% else %}false{% endif %}"
     data-end="{{ section.settings.countdown_date | escape }}"
     data-timezone="{{ section.settings.timezone | escape }}"
     data-hide-after="{% if section.settings.hide_after_countdown %}1{% else %}0{% endif %}"
@@ -125,38 +167,77 @@
       </div>
     {%- endif -%}
 
-    {%- if section.settings.background_image != blank or section.blocks.size > 0 -%}
+    {%- liquid
+      assign has_desktop = false
+      if section.settings.video != blank or section.settings.background_image != blank
+        assign has_desktop = true
+      endif
+
+      assign has_mobile = false
+      if section.settings.video_mobile != blank or section.settings.background_image_mobile != blank
+        assign has_mobile = true
+      endif
+
+      assign has_media = false
+      if has_desktop or has_mobile
+        assign has_media = true
+      endif
+    -%}
+
+    {%- if has_media or section.blocks.size > 0 -%}
       <div
         id="cpb-image-{{ section.id }}"
         class="cpb__image-wrap"
       >
-        <div class="cpb__image-inner">
-          {%- if section.settings.background_image != blank -%}
-            {%- capture image_tag -%}
-              {{-
-                section.settings.background_image
-                | image_url: width: section.settings.background_image.width
-                | image_tag:
-                  loading: 'eager',
-                  sizes: '100vw',
-                  widths: '600,800,1000,1200,1400,1600,1800,2000,2400,2800,3200',
-                  class: 'cpb__image'
-              -}}
+        <div class="cpb__image-inner{% if has_mobile %} cpb__image-inner--has-mobile{% endif %}">
+          {%- if has_media -%}
+            {%- capture desktop_media -%}
+              {%- if section.settings.video != blank -%}
+                {{- section.settings.video | video_tag: image_size: '1100x', autoplay: true, loop: true, muted: true, controls: false, class: 'cpb__image cpb__media cpb__media--desktop' -}}
+              {%- elsif section.settings.background_image != blank -%}
+                {{-
+                  section.settings.background_image
+                  | image_url: width: section.settings.background_image.width
+                  | image_tag:
+                    loading: 'eager',
+                    sizes: '100vw',
+                    widths: '600,800,1000,1200,1400,1600,1800,2000,2400,2800,3200',
+                    class: 'cpb__image cpb__media cpb__media--desktop'
+                -}}
+              {%- endif -%}
             {%- endcapture -%}
+
+            {%- capture mobile_media -%}
+              {%- if section.settings.video_mobile != blank -%}
+                {{- section.settings.video_mobile | video_tag: image_size: '800x', autoplay: true, loop: true, muted: true, controls: false, class: 'cpb__image cpb__media cpb__media--mobile' -}}
+              {%- elsif section.settings.background_image_mobile != blank -%}
+                {{-
+                  section.settings.background_image_mobile
+                  | image_url: width: section.settings.background_image_mobile.width
+                  | image_tag:
+                    loading: 'eager',
+                    sizes: '100vw',
+                    widths: '600,800,1000,1200,1400,1600',
+                    class: 'cpb__image cpb__media cpb__media--mobile'
+                -}}
+              {%- endif -%}
+            {%- endcapture -%}
+
+            {%- capture media_markup -%}{{ desktop_media }}{{ mobile_media }}{%- endcapture -%}
 
             {%- if section.settings.image_link != blank -%}
               <a href="{{ section.settings.image_link }}" class="cpb__image-link">
-                {{- image_tag -}}
+                {{- media_markup -}}
               </a>
             {%- else -%}
               <div class="cpb__image-block">
-                {{- image_tag -}}
+                {{- media_markup -}}
               </div>
             {%- endif -%}
           {%- endif -%}
 
           {%- if section.blocks.size > 0 -%}
-            <div class="cpb__blocks{% if section.settings.background_image != blank %} cpb__blocks--overlay{% endif %}">
+            <div class="cpb__blocks{% if has_media %} cpb__blocks--overlay{% endif %}">
               {% content_for 'blocks' %}
             </div>
           {%- endif -%}
@@ -174,106 +255,20 @@
         class="cpb__toggle"
         data-action="toggle"
         aria-expanded="false"
-        {% if section.settings.background_image != blank or section.blocks.size > 0 %}aria-controls="cpb-image-{{ section.id }}"{% endif %}
+        {% if has_media or section.blocks.size > 0 %}aria-controls="cpb-image-{{ section.id }}"{% endif %}
       >
         {{- section.settings.open_text | escape -}}
       </button>
     </div>
   </collapsible-promo-banner>
-
-  <script>
-    (function () {
-      if (window.customElements.get('collapsible-promo-banner')) return;
-
-      class CollapsiblePromoBanner extends HTMLElement {
-        connectedCallback() {
-          this.toggleBtn = this.querySelector('[data-action="toggle"]');
-          this.imageWrap = this.querySelector('.cpb__image-wrap');
-          this.countdownEls = this.querySelectorAll('[data-countdown]');
-          this.openText = this.dataset.openText || 'Open';
-          this.closeText = this.dataset.closeText || 'Close';
-
-          if (this.toggleBtn) {
-            this.toggleBtn.addEventListener('click', () => this.toggle());
-          }
-
-          this.startCountdown();
-        }
-
-        toggle() {
-          const isOpen = this.dataset.open === 'true';
-          const next = !isOpen;
-          this.dataset.open = next ? 'true' : 'false';
-          this.toggleBtn.setAttribute('aria-expanded', next ? 'true' : 'false');
-          this.toggleBtn.textContent = next ? this.closeText : this.openText;
-        }
-
-        startCountdown() {
-          if (!this.countdownEls.length) return;
-
-          const endRaw = this.dataset.end;
-          const tz = this.dataset.timezone || 'Australia/Sydney';
-          const hideAfter = this.dataset.hideAfter === '1';
-
-          if (!endRaw) return;
-
-          if (typeof moment === 'undefined') {
-            const wait = setInterval(() => {
-              if (typeof moment !== 'undefined') {
-                clearInterval(wait);
-                this._runCountdown(endRaw, tz, hideAfter);
-              }
-            }, 100);
-            return;
-          }
-
-          this._runCountdown(endRaw, tz, hideAfter);
-        }
-
-        _runCountdown(endRaw, tz, hideAfter) {
-          const endTime = moment.tz(endRaw, tz);
-
-          const tick = () => {
-            const now = moment.tz(tz);
-            const duration = moment.duration(endTime.diff(now));
-
-            if (duration.asSeconds() <= 0) {
-              clearInterval(this._intervalId);
-              this.countdownEls.forEach((el) => (el.innerHTML = ''));
-              if (hideAfter) this.style.display = 'none';
-              return;
-            }
-
-            const days = duration.days();
-            const hours = duration.hours();
-            const minutes = duration.minutes();
-            const seconds = duration.seconds();
-
-            const parts = [];
-            if (days > 0) parts.push(days + (days === 1 ? ' Day' : ' Days'));
-            parts.push(hours + (hours === 1 ? ' hour' : ' hours'));
-            parts.push(minutes + ' min');
-            parts.push(seconds + ' sec');
-
-            const text = parts.join(', ');
-            this.countdownEls.forEach((el) => (el.innerHTML = text));
-          };
-
-          tick();
-          this._intervalId = setInterval(tick, 1000);
-        }
-      }
-
-      window.customElements.define('collapsible-promo-banner', CollapsiblePromoBanner);
-    })();
-  </script>
 {%- endif -%}
 
 {% schema %}
 {
   "name": "Collapsible Promo Banner",
   "blocks": [
-    { "type": "_promo-container" }
+    { "type": "_promo-container" },
+    { "type": "containers" }
   ],
   "settings": [
     {
@@ -294,19 +289,55 @@
     },
     {
       "type": "header",
-      "content": "Expanding image"
+      "content": "Expanding media",
+      "info": "Reveals between the top and bottom rows when expanded. If a video is set it takes priority over the image for that breakpoint. Mobile media is optional — desktop media is used on mobile when no mobile media is set."
     },
     {
       "type": "image_picker",
       "id": "background_image",
-      "label": "Image",
-      "info": "Reveals between the top and bottom rows when expanded. Put any campaign text directly in the image. 2400 x 800 .jpg recommended."
+      "label": "Desktop image",
+      "info": "Put any campaign text directly in the image. 2400 x 800 .jpg recommended."
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Mobile image",
+      "info": "Optional. Shown on screens 740px and under. Recommend a more square crop, e.g. 1080 x 1080."
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Desktop video",
+      "info": "Optional. Autoplays muted and looped. Takes priority over the desktop image."
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Mobile video",
+      "info": "Optional. Shown on screens 740px and under. Takes priority over the mobile image."
     },
     {
       "type": "url",
       "id": "image_link",
-      "label": "Image link",
-      "info": "Optional. Wraps the image in a link."
+      "label": "Media link",
+      "info": "Optional. Wraps the image or video in a link."
+    },
+    {
+      "type": "header",
+      "content": "Default state",
+      "info": "Whether the expanding media/content shows on load before the visitor taps the toggle. In the theme editor the banner is always kept open so you can see your changes."
+    },
+    {
+      "type": "checkbox",
+      "id": "open_by_default_desktop",
+      "label": "Open by default on desktop",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "open_by_default_mobile",
+      "label": "Open by default on mobile",
+      "default": false
     },
     {
       "type": "header",
@@ -344,7 +375,7 @@
       "type": "text",
       "id": "countdown_date",
       "label": "Countdown end date & time",
-      "default": "May 31, 2026 23:59:00",
+      "default": "May 31, 2027 23:59:00",
       "info": "Format: Sep 21, 2024 15:30:00. Entered in the timezone below."
     },
     {

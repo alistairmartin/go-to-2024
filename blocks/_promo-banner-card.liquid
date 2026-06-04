@@ -1,0 +1,306 @@
+{%- comment -%}
+  Collapsible promo banner card — the collapsible-promo-banner embedded as a
+  FULL-WIDTH item inside the collection product grid. Placement (position) is read
+  by slotCards() in src/js/products.js; the banner always spans the whole row
+  (.cc-banner → grid-column: 1 / -1). Mirrors sections/collapsible-promo-banner.liquid.
+
+  Behaviour (toggle + countdown) and moment-timezone loading live in
+  src/js/products.js (class CollapsiblePromoBanner) — NOT inline here. product-facet
+  re-renders #facet-main via innerHTML on filter/sort/pagination, and
+  innerHTML-injected <script> tags never execute, so an inline script would only run
+  on first paint and die after any AJAX. As a bundled custom element the banner
+  auto-upgrades on every re-render.
+{%- endcomment -%}
+
+{%- if block.settings.enable_banner -%}
+  <style>
+    #cpb-card-{{ block.id }} {
+      --cpb-bg: {{ block.settings.bar_background }};
+      --cpb-text: {{ block.settings.text_color }};
+    }
+  </style>
+
+  <div
+    class="cc-banner"
+    data-cc-card
+    data-desktop-position="{{ block.settings.desktop_position }}"
+    data-mobile-position="{{ block.settings.mobile_position }}"
+    {{ block.shopify_attributes }}
+  >
+    <collapsible-promo-banner
+      id="cpb-card-{{ block.id }}"
+      class="cpb"
+      data-default-desktop="{% if block.settings.open_by_default_desktop %}true{% else %}false{% endif %}"
+      data-default-mobile="{% if block.settings.open_by_default_mobile %}true{% else %}false{% endif %}"
+      data-end="{{ block.settings.countdown_date | escape }}"
+      data-timezone="{{ block.settings.timezone | escape }}"
+      data-hide-after="{% if block.settings.hide_after_countdown %}1{% else %}0{% endif %}"
+      data-open-text="{{ block.settings.open_text | escape }}"
+      data-close-text="{{ block.settings.close_text | escape }}"
+    >
+      {%- if block.settings.bar_title != blank -%}
+        <div class="cpb__row cpb__row--top">
+          <p class="cpb__title">{{ block.settings.bar_title | escape }}</p>
+        </div>
+      {%- endif -%}
+
+      {%- liquid
+        assign has_desktop = false
+        if block.settings.video != blank or block.settings.background_image != blank
+          assign has_desktop = true
+        endif
+
+        assign has_mobile = false
+        if block.settings.video_mobile != blank or block.settings.background_image_mobile != blank
+          assign has_mobile = true
+        endif
+
+        assign has_media = false
+        if has_desktop or has_mobile
+          assign has_media = true
+        endif
+      -%}
+
+      {%- if has_media or block.blocks.size > 0 -%}
+        <div
+          id="cpb-image-{{ block.id }}"
+          class="cpb__image-wrap"
+        >
+          <div class="cpb__image-inner{% if has_mobile %} cpb__image-inner--has-mobile{% endif %}">
+            {%- if has_media -%}
+              {%- capture desktop_media -%}
+                {%- if block.settings.video != blank -%}
+                  {{- block.settings.video | video_tag: image_size: '1100x', autoplay: true, loop: true, muted: true, controls: false, class: 'cpb__image cpb__media cpb__media--desktop' -}}
+                {%- elsif block.settings.background_image != blank -%}
+                  {{-
+                    block.settings.background_image
+                    | image_url: width: block.settings.background_image.width
+                    | image_tag:
+                      loading: 'lazy',
+                      sizes: '100vw',
+                      widths: '600,800,1000,1200,1400,1600,1800,2000,2400,2800,3200',
+                      class: 'cpb__image cpb__media cpb__media--desktop'
+                  -}}
+                {%- endif -%}
+              {%- endcapture -%}
+
+              {%- capture mobile_media -%}
+                {%- if block.settings.video_mobile != blank -%}
+                  {{- block.settings.video_mobile | video_tag: image_size: '800x', autoplay: true, loop: true, muted: true, controls: false, class: 'cpb__image cpb__media cpb__media--mobile' -}}
+                {%- elsif block.settings.background_image_mobile != blank -%}
+                  {{-
+                    block.settings.background_image_mobile
+                    | image_url: width: block.settings.background_image_mobile.width
+                    | image_tag:
+                      loading: 'lazy',
+                      sizes: '100vw',
+                      widths: '600,800,1000,1200,1400,1600',
+                      class: 'cpb__image cpb__media cpb__media--mobile'
+                  -}}
+                {%- endif -%}
+              {%- endcapture -%}
+
+              {%- capture media_markup -%}{{ desktop_media }}{{ mobile_media }}{%- endcapture -%}
+
+              {%- if block.settings.image_link != blank -%}
+                <a href="{{ block.settings.image_link }}" class="cpb__image-link">
+                  {{- media_markup -}}
+                </a>
+              {%- else -%}
+                <div class="cpb__image-block">
+                  {{- media_markup -}}
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+
+            {%- if block.blocks.size > 0 -%}
+              <div class="cpb__blocks{% if has_media %} cpb__blocks--overlay{% endif %}">
+                {% content_for 'blocks' %}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      <div class="cpb__row cpb__row--bottom">
+        {%- if block.settings.enable_countdown_timer -%}
+          <p class="cpb__countdown" data-countdown></p>
+        {%- endif -%}
+
+        <button
+          type="button"
+          class="cpb__toggle"
+          data-action="toggle"
+          aria-expanded="false"
+          {% if has_media or block.blocks.size > 0 %}aria-controls="cpb-image-{{ block.id }}"{% endif %}
+        >
+          {{- block.settings.open_text | escape -}}
+        </button>
+      </div>
+    </collapsible-promo-banner>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Promo banner",
+  "blocks": [
+    { "type": "_promo-container" }
+  ],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_banner",
+      "label": "Show banner",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Placement"
+    },
+    {
+      "type": "text",
+      "id": "desktop_position",
+      "label": "Position (Desktop)",
+      "info": "Slots the banner after this many products in the grid. Always full width.",
+      "default": "4"
+    },
+    {
+      "type": "text",
+      "id": "mobile_position",
+      "label": "Position (Mobile)",
+      "info": "Slots the banner after this many products in the grid. Always full width.",
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Top row"
+    },
+    {
+      "type": "text",
+      "id": "bar_title",
+      "label": "Title",
+      "default": "Lucky Dip On Now!"
+    },
+    {
+      "type": "header",
+      "content": "Expanding media",
+      "info": "Reveals between the top and bottom rows when expanded. If a video is set it takes priority over the image for that breakpoint. Mobile media is optional — desktop media is used on mobile when no mobile media is set."
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Desktop image",
+      "info": "Put any campaign text directly in the image. 2400 x 800 .jpg recommended."
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Mobile image",
+      "info": "Optional. Shown on screens 740px and under. Recommend a more square crop, e.g. 1080 x 1080."
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Desktop video",
+      "info": "Optional. Autoplays muted and looped. Takes priority over the desktop image."
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Mobile video",
+      "info": "Optional. Shown on screens 740px and under. Takes priority over the mobile image."
+    },
+    {
+      "type": "url",
+      "id": "image_link",
+      "label": "Media link",
+      "info": "Optional. Wraps the image or video in a link."
+    },
+    {
+      "type": "header",
+      "content": "Default state",
+      "info": "Whether the expanding media/content shows on load before the visitor taps the toggle. In the theme editor the banner is always kept open so you can see your changes."
+    },
+    {
+      "type": "checkbox",
+      "id": "open_by_default_desktop",
+      "label": "Open by default on desktop",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "open_by_default_mobile",
+      "label": "Open by default on mobile",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Bottom row"
+    },
+    {
+      "type": "text",
+      "id": "open_text",
+      "label": "Open link text",
+      "default": "Open"
+    },
+    {
+      "type": "text",
+      "id": "close_text",
+      "label": "Close link text",
+      "default": "Close"
+    },
+    {
+      "type": "header",
+      "content": "Countdown"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_countdown_timer",
+      "label": "Enable countdown timer",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_after_countdown",
+      "label": "Hide banner after countdown ends",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "countdown_date",
+      "label": "Countdown end date & time",
+      "default": "May 31, 2027 23:59:00",
+      "info": "Format: Sep 21, 2024 15:30:00. Entered in the timezone below."
+    },
+    {
+      "type": "text",
+      "id": "timezone",
+      "label": "Timezone",
+      "default": "Australia/Sydney",
+      "info": "E.g. Australia/Sydney, Europe/London, America/Los_Angeles"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bar_background",
+      "label": "Bar background",
+      "default": "#f4d4cb"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Bar text",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo banner"
+    }
+  ]
+}
+{% endschema %}

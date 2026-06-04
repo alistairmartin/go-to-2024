@@ -1,0 +1,359 @@
+{%- comment -%}
+  Content card — a single grid item slotted into the collection product grid.
+  Holds an image OR video background, with a positioned text + button overlay.
+  Placement (position) and column span are read by slotCards() in src/js/products.js;
+  this block only renders the card markup + its own scoped styling.
+{%- endcomment -%}
+
+{%- assign d_span = block.settings.desktop_span | default: 2 -%}
+{%- assign m_span = block.settings.mobile_span | default: 2 -%}
+
+{%- capture styles -%}
+  <style>
+    #cc-card-{{ block.id }} {
+      --cc-span-d: {{ d_span }};
+      --cc-span-m: {{ m_span }};
+      --cc-bg-desktop: {{ block.settings.background_desktop }};
+      --cc-bg-mobile: {{ block.settings.background_mobile }};
+      --cc-justify-desktop: {{ block.settings.content_justify_desktop }};
+      --cc-align-desktop: {{ block.settings.content_align_desktop }};
+      --cc-justify-mobile: {{ block.settings.content_justify_mobile }};
+      --cc-align-mobile: {{ block.settings.content_align_mobile }};
+      --cc-pad-v-desktop: {{ block.settings.padding_vertical_desktop }}px;
+      --cc-pad-h-desktop: {{ block.settings.padding_horizontal_desktop }}px;
+      --cc-pad-v-mobile: {{ block.settings.padding_vertical_mobile }}px;
+      --cc-pad-h-mobile: {{ block.settings.padding_horizontal_mobile }}px;
+      --cc-gap-desktop: {{ block.settings.grid_gap_vertical_desktop }}vw;
+      --cc-gap-mobile: {{ block.settings.grid_gap_vertical_mobile }}vw;
+      {%- if block.settings.aspect_ratio_desktop != blank -%}--cc-aspect-desktop: {{ block.settings.aspect_ratio_desktop }};{%- endif -%}
+      {%- if block.settings.aspect_ratio_mobile != blank -%}--cc-aspect-mobile: {{ block.settings.aspect_ratio_mobile }};{%- endif -%}
+    }
+  </style>
+{%- endcapture -%}
+{{- styles | strip_newlines | strip -}}
+
+<div
+  id="cc-card-{{ block.id }}"
+  class="cc-card{% if block.settings.aspect_ratio_desktop != blank %} cc-card--aspect-desktop{% endif %}{% if block.settings.aspect_ratio_mobile != blank %} cc-card--aspect-mobile{% endif %}"
+  data-cc-card
+  data-desktop-position="{{ block.settings.desktop_position }}"
+  data-mobile-position="{{ block.settings.mobile_position }}"
+  {{ block.shopify_attributes }}
+>
+  {%- assign bg_mobile = block.settings.background_image_mobile | default: block.settings.background_image_desktop -%}
+
+  {%- assign has_desktop_video = false -%}
+  {%- if block.settings.video != blank or block.settings.video_url != blank -%}{%- assign has_desktop_video = true -%}{%- endif -%}
+  {%- assign has_mobile_video = false -%}
+  {%- if block.settings.video_mobile != blank -%}{%- assign has_mobile_video = true -%}{%- endif -%}
+
+  {%- if has_desktop_video or has_mobile_video -%}
+    <div class="cc-card__media">
+      {%- comment -%} Class only restricts a video to its breakpoint when both videos exist; a lone video shows everywhere. {%- endcomment -%}
+      {%- if has_desktop_video -%}
+        {%- if has_mobile_video -%}{%- assign dv_class = 'cc-card__video cc-card__video--desktop' -%}{%- else -%}{%- assign dv_class = 'cc-card__video' -%}{%- endif -%}
+        {%- if block.settings.video != blank -%}
+          {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata', class: dv_class }}
+        {%- else -%}
+          <video class="{{ dv_class }}" autoplay muted loop playsinline preload="metadata"
+            {% if block.settings.background_image_desktop != blank %}poster="{{ block.settings.background_image_desktop | image_url: width: 1200 }}"{% endif %}>
+            <source src="{{ block.settings.video_url }}" type="video/mp4">
+          </video>
+        {%- endif -%}
+      {%- endif -%}
+      {%- if has_mobile_video -%}
+        {%- if has_desktop_video -%}{%- assign mv_class = 'cc-card__video cc-card__video--mobile' -%}{%- else -%}{%- assign mv_class = 'cc-card__video' -%}{%- endif -%}
+        {{ block.settings.video_mobile | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata', class: mv_class }}
+      {%- endif -%}
+    </div>
+  {%- elsif block.settings.background_image_desktop != blank or bg_mobile != blank -%}
+    <div class="cc-card__media">
+      {%- if block.settings.background_image_desktop != blank -%}
+        {{ block.settings.background_image_desktop | image_url: width: block.settings.background_image_desktop.width | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 100vw, 50vw', widths: '400,600,800,1000,1200,1400,1600', class: 'cc-card__img cc-card__img--desktop' }}
+      {%- endif -%}
+      {%- if bg_mobile != blank -%}
+        {{ bg_mobile | image_url: width: bg_mobile.width | image_tag: loading: 'lazy', sizes: '100vw', widths: '300,400,500,600,800', class: 'cc-card__img cc-card__img--mobile' }}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if block.settings.link_url != blank -%}
+    <a class="cc-card__link" href="{{ block.settings.link_url }}" {% if block.settings.content_square_id != blank %}data-content-square="{{ block.settings.content_square_id }}"{% endif %} aria-label="{{ block.settings.link_aria | default: 'View collection' | escape }}"></a>
+  {%- endif -%}
+
+  <div class="cc-card__content">
+    {% content_for 'blocks' %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Content card",
+  "blocks": [
+    { "type": "text" },
+    { "type": "button" },
+    { "type": "@theme" }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Block Note",
+      "info": "Only Admin Will See This.",
+      "default": "⏹️ Content Card"
+    },
+    {
+      "type": "header",
+      "content": "Placement"
+    },
+    {
+      "type": "text",
+      "id": "desktop_position",
+      "label": "Position (Desktop)",
+      "info": "Slots the card after this many products in the grid. E.g. 4 = after the 4th product. 0 = first (before all products). Leave blank to hide on this breakpoint.",
+      "default": "4"
+    },
+    {
+      "type": "text",
+      "id": "mobile_position",
+      "label": "Position (Mobile)",
+      "info": "Slots the card after this many products in the grid. 0 = first (before all products). Leave blank to hide on this breakpoint.",
+      "default": "2"
+    },
+    {
+      "type": "radio",
+      "id": "desktop_span",
+      "label": "Width (Desktop)",
+      "options": [
+        { "value": "1", "label": "1 Column" },
+        { "value": "2", "label": "2 Columns" },
+        { "value": "3", "label": "3 Columns" },
+        { "value": "4", "label": "4 Columns (Full)" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "radio",
+      "id": "mobile_span",
+      "label": "Width (Mobile)",
+      "options": [
+        { "value": "1", "label": "1 Column" },
+        { "value": "2", "label": "2 Columns (Full)" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "header",
+      "content": "Link",
+      "info": "Optional. Makes the whole card clickable (behind the text/button blocks)."
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Card link"
+    },
+    {
+      "type": "text",
+      "id": "link_aria",
+      "label": "Card link label",
+      "info": "Accessibility label for the card link.",
+      "default": "View collection"
+    },
+    {
+      "type": "text",
+      "id": "content_square_id",
+      "label": "Content Square Button ID",
+      "info": "Must match the 'Content Square' section in the header."
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_desktop",
+      "label": "Background image",
+      "info": "Used when no video is set. Also used as the video poster."
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image_mobile",
+      "label": "Background image (Mobile)",
+      "info": "Optional. Falls back to the desktop image."
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Background video",
+      "info": "Shopify-hosted video. Overrides the background image. Plays muted & looped."
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Background video (Mobile)",
+      "info": "Optional. Shopify-hosted video shown on mobile. Falls back to the desktop video."
+    },
+    {
+      "type": "url",
+      "id": "video_url",
+      "label": "External video URL (.mp4)",
+      "info": "Optional alternative to a Shopify-hosted video."
+    },
+    {
+      "type": "header",
+      "content": "--- 🖥️ DESKTOP SETTINGS 🖥️ ---"
+    },
+    {
+      "type": "color",
+      "id": "background_desktop",
+      "label": "Background colour",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "text",
+      "id": "aspect_ratio_desktop",
+      "label": "Aspect ratio",
+      "info": "Optional CSS aspect-ratio, e.g. 1 / 1, 4 / 5, 16 / 9. Leave blank to match the product row height."
+    },
+    {
+      "type": "select",
+      "id": "content_justify_desktop",
+      "label": "Content position (horizontal)",
+      "default": "center",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_align_desktop",
+      "label": "Content position (vertical)",
+      "default": "center",
+      "options": [
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center", "label": "Middle" },
+        { "value": "flex-end", "label": "Bottom" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 30,
+      "label": "↕️ Padding Top/Bottom"
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 30,
+      "label": "↔️ Padding Left/Right"
+    },
+    {
+      "type": "header",
+      "content": "⏸️ Item Spacing (Desktop)",
+      "info": "Space between the text & button items."
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_vertical_desktop",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "unit": "vw",
+      "default": 0.5,
+      "label": "↕️ Top/Bottom"
+    },
+    {
+      "type": "header",
+      "content": "--- 📱 MOBILE SETTINGS 📱 ---"
+    },
+    {
+      "type": "color",
+      "id": "background_mobile",
+      "label": "Background colour",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "text",
+      "id": "aspect_ratio_mobile",
+      "label": "Aspect ratio",
+      "info": "Optional CSS aspect-ratio, e.g. 1 / 1, 4 / 5. Leave blank to match the product row height."
+    },
+    {
+      "type": "select",
+      "id": "content_justify_mobile",
+      "label": "Content position (horizontal)",
+      "default": "center",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_align_mobile",
+      "label": "Content position (vertical)",
+      "default": "center",
+      "options": [
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center", "label": "Middle" },
+        { "value": "flex-end", "label": "Bottom" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "label": "↕️ Padding Top/Bottom"
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "label": "↔️ Padding Left/Right"
+    },
+    {
+      "type": "header",
+      "content": "⏸️ Item Spacing (Mobile)",
+      "info": "Space between the text & button items."
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_vertical_mobile",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "unit": "vw",
+      "default": 1,
+      "label": "↕️ Top/Bottom"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Content card",
+      "blocks": [
+        { "type": "text" },
+        { "type": "button" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -79,8 +79,9 @@
         }
   
         &.under {
-          background: $gotoGrey;
-  
+          background: #e0ddd9;
+          color: $gotoGrey;
+
           .text {
             display: none;
           }
@@ -165,14 +166,23 @@
         .add {
             display: none;
         }
-  
+
         .remove {
             display: block;
         }
-  
+
         .link--primary {
             text-decoration-color: rgb(var(--text-color));
         }
+    }
+  }
+
+  /* Variant options (e.g. + 100ML / + 50ML): tighten the underline to the
+     label — drop the 60px min-width so there's no trailing space on the right. */
+  .product-item--BYO-ATC-variant {
+    .add,
+    .remove {
+      min-width: 0;
     }
   }
   

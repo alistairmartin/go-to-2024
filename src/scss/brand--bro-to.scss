@@ -3,8 +3,22 @@
 @import "components/animations";
 
 body.bro-to {
+    h1,
+    .shopify-section--collection-banner h1.heading {
+        font-style: normal;
+    }
+
+    .product-card__title {
+        font-style: normal;
+    }
+
+    .rating__star {
+        color: $brotoRed;
+    }
+
     .label {
-        color: #fff;
+        background: $brotoBlue !important;
+        color: #fff !important;
         font-weight: bold;
         opacity: 1;
     }

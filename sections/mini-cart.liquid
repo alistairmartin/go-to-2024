@@ -21,8 +21,12 @@ function updateCartAttributes(attributes) {
 const cartAttributes = {
   "_last-visited-brand": "{{ brand }}"
 };
-console.log("--- {{ brand }}");
-updateCartAttributes(cartAttributes);
+// In the theme editor the section re-renders on every keystroke. Skip the cart
+// write while designing so we don't fire a /cart/update.js POST per character —
+// that network write makes each editor reload heavier and the typing janky.
+if (!(window.Shopify && Shopify.designMode)) {
+  updateCartAttributes(cartAttributes);
+}
 </script>
 
 
@@ -469,7 +473,7 @@ updateCartAttributes(cartAttributes);
                   {%- assign allow_more = false -%}
                 {%- endif -%}
 
-                <line-item-quantity class="line-item__quantity">
+                <line-item-quantity class="line-item__quantity {% if line_item.product.type == "Gift" or line_item.product.type == "GWP" or line_item.product.tags contains "limit-1" %}gift-product{% endif %}">
 
                   {%- unless line_item.product.type == "Gift" or line_item.product.type == "GWP" or line_item.product.tags contains "limit-1" -%}
                   <div class="quantity-selector quantity-selector--small">
@@ -555,7 +559,7 @@ updateCartAttributes(cartAttributes);
 
                       {%- if matching_product.size == 0 -%}
                         {%- assign shown_products_count = shown_products_count | plus: 1 -%}
-                        {%- render 'product-item', product: product, reduced_content: true, reduced_font_size: true, hide_secondary_image: true, sizes_attribute: '(max-width: 740px) 65px, 92px', horizontal_layout: true, showWishlist: false -%}
+                        {%- render 'product-item', product: product, reduced_content: true, reduced_font_size: true, hide_secondary_image: true, sizes_attribute: '(max-width: 740px) 65px, 92px', horizontal_layout: true, showWishlist: false, mobile_swipe: false -%}
                       {%- endif -%}
                       {% endunless %}
                     {%- endfor -%}
@@ -1230,9 +1234,15 @@ updateCartAttributes(cartAttributes);
         },
         {
           "type": "text",
+          "id": "tier1_heading",
+          "label": "Tier 1 Heading",
+          "info": "Heading shown while the customer is working towards this tier. Tokens: [amount] = dollars still to spend, [reward] = the label below. Leave blank for the default sentence."
+        },
+        {
+          "type": "text",
           "id": "tier1_text",
           "label": "Tier 1 Label",
-          "info": "Shown at the marker. Use [amount] to insert the threshold for the visitor's currency. e.g. \"Spend [amount] get 20% off\""
+          "info": "Short reward name shown above the marker. e.g. \"Free shipping\" or \"20% off\". The threshold amount is shown automatically below the bar."
         },
         {
           "type": "number",
@@ -1260,9 +1270,15 @@ updateCartAttributes(cartAttributes);
         },
         {
           "type": "text",
+          "id": "tier2_heading",
+          "label": "Tier 2 Heading",
+          "info": "Heading shown while the customer is working towards this tier. Tokens: [amount] = dollars still to spend, [reward] = the label below. Leave blank for the default sentence."
+        },
+        {
+          "type": "text",
           "id": "tier2_text",
           "label": "Tier 2 Label",
-          "info": "Use [amount] to insert the tier threshold."
+          "info": "Short reward name shown above the marker. e.g. \"20% off\"."
         },
         {
           "type": "number",
@@ -1290,9 +1306,15 @@ updateCartAttributes(cartAttributes);
         },
         {
           "type": "text",
+          "id": "tier3_heading",
+          "label": "Tier 3 Heading",
+          "info": "Heading shown while the customer is working towards this tier. Tokens: [amount] = dollars still to spend, [reward] = the label below. Leave blank for the default sentence."
+        },
+        {
+          "type": "text",
           "id": "tier3_text",
           "label": "Tier 3 Label",
-          "info": "Use [amount] to insert the tier threshold."
+          "info": "Short reward name shown above the marker. e.g. \"30% off\"."
         },
         {
           "type": "number",
@@ -1317,6 +1339,12 @@ updateCartAttributes(cartAttributes);
         {
           "type": "header",
           "content": "Progress Bar"
+        },
+        {
+          "type": "text",
+          "id": "heading_unlocked",
+          "label": "All-tiers-unlocked Heading",
+          "info": "Heading shown once every tier has been reached. Token: [reward] = the top reward label. Leave blank for the default sentence."
         },
         {
           "type": "color",

@@ -47,7 +47,15 @@
       "Bash(npx playwright *)",
       "Bash(node -e \"try{require.resolve\\('/Users/alistairmartin/.asdf/installs/nodejs/20.17.0/lib/node_modules/playwright/index.mjs'\\);console.log\\('pw module found'\\)}catch\\(e\\){console.log\\('pw not at that path'\\)}\")",
       "Bash(node cpb-test.mjs)",
-      "Bash(grep -rno \"\\\\[reveal\\\\][^{]\\\\{0,40\\\\}{[^}]\\\\{0,200\\\\}}\" assets/theme.css)"
+      "Bash(grep -rno \"\\\\[reveal\\\\][^{]\\\\{0,40\\\\}{[^}]\\\\{0,200\\\\}}\" assets/theme.css)",
+      "Bash(awk 'NR>=3640 && NR<=3696' src/scss/products.scss)",
+      "Bash(awk 'NR>=3600 && NR<=3692' src/scss/products.scss)",
+      "Bash(grep -nE '^\\\\s{0,4}\\\\.[a-z-]+ ?\\\\{|^\\\\.[a-z]')",
+      "Bash(awk 'NR<=3690 && /^[.&]|^\\\\s{0,2}\\\\.product-card\\\\s*\\\\{|^\\\\s{0,2}&/' src/scss/products.scss)",
+      "Bash(awk 'NR>=3500 && NR<=3690 && /\\\\{/ && /product-card|product-item|^\\\\.[a-z]/' src/scss/products.scss)",
+      "Bash(awk 'NR<3690 && /^  \\\\.product-card *\\\\{|^  &|^\\\\.[a-zA-Z]/{print NR\": \"$0}' src/scss/products.scss)",
+      "Bash(grep -rn 'lap\\\\|desk\\\\|$small\\\\|$medium\\\\|$large\\\\|1000\\\\|999' /Users/alistairmartin/Dropbox/go-to-2024/src/scss/components/_media-queries.scss)",
+      "Bash(sass src/scss/collections.scss assets/collections.css --style compressed --no-source-map)"
     ]
   }
 }

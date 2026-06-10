@@ -137,36 +137,20 @@
   }
 
   /*
-    Sticky-after-scroll for the mobile filter toolbar.
-    #mobile-facet-toolbar is hoisted to the top of #main (above this section), so the
-    theme's `position: sticky` pins it from the very top of the page. Instead, let it
-    scroll away in normal flow and only pin it (fixed) once the top of this collection
-    section has scrolled above the header — toggled by the script below.
+    Mobile filter toolbar. #mobile-facet-toolbar is hoisted to the top of #main (above this
+    section); the script below docks it right before #facet-main so it sits in normal flow
+    above the product grid. From there the theme's native `position: sticky` (with a top
+    offset for the sticky header) makes it stick below the header once scrolled past — no
+    custom pinning needed. Sit it above the product grid so cards never overlap it.
   */
   @media screen and (max-width: 999px) {
     #mobile-facet-toolbar {
-      position: static;
-    }
-
-    #mobile-facet-toolbar.is-pinned {
-      position: fixed;
-      top: calc(var(--enable-sticky-header) * var(--header-height, 0px) + var(--announcement-bar-height, 0px) * var(--enable-sticky-announcement-bar));
-      left: 0;
-      right: 0;
       z-index: 3;
-      animation: mobile-toolbar-slide-in 0.2s ease-in-out;
     }
-  }
-
-  @keyframes mobile-toolbar-slide-in {
-    from { transform: translateY(-100%); }
-    to { transform: translateY(0); }
   }
 </style>
 
 <section>
-  {%- comment -%} Marks the top of the section; the script below pins the mobile toolbar once it scrolls above the header. {%- endcomment -%}
-  <span class="mobile-toolbar-sentinel" aria-hidden="true"></span>
   <div class="container">
     <product-facet section-id="{{ section.id }}" class="product-facet">
       {%- if section.settings.show_filters and collection.filters != empty -%}
@@ -185,6 +169,13 @@
         {%- endif -%}
       {%- endif -%}
 
+      {%- comment -%}
+        The script below docks #mobile-facet-toolbar here — right before #facet-main, in
+        normal flow above the product grid. As a direct child of the tall .product-facet,
+        the theme's native `position: sticky` lets it scroll with the page and only stick
+        below the header once scrolled past. Inserted as a sibling of #facet-main so it
+        survives AJAX (the rerender only replaces #facet-main's innerHTML).
+      {%- endcomment -%}
       <div id="facet-main" class="product-facet__main anchor" role="region" aria-live="polite">
         {%- if collection.products_count > 0 -%}
           <div class="product-facet__meta-bar anchor">
@@ -320,20 +311,13 @@
 <script>
   (function () {
     var toolbar = document.getElementById('mobile-facet-toolbar');
-    var sentinel = document.querySelector('#shopify-section-{{ section.id }} .mobile-toolbar-sentinel');
-    if (!toolbar || !sentinel || !('IntersectionObserver' in window)) return;
+    var main = document.querySelector('#shopify-section-{{ section.id }} #facet-main');
+    if (!toolbar || !main) return;
 
-    var root = getComputedStyle(document.documentElement);
-    function px(name) { return parseFloat(root.getPropertyValue(name)) || 0; }
-    var offset = px('--enable-sticky-header') * px('--header-height') +
-                 px('--enable-sticky-announcement-bar') * px('--announcement-bar-height');
-
-    new IntersectionObserver(function (entries) {
-      var entry = entries[0];
-      // Pin only once the section's top edge has scrolled above the header offset.
-      var pinned = !entry.isIntersecting && entry.boundingClientRect.top < 0;
-      toolbar.classList.toggle('is-pinned', pinned);
-    }, { rootMargin: '-' + offset + 'px 0px 0px 0px', threshold: 0 }).observe(sentinel);
+    // Dock the toolbar in normal flow right above the product grid, as a direct child of
+    // the tall .product-facet. The theme's native `position: sticky` then keeps it in flow
+    // until it reaches the header, then sticks it there — only once scrolled past.
+    main.parentNode.insertBefore(toolbar, main);
   })();
 </script>
 

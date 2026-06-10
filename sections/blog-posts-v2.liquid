@@ -25,6 +25,20 @@
 {%- if ar_w <= 0 -%}{%- assign ar_w = 1.0 -%}{%- endif -%}
 {%- assign ar_fraction = ar_h | divided_by: ar_w -%}
 
+{%- comment -%} Card count, computed up front so the arrows can be hidden on desktop when everything fits. {%- endcomment -%}
+{%- assign source_blog = blogs[section.settings.blog] -%}
+{%- if section.settings.blog != blank and source_blog.articles_count > 0 -%}
+  {%- assign use_blog = true -%}
+  {%- assign card_count = source_blog.articles_count | at_most: section.settings.posts_count -%}
+{%- else -%}
+  {%- assign use_blog = false -%}
+  {%- assign card_count = section.blocks.size -%}
+{%- endif -%}
+
+{%- comment -%} Cards visible per row at each desktop breakpoint (mirrors --section-products-per-row below). {%- endcomment -%}
+{%- assign per_row_1000 = section.settings.cards_per_row | at_most: 3 -%}
+{%- assign per_row_1200 = section.settings.cards_per_row -%}
+
 <style>
   #shopify-section-{{ section.id }} {
     --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
@@ -111,6 +125,7 @@
     display: block;
     font-size: 12px;
     color: rgb(var(--text-color));
+    text-transform: capitalize;
   }
 
   #shopify-section-{{ section.id }} .blog-card__title {
@@ -239,6 +254,22 @@
       overflow-y: hidden;
     }
   }
+
+  {%- comment -%} Hide the arrows on desktop when all cards fit the row (the right-edge breakout otherwise keeps the scroller "scrollable"). {%- endcomment -%}
+  {%- if card_count <= per_row_1000 -%}
+  @media screen and (min-width: 1000px) and (max-width: 1199px) {
+    #shopify-section-{{ section.id }} .category-carousel .product-list__prev-next {
+      display: none;
+    }
+  }
+  {%- endif -%}
+  {%- if card_count <= per_row_1200 -%}
+  @media screen and (min-width: 1200px) {
+    #shopify-section-{{ section.id }} .category-carousel .product-list__prev-next {
+      display: none;
+    }
+  }
+  {%- endif -%}
 </style>
 
 <section class=" {% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %} {% unless blends_with_background %}section--flush{% endunless %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
@@ -248,15 +279,6 @@
         <header class="blog-carousel__header">
           <h2 class="blog-carousel__title">{{ section.settings.title | escape }}</h2>
         </header>
-      {%- endif -%}
-
-      {%- assign source_blog = blogs[section.settings.blog] -%}
-      {%- if section.settings.blog != blank and source_blog.articles_count > 0 -%}
-        {%- assign use_blog = true -%}
-        {%- assign card_count = source_blog.articles_count | at_most: section.settings.posts_count -%}
-      {%- else -%}
-        {%- assign use_blog = false -%}
-        {%- assign card_count = section.blocks.size -%}
       {%- endif -%}
 
       <product-list data-scroll-step="item" class="product-list category-carousel">

@@ -1,4 +1,11 @@
 <style>
+  /* Collapse the whole section when no block matched the current collection —
+     _collection-navigation-select only renders .link-bar when one of its
+     collections matches collection.handle, so its absence means nothing to show. */
+  #shopify-section-{{ section.id }}:not(:has(.link-bar)) {
+    display: none;
+  }
+
   #shopify-section-{{ section.id }} {
     --section-background: {{ section.settings.background }};
     --border-color-setting: {{ section.settings.border_color }};

@@ -19,6 +19,13 @@
 {%- endif -%}
 
 <style>
+  /* Collapse the whole section when no block matched the current collection —
+     the _category-carousel-collections block only renders .category-carousel
+     when it resolves to visible, so its absence means nothing to show. */
+  #shopify-section-{{ section.id }}:not(:has(.category-carousel)) {
+    display: none;
+  }
+
   #shopify-section-{{ section.id }} {
     --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
     --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
@@ -114,7 +121,7 @@
     margin: 0;
     width: 100%;
     box-sizing: border-box;
-    padding-inline: var(--container-gutter);
+    padding-inline: 3px;
     display: flex;
     justify-content: space-between;
     pointer-events: none;
@@ -213,7 +220,7 @@
       min-width: 0;
       overflow-x: auto;
       overflow-y: hidden;
-      padding-left: 10px;
+      padding-left: 20px;
     }
   }
 

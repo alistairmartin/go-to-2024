@@ -1,0 +1,41 @@
+{%- assign show_collections = false -%}
+{%- if block.settings.collections.size == 0 -%}
+  {%- assign show_collections = true -%}
+{%- else -%}
+  {%- for col in block.settings.collections -%}
+    {%- if collection.handle != blank and col.handle == collection.handle -%}
+      {%- assign show_collections = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- if show_collections -%}
+  <div class="collection-banner-v2" {{ block.shopify_attributes }}>
+    {% content_for 'blocks' %}
+  </div>
+{%- endif -%}
+
+
+{% schema %}
+{
+  "name": "Collections",
+  "blocks": [{ "type": "_collection-banner-v2-image" }],
+  "settings": [
+    {
+      "type": "collection_list",
+      "id": "collections",
+      "label": "Display on these collections",
+      "info": "The image in this block will only show on collection pages selected here. Leave empty to show on all pages."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Select",
+      "blocks": [
+        { "type": "_collection-banner-v2-image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

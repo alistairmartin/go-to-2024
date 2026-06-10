@@ -358,10 +358,11 @@
           {%- capture QuickViewTitle -%}
             {% if product.options.size > 0 %}
               {% assign quick_view_variant_title = product.options.first %}
-              {{ 'collection.product.quick_view' | t: quick_view_title: quick_view_variant_title }}
+              <span class="product-card__cta-full">{{ 'collection.product.quick_view' | t: quick_view_title: quick_view_variant_title }}</span>
             {% else %}
-              {{ 'collection.product.quick_view' | t: quick_view_title: 'A Size' }}
+              <span class="product-card__cta-full">{{ 'collection.product.quick_view' | t: quick_view_title: 'A Size' }}</span>
             {% endif %}
+            <span class="product-card__cta-short">{{ 'collection.product.quick_view_short' | t }}</span>
           {%- endcapture -%}
 
           <button type="button" loader is="toggle-button" aria-controls="product-{{ section.id }}-{{ block.id }}-{{ product.id }}-drawer" aria-expanded="false" class="product-card__cta product-item__link link--animated link link--primary hidden-phone">{{ QuickViewTitle }}</button>
@@ -377,7 +378,7 @@
       {%- if product.tags contains 'no-waitlist' -%}{% assign noWaitlist = true %}{%- endif -%}
       <div class="product-card__cta-wrapper product-item__cta-wrapper">
         {%- unless noWaitlist -%}
-          <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')" class="product-card__cta link link--primary back-in-stock">WAITLIST ME</button>
+          <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')" class="product-card__cta link link--primary back-in-stock"><span class="product-card__cta-full">WAITLIST ME</span><span class="product-card__cta-short">WAITLIST</span></button>
         {%- endunless -%}
       </div>
     {%- endif -%}

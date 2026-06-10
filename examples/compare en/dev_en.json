@@ -7,13 +7,13 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "general": {
     "meta": {
       "page": "Page {{ page }}"
     },
     "label": {
-      "color": "Color,Colour",
+      "color": "Color,Colour,Shade",
       "white": "White",
       "size": "Size"
     },
@@ -311,7 +311,7 @@
     },
     "login": {
       "title": "Login",
-      "instructions": "Login to check in on your Go-To Gang account and prove to your friends that you can remember passwords.",
+      "instructions": "Login to your Go-To Gang account. Don’t have one? Join now for access to our loyalty program, created to reward your phenomenal taste in skincare.",
       "email": "E-mail",
       "password": "Password",
       "submit": "Login",
@@ -345,7 +345,7 @@
     },
     "register": {
       "title": "Register",
-      "instructions": "Sign up to join our loyalty program and you’ll be rewarded with free treats, new product launches, annual birthday gifts, and a permanent position in Go-To’s good books.",
+      "instructions": "Sign up to our loyalty program and earn rewards, annual birthday gifts, and a permanent position in Go-To's good books.",
       "first_name": "First name",
       "last_name": "Last name",
       "email": "E-mail",
@@ -399,7 +399,7 @@
       "save": "Save",
       "default_address": "Default address",
       "address_count": "Address {{count}}",
-      "fill_address": "Sign up to join our loyalty program and you’ll be rewarded with free treats, new product launches, annual birthday gifts, and a permanent position in Go-To’s good books.",
+      "fill_address": "Sign up to our loyalty program and earn rewards, annual birthday gifts, and a permanent position in Go-To's good books.",
       "first_name": "First name",
       "last_name": "Last name",
       "company": "Company",
@@ -473,7 +473,7 @@
       "email_label": "Recipient email",
       "name_label": "Recipient name",
       "send_on_label": "Send on (optional)",
-      "message_label": "Message"
+      "message_label": "200 character limit on all messages/poems/tattoos"
     }
   },
   "password": {
@@ -515,7 +515,8 @@
   "shopify": {
     "checkout": {
       "order_summary": {
-        "higher_value_discount_applied": "<strong style=\"text-transform:uppercase\">{{ code }}</strong> can't be used! Only one promo code per order. "
+        "higher_value_discount_applied": "<strong style=\"text-transform:uppercase\">{{ code }}</strong> can't be used! Only one promo code per order. ",
+        "customer_does_not_meet_discount_requirements_notice": "<strong style=\"text-transform:uppercase\">{{ code }}</strong> discount code isn't available to you"
       }
     }
   }

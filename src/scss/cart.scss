@@ -192,6 +192,7 @@
     }
 
     .mini-cart__recommendations-heading {
+      margin-bottom: 30px;
       @include media-query($small) {
         margin-bottom: 8px;
       }

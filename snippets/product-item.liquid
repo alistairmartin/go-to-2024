@@ -195,7 +195,7 @@
     {%- comment -%} Inline card video (metafield custom.collection_card_video) {%- endcomment -%}
     {%- assign card_video = product.metafields.custom.collection_card_video.value -%}
     {%- assign card_video_has_audio = product.metafields.custom.collection_card_video_has_audio.value -%}
-    {%- if card_video != blank -%}
+    {%- if card_video != blank and disable_card_video != true -%}
       <collection-card-video class="product-card__video is-muted">
         <button type="button" class="product-card__video-play" data-cv-play aria-label="Play video">
           <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.5v11l9-5.5z" fill="currentColor"></path></svg>

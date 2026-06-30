@@ -536,6 +536,16 @@ if (!customElements.get("collapsible-promo-banner")) {
     var cards = section.querySelectorAll("[data-cc-card]");
     if (!cards.length) return;
 
+    // Content cards belong on the first page of results only. AJAX pagination
+    // updates the URL's ?page param, so hide every card on pages 2+.
+    var page = new URLSearchParams(window.location.search).get("page");
+    if (page && page !== "1") {
+      Array.prototype.forEach.call(cards, function (card) {
+        card.hidden = true;
+      });
+      return;
+    }
+
     var desktop = isDesktop();
 
     // Real products only — exclude injected grid cards (which lack .product-card)

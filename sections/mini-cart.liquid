@@ -59,7 +59,7 @@ if (!(window.Shopify && Shopify.designMode)) {
     --cartMessageBackgroundGroTo: {{ section.settings.custom_message_color_background_gro }};
   }
 
-  #mini-cart .drawer__title,  #mini-cart .drawer__close-button {
+  #mini-cart .drawer__title {
     color: {{ section.settings.custom_message_color_text }} !important;
   }
 </style>
@@ -535,8 +535,8 @@ if (!(window.Shopify && Shopify.designMode)) {
           {%- if acceptable_recommendations_count > 0 -%}
             <div class="mini-cart__recommendations-inner">
               {%- if section.settings.recommendations_title != blank -%}
-                <p class="mini-cart__recommendations-heading heading heading--small hidden-pocket">{{ section.settings.recommendations_title | escape }}</p>
-                <p class="mini-cart__recommendations-heading heading heading--xsmall text--subdued hidden-lap-and-up">{{ section.settings.recommendations_title | escape }}</p>
+                <p class="mini-cart__recommendations-heading heading heading--xxsmall hidden-pocket">{{ section.settings.recommendations_title | escape }}</p>
+                <p class="mini-cart__recommendations-heading heading heading--xssmall text--subdued hidden-lap-and-up">{{ section.settings.recommendations_title | escape }}</p>
               {%- endif -%}
 
               <div class="arrows-container hide-mobile--flex">
@@ -559,7 +559,7 @@ if (!(window.Shopify && Shopify.designMode)) {
 
                       {%- if matching_product.size == 0 -%}
                         {%- assign shown_products_count = shown_products_count | plus: 1 -%}
-                        {%- render 'product-item', product: product, reduced_content: true, reduced_font_size: true, hide_secondary_image: true, sizes_attribute: '(max-width: 740px) 65px, 92px', horizontal_layout: true, showWishlist: false, mobile_swipe: false -%}
+                        {%- render 'product-item', product: product, reduced_content: true, reduced_font_size: true, hide_secondary_image: true, sizes_attribute: '(max-width: 740px) 65px, 92px', horizontal_layout: true, showWishlist: false, mobile_swipe: false, disable_card_video: true -%}
                       {%- endif -%}
                       {% endunless %}
                     {%- endfor -%}

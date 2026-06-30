@@ -130,6 +130,108 @@
                           reveal: true
                       -}}
                     </div>
+
+                  {%- when 'video' -%}
+                    <native-video
+                      {% if section.settings.enable_video_autoplay %}autoplay{% endif %}
+                      class="video-wrapper video-wrapper--native"
+                      style="--aspect-ratio: {{ media.aspect_ratio }}"
+                    >
+                      {%- unless section.settings.enable_video_autoplay -%}
+                        <div class="video-wrapper__poster">
+                          {{
+                            media.preview_image
+                            | image_url: width: media.preview_image.width
+                            | image_tag:
+                              loading: 'lazy',
+                              sizes: '(max-width: 999px) calc(100vw - 48px), 640px',
+                              widths: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600',
+                              class: 'video-wrapper__poster-image'
+                          }}
+                          <div class="video-wrapper__poster-content">
+                            <button
+                              type="button"
+                              class="video-wrapper__play-button"
+                              title="{{ 'general.accessibility.play_video' | t | escape }}"
+                            >
+                              {%- render 'icon' with 'play', width: 72, height: 72 -%}
+                            </button>
+                          </div>
+                        </div>
+                      {%- endunless -%}
+
+                      <template>
+                        {{-
+                          media
+                          | video_tag:
+                            image_size: '1024x',
+                            controls: true,
+                            autoplay: true,
+                            muted: section.settings.enable_video_autoplay,
+                            playsinline: section.settings.enable_video_autoplay,
+                            loop: section.settings.enable_video_looping
+                        -}}
+                      </template>
+                    </native-video>
+
+                  {%- when 'external_video' -%}
+                    <external-video {% if section.settings.enable_video_autoplay %}autoplay{% endif %} provider="{{ media.host | escape }}" class="video-wrapper{% if section.settings.enable_video_autoplay %} video-wrapper--inert{% endif %}">
+                      {%- unless section.settings.enable_video_autoplay -%}
+                        <div class="video-wrapper__poster">
+                          {{
+                            media.preview_image
+                            | image_url: width: media.preview_image.width
+                            | image_tag:
+                              loading: 'lazy',
+                              sizes: '(max-width: 999px) calc(100vw - 48px), 640px',
+                              widths: '400,500,600,700,800,900,1000,1200,1400,1600,1800,2000,2200,2400,2600',
+                              class: 'video-wrapper__poster-image'
+                          }}
+
+                          <div class="video-wrapper__poster-content">
+                            <button
+                              type="button"
+                              class="video-wrapper__play-button"
+                              title="{{ 'general.accessibility.play_video' | t | escape }}"
+                            >
+                              {%- render 'icon' with 'play', width: 72, height: 72 -%}
+                            </button>
+                          </div>
+                        </div>
+                      {%- endunless -%}
+
+                      <template>
+                        {%- if media.host == 'youtube' -%}
+                          {{-
+                            media
+                            | external_video_url:
+                              enablejsapi: true,
+                              loop: section.settings.enable_video_looping,
+                              mute: section.settings.enable_video_autoplay,
+                              autoplay: true,
+                              playlist: media.external_id
+                            | external_video_tag
+                          -}}
+                        {%- elsif media.host == 'vimeo' -%}
+                          {{-
+                            media
+                            | external_video_url:
+                              autopause: true,
+                              loop: section.settings.enable_video_looping,
+                              muted: section.settings.enable_video_autoplay,
+                              autoplay: true
+                            | external_video_tag
+                          -}}
+                        {%- else -%}
+                          {{- media | external_video_tag: image_size: '1024x' -}}
+                        {%- endif -%}
+                      </template>
+                    </external-video>
+
+                  {%- when 'model' -%}
+                    <model-media product-handle="{{ product.handle }}" class="model-wrapper">
+                      {{- media | model_viewer_tag: image_size: '1024x', reveal: 'interaction', toggleable: true -}}
+                    </model-media>
                 {% endcase %}
               </div>
               {% break %}

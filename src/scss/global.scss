@@ -6527,6 +6527,34 @@ quick-buy-drawer, quick-buy-popover  {
     object-fit: contain;
     display: block;
   }
+
+  &.product-form-callout--image-left {
+    flex-direction: row-reverse;
+
+    .product-form-callout__image {
+      margin: -28px 0 -28px -8px;
+    }
+  }
+
+  @media (max-width: 749px) {
+    gap: 12px;
+    padding: 8px 16px;
+
+    .product-form-callout__text {
+      font-size: 13px;
+      line-height: 20px;
+    }
+
+    .product-form-callout__image {
+      max-width: 100px;
+      max-height: 100px;
+      margin: -16px -6px -16px 0;
+    }
+
+    &.product-form-callout--image-left .product-form-callout__image {
+      margin: -16px 0 -16px -6px;
+    }
+  }
 }
 
 

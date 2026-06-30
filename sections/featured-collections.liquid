@@ -127,7 +127,57 @@
             --flex-justify-content-desktop: {{ section.settings.flex_justify_content_desktop }};
           }
   {%- endfor -%}
-      
+
+  /* Prev/next arrows — match the Collection Category carousel: a 45px Barely Pink
+     chevron circle with elevation shadow (the circle is the chevron SVG's own
+     <rect>). Always visible, hidden once it can't scroll further. */
+
+  /* Inset the arrows a little from the row edges (per design). */
+  #shopify-section-{{ section.id }} .product-list__prev-next {
+    box-sizing: border-box;
+    padding-inline: 40px;
+  }
+
+  #shopify-section-{{ section.id }} .product-list__arrow {
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1 !important;
+    visibility: visible;
+    transform: none;
+    transition: opacity .2s ease;
+    /* Shadow on the button frame (not the inline svg, where it doesn't render). */
+    box-shadow: 0px 2px 4px -4px #34343429, 0px 1px 2px 0px #3434343D;
+  }
+
+  #shopify-section-{{ section.id }} .product-list__arrow svg {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+  }
+
+  #shopify-section-{{ section.id }} .product-list__arrow svg rect {
+    fill: #FEF9F8;
+  }
+
+  /* Kill the theme's slide-across hover keyframe — the only hover feedback is the
+     opacity lift below. */
+  #shopify-section-{{ section.id }} .product-list__arrow:hover svg {
+    animation: none;
+  }
+
+  /* Hide an arrow once it can't go further (prev hidden until scrolled right). */
+  #shopify-section-{{ section.id }} .product-list__arrow[disabled],
+  #shopify-section-{{ section.id }} .product-list:hover .product-list__arrow[disabled] {
+    opacity: 0 !important;
+    pointer-events: none;
+  }
 
 </style>
 
@@ -229,12 +279,12 @@
                 <prev-next-buttons class="product-list__prev-next hidden-pocket" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
                   <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled>
                     <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
-                    {%- render 'icon' with 'brand-arrow-left', block: true, direction_aware: true -%}
+                    {%- render 'icon' with 'brand-chevron-left', block: true, direction_aware: true -%}
                   </button>
 
                   <button class="product-list__arrow prev-next-button prev-next-button--next">
                     <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
-                    {%- render 'icon' with 'brand-arrow-right', block: true, direction_aware: true -%}
+                    {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
                   </button>
                 </prev-next-buttons>
                 {%- endif -%}

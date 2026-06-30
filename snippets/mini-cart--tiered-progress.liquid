@@ -82,74 +82,95 @@
   {%- if max_threshold_cents > 0 -%}
 
     {%- comment -%}
-      Evenly-spaced marker positions: each configured tier occupies one equal segment.
-      seg = width of one segment as a %; tierN_pos = the marker's centre position.
+      Evenly-spaced marker positions spanning the full bar: the first configured tier sits
+      at the left edge (0%) and the last at the right edge (100%), so there is no empty
+      track before the first tier. seg = the gap between adjacent markers as a %.
     {%- endcomment -%}
-    {%- assign seg = 100.0 | divided_by: tier_count -%}
-    {%- assign running_idx = 0 -%}
+    {%- assign gaps = tier_count | minus: 1 -%}
+    {%- if gaps < 1 -%}{%- assign gaps = 1 -%}{%- endif -%}
+    {%- assign seg = 100.0 | divided_by: gaps -%}
+    {%- assign pos_idx = 0 -%}
 
     {%- assign tier1_pos = 0 -%}{%- assign tier1_reached = false -%}
     {%- if tier1_cents > 0 -%}
-      {%- assign running_idx = running_idx | plus: 1 -%}
-      {%- assign tier1_pos = running_idx | times: seg -%}
+      {%- assign tier1_pos = pos_idx | times: seg -%}
+      {%- assign pos_idx = pos_idx | plus: 1 -%}
       {%- if qualifying_subtotal >= tier1_cents -%}{%- assign tier1_reached = true -%}{%- endif -%}
     {%- endif -%}
 
     {%- assign tier2_pos = 0 -%}{%- assign tier2_reached = false -%}
     {%- if tier2_cents > 0 -%}
-      {%- assign running_idx = running_idx | plus: 1 -%}
-      {%- assign tier2_pos = running_idx | times: seg -%}
+      {%- assign tier2_pos = pos_idx | times: seg -%}
+      {%- assign pos_idx = pos_idx | plus: 1 -%}
       {%- if qualifying_subtotal >= tier2_cents -%}{%- assign tier2_reached = true -%}{%- endif -%}
     {%- endif -%}
 
     {%- assign tier3_pos = 0 -%}{%- assign tier3_reached = false -%}
     {%- if tier3_cents > 0 -%}
-      {%- assign running_idx = running_idx | plus: 1 -%}
-      {%- assign tier3_pos = running_idx | times: seg -%}
+      {%- assign tier3_pos = pos_idx | times: seg -%}
+      {%- assign pos_idx = pos_idx | plus: 1 -%}
       {%- if qualifying_subtotal >= tier3_cents -%}{%- assign tier3_reached = true -%}{%- endif -%}
     {%- endif -%}
 
     {%- comment -%}
-      Segmented fill %. Walk the configured tiers in order: fully-passed tiers contribute a
-      whole segment; the tier we're currently working towards contributes a partial slice.
+      Segmented fill %. Walk the configured tiers in order: fully-passed tiers advance the
+      fill to their marker; the tier we're currently working towards contributes a partial
+      slice of the gap leading up to it. The bar starts at the first tier's marker, so
+      before the first tier is reached the fill stays at 0 (have_prev == false).
     {%- endcomment -%}
     {%- assign fill_pct = 0 -%}
     {%- assign prev_cents = 0 -%}
     {%- assign prev_pos = 0 -%}
+    {%- assign have_prev = false -%}
     {%- assign fill_done = false -%}
 
     {%- if tier1_cents > 0 and fill_done == false -%}
       {%- if qualifying_subtotal >= tier1_cents -%}
-        {%- assign fill_pct = tier1_pos -%}{%- assign prev_cents = tier1_cents -%}{%- assign prev_pos = tier1_pos -%}
+        {%- assign fill_pct = tier1_pos -%}{%- assign prev_cents = tier1_cents -%}{%- assign prev_pos = tier1_pos -%}{%- assign have_prev = true -%}
       {%- else -%}
-        {%- assign span = tier1_cents | minus: prev_cents -%}
-        {%- assign into = qualifying_subtotal | minus: prev_cents | at_least: 0 -%}
-        {%- assign frac = into | times: 1.0 | divided_by: span -%}
-        {%- assign fill_pct = frac | times: seg | plus: prev_pos -%}
+        {%- if have_prev -%}
+          {%- assign span = tier1_cents | minus: prev_cents -%}
+          {%- assign into = qualifying_subtotal | minus: prev_cents | at_least: 0 -%}
+          {%- assign frac = into | times: 1.0 | divided_by: span -%}
+          {%- assign seg_w = tier1_pos | minus: prev_pos -%}
+          {%- assign fill_pct = frac | times: seg_w | plus: prev_pos -%}
+        {%- else -%}
+          {%- assign fill_pct = 0 -%}
+        {%- endif -%}
         {%- assign fill_done = true -%}
       {%- endif -%}
     {%- endif -%}
 
     {%- if tier2_cents > 0 and fill_done == false -%}
       {%- if qualifying_subtotal >= tier2_cents -%}
-        {%- assign fill_pct = tier2_pos -%}{%- assign prev_cents = tier2_cents -%}{%- assign prev_pos = tier2_pos -%}
+        {%- assign fill_pct = tier2_pos -%}{%- assign prev_cents = tier2_cents -%}{%- assign prev_pos = tier2_pos -%}{%- assign have_prev = true -%}
       {%- else -%}
-        {%- assign span = tier2_cents | minus: prev_cents -%}
-        {%- assign into = qualifying_subtotal | minus: prev_cents | at_least: 0 -%}
-        {%- assign frac = into | times: 1.0 | divided_by: span -%}
-        {%- assign fill_pct = frac | times: seg | plus: prev_pos -%}
+        {%- if have_prev -%}
+          {%- assign span = tier2_cents | minus: prev_cents -%}
+          {%- assign into = qualifying_subtotal | minus: prev_cents | at_least: 0 -%}
+          {%- assign frac = into | times: 1.0 | divided_by: span -%}
+          {%- assign seg_w = tier2_pos | minus: prev_pos -%}
+          {%- assign fill_pct = frac | times: seg_w | plus: prev_pos -%}
+        {%- else -%}
+          {%- assign fill_pct = 0 -%}
+        {%- endif -%}
         {%- assign fill_done = true -%}
       {%- endif -%}
     {%- endif -%}
 
     {%- if tier3_cents > 0 and fill_done == false -%}
       {%- if qualifying_subtotal >= tier3_cents -%}
-        {%- assign fill_pct = tier3_pos -%}{%- assign prev_cents = tier3_cents -%}{%- assign prev_pos = tier3_pos -%}
+        {%- assign fill_pct = tier3_pos -%}{%- assign prev_cents = tier3_cents -%}{%- assign prev_pos = tier3_pos -%}{%- assign have_prev = true -%}
       {%- else -%}
-        {%- assign span = tier3_cents | minus: prev_cents -%}
-        {%- assign into = qualifying_subtotal | minus: prev_cents | at_least: 0 -%}
-        {%- assign frac = into | times: 1.0 | divided_by: span -%}
-        {%- assign fill_pct = frac | times: seg | plus: prev_pos -%}
+        {%- if have_prev -%}
+          {%- assign span = tier3_cents | minus: prev_cents -%}
+          {%- assign into = qualifying_subtotal | minus: prev_cents | at_least: 0 -%}
+          {%- assign frac = into | times: 1.0 | divided_by: span -%}
+          {%- assign seg_w = tier3_pos | minus: prev_pos -%}
+          {%- assign fill_pct = frac | times: seg_w | plus: prev_pos -%}
+        {%- else -%}
+          {%- assign fill_pct = 0 -%}
+        {%- endif -%}
         {%- assign fill_done = true -%}
       {%- endif -%}
     {%- endif -%}
@@ -167,7 +188,7 @@
     {%- assign found_next = false -%}
     {%- if tier1_cents > 0 and found_next == false and qualifying_subtotal < tier1_cents -%}
       {%- assign next_heading = block.settings.tier1_heading -%}{%- assign next_label = tier1_label -%}{%- assign next_remaining_cents = tier1_cents | minus: qualifying_subtotal -%}{%- assign found_next = true -%}
-    {%- endif -%}
+  {%- endif -%}
     {%- if tier2_cents > 0 and found_next == false and qualifying_subtotal < tier2_cents -%}
       {%- assign next_heading = block.settings.tier2_heading -%}{%- assign next_label = tier2_label -%}{%- assign next_remaining_cents = tier2_cents | minus: qualifying_subtotal -%}{%- assign found_next = true -%}
     {%- endif -%}
@@ -221,9 +242,8 @@
         {%- if tier3_cents > 0 -%}<span class="tiered-progress-bar__marker {% if tier3_reached %}is-reached{% endif %}" style="left: {{ tier3_pos }}%;">{{ star_icon }}</span>{%- endif -%}
       </div>
 
-      {%- comment -%} Dollar amounts below the bar ($0 start + each tier) {%- endcomment -%}
+      {%- comment -%} Dollar amounts below the bar (one per tier) {%- endcomment -%}
       <div class="tiered-progress-bar__row tiered-progress-bar__row--amounts">
-        <span class="tiered-progress-bar__amount tiered-progress-bar__amount--start" style="left: 0%;">{{ zero_amount }}</span>
         {%- if tier1_cents > 0 -%}<span class="tiered-progress-bar__amount {% if tier1_reached %}is-reached{% endif %}" style="left: {{ tier1_pos }}%;">{{ tier1_amount }}</span>{%- endif -%}
         {%- if tier2_cents > 0 -%}<span class="tiered-progress-bar__amount {% if tier2_reached %}is-reached{% endif %}" style="left: {{ tier2_pos }}%;">{{ tier2_amount }}</span>{%- endif -%}
         {%- if tier3_cents > 0 -%}<span class="tiered-progress-bar__amount {% if tier3_reached %}is-reached{% endif %}" style="left: {{ tier3_pos }}%;">{{ tier3_amount }}</span>{%- endif -%}
@@ -237,9 +257,18 @@
         --tp-text: #181818;
         position: relative;
         margin: 0;
-        padding: 16px 34px 18px;
+        padding: 16px 54px 18px;
         background: #fff;
         color: var(--tp-text);
+      }
+      .brand-bro-to .shopify-section--mini-cart .tiered-progress-bar {
+        --tp-accent: #ef3533;
+        --tp-track: #eee2e2;
+      }
+      @media (max-width: 749px) {
+        .shopify-section--mini-cart .tiered-progress-bar {
+          padding: 16px 40px 18px;
+        }
       }
       .shopify-section--mini-cart .tiered-progress-bar__heading {
         margin: 0 0 18px;
@@ -327,25 +356,6 @@
         width: 17px;
         height: 17px;
         display: block;
-      }
-
-      {%- comment -%} While the tiered bar is active, make the cart close button a solid black circle with a white X. {%- endcomment -%}
-      #mini-cart:has(.tiered-progress-bar) .drawer__close-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 34px;
-        height: 34px;
-        padding: 0;
-        border-radius: 50%;
-        background: #000;
-        color: #fff !important;
-        box-sizing: border-box;
-        right: 16px;
-      }
-      #mini-cart:has(.tiered-progress-bar) .drawer__close-button svg {
-        width: 13px;
-        height: 13px;
       }
     </style>
   {%- endif -%}

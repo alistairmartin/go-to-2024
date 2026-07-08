@@ -36,6 +36,22 @@
     height: auto;
     border-radius: {{ section.settings.image_radius }}px;
   }
+
+  {%- if section.settings.remove_bottom_margin_mobile -%}
+  @media screen and (max-width: 739px) {
+    #shopify-section-{{ section.id }} .page-header__text-wrapper {
+      margin-bottom: 0;
+    }
+  }
+  {%- endif -%}
+
+  {%- if section.settings.remove_bottom_margin_desktop -%}
+  @media screen and (min-width: 740px) {
+    #shopify-section-{{ section.id }} .page-header__text-wrapper {
+      margin-bottom: 0;
+    }
+  }
+  {%- endif -%}
 </style>
 
 <section class=" {% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %} {% unless blends_with_background %}section--flush{% endunless %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
@@ -72,6 +88,18 @@
       "type": "checkbox",
       "id": "hide_desktop",
       "label": "Hide Desktop?"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_bottom_margin_mobile",
+      "label": "Remove bottom margin (Mobile)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_bottom_margin_desktop",
+      "label": "Remove bottom margin (Desktop)",
+      "default": false
     },
     {
       "type": "header",

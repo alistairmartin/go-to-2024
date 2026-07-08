@@ -2891,6 +2891,7 @@ rivo-favorite-button.rivo-favorite-active svg {
 
   .product-item__image-wrapper {
     width: 40%;
+    margin-bottom: 0;
   }
 
   .product-item__info {
@@ -6560,4 +6561,9 @@ quick-buy-drawer, quick-buy-popover  {
 
 footer.footer .klaviyo-form * {
   font-family: "Marcel", sans-serif !important;
+}
+
+
+.tolstoy-stories-next-button, .tolstoy-stories-previous-button {
+  z-index: 1 !important;
 }

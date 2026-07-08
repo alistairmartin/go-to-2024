@@ -179,6 +179,24 @@
     pointer-events: none;
   }
 
+  {%- if section.settings.remove_vertical_margin_mobile -%}
+  @media screen and (max-width: 740px) {
+    #shopify-section-{{ section.id }} .section {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+  {%- endif -%}
+
+  {%- if section.settings.remove_vertical_margin_desktop -%}
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} .section {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+  {%- endif -%}
+
 </style>
 
 <section class="section {% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %} {% unless blends_with_background %}section--flush{% endunless %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
@@ -798,6 +816,18 @@
       "id": "show_hidden_products",
       "label": "Show Hidden Products",
       "info": "For Testing Purposes Only!"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_vertical_margin_mobile",
+      "label": "Remove top & bottom margin (Mobile)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_vertical_margin_desktop",
+      "label": "Remove top & bottom margin (Desktop)",
+      "default": false
     },
     {
       "type": "header",

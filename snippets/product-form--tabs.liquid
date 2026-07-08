@@ -29,16 +29,15 @@
                             {% endunless %} {% endcomment %}
                             {{ product.description }}
                       </div>
-
-                      {%- unless product.handle == "nifty-fifty-fluid" -%}
+         
+                      {%- unless product.metafields.custom.show_learn_more_button == true -%}
                       <div class="link-container">
-                        <a href="#learn-more" class="link link--basic learn-more">
+                        <a href="#learn-more" class="link link--basic">
                           LEARN MORE
                         </a>
-                      </div>
+                      </div> 
                       {%- endunless -%}
                  
-                     
 
                          {% comment %} {% assign skinTypeCounter = 0 %}
                           {%- for tag in product.tags -%}

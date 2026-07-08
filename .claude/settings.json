@@ -56,7 +56,9 @@
       "Bash(awk 'NR<3690 && /^  \\\\.product-card *\\\\{|^  &|^\\\\.[a-zA-Z]/{print NR\": \"$0}' src/scss/products.scss)",
       "Bash(grep -rn 'lap\\\\|desk\\\\|$small\\\\|$medium\\\\|$large\\\\|1000\\\\|999' /Users/alistairmartin/Dropbox/go-to-2024/src/scss/components/_media-queries.scss)",
       "Bash(sass src/scss/collections.scss assets/collections.css --style compressed --no-source-map)",
-      "Bash(grep -o '.\\\\{0,40\\\\}URLSearchParams.\\\\{0,60\\\\}' assets/products.min.js)"
+      "Bash(grep -o '.\\\\{0,40\\\\}URLSearchParams.\\\\{0,60\\\\}' assets/products.min.js)",
+      "Bash(grep -roh \"[,{]\\\\.section{[^}]*}\" assets/global.css)",
+      "Bash(grep -roh \"[^,{}]*shopify-section[^,{}]*{margin[^}]*}\" assets/global.css)"
     ]
   }
 }

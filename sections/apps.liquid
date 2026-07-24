@@ -1,4 +1,4 @@
-<div id="{{ section.settings.title | handle }}" class="{% if section.settings.include_horizontal_margins %}container{% endif %} {% if section.settings.include_vertical_margins %}vertical-breather{% endif %}">
+<div id="{{ section.settings.id | default: section.settings.title | handle }}" class="{% if section.settings.include_horizontal_margins %}container{% endif %} {% if section.settings.include_vertical_margins %}vertical-breather{% endif %}">
 
   {%- if section.settings.title != blank -%}
     <div class="page-header">
@@ -21,6 +21,12 @@
     "groups": ["custom.overlay"]
   },
   "settings": [
+    {
+      "type": "text",
+      "id": "id",
+      "label": "ID",
+      "info": "Optional. Used with in-page navigation."
+    },
     {
       "type": "text",
       "id": "title",

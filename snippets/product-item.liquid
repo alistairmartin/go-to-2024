@@ -132,6 +132,13 @@
 
       {%- if settings.show_secondary_image and product.media.size > 1 and hide_secondary_image != true -%}
         {%- assign next_media = product.media[product.featured_media.position] | default: product.media[1] -%}
+        {%- comment %} Metafield overrides which image shows on hover (1-based image number) {% endcomment -%}
+        {%- if product.metafields.custom.collection_2nd_image != blank -%}
+          {%- assign collection_2nd_index = product.metafields.custom.collection_2nd_image.value | times: 1 | minus: 1 -%}
+          {%- if product.media[collection_2nd_index] != blank -%}
+            {%- assign next_media = product.media[collection_2nd_index] -%}
+          {%- endif -%}
+        {%- endif -%}
         {{- next_media | image_url: width: next_media.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '200,300,400,500,600,700,800,900,1000,1100,1200', class: 'product-item__secondary-image' -}}
       {%- endif -%}
     </a>
@@ -143,13 +150,24 @@
       horizontal swipe). The static aspect-ratio image is shown on mobile instead.
     {%- endcomment -%}
     {%- if product.images.size > 0 and mobile_swipe != false -%}
+      {%- comment %} Second swipe slide respects the collection_2nd_image metafield (1-based image number) when set {% endcomment -%}
+      {%- assign second_slide_image = product.images[1] -%}
+      {%- if product.metafields.custom.collection_2nd_image != blank -%}
+        {%- assign collection_2nd_index = product.metafields.custom.collection_2nd_image.value | times: 1 | minus: 1 -%}
+        {%- if product.images[collection_2nd_index] != blank -%}
+          {%- assign second_slide_image = product.images[collection_2nd_index] -%}
+        {%- endif -%}
+      {%- endif -%}
       <card-slider class="product-card__slider">
         <div class="product-card__track" data-cs-track>
-          {%- for image in product.images limit: 2 -%}
+          <a href="{{ product.url }}" data-instant class="product-card__slide" tabindex="-1" aria-hidden="true">
+            {{ product.images[0] | image_url: width: 600 | image_tag: loading: 'lazy', widths: '200,300,400,500,600,700,800', sizes: '50vw', class: 'product-card__slide-img' }}
+          </a>
+          {%- if second_slide_image != blank -%}
             <a href="{{ product.url }}" data-instant class="product-card__slide" tabindex="-1" aria-hidden="true">
-              {{ image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '200,300,400,500,600,700,800', sizes: '50vw', class: 'product-card__slide-img' }}
+              {{ second_slide_image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '200,300,400,500,600,700,800', sizes: '50vw', class: 'product-card__slide-img' }}
             </a>
-          {%- endfor -%}
+          {%- endif -%}
         </div>
 
         {%- assign slide_count = product.images.size -%}
@@ -273,7 +291,7 @@
     {%- endif -%}
 
     {%- comment -%} Variant chips (display labels) {%- endcomment -%}
-    {%- unless product.handle == "weekly-essentials" or product.handle contains "very-lightweight-moisturiser" or product.handle contains "matte-pop-blush" or product.handle == "ring-light" or product.handle == "glowy-blush" -%}
+    {%- unless hide_variants or product.handle == "weekly-essentials" or product.handle contains "very-lightweight-moisturiser" or product.handle contains "matte-pop-blush" or product.handle == "ring-light" or product.handle == "glowy-blush" -%}
       {%- assign related_products = product.metafields.custom.product_main_information__related_products | split: "|" -%}
       {%- if product.variants.size > 1 or related_products != blank -%}
         <div class="product-card__variants variant-option">

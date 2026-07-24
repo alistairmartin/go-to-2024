@@ -752,3 +752,251 @@ if (!customElements.get("collapsible-promo-banner")) {
   document.addEventListener("shopify:section:load", schedule);
   document.addEventListener("shopify:block:select", schedule);
 })();
+
+/* ------------------------------------------------------------------ *
+ * <product-sticky-form-v2>
+ *
+ * Compact bottom sticky add-to-cart bar (Figma "Add To Cart Form").
+ * Visible on page load; slides down out of view once the main product
+ * form buy buttons (.product-form__buy-buttons) — or the footer — enter
+ * the viewport. Variant <select>s inside are kept in sync with the main
+ * product form so submitting adds the currently-selected variant.
+ * Defined here (bundled products.js) rather than inline to avoid the
+ * innerHTML-swap / define() race with product-rerender.
+ * ------------------------------------------------------------------ */
+(function () {
+  if (window.customElements.get("product-sticky-form-v2")) return;
+
+  class ProductStickyFormV2 extends HTMLElement {
+    connectedCallback() {
+      this._onFormChange = this._syncMainForm.bind(this);
+      this.addEventListener("change", this._onFormChange);
+      this._setupVisibilityObserver();
+    }
+
+    disconnectedCallback() {
+      this.removeEventListener("change", this._onFormChange);
+      if (this._observer) this._observer.disconnect();
+      document.documentElement.classList.remove(
+        "sticky-atc-v2-visible",
+        "sticky-atc-v2-hidden",
+        "sticky-atc-v2-past-atc"
+      );
+      document.documentElement.style.removeProperty("--sticky-atc-v2-offset");
+      document.documentElement.style.removeProperty("--cart-notification-offset");
+    }
+
+    set hidden(value) {
+      this.toggleAttribute("hidden", value);
+      // On desktop this bar is display:none, and the classic desktop bar owns the
+      // shared --cart-notification-offset — so don't touch any of this there.
+      // NB: do NOT test offsetParent here. It is always null for a position:fixed
+      // element, so it can't distinguish "display:none" from "visible" and would
+      // skip these writes on every breakpoint.
+      // While hidden-on-mobile the bar keeps display:block (it only slides out via
+      // transform), so clientHeight stays measurable and display is only "none" on desktop.
+      if (window.getComputedStyle(this).display === "none") return;
+
+      var root = document.documentElement;
+
+      // The chat bubble rides on these classes rather than on a changing custom
+      // property: iOS Safari does not fire a transition when a transitioned property
+      // resolves through calc(var(...)) and the variable itself changes — it snaps.
+      // Two classes (not just one) so the "bar hidden" state is distinct from
+      // "not initialised yet", which keeps the bubble from flashing at the wrong
+      // position on first paint before the observer has run.
+      if (value) {
+        root.classList.remove("sticky-atc-v2-visible");
+        root.classList.add("sticky-atc-v2-hidden");
+        root.style.removeProperty("--cart-notification-offset");
+      } else {
+        var offset = this.clientHeight + "px";
+        root.classList.remove("sticky-atc-v2-hidden");
+        root.style.setProperty("--sticky-atc-v2-offset", offset);
+        root.style.setProperty("--cart-notification-offset", offset);
+        root.classList.add("sticky-atc-v2-visible");
+      }
+    }
+
+    get hidden() {
+      return this.hasAttribute("hidden");
+    }
+
+    /* Mirror the sticky variant <select> onto the main form's option inputs so
+       the theme's <variant-picker> (which reads getActiveOptionValues() from the
+       form's option inputs) resolves the right combination.
+
+       IMPORTANT: do NOT dispatch a synthetic change event here. The sticky
+       <select> is form-associated and carries data-option-position, so the
+       theme's variant-picker already listens for its change directly (on
+       document.body). Re-dispatching fires the variant-change cascade a second
+       time and races the async re-render, which made the first switch flicker
+       back to the previous variant. This mirrors the classic sticky bar. */
+    _syncMainForm(event) {
+      var target = event.target;
+      if (!target || !target.matches("select[data-option-position]")) return;
+
+      var form = document.forms[this.getAttribute("form-id")];
+      if (!form) return;
+
+      for (var i = 0; i < form.elements.length; i++) {
+        var element = form.elements[i];
+        if (element === target || element.name !== target.name) continue;
+        if (element.tagName === "INPUT") {
+          element.checked = element.value = target.value;
+        }
+      }
+    }
+
+    _setupVisibilityObserver() {
+      var paymentContainer = document.getElementById("MainPaymentContainer");
+      var buyButtons = paymentContainer
+        ? paymentContainer.closest(".product-form__buy-buttons")
+        : document.querySelector(".product-form__buy-buttons");
+      var footer = document.querySelector(".shopify-section--footer");
+
+      // Nothing to anchor visibility to — leave hidden.
+      if (!buyButtons) {
+        this.hidden = true;
+        return;
+      }
+
+      this._buyButtonsVisible = false;
+      this._footerVisible = false;
+      this._buyButtonsPassed = false;
+
+      var update = function () {
+        // The chat button may only appear once the shopper has scrolled PAST the
+        // Add to cart button — not while it is still below the fold, even though the
+        // bar is up in both cases. So this is a separate signal from the bar's own
+        // visibility, and the chat CSS requires both.
+        document.documentElement.classList.toggle(
+          "sticky-atc-v2-past-atc",
+          !!this._buyButtonsPassed
+        );
+
+        // Show whenever the main Add to cart button is NOT in view and the
+        // footer is NOT in view.
+        this.hidden = this._buyButtonsVisible || this._footerVisible;
+      }.bind(this);
+
+      this._observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.target === buyButtons) {
+            this._buyButtonsVisible = entry.isIntersecting;
+            // "Passed" = the ATC has scrolled up out of the viewport (its bottom edge
+            // sits above the top of the screen). Distinguishes it from "still below
+            // the fold", which is the other way it can be non-intersecting.
+            this._buyButtonsPassed =
+              !entry.isIntersecting && entry.boundingClientRect.bottom <= 0;
+          } else if (entry.target === footer) {
+            this._footerVisible = entry.isIntersecting;
+          }
+        }.bind(this));
+        update();
+      }.bind(this));
+
+      this._observer.observe(buyButtons);
+      if (footer) this._observer.observe(footer);
+    }
+  }
+
+  window.customElements.define("product-sticky-form-v2", ProductStickyFormV2);
+})();
+
+/* =========================================================
+   PDP gallery autoplay fallback
+   When gallery autoplay is enabled the theme renders no poster or
+   play button, and NativeVideo calls video.play() without handling
+   rejection — so if the browser blocks autoplay (iOS Low Power Mode,
+   data saver, reduced motion) the video sits as a frozen frame.
+   Detect the blocked play() and overlay a tappable play button.
+   ========================================================= */
+(function () {
+  var PLAY_ICON =
+    '<svg viewBox="0 0 104 104" width="72" height="72" aria-hidden="true" focusable="false">' +
+    '<path opacity="0.9" d="M52 104C80.7188 104 104 80.7188 104 52C104 23.2812 80.7188 0 52 0C23.2812 0 0 23.2812 0 52C0 80.7188 23.2812 104 52 104Z" fill="rgb(var(--play-button-background, 255 255 255))"></path>' +
+    '<path fill-rule="evenodd" clip-rule="evenodd" d="M46 65V39L62 52L46 65Z" fill="rgb(var(--play-button-arrow, 0 0 0))"></path>' +
+    "</svg>";
+
+  function showButton(wrapper, video) {
+    if (wrapper.querySelector(".video-autoplay-fallback")) return;
+
+    // iOS draws its own centered play glyph on any video it prevented
+    // from autoplaying, and its media controls ignore author CSS. The
+    // only reliable way to clear it is to drop the autoplay/controls
+    // attributes and reload, so WebKit no longer flags the element as
+    // "autoplay was prevented". The video falls back to its poster.
+    var hadControls = video.hasAttribute("controls");
+    video.removeAttribute("controls");
+    video.removeAttribute("autoplay");
+    try { video.load(); } catch (e) {}
+
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "video-autoplay-fallback";
+    btn.setAttribute("aria-label", "Play video");
+    btn.innerHTML = PLAY_ICON;
+
+    btn.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      var p = video.play();
+      if (p && typeof p.catch === "function") p.catch(function () {});
+    });
+
+    // Remove however playback ends up starting (our button or the
+    // browser resuming autoplay), and restore the native controls.
+    video.addEventListener(
+      "play",
+      function () {
+        btn.remove();
+        if (hadControls) video.setAttribute("controls", "");
+      },
+      { once: true }
+    );
+
+    wrapper.appendChild(btn);
+  }
+
+  function watch(wrapper) {
+    if (wrapper._autoplayFallbackBound) return;
+    wrapper._autoplayFallbackBound = true;
+
+    var video = wrapper.querySelector("video");
+    if (!video) return;
+    if (!video.paused) return;
+
+    var p = video.play();
+    if (p && typeof p.then === "function") {
+      p.catch(function () { showButton(wrapper, video); });
+    } else {
+      // Old browsers: play() returns undefined — poll instead.
+      setTimeout(function () {
+        if (video.paused) showButton(wrapper, video);
+      }, 500);
+    }
+  }
+
+  function init() {
+    document
+      .querySelectorAll("native-video[autoplay]")
+      .forEach(watch);
+  }
+
+  function schedule() {
+    if (!window.customElements || !customElements.whenDefined) return;
+    // Wait for the element to upgrade (its constructor swaps the
+    // <template> for the real <video>), then give it a frame.
+    customElements.whenDefined("native-video").then(function () {
+      requestAnimationFrame(init);
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", schedule);
+  } else {
+    schedule();
+  }
+  document.addEventListener("shopify:section:load", schedule);
+})();

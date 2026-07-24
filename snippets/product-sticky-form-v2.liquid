@@ -1,0 +1,124 @@
+{%- comment -%}
+  Sticky add-to-cart bar (v2).
+
+  Compact bottom-fixed bar based on the Figma "Add To Cart Form" design. It is
+  visible on page load and slides out of view (downwards) whenever the main
+  product form buy buttons (.product-form__buy-buttons) enter the viewport. It
+  also slides away once the footer is in view. All visibility is handled by the
+  <product-sticky-form-v2> custom element (bundled in products.js).
+
+  Accepts:
+    - product: the product object
+    - product_form_id: the id of the main product form to submit against
+{%- endcomment -%}
+
+{%- assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ',' -%}
+{%- assign color_white_label = 'general.label.white' | t | downcase -%}
+{%- assign buy_buttons_block = section.blocks | where: 'type', 'buy_buttons' | first -%}
+{%- assign color_swatch_config = settings.color_swatch_config | newline_to_br | split: '<br />' -%}
+
+{%- if buy_buttons_block != blank -%}
+  <product-rerender id="product-sticky-form-v2-{{ product.id }}-{{ section.id }}" observe-form="{{ product_form_id }}">
+    {%- if product.selected_or_first_available_variant != nil -%}
+      {%- assign selected_variant = product.selected_or_first_available_variant -%}
+
+      <product-sticky-form-v2 form-id="{{ product_form_id }}" hidden class="sticky-atc-v2">
+        <div class="sticky-atc-v2__inner">
+          <div class="sticky-atc-v2__info">
+            <span class="sticky-atc-v2__title heading--primary">{{ product.title }}</span>
+
+            <div class="sticky-atc-v2__meta">
+              {%- unless product.has_only_default_variant -%}
+                {%- comment -%} Multi-variant: dropdown select synced to the main form {%- endcomment -%}
+                {%- for option in product.options_with_values -%}
+                  {%- assign option_downcase = option.name | downcase -%}
+                  {%- assign is_color_option = false -%}
+                  {%- if color_label_list contains option_downcase -%}
+                    {%- assign is_color_option = true -%}
+                  {%- endif -%}
+
+                  <div class="sticky-atc-v2__select-wrapper{% if is_color_option %} sticky-atc-v2__select-wrapper--swatch{% endif %}">
+                    {%- if is_color_option -%}
+                      {%- assign downcase_selected = option.selected_value | downcase -%}
+                      <span class="sticky-atc-v2__swatch {% if downcase_selected == color_white_label %}sticky-atc-v2__swatch--white{% endif %}" aria-hidden="true" style="{% render 'color-swatch-style', swatch: option.selected_value.swatch, color_swatch_config: color_swatch_config, value: option.selected_value %}"></span>
+                    {%- endif -%}
+
+                    <select
+                      class="sticky-atc-v2__select"
+                      data-option-position="{{ option.position }}"
+                      name="option{{ option.position }}"
+                      form="{{ product_form_id }}"
+                      aria-label="{{ option.name | escape }}"
+                    >
+                      {%- for value in option.values -%}
+                        <option value="{{ value.id }}" {% if value == option.selected_value %}selected{% endif %}>{{ value }}</option>
+                      {%- endfor -%}
+                    </select>
+
+                    {%- render 'icon' with 'chevron' -%}
+                  </div>
+                {%- endfor -%}
+              {%- else -%}
+                {%- comment -%} Single variant: static swatch + selected value label {%- endcomment -%}
+                {%- for option in product.options_with_values -%}
+                  {%- assign option_downcase = option.name | downcase -%}
+                  {%- if color_label_list contains option_downcase -%}
+                    {%- assign downcase_selected = option.selected_value | downcase -%}
+                    <span class="sticky-atc-v2__swatch {% if downcase_selected == color_white_label %}sticky-atc-v2__swatch--white{% endif %}" aria-hidden="true" style="{% render 'color-swatch-style', swatch: option.selected_value.swatch, color_swatch_config: color_swatch_config, value: option.selected_value %}"></span>
+                    <span class="sticky-atc-v2__variant-label">{{ option.selected_value }}</span>
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endunless -%}
+
+              <span class="sticky-atc-v2__price {% if selected_variant.compare_at_price > selected_variant.price %}sticky-atc-v2__price--on-sale{% endif %}">
+                {%- if settings.currency_code_enabled -%}
+                  {{- selected_variant.price | money_with_currency | remove: ".00" | remove: ",00" -}}
+                {%- else -%}
+                  {{- selected_variant.price | money | remove: ".00" | remove: ",00" -}}
+                {%- endif -%}
+
+                {%- if selected_variant.compare_at_price > selected_variant.price -%}
+                  <s class="sticky-atc-v2__compare-price">
+                    {%- if settings.currency_code_enabled -%}
+                      {{- selected_variant.compare_at_price | money_with_currency | remove: ".00" | remove: ",00" -}}
+                    {%- else -%}
+                      {{- selected_variant.compare_at_price | money | remove: ".00" | remove: ",00" -}}
+                    {%- endif -%}
+                  </s>
+                {%- endif -%}
+              </span>
+            </div>
+          </div>
+
+          <div class="sticky-atc-v2__form">
+            {%- capture button_content -%}
+              {%- if product.template_suffix == 'pre-order' -%}
+                {{- 'product.form.pre_order' | t -}}
+              {%- else -%}
+                {{- 'product.form.add_to_cart' | t -}}
+              {%- endif -%}
+            {%- endcapture -%}
+
+            <button
+              id="StickyAddToCartV2"
+              is="loader-button"
+              form="{{ product_form_id }}"
+              type="submit"
+              data-product-add-to-cart-button
+              {% unless buy_buttons_block.settings.show_payment_button %}data-use-primary{% endunless %}
+              data-button-content="{{ button_content | escape }}"
+              class="sticky-atc-v2__button product-form__add-button button {% unless selected_variant.available %}button--ternary{% else %}{% if buy_buttons_block.settings.show_payment_button %}button--secondary{% else %}button--primary{% endif %}{% endunless %}"
+              {% unless selected_variant.available %}disabled{% endunless %}
+            >
+              {%- if selected_variant.available -%}
+                {{- button_content -}}
+              {%- else -%}
+                {{- 'product.form.sold_out' | t -}}
+              {%- endif -%}
+            </button>
+          </div>
+        </div>
+      </product-sticky-form-v2>
+    {%- endif -%}
+  </product-rerender>
+{%- endif -%}

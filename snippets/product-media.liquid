@@ -95,6 +95,11 @@
           {%- endif -%}
         {%- endfor -%}
 
+        {% comment %} Metafield overrides the PDPImage_ tag when set {% endcomment %}
+        {%- if product.metafields.custom.pdp_mobile_featured_image != blank -%}
+          {%- assign featured_selected_image = product.metafields.custom.pdp_mobile_featured_image.value | times: 1 -%}
+        {%- endif -%}
+
         {%- if featured_selected_image > 0 -%}
           {%- for media in product.media -%}
             {%- if forloop.index == featured_selected_image -%}

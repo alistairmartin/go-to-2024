@@ -118,6 +118,11 @@
   }
   {%- endif -%}
 
+  /* Tight column gap between product cards (mobile + desktop), independent of
+     the white-card background toggle above. */
+  #shopify-section-{{ section.id }} .product-list__inner {
+    --product-list-column-gap: 2px;
+  }
 
   #shopify-section-{{ section.id }} .section__footer {
     --flex-justify-content-mobile: {{ section.settings.flex_justify_content_mobile }};
@@ -173,6 +178,62 @@
   #shopify-section-{{ section.id }} .product-list:hover .product-list__arrow[disabled] {
     opacity: 0 !important;
     pointer-events: none;
+  }
+
+  /* Mobile arrows. Three things fight us below 1000px:
+       1. `hidden-pocket` in theme.css is `display: none !important`.
+       2. theme.css only positions .product-list__prev-next (and only gives the
+          arrows their z-index) inside its >=1000px block.
+       3. global.css sets margin-left/width/transform on
+          `.shopify-section--featured-collections .product-list__prev-next` at
+          ALL widths, for the desktop scroller's 28px side margins.
+     So every one of those properties is reset explicitly here — pinning with
+     left/right instead of width avoids the calc(100% + 56px) fight. The arrows
+     need their own z-index + pointer-events or the product card eats the tap. */
+  @media screen and (max-width: 999px) {
+    #shopify-section-{{ section.id }} .product-list__prev-next.hidden-pocket {
+      display: flex !important;
+      position: absolute;
+      left: 0;
+      right: 0;
+      width: auto;
+      margin-left: 0;
+      /* Centre on the product image: mobile card width / aspect ratio / 2. */
+      top: calc(var(--section-products-per-row-mobile, 52vw) / var(--smallest-image-aspect-ratio, 1) / 2);
+      transform: translateY(-50%);
+      justify-content: space-between;
+      padding-inline: 2px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    #shopify-section-{{ section.id }} .product-list__prev-next.hidden-pocket .product-list__arrow {
+      pointer-events: auto;
+      z-index: 2;
+      /* 32px per the mobile design; desktop stays at 45px. */
+      width: 32px;
+      height: 32px;
+    }
+
+    #shopify-section-{{ section.id }} .product-list__prev-next.hidden-pocket .product-list__arrow svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    /* Make the arrows actually scroll. Below 1000px the theme sets
+       `min-width: min-content` on .product-list__inner--scroller, so it expands
+       to fit every card and nothing overflows *inside* it — the overflow lands
+       on the outer .scroller instead. Native swipe still works, but ProductList
+       in theme.js always calls scrollBy() on .product-list__inner, so the click
+       is a no-op: maxScrollLeft is 0, so it scrolls nothing and immediately
+       marks the button disabled. Constraining the inner element (as it already
+       is at >=1000px, where the arrows work) makes it the scroll container the
+       arrows can drive. Same fix as the Collection Category carousel. */
+    #shopify-section-{{ section.id }} .product-list__inner--scroller {
+      min-width: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
   }
 
   {%- if section.settings.remove_vertical_margin_mobile -%}
@@ -505,6 +566,13 @@
       "label": "Show add to cart below info",
       "info": "If enabled, we recommend using 4 products per row at maximum.",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_variants",
+      "label": "Hide variants on product cards",
+      "info": "Hides the variant chips (e.g. Glowy / Mattifying) so the carousel keeps a uniform height.",
+      "default": false
     },
     {
       "type": "header",

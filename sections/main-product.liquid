@@ -50,8 +50,13 @@
 {%- capture product_form_id -%}product-form-main-{{ product.id }}-{{ section.id }}{%- endcapture -%}
 
 <section>
+  {%- comment -%} Desktop (≥1000px) and mobile (≤999px) sticky bars are split by CSS breakpoint. {%- endcomment -%}
   {%- if section.settings.show_sticky_add_to_cart and product.available -%}
     {%- render 'product-sticky-form', product: product, product_form_id: product_form_id -%}
+  {%- endif -%}
+
+  {%- if section.settings.show_sticky_add_to_cart_v2 and product.available -%}
+    {%- render 'product-sticky-form-v2', product: product, product_form_id: product_form_id -%}
   {%- endif -%}
 
   <div class="container">
@@ -517,9 +522,16 @@ quite differently, as it is in a drawer on tablet/desktop, and a popover on mobi
     {
       "type": "checkbox",
       "id": "show_sticky_add_to_cart",
-      "label": "Show sticky add to cart",
-      "info": "Will be hidden if no Buy buttons block is added onto the page.",
+      "label": "Show sticky add to cart (Desktop)",
+      "info": "Classic sticky bar, shown on desktop only (≥1000px). Hidden if no Buy buttons block is added onto the page.",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sticky_add_to_cart_v2",
+      "label": "Show sticky add to cart (Mobile)",
+      "info": "Compact bottom bar, shown on mobile only (≤999px). Appears on load and slides away when the main Add to cart button is in view. Requires a Buy buttons block.",
+      "default": false
     },
     {
       "type": "checkbox",

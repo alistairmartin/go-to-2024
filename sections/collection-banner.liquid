@@ -21,6 +21,20 @@
     --section-overlay-color: {{ section.settings.image_overlay_color.red }}, {{ section.settings.image_overlay_color.green }}, {{ section.settings.image_overlay_color.blue }};
     --section-overlay-opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
   }
+
+  /* Keep the banner tight to the product grid: equal top/bottom spacing */
+  #shopify-section-{{ section.id }} .page-header__text-wrapper {
+    margin-block-start: 32px;
+    margin-block-end: 32px;
+  }
+
+  #shopify-section-{{ section.id }} .page-header__text-wrapper h1.heading {
+    line-height: 1;
+  }
+
+  #shopify-section-{{ section.id }} .page-header__text-wrapper .image-overlay__text-container {
+    line-height: 1.5;
+  }
 </style>
 
 <section>

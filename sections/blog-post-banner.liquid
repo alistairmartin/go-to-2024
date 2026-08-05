@@ -49,11 +49,7 @@
   <div class="article__header-content text-container">
     {%- if section.settings.show_category and article.tags.size > 0 -%}
 
-      {%- if brand == "gro-to" -%}
-        {%- assign acceptedTags = settings.blog_tags_gro-to -%}
-      {% else %}
-        {%- assign acceptedTags = settings.blog_tags_go-to -%}
-      {%- endif -%}
+      {%- assign acceptedTags = settings.blog_tags_go-to -%}
 
       {%- for tag in article.tags -%}
           {%- if acceptedTags contains tag -%}

@@ -11,8 +11,6 @@
     when 'product'
       if product.tags contains 'Bro-To' or product.vendor contains 'Bro-To'
         assign brand = 'bro-to'
-      elsif product.tags contains 'Gro-To' or product.vendor contains 'Gro-To'
-        assign brand = 'gro-to'
       endif
     when 'collection'
       unless collection.metafields.gts_theme.branding == blank
@@ -26,16 +24,15 @@
       unless blog.metafields.gts_theme.scheme == blank
         assign brand = blog.metafields.gts_theme.scheme | downcase
       endunless
-
-      if blog.title == "5-7PM" or blog.title == "FUN" or blog.title == "Grown-Ups" or blog.title == "Skin & Hair"
-       assign brand = 'gro-to'
-      endif
   endcase
 
 
   if page.handle contains 'bro-to' or collection.handle contains 'bro-to'
     assign brand = 'bro-to'
-  elsif page.handle contains 'gro-to' or collection.handle contains 'gro-to'
+  elsif page.handle contains 'gro-to'
+    comment
+      Legacy: keeps the archived /pages/gro-to-closure page on its original styling. Do not remove while that page exists.
+    endcomment
     assign brand = 'gro-to'
   endif
 

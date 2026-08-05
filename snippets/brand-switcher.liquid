@@ -12,17 +12,12 @@
 <a href="https://gotoskincare.com/pages/bro-to" class="brand-switcher--brand bro-to">{%- render 'svg--logo-bro-to' -%}</a>
 {%- endcapture -%}
 
-{% comment %} {%- capture groToLink -%}
-<a href="https://gotoskincare.com/pages/gro-to" class="brand-switcher--brand gro-to">{%- render 'svg--logo-gro-to' -%}</a>
-{%- endcapture -%} {% endcomment %}
-
-
 {%- if brand == "go-to" -%}
-    {{ broToLink }} {{ groToLink }}
+    {{ broToLink }}
 {%- endif -%}
 
 {%- if brand == "bro-to" -%}
-    {{ goToLink }} {{ groToLink }}
+    {{ goToLink }}
 {%- endif -%}
 
 {%- if brand == "gro-to" -%}

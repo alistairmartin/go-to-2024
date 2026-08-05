@@ -48,15 +48,12 @@ if (!(window.Shopify && Shopify.designMode)) {
       background: {{ section.settings.custom_message_color_background }} !important;
     {%- elsif brand == "bro-to" -%}
       background: {{ section.settings.custom_message_color_background_bro }} !important;
-    {%- elsif brand == "gro-to" -%} 
-      background: {{ section.settings.custom_message_color_background_gro }} !important;
     {%- endif -%}
   } */
 
    #mini-cart .drawer__header {
     --cartMessageBackgroundGoTo: {{ section.settings.custom_message_color_background }};
     --cartMessageBackgroundBroTo: {{ section.settings.custom_message_color_background_bro }};
-    --cartMessageBackgroundGroTo: {{ section.settings.custom_message_color_background_gro }};
   }
 
   #mini-cart .drawer__title {
@@ -104,27 +101,11 @@ if (!(window.Shopify && Shopify.designMode)) {
       {%- assign cartMessage = section.settings.custom_message_bro_to_US -%}
       {%- assign showBroToCustomMessage = true -%}
   
-    {%- elsif localization.market.handle == "au" and brand == "gro-to" and section.settings.custom_message_gro_to_AU != blank -%}
-      {%- assign cartMessage = section.settings.custom_message_gro_to_AU -%}
-      {%- assign showGroToCustomMessage = true -%}
-
-    {%- elsif localization.market.handle == "nz" and brand == "gro-to" and section.settings.custom_message_bro_to_NZ != blank -%}
-      {%- assign cartMessage = section.settings.custom_message_bro_to_NZ -%}
-      {%- assign showGroToCustomMessage = true -%}
-
-    {%- elsif localization.market.handle == "gb" and brand == "gro-to" and section.settings.custom_message_gro_to_GB != blank -%}
-      {%- assign cartMessage = section.settings.custom_message_gro_to_GB -%}
-      {%- assign showGroToCustomMessage = true -%}
-
-    {%- elsif localization.market.handle == "us" and brand == "gro-to" and section.settings.custom_message_gro_to_US != blank -%}
-      {%- assign cartMessage = section.settings.custom_message_gro_to_US -%}
-      {%- assign showGroToCustomMessage = true -%}
-
     {% endif %}
 
 
     {%- if showCustomMessage == true -%}
-      <header class="drawer__header custom-cart-message {% if showGoToCustomMessage %}message-enabled--go-to{% endif %} {%- if showBroToCustomMessage != blank -%}message-enabled--bro-to{% endif %} {%- if showGroToCustomMessage != blank -%}message-enabled--gro-to{% endif %}">
+      <header class="drawer__header custom-cart-message {% if showGoToCustomMessage %}message-enabled--go-to{% endif %} {%- if showBroToCustomMessage != blank -%}message-enabled--bro-to{% endif %} ">
     <p class="drawer__title heading h6">
 
       {%- if section.settings.enable_custom_message_brand_market -%}
@@ -155,13 +136,6 @@ if (!(window.Shopify && Shopify.designMode)) {
             <span>{{ section.settings.custom_message_bro_to_GB }}</span>
             <span>{{ section.settings.custom_message_bro_to_US }}</span> {% endcomment %}
             </span>
-          <span class="text--gro-to">
-             {{ cartMessage }}
-            {% comment %} <span>{{ section.settings.custom_message_gro_to_AU }}</span>
-            <span>{{ section.settings.custom_message_gro_to_NZ }}</span>
-            <span>{{ section.settings.custom_message_gro_to_GB }}</span>
-            <span>{{ section.settings.custom_message_gro_to_US }}</span> {% endcomment %}
-          </span>
       </div>
 
       {% else %}
@@ -266,7 +240,6 @@ if (!(window.Shopify && Shopify.designMode)) {
       <div class="button-wrapper">
 
         <a href="/collections/bro-to" class="button button--primary button--bro-to">{{ 'cart.general.start_shopping' | t }}</a>
-        <a href="/collections/gro-to" class="button button--primary button--gro-to">{{ 'cart.general.start_shopping' | t }}</a>
         <a href="{{ section.settings.empty_button_link }}" class="button button--primary button--go-to">{{ 'cart.general.start_shopping' | t }}</a>
 
       </div>
@@ -373,14 +346,14 @@ if (!(window.Shopify && Shopify.designMode)) {
 
            
                   {%- if line_item.product.type == "GWP" -%}
-                    <div class="product-item-meta__title text--small heading heading--secondary">{{ line_item.product.title | remove: "Bro-To " | remove: "Gro-To " }}</div>
+                    <div class="product-item-meta__title text--small heading heading--secondary">{{ line_item.product.title | remove: "Bro-To " }}</div>
 
                     {%- if line_item.product.metafields.custom.product_subtitle__description != blank -%}
                       <div href="{{ line_item.url | remove: "-gwp" }}" class="product-item-meta__subtitle text--xxsmall">{{ line_item.product.metafields.custom.product_subtitle__description }}</div>
                     {%- endif -%}
   
                   {%- else -%}
-                    <a href="{{ line_item.url | remove: "-gwp" }}" class="product-item-meta__title text--small heading heading--secondary">{{ line_item.product.title | remove: "Bro-To " | remove: "Gro-To " }}</a>
+                    <a href="{{ line_item.url | remove: "-gwp" }}" class="product-item-meta__title text--small heading heading--secondary">{{ line_item.product.title | remove: "Bro-To " }}</a>
 
                     {%- if line_item.product.metafields.custom.product_subtitle__description != blank -%}
                       <a href="{{ line_item.url | remove: "-gwp" }}" class="product-item-meta__subtitle text--xxsmall">{{ line_item.product.metafields.custom.product_subtitle__description }}</a>
@@ -696,9 +669,6 @@ if (!(window.Shopify && Shopify.designMode)) {
         },
         {
           "type": "checkbox",
-          "id": "gro-to",
-          "label": "🟩 Gro-To"
-        },
         {
           "type": "header",
           "content": "Buy Condition"
@@ -831,9 +801,6 @@ if (!(window.Shopify && Shopify.designMode)) {
         },
         {
           "type": "checkbox",
-          "id": "gro-to",
-          "label": "🟩 Gro-To"
-        },
         {
           "type": "header",
           "content": "Enable For Markets"
@@ -886,7 +853,7 @@ if (!(window.Shopify && Shopify.designMode)) {
           "type": "text",
           "id": "buy_brand",
           "label": "BUY Brand",
-          "info": "Go-To Skincare,Bro-To Skincare,Gro-To Skincare. Can Use An Array of Brands."
+          "info": "Go-To Skincare,Bro-To Skincare. Can Use An Array of Brands."
         },
         {
           "type": "paragraph",
@@ -1108,9 +1075,6 @@ if (!(window.Shopify && Shopify.designMode)) {
         },
         {
           "type": "checkbox",
-          "id": "gro-to",
-          "label": "🟩 Gro-To"
-        },
         {
           "type": "header",
           "content": "Buy Product"
@@ -1225,9 +1189,6 @@ if (!(window.Shopify && Shopify.designMode)) {
         },
         {
           "type": "checkbox",
-          "id": "gro-to",
-          "label": "🟩 Gro-To"
-        },
         {
           "type": "header",
           "content": "Tier 1"
@@ -1493,11 +1454,6 @@ if (!(window.Shopify && Shopify.designMode)) {
     { "type": "richtext", "id": "custom_message_bro_to_GB", "label": "Bro-To × UK 🇬🇧" },
     { "type": "richtext", "id": "custom_message_bro_to_US", "label": "Bro-To × US 🇺🇸" },
 
-    { "type": "header", "content": "Gro-To 🟩" },
-    { "type": "richtext", "id": "custom_message_gro_to_AU", "label": "Gro-To × AU 🇦🇺" },
-    { "type": "richtext", "id": "custom_message_gro_to_NZ", "label": "Gro-To × NZ 🇳🇿" },
-    { "type": "richtext", "id": "custom_message_gro_to_GB", "label": "Gro-To × UK 🇬🇧" },
-    { "type": "richtext", "id": "custom_message_gro_to_US", "label": "Gro-To × US 🇺🇸" },
     {
       "type": "color",
       "id": "custom_message_color_text",
@@ -1512,11 +1468,6 @@ if (!(window.Shopify && Shopify.designMode)) {
       "type": "color",
       "id": "custom_message_color_background_bro",
       "label": "Background Colour (Bro-To 🟥)"
-    },
-    {
-      "type": "color",
-      "id": "custom_message_color_background_gro",
-      "label": "Background Colour (Gro-To 🟩)"
     },
     {
         "type": "range",
@@ -1556,8 +1507,6 @@ if (!(window.Shopify && Shopify.designMode)) {
             "label": "🟥 Bro-To"
           },
           {
-            "value": "gro-to",
-            "label": "🟩 Gro-To"
           }
         ]
       }

@@ -84,7 +84,7 @@
                   <div class="product-item-meta">
 
                     {% comment %} <span class="product-item-meta__vendor text text--xxsmall"><i>{{ product.vendor | remove: " Skincare" }}</i></span> {% endcomment %}
-                    <span class="product-item-meta__title text--small"><strong>{{ product.title | remove: "Bro-To " | remove: "Gro-To" }}</strong>  <span class="separator--dot"> • </span> <span class="text text--xxsmall"><i>{{ product.vendor | remove: " Skincare" }}</i></span> </span>
+                    <span class="product-item-meta__title text--small"><strong>{{ product.title | remove: "Bro-To " }}</strong>  <span class="separator--dot"> • </span> <span class="text text--xxsmall"><i>{{ product.vendor | remove: " Skincare" }}</i></span> </span>
                     {%- if product.metafields.custom.product_subtitle__description != blank or product.metafields.custom.product_subtitle__measurement != blank -%}
                       <span class="product-item-meta__vendor text text--xxsmall">
                         {%- if product.metafields.custom.product_subtitle__description != blank -%}
@@ -183,11 +183,7 @@
 
                   {%- if article.tags.size > 0 -%}
                     
-                    {%- if brand == "gro-to" -%}
-                      {%- assign acceptedTags = settings.blog_tags_gro-to -%}
-                    {% else %}
-                      {%- assign acceptedTags = settings.blog_tags_go-to -%}
-                    {%- endif -%}
+                    {%- assign acceptedTags = settings.blog_tags_go-to -%}
 
                     {%- for tag in article.tags -%}
                         {%- if acceptedTags contains tag -%}

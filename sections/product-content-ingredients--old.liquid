@@ -6,8 +6,6 @@
   case brand
     when 'bro-to'
       assign ingredientsPage = section.settings.ingredients_page-bro_to
-    when 'gro-to'
-      assign ingredientsPage = section.settings.ingredients_page-gro_to
     when 'go-to'
       assign ingredientsPage = section.settings.ingredients_page-go_to
   endcase
@@ -43,8 +41,6 @@
   if ingredientFound
     echo '<section class="section">'
       case brand
-        when 'gro-to'
-          render 'product-content-ingredients--gro-to', section: section, productIngredients: productIngredients, ingredientsGlossary: ingredientsGlossary
         when 'go-to'
           render 'product-content-ingredients--go-to', section: section, productIngredients: productIngredients, ingredientsGlossary: ingredientsGlossary
       endcase
@@ -87,11 +83,6 @@
         "type": "page",
         "id": "ingredients_page-go_to",
         "label": "Go-To"
-      },
-      {
-        "type": "page",
-        "id": "ingredients_page-gro_to",
-        "label": "Gro-To"
       },
       {
         "type": "page",

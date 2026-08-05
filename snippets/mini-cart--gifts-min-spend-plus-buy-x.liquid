@@ -50,11 +50,7 @@
   {%- assign enable_for_bro-to = true -%}
 {%- endif -%}
 
-{%- if block.settings.gro-to and brand == "gro-to" -%}
-  {%- assign enable_for_gro-to = true -%}
-{%- endif -%}
-
-{%- if enable_for_go-to or enable_for_bro-to or enable_for_gro-to -%}
+{%- if enable_for_go-to or enable_for_bro-to -%}
 {%- if validMarket == true -%}
   
 {%- for item in cart.items -%}

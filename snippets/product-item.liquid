@@ -27,8 +27,6 @@
   {%- assign productBrand = "Go-To" -%}
 {% elsif product.vendor contains "Bro-To" %}
   {%- assign productBrand = "Bro-To" -%}
-{% elsif product.vendor contains "Gro-To" %}
-  {%- assign productBrand = "Gro-To" -%}
 {%- endif -%}
 
 {%- if product.tags contains "hidden" or product.template_suffix == "hidden" -%}
@@ -272,7 +270,7 @@
 
     {%- comment -%} Title (price sits beside it on desktop) {%- endcomment -%}
     <a href="{{ product.url }}" data-instant class="product-card__head product-item-meta__title">
-      <span class="product-card__title title">{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}</span>
+      <span class="product-card__title title">{{ product.title | remove: 'Bro-To' }}</span>
       <span class="product-card__price product-card__price--head">{{ price_html }}</span>
     </a>
 
@@ -396,7 +394,7 @@
       {%- if product.tags contains 'no-waitlist' -%}{% assign noWaitlist = true %}{%- endif -%}
       <div class="product-card__cta-wrapper product-item__cta-wrapper">
         {%- unless noWaitlist -%}
-          <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')" class="product-card__cta link link--primary back-in-stock"><span class="product-card__cta-full">WAITLIST ME</span><span class="product-card__cta-short">WAITLIST</span></button>
+          <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' }}')" class="product-card__cta link link--primary back-in-stock"><span class="product-card__cta-full">WAITLIST ME</span><span class="product-card__cta-short">WAITLIST</span></button>
         {%- endunless -%}
       </div>
     {%- endif -%}

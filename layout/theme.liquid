@@ -152,7 +152,6 @@
 
     {% comment %}
       {%- sections 'overlay-group' -%}
-      {%- sections 'overlay-group--gro-to' -%}
       {%- sections 'overlay-group--bro-to' -%}
     {% endcomment %}
 
@@ -222,7 +221,7 @@
             {% endif %}
 
             {% if collection %}
-              {%  unless collection.handle contains "bro-to" or collection.handle contains "gro-to"  %}
+              {%  unless collection.handle contains "bro-to"  %}
                 {% render "temp--birthday-banner" %}
                 {% assign showCountdown = true %}
 

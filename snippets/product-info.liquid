@@ -23,7 +23,7 @@
         {%- endif -%}
 
         {% unless featured %}
-          <h1 class="product-meta__title heading h4 heading--primary ">{{ product.title | remove: "Bro-To " | remove: "Gro-To " }}</h1>
+          <h1 class="product-meta__title heading h4 heading--primary ">{{ product.title | remove: "Bro-To " }}</h1>
         {% else %}
           <h2 class="product-meta__title heading h4 heading--primary">
             <a href="{{ product.url }}">{{ product.title }}</a>

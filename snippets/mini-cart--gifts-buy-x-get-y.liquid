@@ -20,14 +20,10 @@
   {%- assign enable_for_bro-to = true -%}
 {%- endif -%}
 
-{%- if block.settings.gro-to and brand == "gro-to" -%}
-  {%- assign enable_for_gro-to = true -%}
-{%- endif -%}
-
 {% comment %} {{ page.handle }} || {% endcomment %}
 
 
-{%- if enable_for_go-to or enable_for_bro-to or enable_for_gro-to -%}
+{%- if enable_for_go-to or enable_for_bro-to -%}
   
   {%- for item in cart.items -%}
     {% if getProduct.handle == item.product.handle %}

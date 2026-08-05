@@ -39,8 +39,6 @@ BRAND SELECTOR
     {% render 'css-variables', direction: direction %}
 {%- elsif brand == "bro-to" -%}
     {% render 'css-variables--bro-to', direction: direction %}
-{%- elsif brand == "gro-to" -%}
-    {% render 'css-variables--gro-to', direction: direction %}
 {%- endif -%}
 
 

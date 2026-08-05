@@ -3,13 +3,6 @@
 
 <style>
   :root {
-    {%- assign border_color = settings.groto_background | color_mix: settings.groto_text_color, 85 -%}
-    {%- assign border_color_darker = settings.groto_background | color_mix: settings.groto_text_color, 60 -%}
-    {%- assign success_background = settings.groto_background | color_mix: settings.groto_success_color, 80 -%}
-    {%- assign error_background = settings.groto_background | color_mix: settings.groto_error_color, 93 -%}
-    {%- assign product_custom_label_brightness = settings.groto_product_custom_label_background | color_brightness -%}
-    {%- assign product_custom_label_2_brightness = settings.groto_product_custom_label_2_background | color_brightness -%}
-
     --color-primary: #00bce7;
     --color-secondary: #b493c4;
     --color-ternary: #fff7f5;
@@ -31,44 +24,44 @@
     --color-button-ternary-background: #ffffff;
     --color-button-ternary-shadow: #181818;
 
-    --heading-color: {{ settings.groto_heading_color.red }}, {{ settings.groto_heading_color.green }}, {{ settings.groto_heading_color.blue }};
-    --text-color: {{ settings.groto_text_color.red }}, {{ settings.groto_text_color.green }}, {{ settings.groto_text_color.blue }};
-    --background: {{ settings.groto_background.red }}, {{ settings.groto_background.green }}, {{ settings.groto_background.blue }};
-    --secondary-background: {{ settings.groto_secondary_background.red }}, {{ settings.groto_secondary_background.green }}, {{ settings.groto_secondary_background.blue }};
-    --border-color: {{ border_color.red }}, {{ border_color.green }}, {{ border_color.blue }};
-    --border-color-darker: {{ border_color_darker.red }}, {{ border_color_darker.green }}, {{ border_color_darker.blue }};
-    --success-color: {{ settings.groto_success_color.red }}, {{ settings.groto_success_color.green }}, {{ settings.groto_success_color.blue }};
-    --success-background: {{ success_background.red }}, {{ success_background.green }}, {{ success_background.blue }};
-    --error-color: {{ settings.groto_error_color.red }}, {{ settings.groto_error_color.green }}, {{ settings.groto_error_color.blue }};
-    --error-background: {{ error_background.red }}, {{ error_background.green }}, {{ error_background.blue }};
-    --primary-button-background: {{ settings.groto_primary_button_background.red }}, {{ settings.groto_primary_button_background.green }}, {{ settings.groto_primary_button_background.blue }};
-    --primary-button-text-color: {{ settings.groto_primary_button_text_color.red }}, {{ settings.groto_primary_button_text_color.green }}, {{ settings.groto_primary_button_text_color.blue }};
-    --secondary-button-background: {{ settings.groto_secondary_button_background.red }}, {{ settings.groto_secondary_button_background.green }}, {{ settings.groto_secondary_button_background.blue }};
-    --secondary-button-text-color: {{ settings.groto_secondary_button_text_color.red }}, {{ settings.groto_secondary_button_text_color.green }}, {{ settings.groto_secondary_button_text_color.blue }};
-    --product-star-rating: {{ settings.groto_product_rating_color.red }}, {{ settings.groto_product_rating_color.green }}, {{ settings.groto_product_rating_color.blue }};
-    --product-on-sale-accent: {{ settings.groto_product_on_sale_accent.red }}, {{ settings.groto_product_on_sale_accent.green }}, {{ settings.groto_product_on_sale_accent.blue }};
-    --product-sold-out-accent: {{ settings.groto_product_sold_out_accent.red }}, {{ settings.groto_product_sold_out_accent.green }}, {{ settings.groto_product_sold_out_accent.blue }};
-    --product-custom-label-background: {{ settings.groto_product_custom_label_background.red }}, {{ settings.groto_product_custom_label_background.green }}, {{ settings.groto_product_custom_label_background.blue }};
-    --product-custom-label-text-color: {% if product_custom_label_brightness < 150 %}255, 255, 255{% else %}0, 0, 0{% endif %};
-    --product-custom-label-2-background: {{ settings.groto_product_custom_label_2_background.red }}, {{ settings.groto_product_custom_label_2_background.green }}, {{ settings.groto_product_custom_label_2_background.blue }};
-    --product-custom-label-2-text-color: {% if product_custom_label_2_brightness < 150 %}255, 255, 255{% else %}0, 0, 0{% endif %};
-    --product-low-stock-text-color: {{ settings.groto_product_low_stock_text_color.red }}, {{ settings.groto_product_low_stock_text_color.green }}, {{ settings.groto_product_low_stock_text_color.blue }};
-    --product-in-stock-text-color: {{ settings.groto_product_in_stock_text_color.red }}, {{ settings.groto_product_in_stock_text_color.green }}, {{ settings.groto_product_in_stock_text_color.blue }};
-    --loading-bar-background: {{ settings.groto_text_color.red }}, {{ settings.groto_text_color.green }}, {{ settings.groto_text_color.blue }};
+    --heading-color: 28, 27, 27;
+    --text-color: 28, 27, 27;
+    --background: 255, 255, 255;
+    --secondary-background: 240, 240, 245;
+    --border-color: 221, 221, 221;
+    --border-color-darker: 164, 164, 164;
+    --success-color: 89, 193, 96;
+    --success-background: 222, 243, 223;
+    --error-color: 178, 0, 0;
+    --error-background: 250, 237, 237;
+    --primary-button-background: 0, 45, 172;
+    --primary-button-text-color: 255, 255, 255;
+    --secondary-button-background: 0, 188, 231;
+    --secondary-button-text-color: 255, 255, 255;
+    --product-star-rating: 240, 96, 152;
+    --product-on-sale-accent: 240, 96, 152;
+    --product-sold-out-accent: 180, 147, 196;
+    --product-custom-label-background: 0, 188, 231;
+    --product-custom-label-text-color: 255, 255, 255;
+    --product-custom-label-2-background: 89, 193, 96;
+    --product-custom-label-2-text-color: 0, 0, 0;
+    --product-low-stock-text-color: 224, 0, 0;
+    --product-in-stock-text-color: 22, 131, 66;
+    --loading-bar-background: 28, 27, 27;
 
     /* We duplicate some "base" colors as root colors, which is useful to use on drawer elements or popover without. Those should not be overridden to avoid issues */
-    --root-heading-color: {{ settings.groto_heading_color.red }}, {{ settings.groto_heading_color.green }}, {{ settings.groto_heading_color.blue }};
-    --root-text-color: {{ settings.groto_text_color.red }}, {{ settings.groto_text_color.green }}, {{ settings.groto_text_color.blue }};
-    --root-background: {{ settings.groto_background.red }}, {{ settings.groto_background.green }}, {{ settings.groto_background.blue }};
-    --root-border-color: {{ border_color.red }}, {{ border_color.green }}, {{ border_color.blue }};
-    --root-primary-button-background: {{ settings.groto_primary_button_background.red }}, {{ settings.groto_primary_button_background.green }}, {{ settings.groto_primary_button_background.blue }};
-    --root-primary-button-text-color: {{ settings.groto_primary_button_text_color.red }}, {{ settings.groto_primary_button_text_color.green }}, {{ settings.groto_primary_button_text_color.blue }};
+    --root-heading-color: 28, 27, 27;
+    --root-text-color: 28, 27, 27;
+    --root-background: 255, 255, 255;
+    --root-border-color: 221, 221, 221;
+    --root-primary-button-background: 0, 45, 172;
+    --root-primary-button-text-color: 255, 255, 255;
 
-    --base-font-size: {{ settings.groto_text_font_size }}px;
+    --base-font-size: 18px;
     --heading-font-family: "{{ fontHeading }}";
     --heading-font-weight: bold;
     --heading-font-style: "normal";
-    --heading-text-transform: {{ settings.groto_heading_text_transform }};
+    --heading-text-transform: normal;
     --text-font-family: "{{ fontBody }}";
     --text-font-weight: 400;
     --text-font-style: "normal";
@@ -98,7 +91,7 @@
     --button-border-radius: 8px;
     --block-border-radius: 8px;
     --block-border-radius-reduced: 8px;
-    --color-swatch-border-radius: {% if settings.groto_round_color_swatches %}100%{% else %}0px{% endif %};
+    --color-swatch-border-radius: 0px;
 
     /* Button size */
     --button-height: 48px;
@@ -113,8 +106,8 @@
     --product-list-block-spacing: 32px;
 
     /* Video related */
-    --play-button-background: {{ settings.groto_background.red }}, {{ settings.groto_background.green }}, {{ settings.groto_background.blue }};
-    --play-button-arrow: {{ settings.groto_text_color.red }}, {{ settings.groto_text_color.green }}, {{ settings.groto_text_color.blue }};
+    --play-button-background: 255, 255, 255;
+    --play-button-arrow: 28, 27, 27;
 
     /* RTL support */
     --transform-logical-flip: {% if direction == 'ltr' %}1{% else %}-1{% endif %};
@@ -146,11 +139,11 @@
     --grid-gap: 8px;
     --grid-column-width: calc((100vw - var(--container-outer-width) * 2 - var(--grid-gap) * (var(--grid-column-count) - 1)) / var(--grid-column-count));
 
-    --vertical-breather: {% if settings.groto_vertical_spacing == 'small' %}28px{% elsif settings.groto_vertical_spacing == 'medium' %}36px{% else %}48px{% endif %};
-    --vertical-breather-tight: {% if settings.groto_vertical_spacing == 'small' %}28px{% elsif settings.groto_vertical_spacing == 'medium' %}36px{% else %}48px{% endif %};
+    --vertical-breather: 48px;
+    --vertical-breather-tight: 48px;
 
     /* Shopify related variables */
-    --payment-terms-background-color: {{ settings.groto_background }};
+    --payment-terms-background-color: #ffffff;
   }
 
  

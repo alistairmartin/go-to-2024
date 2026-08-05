@@ -28,13 +28,6 @@
       --heading-color: {{ settings.broto_footer_text_color.red }}, {{ settings.broto_footer_text_color.green }}, {{ settings.broto_footer_text_color.blue }};
       --text-color: {{ settings.broto_footer_text_color.red }}, {{ settings.broto_footer_text_color.green }}, {{ settings.broto_footer_text_color.blue }};
       --border-color: {{ border_color.red }}, {{ border_color.green }}, {{ border_color.blue }};
-    {%- elsif brand == "gro-to" -%}
-    {%- assign border_color = settings.groto_footer_background | color_mix: settings.groto_footer_text_color, 85 -%}
-
-    --background: {{ settings.groto_footer_background.red }}, {{ settings.groto_footer_background.green }}, {{ settings.groto_footer_background.blue }};
-    --heading-color: {{ settings.groto_footer_text_color.red }}, {{ settings.groto_footer_text_color.green }}, {{ settings.groto_footer_text_color.blue }};
-    --text-color: {{ settings.groto_footer_text_color.red }}, {{ settings.groto_footer_text_color.green }}, {{ settings.groto_footer_text_color.blue }};
-    --border-color: {{ border_color.red }}, {{ border_color.green }}, {{ border_color.blue }};
     {% else  %}
     {% endif %}
   }
@@ -59,10 +52,6 @@
     </div>
 
   </div>
-
-  {%- if brand == "gro-to" -%}
-    <img src="{{ 'goofy-eyes.gif' | asset_url }}" width="150" height="auto" loading="lazy"  class="footer-gro-to--goofy-eyes"/>
-  {%- endif -%}
 
 </footer>
 

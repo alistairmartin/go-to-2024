@@ -268,7 +268,7 @@ z-index: 4;
       {%- capture logo -%}
 
 
-        <a class="header__logo-link" href="{{ shop.url }}{% if brand == "bro-to" %}/pages/bro-to{% elsif brand == "gro-to" %}/pages/gro-to{% endif %}">
+        <a class="header__logo-link" href="{{ shop.url }}{% if brand == "bro-to" %}/pages/bro-to{% elsif brand == "gro-to" %}/pages/gro-to-closure{% endif %}">
           {%- if section.settings.logo != blank -%}
             {%- capture logo_size -%}{{ section.settings.logo_max_width | at_least: section.settings.mobile_logo_max_width | times: 2 | append: 'x' }}{%- endcapture -%}
             <span class="visually-hidden">{{ shop.name }}</span>

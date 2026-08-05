@@ -13,8 +13,6 @@
   {%- assign productBrand = "Go-To" -%}
 {% elsif product.vendor contains "Bro-To" %}
   {%- assign productBrand = "Bro-To" -%}
-{% elsif product.vendor contains "Gro-To" %}
-  {%- assign productBrand = "Gro-To" -%}
 {%- endif -%}
 
 {%- if product.url contains '?' -%}
@@ -286,7 +284,7 @@
    
 
         <span class="title">
-          {{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}
+          {{ product.title | remove: 'Bro-To' }}
         </span>
       
       </a>
@@ -478,7 +476,7 @@
         {%- if noWaitlist -%}
           {% comment %} {{ 'collection.product.sold_out' | t }} {% endcomment %}
         {% else  %}
-          <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')"  class="link link--primary back-in-stock">WAITLIST ME</button>
+          <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' }}')"  class="link link--primary back-in-stock">WAITLIST ME</button>
         {%- endif -%}
 
       </div>

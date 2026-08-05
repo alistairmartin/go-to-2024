@@ -9,7 +9,7 @@
       {%- for block in section.blocks -%}
         
 
-        {%- unless brand == block.settings.brand -%}
+        {%- unless brand == block.settings.brand or block.settings.brand == "gro-to" -%}
 
           <a href="{% if block.settings.brand == "go-to" %}{{ routes.root_url }}{% else %}{{ block.settings.brand_url }}{% endif %}" class="brand-switcher--brand {{ block.settings.brand }} {% if brand == block.settings.brand %}active{% endif %}">
 
@@ -17,8 +17,6 @@
           {%- render 'svg--logo-go-to' -%}
         {%- elsif block.settings.brand == "bro-to" and brand != "bro-to" -%}
           {%- render 'svg--logo-bro-to' -%}
-        {%- elsif block.settings.brand == "gro-to" and brand != "gro-to" -%}
-          {%- render 'svg--logo-gro-to' -%}
         {%- endif -%}
 
         </a>
@@ -73,10 +71,6 @@
               {
                 "value": "bro-to",
                 "label": "🟥 Bro-To"
-              },
-              {
-                "value": "gro-to",
-                "label": "🟩 Gro-To"
               }
             ]
           },

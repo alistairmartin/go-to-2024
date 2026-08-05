@@ -137,7 +137,7 @@
 
 
         {% comment %} <span class="title">
-          {{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}
+          {{ product.title | remove: 'Bro-To' }}
         </span> {% endcomment %}
       
       </div>
@@ -298,7 +298,7 @@
       <div class="product-item__cta-wrapper">
         <button disabled class="button button--ternary button--full">SOLD OUT</button>
 
-        {% comment %} <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' | remove: 'Gro-To' }}')"  class="link link--primary back-in-stock">WAITLIST ME</button> {% endcomment %}
+        {% comment %} <button onclick="openBackInStock({{ product.id }},{{ product.selected_or_first_available_variant.id }},'{{ product.title | remove: 'Bro-To' }}')"  class="link link--primary back-in-stock">WAITLIST ME</button> {% endcomment %}
 
       </div>
     {%- endif -%}

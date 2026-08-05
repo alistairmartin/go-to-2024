@@ -1,0 +1,413 @@
+{%- if section.settings.background != settings.background and section.settings.background != 'rgba(0,0,0,0)' -%}
+  {%- assign blends_with_background = false -%}
+{%- else -%}
+  {%- assign blends_with_background = true -%}
+{%- endif -%}
+
+{%- if section.settings.background == 'rgba(0,0,0,0)' -%}
+  {%- assign section_background = settings.background -%}
+{%- else -%}
+  {%- assign section_background = section.settings.background -%}
+{%- endif -%}
+
+{%- if section.settings.text_color == 'rgba(0,0,0,0)' -%}
+  {%- assign heading_color = settings.heading_color -%}
+  {%- assign text_color = settings.text_color -%}
+{%- else -%}
+  {%- assign heading_color = section.settings.text_color -%}
+  {%- assign text_color = section.settings.text_color -%}
+{%- endif -%}
+
+{%- comment -%} Image height as a fraction of card width (h/w), used to vertically centre the arrows on the image. {%- endcomment -%}
+{%- assign ar_parts = section.settings.card_aspect_ratio | split: '/' -%}
+{%- assign ar_w = ar_parts[0] | default: '4' | strip | times: 1.0 -%}
+{%- assign ar_h = ar_parts[1] | default: '3' | strip | times: 1.0 -%}
+{%- if ar_w <= 0 -%}{%- assign ar_w = 1.0 -%}{%- endif -%}
+{%- assign ar_fraction = ar_h | divided_by: ar_w -%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --heading-color: {{ heading_color.red }}, {{ heading_color.green }}, {{ heading_color.blue }};
+    --text-color: {{ text_color.red }}, {{ text_color.green }}, {{ text_color.blue }};
+    --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+    --prev-next-button-background: {{ settings.background.red }}, {{ settings.background.green }}, {{ settings.background.blue }};
+    --prev-next-button-color: {{ settings.text_color.red }}, {{ settings.text_color.green }}, {{ settings.text_color.blue }};
+    --section-products-per-row: 1;
+    --section-products-per-row-mobile: {{ section.settings.mobile_card_width }}vw;
+  }
+
+  @media screen and (min-width: 741px) {
+    #shopify-section-{{ section.id }} {
+      --section-products-per-row: {{ section.settings.cards_per_row | at_most: 2 }};
+    }
+  }
+
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} {
+      --section-products-per-row: {{ section.settings.cards_per_row | at_most: 3 }};
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    #shopify-section-{{ section.id }} {
+      --section-products-per-row: {{ section.settings.cards_per_row }};
+    }
+  }
+
+  /* ---- Section header ---- */
+  #shopify-section-{{ section.id }} .blog-carousel__header {
+    margin-bottom: 48px;
+  }
+
+  #shopify-section-{{ section.id }} .blog-carousel__title {
+    font-family: var(--heading-font-family);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 26px;
+    margin: 0;
+    color: rgb(var(--heading-color));
+  }
+
+  /* ---- Blog card ---- */
+  #shopify-section-{{ section.id }} .blog-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    scroll-snap-align: start;
+    color: inherit;
+  }
+
+  #shopify-section-{{ section.id }} .blog-card__image-link {
+    display: block;
+    overflow: hidden;
+    border-radius: {{ section.settings.card_radius }}px;
+    aspect-ratio: {{ section.settings.card_aspect_ratio }};
+    /* box-shadow: 6px 6px 14px rgba(52, 52, 52, 0.22); */
+    box-shadow: 4px 4px 0px 0px #181818;
+
+  }
+
+  #shopify-section-{{ section.id }} .blog-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .blog-card__content {
+    padding: 10px 15px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  #shopify-section-{{ section.id }} .blog-card__content > * {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .blog-card__category {
+    display: block;
+    font-size: 12px;
+    color: rgb(var(--text-color));
+    text-transform: capitalize;
+  }
+
+  #shopify-section-{{ section.id }} .blog-card__title {
+    font-family: var(--heading-font-family);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 26px;
+    letter-spacing: 0;
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .blog-card__title a {
+    color: rgb(var(--heading-color));
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} .blog-card__read-more {
+    font-size: 14px;
+  }
+
+  /* ---- Carousel scroller / arrows / breakout (shared with category carousel) ---- */
+  #shopify-section-{{ section.id }} .category-carousel {
+    text-align: left;
+  }
+
+  #shopify-section-{{ section.id }} .category-carousel .product-list__inner {
+    justify-content: flex-start;
+  }
+
+  #shopify-section-{{ section.id }} .category-carousel .product-list__inner--scroller {
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    --product-list-column-gap: 30px;
+    column-gap: 30px;
+  }
+
+  /* Prev/next arrows — 45px Barely Pink circle, vertically centered on the image row */
+  #shopify-section-{{ section.id }} .category-carousel .product-list__prev-next {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: none;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding-inline: var(--container-gutter);
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+
+  /* Pin the arrows to the vertical centre of the image, not the whole card
+     (the card now has text below the image). */
+  #shopify-section-{{ section.id }} .category-carousel .product-list__arrow {
+    pointer-events: auto;
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .2s ease;
+    margin-top: calc({{ section.settings.mobile_card_width }}vw * {{ ar_fraction }} * 0.5 - 22px);
+  }
+
+  #shopify-section-{{ section.id }} .category-carousel .product-list__arrow svg {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px -4px rgba(52, 52, 52, 0.16), 0 1px 2px 0 rgba(52, 52, 52, 0.24);
+  }
+
+  #shopify-section-{{ section.id }} .category-carousel .product-list__arrow:hover svg {
+    animation: none;
+  }
+
+  #shopify-section-{{ section.id }} .category-carousel .product-list__arrow svg rect {
+    fill: #FEF9F8;
+  }
+
+  #shopify-section-{{ section.id }} .category-carousel .product-list__arrow[disabled],
+  #shopify-section-{{ section.id }} .category-carousel:hover .product-list__arrow[disabled] {
+    opacity: 0 !important;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .category-carousel .product-list__arrow {
+    opacity: 0.7 !important;
+    visibility: visible;
+  }
+
+  #shopify-section-{{ section.id }} .category-carousel:hover .product-list__arrow {
+    opacity: 1 !important;
+  }
+
+  /* Right-side breakout (desktop): cards keep their container width, but the row
+     bleeds out to the viewport's right edge so the next card peeks past the line. */
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} .category-carousel {
+      margin-inline-end: calc(-1 * var(--container-outer-width));
+    }
+
+    #shopify-section-{{ section.id }} .category-carousel .product-list__inner--scroller {
+      grid-auto-columns: calc(var(--container-inner-width) / var(--section-products-per-row) - var(--product-list-column-gap) * (var(--section-products-per-row) - 1) / var(--section-products-per-row));
+      padding-inline-end: var(--container-outer-width);
+    }
+
+    #shopify-section-{{ section.id }} .category-carousel .product-list__prev-next {
+      width: var(--container-inner-width);
+    }
+
+    /* Centre the arrows on the image height using the desktop card width. */
+    #shopify-section-{{ section.id }} .category-carousel .product-list__arrow {
+      margin-top: calc((var(--container-inner-width) / var(--section-products-per-row)) * {{ ar_fraction }} * 0.5 - 22px);
+    }
+  }
+
+  @media screen and (max-width: 999px) {
+    #shopify-section-{{ section.id }} .category-carousel .product-list__inner--scroller {
+      min-width: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+  }
+</style>
+
+<section class=" {% if section.settings.hide_desktop %}hide-desktop{% endif %} {% if section.settings.hide_mobile %}hide-mobile{% endif %} {% unless blends_with_background %}section--flush{% endunless %}" {% if section.settings.id != blank %}id="{{ section.settings.id }}"{% endif %}>
+  <div class="section__color-wrapper">
+    <div class="container {% unless blends_with_background %}vertical-breather{% endunless %}">
+      {%- if section.settings.title != blank -%}
+        <header class="blog-carousel__header">
+          <h2 class="blog-carousel__title">{{ section.settings.title | escape }}</h2>
+        </header>
+      {%- endif -%}
+
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var section = document.getElementById('shopify-section-{{ section.id }}');
+    if (!section) return;
+    var carousel = section.querySelector('.category-carousel');
+    if (!carousel) return;
+    var scroller = carousel.querySelector('.product-list__inner');
+    if (!scroller) return;
+
+    function update() {
+      if (scroller.clientWidth === 0) return;
+      var canScroll = scroller.scrollWidth - scroller.clientWidth > 1;
+      carousel.toggleAttribute('data-no-scroll', !canScroll);
+    }
+
+    update();
+    requestAnimationFrame(update);
+    window.addEventListener('load', update);
+    window.addEventListener('resize', update);
+    if (window.ResizeObserver) {
+      new ResizeObserver(update).observe(scroller);
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Collection Blog Posts",
+  "class": "shopify-section--blog-carousel",
+  "max_blocks": 12,
+  "disabled_on": {
+    "templates": ["password"],
+    "groups": ["header", "custom.overlay"]
+  },
+  "blocks": [
+    { "type": "_blog-collection-select" }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "id",
+      "label": "ID",
+      "info": "Optional. Used with in-page navigation."
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_mobile",
+      "label": "Hide Mobile?"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_desktop",
+      "label": "Hide Desktop?"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "The Go-To-Guide"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "cards_per_row",
+      "label": "Cards per row (desktop)",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_width",
+      "label": "Card width (mobile)",
+      "min": 30,
+      "max": 90,
+      "step": 1,
+      "default": 80,
+      "unit": "%",
+      "info": "Percentage of viewport width. Smaller = more peek of the next card."
+    },
+    {
+      "type": "text",
+      "id": "card_aspect_ratio",
+      "label": "Card aspect ratio",
+      "default": "4 / 3",
+      "info": "CSS aspect-ratio value. e.g. 1 / 1, 4 / 3, 5 / 4."
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Card content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_category",
+      "label": "Show category",
+      "info": "Uses the article's first tag.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_read_more",
+      "label": "Show \"Read more\" link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "read_more_text",
+      "label": "\"Read more\" text",
+      "default": "Read more"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Heading / text",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "rgba(0,0,0,0)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Blog Posts",
+      "blocks": [
+        { "type": "_blog-collection-select" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -11,6 +11,19 @@
 .product-facet {
     margin-bottom: 0;
     padding-bottom: 80px;
+    margin-top: 0;
+}
+
+/* At >=1000px the theme lays .product-facet out as a flex row with
+   .product-facet__main { flex: 1 0 0 }. That's flex-shrink:0 + the default
+   min-width:auto, so the column can't shrink below its grid's min-content and
+   blows past .container — the meta-bar just stretches to that width, so it
+   looks like the culprit. min-width:0 lets the column shrink and clears the
+   horizontal overflow. Desktop-only because below 1000px there's no flex row. */
+@media only screen and (min-width: 1000px) {
+    .product-facet__main {
+        min-width: 0;
+    }
 }
 
 .color-swatch__item {
@@ -24,4 +37,12 @@
 
 .color-swatch__item:after {
     border: 1px solid #000 !important;
+}
+
+#sort-by-popover{
+    .popover__content {
+        @include media-query($small) {
+            padding: 10px;
+        }
+    }
 }

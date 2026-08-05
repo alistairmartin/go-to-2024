@@ -109,7 +109,7 @@ html {
   align-items: center;
   // text-decoration-skip-ink: none;
 
-  border-bottom: 5px solid var(--color-primary);
+  border-bottom: 3px solid var(--color-primary);
 
   &[aria-busy="true"]{
     border-bottom: none;
@@ -132,8 +132,8 @@ html {
   }
 
   &:after {
-    height: 5px;
-    bottom: -5px;
+    height: 3px;
+    bottom: -3px;
   }
 
   &:disabled {
@@ -148,7 +148,7 @@ html {
     /* Safari-specific workaround */
     .link--primary {
       text-decoration: none; /* Remove native underline */
-      border-bottom: 5px solid var(--color-primary); /* Add custom underline */
+      border-bottom: 3px solid var(--color-primary); /* Add custom underline */
     }
 
     .link--primary:hover {
@@ -210,7 +210,7 @@ section {
   text-underline-offset: 5px !important;
   text-decoration: underline !important;
   text-decoration-color: #fff !important;
-  text-decoration-thickness: 5px !important;
+  text-decoration-thickness: 3px !important;
   text-transform: uppercase;
   font-weight: bold;
   display: flex;
@@ -244,7 +244,7 @@ section {
   text-underline-offset: 5px;
   text-decoration: underline;
   text-decoration-color: rgb(var(--text-color));
-  text-decoration-thickness: 5px;
+  text-decoration-thickness: 3px;
   text-transform: uppercase;
   font-weight: bold;
 
@@ -255,6 +255,85 @@ section {
   &:hover {
     text-decoration-color: rgb(var(--text-color));
     color: rgb(var(--text-color));
+  }
+}
+
+/* Same treatment as .link--primary but with a black underline instead of peach. */
+.link--black {
+  text-decoration: none;
+  padding-bottom: 3px;
+  transition: 300ms all;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  border-bottom: 3px solid #{$gotoBlack};
+
+  &[aria-busy="true"] {
+    border-bottom: none;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    margin-left: 5px;
+    margin-top: -4px;
+  }
+
+  &:hover {
+    color: rgb(var(--text-color));
+  }
+
+  &:after {
+    height: 5px;
+    bottom: -5px;
+  }
+
+  &:disabled {
+    color: var(--color-grey-dark) !important;
+    border-bottom-color: var(--color-grey-dark) !important;
+  }
+}
+
+/* Same treatment as .link--black but white text/underline for use on dark backgrounds. */
+.link--white {
+  text-decoration: none;
+  padding-bottom: 3px;
+  transition: 300ms all;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: #fff;
+
+  border-bottom: 3px solid #fff;
+
+  &[aria-busy="true"] {
+    border-bottom: none;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    margin-left: 5px;
+    margin-top: -4px;
+  }
+
+  &:hover {
+    color: #fff;
+  }
+
+  &:after {
+    height: 5px;
+    bottom: -5px;
+  }
+
+  &:disabled {
+    color: var(--color-grey-dark) !important;
+    border-bottom-color: var(--color-grey-dark) !important;
   }
 }
 
@@ -351,7 +430,7 @@ section {
 
 .bro-to {
   .label--waitlist {
-    color: $brotoBlue !important;
+    color: #fff !important;
   }
 }
 
@@ -2812,6 +2891,7 @@ rivo-favorite-button.rivo-favorite-active svg {
 
   .product-item__image-wrapper {
     width: 40%;
+    margin-bottom: 0;
   }
 
   .product-item__info {
@@ -3456,6 +3536,9 @@ footer {
     }
 
     h1.heading {
+      font-size: 40px;
+      font-style: italic;
+      line-height: 1;
       @include media-query($small) {
         font-size: 32px;
       }
@@ -3463,17 +3546,29 @@ footer {
 
     h2.heading {
       margin: 0;
+      font-size: 16px;
+      line-height: 1.5;
     }
 
     .page-header__text-wrapper {
-      margin-bottom: 16px;
+      margin-bottom: 32px;
       margin-top: 32px;
 
+       @include media-query($small) {
+           margin-bottom: 16px;
+       }
+
       .metafield-rich_text_field {
-        font-weight: normal;
+        font-weight: 300;
       }
     }
-   
+
+    @include media-query($small) {
+      .container {
+        padding-inline: 20px;
+      }
+    }
+
   }
 
 
@@ -3508,7 +3603,6 @@ footer {
     section {
       background-color: var(--section-background);
     }
-  
   }  
 
   .product-list__background {
@@ -4887,8 +4981,8 @@ product-rerender {
 
   .link-bar__scroller {
     @include media-query($small) {
-      padding-left: 10px;
-      padding-right: 10px;
+      padding-left: 20px;
+      padding-right: 20px;
     }
   }
 
@@ -5092,6 +5186,12 @@ product-rerender {
 #take-me-to-the-quiz-modal {
   .modal__content-inner {
     background: transparent;
+  }
+}
+
+.product-facet__filter-item {
+  .checkbox-container {
+    margin-bottom: 14px;
   }
 }
 
@@ -6307,6 +6407,16 @@ quick-buy-popover {
 }
 
 quick-buy-drawer, quick-buy-popover  {
+  // Make the Add to Cart button span the full drawer width — the button
+  // carries `button--full` (100%) but its inline custom-element wrappers
+  // shrink to content, so stretch them too.
+  .product-form__buy-buttons,
+  .product-form__payment-container,
+  .product-form__add-button {
+    display: block;
+    width: 100%;
+  }
+
   [data-block-id="liquid_line_1"], [data-block-id="liquid_line_3"]  {
     display: none;
   }
@@ -6418,9 +6528,47 @@ quick-buy-drawer, quick-buy-popover  {
     object-fit: contain;
     display: block;
   }
+
+  &.product-form-callout--image-left {
+    flex-direction: row-reverse;
+
+    .product-form-callout__image {
+      margin: -28px 0 -28px -8px;
+    }
+  }
+
+  @media (max-width: 749px) {
+    gap: 12px;
+    padding: 8px 16px;
+
+    .product-form-callout__text {
+      font-size: 13px;
+      line-height: 20px;
+    }
+
+    .product-form-callout__image {
+      max-width: 100px;
+      max-height: 100px;
+      margin: -16px -6px -16px 0;
+    }
+
+    &.product-form-callout--image-left .product-form-callout__image {
+      margin: -16px 0 -16px -6px;
+    }
+  }
 }
 
 
 footer.footer .klaviyo-form * {
   font-family: "Marcel", sans-serif !important;
+}
+
+
+.tolstoy-stories-next-button, .tolstoy-stories-previous-button {
+  z-index: 1 !important;
+}
+
+
+#PBarNextFrameWrapper {
+  display: none !important;
 }

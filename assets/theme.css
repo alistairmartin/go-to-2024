@@ -5877,8 +5877,8 @@ input:checked + .popover__choice-label:is(:lang(ae), :lang(ar), :lang(arc), :lan
 
 @media screen and (min-width: 741px) {
   .product-facet {
-    -webkit-margin-before: 40px;
-            margin-block-start: 40px;
+    -webkit-margin-before: 20px;
+            margin-block-start: 20px;
     -webkit-margin-after: 80px;
             margin-block-end: 80px;
   }
@@ -11482,8 +11482,9 @@ shopify-payment-terms {
   }
 
   .popover--quick-buy .product-form__buy-buttons {
-    margin-inline: calc(-1 * var(--container-gutter));
-    padding: 16px;
+    margin-inline: 0;
+    margin-top: 15px;
+    padding: 0;
     -webkit-padding-after: max(16px, env(safe-area-inset-bottom, 0px)  + 16px);
             padding-block-end: max(16px, env(safe-area-inset-bottom, 0px)  + 16px);
   }

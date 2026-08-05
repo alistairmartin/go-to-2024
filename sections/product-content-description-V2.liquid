@@ -10,7 +10,7 @@
           <div class="tab-list--outer tab-list--outer-main {% if hideTabs == true %}hide{% endif %}">
             <div class="tab-list--inner" role="tablist">
 
-             {%- if product.type == "Blush" or product.type == "Highlighter" -%}
+             {%- if product.type == "Blush" or product.type == "Highlighter" or product.type == "Hair" -%}
                   {%- if product.metafields.custom.product_how_to_apply_image_desktop != blank -%}
                   <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-2" class="tab-list--tab active">
                       HOW TO APPLY
@@ -69,7 +69,7 @@
             <span class="tab-list--scroll-indicator-bar"></span>
           </div>
           
-          {%- if product.type == "Blush" or product.type == "Highlighter" -%}
+          {%- if product.type == "Blush" or product.type == "Highlighter" or product.type == "Hair" -%}
                  {%- render 'product-description--how-to-apply' product: product, tab: 2, hidden: false  -%}
                  {%- render 'product-description--main' product: product, tab: 1, hidden: true  -%}
           {% else %}

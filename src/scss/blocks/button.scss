@@ -11,7 +11,7 @@
 
     @include media-query($medium-up) {
       align-items: center;
-      justify-content: var(--flex-justify-content-mobile);
+      justify-content: var(--flex-justify-content-desktop);
       margin-top: var(--margin-top-desktop);
       margin-bottom: var(--margin-bottom-desktop);
       width: var(--button-width-desktop);

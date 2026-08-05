@@ -99,7 +99,7 @@
 
           {% assign skinTypeCounter = 0 %}
           {%- for tag in product.tags -%}
-            {%- if tag contains "skintype_" -%}
+            {%- if tag contains "skintype_" or tag == "badge_All Hair Types" -%}
               {%- unless tag contains "jebbit" -%}
                 {% assign skinTypeFound = true %}
                 {%- assign skinTypeCounter = skinTypeCounter | plus: 1 -%}
@@ -114,7 +114,9 @@
             <h3 class="text--bold">{{ 'product.content.plays_nice_with' | t }}</h3>
             <div class="perfect-for--container items-{{ skinTypeCounter }}">
               {%- for tag in product.tags -%}
-                {%- if tag contains "skintype_" -%}
+                {%- if tag == "badge_All Hair Types" -%}
+                  {% render "product-content-icons--perfect-for", icon: 'all-hair' %}
+                {%- elsif tag contains "skintype_" -%}
                   {%- unless tag contains "jebbit" -%}
                   {% assign icon = tag | remove: "skintype_" %}
                   {% render "product-content-icons--perfect-for", icon: icon %}
@@ -127,7 +129,7 @@
 
         {% assign badgeCounter = 0 %}
         {%- for tag in product.tags -%}
-          {%- if tag contains "badge_" -%}
+          {%- if tag contains "badge_" and tag != "badge_All Hair Types" -%}
             {% assign badgeFound = true %}
             {%- assign badgeCounter = badgeCounter | plus: 1 -%}
             {% break %}
@@ -139,7 +141,7 @@
             <h3 class="text--bold">{{ 'product.content.good_to_know' | t }}</h3>
             <div class="who-is-it-for--container items-{{ badgeCounter }}">
               {%- for tag in product.tags -%}
-                {%- if tag contains "badge_" -%}
+                {%- if tag contains "badge_" and tag != "badge_All Hair Types" -%}
                   {%- unless tag contains "jebbit" -%}
                   {% assign icon = tag | remove: "badge_" %}
                   {% render "product-content-icons--good-to-know", icon: icon %}

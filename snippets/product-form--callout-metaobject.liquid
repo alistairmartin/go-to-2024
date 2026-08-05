@@ -3,9 +3,14 @@
 -%}
 
 {%- if gwp != blank -%}
-  <div class="product-form-callout product-form-callout--metaobject">
+  <div class="product-form-callout product-form-callout--metaobject product-form-callout--image-left">
     <div class="product-form-callout__text">
-      {{ gwp.text | metafield_tag }}
+      {%- if gwp.text_mobile != blank -%}
+        <div class="hide-mobile">{{ gwp.text | metafield_tag }}</div>
+        <div class="hide-desktop">{{ gwp.text_mobile | metafield_tag }}</div>
+      {%- else -%}
+        {{ gwp.text | metafield_tag }}
+      {%- endif -%}
     </div>
 
     {%- if gwp.image != blank -%}

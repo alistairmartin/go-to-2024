@@ -172,6 +172,15 @@
       width: 100%;
     }
 
+    .product-item__info {
+      padding: 0;
+      gap: 2px;
+    }
+
+    .product-card__title {
+      font-size: 14px;
+    }
+
     .mini-cart__recommendations-inner {
         margin: 0;
         overflow-x: hidden;
@@ -183,6 +192,7 @@
     }
 
     .mini-cart__recommendations-heading {
+      margin-bottom: 30px;
       @include media-query($small) {
         margin-bottom: 8px;
       }
@@ -201,7 +211,11 @@
         border-radius: var(--image-border-radius);
 
         @include media-query($small) {
-          padding: 8px 8px 16px;
+          padding: 0 0 0 8px;
+        }
+
+        .product-item__image-wrapper {
+          margin-right: 12px;
         }
 
         .product-item__link {
@@ -217,27 +231,47 @@
         }
 
         .product-item-meta__subtitle {
-          font-size: 11px !important;
+          font-size: 10px !important;
         }
 
         .product-item__label-list {
           display: none;
         }
 
-        .price-list {
-          position: absolute;
-          right: 10px;
-          bottom: 5px;
+        /* Price sits inline with the "+ ADD TO CART" button (mobile + desktop).
+           Hide the price that normally rides beside the title and surface the
+           inline price inside the buy row instead. */
+        .product-card__price--head {
+          display: none;
+        }
+
+        .product-card__buy {
           display: flex;
-          flex-direction: column;
-          align-items: flex-end;
+          flex-direction: row-reverse;
+          justify-content: flex-end;
+          align-items: baseline;
+          gap: 10px;
+          padding-top: 6px;
+        }
+
+        .product-card__price--inline {
+          display: inline-flex;
+        }
+
+        /* Always use the full "+ Add to cart" label here, never the "+ Add" short form */
+        .product-card__cta-full {
+          display: inline;
+        }
+
+        .product-card__cta-short {
+          display: none;
+        }
+
+        .price-list {
+          display: flex;
+          align-items: baseline;
           justify-content: flex-start;
-          height: 32px !important;
-
-
-          @include media-query($small) {
-             bottom: 5px;
-          }
+          margin: 0;
 
           .price {
             margin: 0;
@@ -495,5 +529,12 @@
 .brand-bro-to {
   .property--promo.brand--go-to-skincare {
     color: #fff !important;
+  }
+}
+
+
+.line-item__quantity.gift-product {
+  .line-item__remove-button {
+    margin-left: 0;
   }
 }

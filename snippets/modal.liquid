@@ -3,15 +3,29 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-      var button = document.getElementById('{{ buttonId }}');
       var modal = document.getElementById('{{ modalId }}-modal');
-      if (!button || !modal) {
+      if (!modal) {
         return;
       }
 
-      button.addEventListener('click', function(event) {
-        event.preventDefault();
-        modal.open = true;
+      {% if teleport %}
+      // Escape transformed/clipping ancestors (e.g. slideshow slides) so the
+      // fixed-position modal can layer above the page.
+      if (modal.parentElement !== document.body) {
+        document.body.appendChild(modal);
+      }
+      {% endif %}
+
+      ['{{ buttonId }}'{% if buttonIdMobile != blank %}, '{{ buttonIdMobile }}'{% endif %}].forEach(function(id) {
+        var button = document.getElementById(id);
+        if (!button) {
+          return;
+        }
+
+        button.addEventListener('click', function(event) {
+          event.preventDefault();
+          modal.open = true;
+        });
       });
     });
 

@@ -1,0 +1,177 @@
+{%- comment -%}
+  Featured collection tab — one collection's product list inside the
+  featured-collections section. Rendered via {% content_for 'blocks' %} in
+  sections/featured-collections.liquid; the section builds the tabs-nav by
+  iterating section.blocks, and the theme's <tabs-nav> element toggles the
+  `hidden` attribute on each <product-list> panel when its tab is clicked.
+
+  Nested _content-card / _promo-banner-card blocks render into the hidden
+  .cc-holder below and are moved into this tab's grid by slotFeaturedCards()
+  in src/js/products.js (mirrors the collection page's slotCards()).
+{%- endcomment -%}
+
+{%- liquid
+  comment
+    Capture the page collection handle BEFORE shadowing `collection` with the
+    block's selected collection — product-item expects outerCollectionHandle to
+    be the template's collection (blank on index), as the old section passed it.
+  endcomment
+  assign outerCollectionHandle = collection.handle
+  assign collection = block.settings.collection
+
+  comment
+    Initial tab visibility (first panel shown, the rest hidden until the theme
+    <tabs-nav> reveals them on click) is set by the section's inline script using
+    DOM order — `section.blocks` is empty inside a block rendered via
+    `content_for`, so the block can't reliably know whether it is the first tab.
+  endcomment
+  assign smallest_image_aspect_ratio = 0
+-%}
+
+<product-list
+  {% if settings.stagger_products_apparition %}stagger-apparition{% endif %}
+  id="block-{{ section.id }}-{{ block.id }}"
+  class="product-list product-list--{{ block.settings.product_list_alignment }} {% if section.settings.enable_background %}product-list__background{% endif %}"
+  {{ block.shopify_attributes }}
+>
+  <div {% unless section.settings.stack_products %}class="scroller"{% endunless %}>
+    <div class="product-list__inner {% unless section.settings.stack_products %}product-list__inner--scroller hide-scrollbar{% endunless %}">
+      {%- assign number_of_products_minus_one = section.settings.products_per_row | minus: 1 -%}
+      {%- assign gap_width = 24.0 | divided_by: section.settings.products_per_row | times: number_of_products_minus_one -%}
+      {%- capture sizes_attribute -%}(max-width: 740px) 52vw, calc(min(100vw - 80px, 1520px) / {{ section.settings.products_per_row }} - {{ gap_width | ceil }}px){%- endcapture -%}
+
+      {%- for product in collection.products limit: section.settings.products_count -%}
+        {%- if product.featured_media -%}
+          {%- assign smallest_image_aspect_ratio = smallest_image_aspect_ratio | at_least: product.featured_media.aspect_ratio -%}
+        {%- endif -%}
+
+        {%- render 'product-item', product: product, collection: collection, reduced_content: true, show_cta: section.settings.show_cta, block: block, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, section_name: "featured-collections", outerCollectionHandle: outerCollectionHandle, enable_byo_bundle: block.settings.enable_byo_bundle, showHiddenProduct: section.settings.show_hidden_products, mobile_swipe: false, hide_variants: section.settings.hide_variants -%}
+      {%- else -%}
+        {%- assign smallest_image_aspect_ratio = 1 -%}
+
+        {%- for i in (1..section.settings.products_count) -%}
+          {%- capture product_image -%}product-{% cycle '1', '2', '3', '4', '5' %}{% endcapture %}
+          {%- render 'product-item-placeholder', product_image: product_image, show_cta: section.settings.show_cta, reveal: settings.stagger_products_apparition -%}
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if collection.products_count >= 5 -%}
+      <div class="product-list__dots" aria-hidden="true"></div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%}
+    Content cards / promo banners for this tab. Hidden until slotFeaturedCards()
+    in products.js moves each into .product-list__inner at its configured position.
+  {%- endcomment -%}
+  <div class="cc-holder" hidden>
+    {% content_for 'blocks' %}
+  </div>
+
+  {%- unless section.settings.stack_products -%}
+    {%- if collection.products_count == 0 -%}
+      {%- assign products_shown = section.settings.products_count -%}
+    {%- else -%}
+      {%- assign products_shown = collection.products_count | default: section.settings.products_count | at_most: section.settings.products_count -%}
+    {%- endif -%}
+
+    {%- if products_shown > section.settings.products_per_row -%}
+      {%- if smallest_image_aspect_ratio == 0 -%}
+        {%- assign smallest_image_aspect_ratio = 1 -%}
+      {%- endif -%}
+
+      {%- if products_shown >= 5 -%}
+        <prev-next-buttons class="product-list__prev-next hidden-pocket" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
+          <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled>
+            <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
+            {%- render 'icon' with 'brand-chevron-left', block: true, direction_aware: true -%}
+          </button>
+
+          <button class="product-list__arrow prev-next-button prev-next-button--next">
+            <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
+            {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
+          </button>
+        </prev-next-buttons>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endunless -%}
+
+  {%- if block.settings.button_text != blank -%}
+    <div class="section__footer">
+      <a href="{{ block.settings.button_url | default: collection.url }}" class="blocks--button {% if block.settings.button_style contains "link" %}link--{% if block.settings.button_style == 'link-with-arrow-white' %}secondary{% else %}primary{% endif %}{% else %}button {{ block.settings.button_style }}{% endif %}" id="block-{{ block.id }}">{{ block.settings.button_text }} {% if block.settings.button_style contains "link-with-arrow" %}{%- render 'icon' with "brand-arrow-right" -%}{% endif %}</a>
+    </div>
+  {%- endif -%}
+</product-list>
+
+{% schema %}
+{
+  "name": "Collection",
+  "blocks": [
+    { "type": "_content-card" },
+    { "type": "_promo-banner-card" }
+  ],
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_byo_bundle",
+      "label": "Enable BYO Bundle",
+      "info": "If on the BYO bundle page, and is part of the BYO Bundle offers."
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Tab label",
+      "info": "Shown when more than 1 collection is featured. Collection title is used if none is set."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button link",
+      "info": "If empty, the collection URL is used."
+    },
+    {
+      "type": "radio",
+      "id": "button_style",
+      "label": "Button Style",
+      "options": [
+        { "value": "button--primary", "label": "Button" },
+        { "value": "button--secondary", "label": "Button (Secondary)" },
+        { "value": "button--ternary", "label": "Button (Ternary)" },
+        { "value": "button--ternary-white", "label": "Button (Ternary - White)" },
+        { "value": "button--outline", "label": "Button (Outline)" },
+        { "value": "link", "label": "Link" },
+        { "value": "link-with-arrow", "label": "Link (With Arrow)" },
+        { "value": "link-with-arrow-white", "label": "White Link (With Arrow)" }
+      ],
+      "default": "button--primary"
+    },
+    {
+      "type": "radio",
+      "id": "product_list_alignment",
+      "label": "Product Alignment",
+      "info": "If Less than 4 products, position the items center or left.",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "left", "label": "Left" }
+      ],
+      "default": "center"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection"
+    }
+  ]
+}
+{% endschema %}

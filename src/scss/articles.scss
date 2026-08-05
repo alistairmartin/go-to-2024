@@ -81,6 +81,10 @@
         margin: 0 !important;
     }
 
+    img[hidden] {
+        display: none !important;
+    }
+
     .product-list__inner--scroller {
         @include media-query($small) {
             grid-auto-columns: 52vw !important;

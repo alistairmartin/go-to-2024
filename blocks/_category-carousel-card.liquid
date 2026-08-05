@@ -1,5 +1,6 @@
 {%- assign card = block.settings.card -%}
 {%- assign desktop_image = card.image.value | default: card.image -%}
+{%- assign mobile_image = card.image_mobile.value | default: card.image_mobile -%}
 {%- assign card_url = card.collection_url.value.url | default: card.collection_url.url | default: '#' -%}
 {%- assign card_label = card.title.value | default: card.title -%}
 
@@ -7,7 +8,16 @@
 
 <a href="{{ card_url }}" class="category-card image-zoom" {{ block.shopify_attributes }}>
   {%- if desktop_image != blank -%}
-    {{ desktop_image | image_url: width: desktop_image.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '300,400,500,600,700,800,1000,1200', class: 'category-card__image', alt: card_label }}
+    <picture>
+      {%- if mobile_image != blank -%}
+        <source
+          media="(max-width: 740px)"
+          srcset="{{ mobile_image | image_url: width: 300 }} 300w, {{ mobile_image | image_url: width: 400 }} 400w, {{ mobile_image | image_url: width: 500 }} 500w, {{ mobile_image | image_url: width: 600 }} 600w, {{ mobile_image | image_url: width: 700 }} 700w, {{ mobile_image | image_url: width: 800 }} 800w"
+          sizes="{{ section.settings.mobile_card_width }}vw"
+        >
+      {%- endif -%}
+      {{ desktop_image | image_url: width: desktop_image.width | image_tag: loading: 'lazy', sizes: sizes_attribute, widths: '300,400,500,600,700,800,1000,1200', class: 'category-card__image', alt: card_label }}
+    </picture>
   {%- else -%}
     {%- capture placeholder -%}collection-{% cycle '1', '2', '3', '4', '5', '6' %}{%- endcapture -%}
     {{ placeholder | placeholder_svg_tag: 'category-card__image placeholder-background' }}

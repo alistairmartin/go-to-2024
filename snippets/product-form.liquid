@@ -585,12 +585,20 @@
       
       {%- comment -%}
       ----------------------------------------------------------------------------------------------------------------
-      Product Tabs
+      Callout Metaobject All
       ----------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
-      {%- when 'product_ichange' -%}
+      {%- when 'callout_metaobject_all' -%}
+          {%- render 'product-form--callout-metaobject-all', block: block -%}
+      
+      {%- comment -%}
+      ----------------------------------------------------------------------------------------------------------------
+      Charity
+      ----------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+      {%- when 'product_charity' -%}
         {% if context != 'quick-buy' %}
-          {%- render 'product-form--ichange' -%}
+          {%- render 'product-form--charity', block: block -%}
         {% endif %}
 
       {%- comment -%}

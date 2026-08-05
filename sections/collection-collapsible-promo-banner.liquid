@@ -52,7 +52,17 @@
     transition: max-height 400ms ease;
   }
 
+  /* Explicit toggle always wins, at any width. */
   #shopify-section-{{ section.id }} .cpb[data-open="true"] .cpb__image-wrap {
+    max-height: 1200px;
+  }
+
+  #shopify-section-{{ section.id }} .cpb[data-open="false"] .cpb__image-wrap {
+    max-height: 0;
+  }
+
+  /* Open-by-default (per breakpoint) until the visitor toggles. */
+  #shopify-section-{{ section.id }} .cpb[data-default-desktop="true"]:not([data-open]) .cpb__image-wrap {
     max-height: 1200px;
   }
 
@@ -71,6 +81,20 @@
     display: block;
     width: 100%;
     height: auto;
+  }
+
+  #shopify-section-{{ section.id }} .cpb__media--mobile {
+    display: none;
+  }
+
+  @media (max-width: 740px) {
+    #shopify-section-{{ section.id }} .cpb__image-inner--has-mobile .cpb__media--desktop {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .cpb__image-inner--has-mobile .cpb__media--mobile {
+      display: block;
+    }
   }
 
   #shopify-section-{{ section.id }} .cpb__blocks {
@@ -97,6 +121,15 @@
     #shopify-section-{{ section.id }} .cpb__row {
       padding-left: 16px;
       padding-right: 16px;
+    }
+
+    /* The desktop default does not apply on mobile; the mobile default governs. */
+    #shopify-section-{{ section.id }} .cpb[data-default-desktop="true"]:not([data-open]) .cpb__image-wrap {
+      max-height: 0;
+    }
+
+    #shopify-section-{{ section.id }} .cpb[data-default-mobile="true"]:not([data-open]) .cpb__image-wrap {
+      max-height: 1200px;
     }
   }
 </style>

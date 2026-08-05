@@ -1,0 +1,46 @@
+{%- comment -%}
+  Collection select — gates the content card(s) below to the chosen collections.
+  Renders a hidden holder; the cards inside are slotted into the product grid by JS
+  (see slotCards() in src/js/products.js). Hidden so cards never flash before slot-in.
+{%- endcomment -%}
+
+{%- assign show = false -%}
+{%- if block.settings.collection_list.size == 0 -%}
+  {%- assign show = true -%}
+{%- else -%}
+  {%- for col in block.settings.collection_list -%}
+    {%- if collection.handle != blank and col.handle == collection.handle -%}
+      {%- assign show = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- if show -%}
+  <div class="cc-holder" hidden {{ block.shopify_attributes }}>
+    {% content_for 'blocks' %}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collection select",
+  "blocks": [{ "type": "_content-card" }, { "type": "_promo-banner-card" }],
+  "settings": [
+    {
+      "type": "collection_list",
+      "id": "collection_list",
+      "label": "Collections",
+      "info": "The card(s) below will only show on these collection pages. Leave empty to show on all collections."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection select",
+      "blocks": [
+        { "type": "_content-card" }
+      ]
+    }
+  ]
+}
+{% endschema %}

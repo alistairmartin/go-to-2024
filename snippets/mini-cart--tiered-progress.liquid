@@ -1,7 +1,12 @@
 {%- comment -%}
-  Tiered Progress bar — renders a single shipping-bar with up to 3 tier markers.
+  Tiered Progress bar — renders a single shipping-bar with up to 3 evenly-spaced tier markers.
   Thresholds are per-currency (AUD / GBP / EUR / USD); marker label is shared.
   Qualifying subtotal matches EOFY tiered discount (excludes Gift Cards).
+
+  Markers are spaced EVENLY across the bar (not proportionally to their dollar value),
+  matching the client mockup. The fill advances segment-by-segment: each segment is an
+  equal slice of the bar that fills proportionally to progress through that tier's range.
+  Tier 1 uses the truck (free shipping) icon, tiers 2 & 3 use the star icon.
 {%- endcomment -%}
 
 {%- for attribute in cart.attributes -%}
@@ -52,10 +57,12 @@
   {%- capture tier1_amount -%}{{ tier1_cents | money | remove: ".00" | remove: ",00" }}{%- endcapture -%}
   {%- capture tier2_amount -%}{{ tier2_cents | money | remove: ".00" | remove: ",00" }}{%- endcapture -%}
   {%- capture tier3_amount -%}{{ tier3_cents | money | remove: ".00" | remove: ",00" }}{%- endcapture -%}
+  {%- capture zero_amount -%}{{ 0 | money | remove: ".00" | remove: ",00" }}{%- endcapture -%}
 
-  {%- assign tier1_label = block.settings.tier1_text | replace: "[amount]", tier1_amount | replace: "{{ amount }}", tier1_amount -%}
-  {%- assign tier2_label = block.settings.tier2_text | replace: "[amount]", tier2_amount | replace: "{{ amount }}", tier2_amount -%}
-  {%- assign tier3_label = block.settings.tier3_text | replace: "[amount]", tier3_amount | replace: "{{ amount }}", tier3_amount -%}
+  {%- comment -%} Marker label (shown above the circle) and reward name (used in the heading sentence). {%- endcomment -%}
+  {%- assign tier1_label = block.settings.tier1_text | replace: "[amount]", "" | replace: "{{ amount }}", "" | strip -%}
+  {%- assign tier2_label = block.settings.tier2_text | replace: "[amount]", "" | replace: "{{ amount }}", "" | strip -%}
+  {%- assign tier3_label = block.settings.tier3_text | replace: "[amount]", "" | replace: "{{ amount }}", "" | strip -%}
 
   {%- comment -%} Qualifying subtotal — sum of line items, excluding Gift Cards {%- endcomment -%}
   {%- assign qualifying_subtotal = 0 -%}
@@ -65,121 +72,290 @@
     {%- endunless -%}
   {%- endfor -%}
 
-  {%- comment -%} Find max threshold (the bar tops out at the highest configured tier) {%- endcomment -%}
+  {%- comment -%} Count configured tiers and find the top threshold (the bar tops out at the highest configured tier). {%- endcomment -%}
+  {%- assign tier_count = 0 -%}
   {%- assign max_threshold_cents = 0 -%}
-  {%- if tier1_cents > max_threshold_cents -%}{%- assign max_threshold_cents = tier1_cents -%}{%- endif -%}
-  {%- if tier2_cents > max_threshold_cents -%}{%- assign max_threshold_cents = tier2_cents -%}{%- endif -%}
-  {%- if tier3_cents > max_threshold_cents -%}{%- assign max_threshold_cents = tier3_cents -%}{%- endif -%}
+  {%- if tier1_cents > 0 -%}{%- assign tier_count = tier_count | plus: 1 -%}{%- if tier1_cents > max_threshold_cents -%}{%- assign max_threshold_cents = tier1_cents -%}{%- endif -%}{%- endif -%}
+  {%- if tier2_cents > 0 -%}{%- assign tier_count = tier_count | plus: 1 -%}{%- if tier2_cents > max_threshold_cents -%}{%- assign max_threshold_cents = tier2_cents -%}{%- endif -%}{%- endif -%}
+  {%- if tier3_cents > 0 -%}{%- assign tier_count = tier_count | plus: 1 -%}{%- if tier3_cents > max_threshold_cents -%}{%- assign max_threshold_cents = tier3_cents -%}{%- endif -%}{%- endif -%}
 
   {%- if max_threshold_cents > 0 -%}
-    {%- assign progress = qualifying_subtotal | times: 1.0 | divided_by: max_threshold_cents | at_most: 1 -%}
 
-    <div class="tiered-progress-bar tiered-progress-bar--brand-{{ brand }}" style="--progress: {{ progress }};{% if block.settings.background %} --tiered-progress-background: {{ block.settings.background }};{% endif %}{% if block.settings.fill_color %} --tiered-progress-fill: {{ block.settings.fill_color }};{% endif %}">
-      <div class="tiered-progress-bar__markers">
-        {%- if tier1_cents > 0 -%}
-          {%- assign tier1_pct = tier1_cents | times: 100.0 | divided_by: max_threshold_cents -%}
-          {%- assign tier1_reached = false -%}
-          {%- if qualifying_subtotal >= tier1_cents -%}{%- assign tier1_reached = true -%}{%- endif -%}
-          <div class="tiered-progress-bar__marker {% if tier1_reached %}is-reached{% endif %}" style="left: {{ tier1_pct }}%;">
-            <span class="tiered-progress-bar__marker-icon">
-              {%- if tier1_reached -%}{%- render 'icon' with 'check' -%}{%- else -%}{%- render 'icon' with 'lock' -%}{%- endif -%}
-            </span>
-            <span class="tiered-progress-bar__marker-label">{{ tier1_label }}</span>
-          </div>
-        {%- endif -%}
+    {%- comment -%}
+      Evenly-spaced marker positions spanning the full bar: the first configured tier sits
+      at the left edge (0%) and the last at the right edge (100%), so there is no empty
+      track before the first tier. seg = the gap between adjacent markers as a %.
+    {%- endcomment -%}
+    {%- assign gaps = tier_count | minus: 1 -%}
+    {%- if gaps < 1 -%}{%- assign gaps = 1 -%}{%- endif -%}
+    {%- assign seg = 100.0 | divided_by: gaps -%}
+    {%- assign pos_idx = 0 -%}
 
-        {%- if tier2_cents > 0 -%}
-          {%- assign tier2_pct = tier2_cents | times: 100.0 | divided_by: max_threshold_cents -%}
-          {%- assign tier2_reached = false -%}
-          {%- if qualifying_subtotal >= tier2_cents -%}{%- assign tier2_reached = true -%}{%- endif -%}
-          <div class="tiered-progress-bar__marker {% if tier2_reached %}is-reached{% endif %}" style="left: {{ tier2_pct }}%;">
-            <span class="tiered-progress-bar__marker-icon">
-              {%- if tier2_reached -%}{%- render 'icon' with 'check' -%}{%- else -%}{%- render 'icon' with 'lock' -%}{%- endif -%}
-            </span>
-            <span class="tiered-progress-bar__marker-label">{{ tier2_label }}</span>
-          </div>
-        {%- endif -%}
+    {%- assign tier1_pos = 0 -%}{%- assign tier1_reached = false -%}
+    {%- if tier1_cents > 0 -%}
+      {%- assign tier1_pos = pos_idx | times: seg -%}
+      {%- assign pos_idx = pos_idx | plus: 1 -%}
+      {%- if qualifying_subtotal >= tier1_cents -%}{%- assign tier1_reached = true -%}{%- endif -%}
+    {%- endif -%}
 
-        {%- if tier3_cents > 0 -%}
-          {%- assign tier3_pct = tier3_cents | times: 100.0 | divided_by: max_threshold_cents -%}
-          {%- assign tier3_reached = false -%}
-          {%- if qualifying_subtotal >= tier3_cents -%}{%- assign tier3_reached = true -%}{%- endif -%}
-          <div class="tiered-progress-bar__marker {% if tier3_reached %}is-reached{% endif %}" style="left: {{ tier3_pct }}%;">
-            <span class="tiered-progress-bar__marker-icon">
-              {%- if tier3_reached -%}{%- render 'icon' with 'check' -%}{%- else -%}{%- render 'icon' with 'lock' -%}{%- endif -%}
-            </span>
-            <span class="tiered-progress-bar__marker-label">{{ tier3_label }}</span>
-          </div>
+    {%- assign tier2_pos = 0 -%}{%- assign tier2_reached = false -%}
+    {%- if tier2_cents > 0 -%}
+      {%- assign tier2_pos = pos_idx | times: seg -%}
+      {%- assign pos_idx = pos_idx | plus: 1 -%}
+      {%- if qualifying_subtotal >= tier2_cents -%}{%- assign tier2_reached = true -%}{%- endif -%}
+    {%- endif -%}
+
+    {%- assign tier3_pos = 0 -%}{%- assign tier3_reached = false -%}
+    {%- if tier3_cents > 0 -%}
+      {%- assign tier3_pos = pos_idx | times: seg -%}
+      {%- assign pos_idx = pos_idx | plus: 1 -%}
+      {%- if qualifying_subtotal >= tier3_cents -%}{%- assign tier3_reached = true -%}{%- endif -%}
+    {%- endif -%}
+
+    {%- comment -%}
+      Segmented fill %. Walk the configured tiers in order: fully-passed tiers advance the
+      fill to their marker; the tier we're currently working towards contributes a partial
+      slice of the gap leading up to it. The bar starts at the first tier's marker, so
+      before the first tier is reached the fill stays at 0 (have_prev == false).
+    {%- endcomment -%}
+    {%- assign fill_pct = 0 -%}
+    {%- assign prev_cents = 0 -%}
+    {%- assign prev_pos = 0 -%}
+    {%- assign have_prev = false -%}
+    {%- assign fill_done = false -%}
+
+    {%- if tier1_cents > 0 and fill_done == false -%}
+      {%- if qualifying_subtotal >= tier1_cents -%}
+        {%- assign fill_pct = tier1_pos -%}{%- assign prev_cents = tier1_cents -%}{%- assign prev_pos = tier1_pos -%}{%- assign have_prev = true -%}
+      {%- else -%}
+        {%- if have_prev -%}
+          {%- assign span = tier1_cents | minus: prev_cents -%}
+          {%- assign into = qualifying_subtotal | minus: prev_cents | at_least: 0 -%}
+          {%- assign frac = into | times: 1.0 | divided_by: span -%}
+          {%- assign seg_w = tier1_pos | minus: prev_pos -%}
+          {%- assign fill_pct = frac | times: seg_w | plus: prev_pos -%}
+        {%- else -%}
+          {%- assign fill_pct = 0 -%}
         {%- endif -%}
+        {%- assign fill_done = true -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if tier2_cents > 0 and fill_done == false -%}
+      {%- if qualifying_subtotal >= tier2_cents -%}
+        {%- assign fill_pct = tier2_pos -%}{%- assign prev_cents = tier2_cents -%}{%- assign prev_pos = tier2_pos -%}{%- assign have_prev = true -%}
+      {%- else -%}
+        {%- if have_prev -%}
+          {%- assign span = tier2_cents | minus: prev_cents -%}
+          {%- assign into = qualifying_subtotal | minus: prev_cents | at_least: 0 -%}
+          {%- assign frac = into | times: 1.0 | divided_by: span -%}
+          {%- assign seg_w = tier2_pos | minus: prev_pos -%}
+          {%- assign fill_pct = frac | times: seg_w | plus: prev_pos -%}
+        {%- else -%}
+          {%- assign fill_pct = 0 -%}
+        {%- endif -%}
+        {%- assign fill_done = true -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if tier3_cents > 0 and fill_done == false -%}
+      {%- if qualifying_subtotal >= tier3_cents -%}
+        {%- assign fill_pct = tier3_pos -%}{%- assign prev_cents = tier3_cents -%}{%- assign prev_pos = tier3_pos -%}{%- assign have_prev = true -%}
+      {%- else -%}
+        {%- if have_prev -%}
+          {%- assign span = tier3_cents | minus: prev_cents -%}
+          {%- assign into = qualifying_subtotal | minus: prev_cents | at_least: 0 -%}
+          {%- assign frac = into | times: 1.0 | divided_by: span -%}
+          {%- assign seg_w = tier3_pos | minus: prev_pos -%}
+          {%- assign fill_pct = frac | times: seg_w | plus: prev_pos -%}
+        {%- else -%}
+          {%- assign fill_pct = 0 -%}
+        {%- endif -%}
+        {%- assign fill_done = true -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- comment -%}
+      Heading: find the next tier still to reach. Each tier carries its own heading text
+      (block.settings.tierN_heading) so the client can word it exactly. Supported tokens:
+        [amount] → bolded dollars still to spend (e.g. <strong>$10</strong>)
+        [reward] → that tier's label
+      Left blank, a tier falls back to the original auto-generated sentence.
+    {%- endcomment -%}
+    {%- assign next_heading = "" -%}
+    {%- assign next_label = "" -%}
+    {%- assign next_remaining_cents = 0 -%}
+    {%- assign found_next = false -%}
+    {%- if tier1_cents > 0 and found_next == false and qualifying_subtotal < tier1_cents -%}
+      {%- assign next_heading = block.settings.tier1_heading -%}{%- assign next_label = tier1_label -%}{%- assign next_remaining_cents = tier1_cents | minus: qualifying_subtotal -%}{%- assign found_next = true -%}
+  {%- endif -%}
+    {%- if tier2_cents > 0 and found_next == false and qualifying_subtotal < tier2_cents -%}
+      {%- assign next_heading = block.settings.tier2_heading -%}{%- assign next_label = tier2_label -%}{%- assign next_remaining_cents = tier2_cents | minus: qualifying_subtotal -%}{%- assign found_next = true -%}
+    {%- endif -%}
+    {%- if tier3_cents > 0 and found_next == false and qualifying_subtotal < tier3_cents -%}
+      {%- assign next_heading = block.settings.tier3_heading -%}{%- assign next_label = tier3_label -%}{%- assign next_remaining_cents = tier3_cents | minus: qualifying_subtotal -%}{%- assign found_next = true -%}
+    {%- endif -%}
+
+    {%- assign top_reward = "" -%}
+    {%- if tier1_cents > 0 -%}{%- assign top_reward = tier1_label -%}{%- endif -%}
+    {%- if tier2_cents > 0 -%}{%- assign top_reward = tier2_label -%}{%- endif -%}
+    {%- if tier3_cents > 0 -%}{%- assign top_reward = tier3_label -%}{%- endif -%}
+
+    {%- capture remaining_amount -%}{{ next_remaining_cents | money | remove: ".00" | remove: ",00" }}{%- endcapture -%}
+    {%- capture amount_html -%}<strong>{{ remaining_amount }}</strong>{%- endcapture -%}
+    {%- capture next_reward_html -%}<strong>{{ next_label }}</strong>{%- endcapture -%}
+    {%- capture top_reward_html -%}<strong>{{ top_reward }}</strong>{%- endcapture -%}
+
+    {%- capture truck_icon -%}<svg class="tiered-progress-bar__svg" viewBox="0 0 33 23" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M29.904 10.1251L27.3114 6.74235C26.8528 6.14224 26.118 5.78663 25.3365 5.78663H22.7485V3.47957C22.7485 2.60386 21.9998 1.88818 21.0731 1.88818H4.30518C3.37857 1.88818 2.62979 2.59942 2.62979 3.47957V15.9573C2.62979 16.8285 3.36921 17.5353 4.28646 17.5442C4.56258 19.4556 6.28945 20.9314 8.38135 20.9314C10.4732 20.9314 12.1954 19.4556 12.4762 17.5442H19.2246C19.5054 19.4556 21.2276 20.9314 23.3195 20.9314C25.4114 20.9314 27.2131 19.3934 27.4331 17.4197H28.9868C29.6467 17.4197 30.1802 16.913 30.1802 16.2862V10.9075C30.1802 10.6275 30.0866 10.3519 29.9134 10.1251H29.904Z" fill="currentColor"/><path d="M22.7954 8.3296V11.2901C22.7954 11.4324 22.9171 11.5435 23.0621 11.5435H27.4004C27.6203 11.5435 27.7467 11.3079 27.6203 11.139L25.4021 8.17846C25.3506 8.11178 25.271 8.07178 25.1821 8.07178H23.0575C22.9077 8.07178 22.7907 8.18735 22.7907 8.32515L22.7954 8.3296Z" fill="var(--tp-circle-bg, #fff)"/></svg>{%- endcapture -%}
+    {%- capture star_icon -%}<svg class="tiered-progress-bar__svg" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M11.7614 0.666905C12.0503 -0.222011 13.3078 -0.222011 13.5967 0.666905L15.9284 7.84308C16.0575 8.24062 16.428 8.50977 16.846 8.50977H24.3914C25.3261 8.50977 25.7147 9.7058 24.9586 10.2552L18.8541 14.6903C18.516 14.936 18.3745 15.3715 18.5036 15.769L20.8353 22.9452C21.1242 23.8341 20.1068 24.5733 19.3506 24.0239L13.2462 19.5888C12.908 19.3431 12.4501 19.3431 12.1119 19.5888L6.00752 24.0239C5.25136 24.5733 4.23396 23.8341 4.52279 22.9452L6.85447 15.769C6.98363 15.3715 6.84213 14.936 6.50397 14.6903L0.399549 10.2552C-0.356608 9.7058 0.0320053 8.50977 0.966667 8.50977H8.51214C8.93014 8.50977 9.30059 8.24062 9.42976 7.84308L11.7614 0.666905Z" fill="currentColor"/></svg>{%- endcapture -%}
+
+    <div class="tiered-progress-bar tiered-progress-bar--brand-{{ brand }}">
+      <p class="tiered-progress-bar__heading">
+        {%- if found_next -%}
+          {%- if next_heading == blank -%}
+            You're <strong>{{ remaining_amount }} away</strong> from {{ next_label | downcase }}!
+          {%- else -%}
+            {{ next_heading | replace: "[amount]", amount_html | replace: "[reward]", next_reward_html }}
+          {%- endif -%}
+        {%- else -%}
+          {%- assign unlocked_heading = block.settings.heading_unlocked -%}
+          {%- if unlocked_heading == blank -%}
+            You'll receive <strong>{{ top_reward | downcase }}</strong> your order!
+          {%- else -%}
+            {{ unlocked_heading | replace: "[reward]", top_reward_html | replace: "[amount]", amount_html }}
+          {%- endif -%}
+        {%- endif -%}
+      </p>
+
+      {%- comment -%} Labels above the bar {%- endcomment -%}
+      <div class="tiered-progress-bar__row tiered-progress-bar__row--labels">
+        {%- if tier1_cents > 0 -%}<span class="tiered-progress-bar__label {% if tier1_reached %}is-reached{% endif %}" style="left: {{ tier1_pos }}%;">{{ tier1_label }}</span>{%- endif -%}
+        {%- if tier2_cents > 0 -%}<span class="tiered-progress-bar__label {% if tier2_reached %}is-reached{% endif %}" style="left: {{ tier2_pos }}%;">{{ tier2_label }}</span>{%- endif -%}
+        {%- if tier3_cents > 0 -%}<span class="tiered-progress-bar__label {% if tier3_reached %}is-reached{% endif %}" style="left: {{ tier3_pos }}%;">{{ tier3_label }}</span>{%- endif -%}
       </div>
 
-      <free-shipping-bar threshold="{{ max_threshold_cents }}" class="shipping-bar shipping-bar--tiered" style="--progress: {{ progress }};">
-        <span class="shipping-bar__progress"></span>
-      </free-shipping-bar>
+      {%- comment -%} The track, fill, and circular markers {%- endcomment -%}
+      <div class="tiered-progress-bar__track">
+        <span class="tiered-progress-bar__fill" style="width: {{ fill_pct }}%;"></span>
+        {%- if tier1_cents > 0 -%}<span class="tiered-progress-bar__marker {% if tier1_reached %}is-reached{% endif %}" style="left: {{ tier1_pos }}%;">{{ truck_icon }}</span>{%- endif -%}
+        {%- if tier2_cents > 0 -%}<span class="tiered-progress-bar__marker {% if tier2_reached %}is-reached{% endif %}" style="left: {{ tier2_pos }}%;">{{ star_icon }}</span>{%- endif -%}
+        {%- if tier3_cents > 0 -%}<span class="tiered-progress-bar__marker {% if tier3_reached %}is-reached{% endif %}" style="left: {{ tier3_pos }}%;">{{ star_icon }}</span>{%- endif -%}
+      </div>
+
+      {%- comment -%} Dollar amounts below the bar (one per tier) {%- endcomment -%}
+      <div class="tiered-progress-bar__row tiered-progress-bar__row--amounts">
+        {%- if tier1_cents > 0 -%}<span class="tiered-progress-bar__amount {% if tier1_reached %}is-reached{% endif %}" style="left: {{ tier1_pos }}%;">{{ tier1_amount }}</span>{%- endif -%}
+        {%- if tier2_cents > 0 -%}<span class="tiered-progress-bar__amount {% if tier2_reached %}is-reached{% endif %}" style="left: {{ tier2_pos }}%;">{{ tier2_amount }}</span>{%- endif -%}
+        {%- if tier3_cents > 0 -%}<span class="tiered-progress-bar__amount {% if tier3_reached %}is-reached{% endif %}" style="left: {{ tier3_pos }}%;">{{ tier3_amount }}</span>{%- endif -%}
+      </div>
     </div>
 
     <style>
       .shopify-section--mini-cart .tiered-progress-bar {
+        --tp-accent: #F9C6B9;
+        --tp-track: #FCE9E2;
+        --tp-text: #181818;
         position: relative;
         margin: 0;
-        padding: 20px 70px 16px;
-        background: var(--tiered-progress-background, #FDE4DB);
-        color: #181818;
+        padding: 16px 54px 18px;
+        background: #fff;
+        color: var(--tp-text);
       }
-      .shopify-section--mini-cart .tiered-progress-bar__markers {
+      .brand-bro-to .shopify-section--mini-cart .tiered-progress-bar {
+        --tp-accent: #ef3533;
+        --tp-track: #eee2e2;
+      }
+      @media (max-width: 749px) {
+        .shopify-section--mini-cart .tiered-progress-bar {
+          padding: 16px 40px 18px;
+        }
+      }
+      .shopify-section--mini-cart .tiered-progress-bar__heading {
+        margin: 0 0 18px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.25;
+      }
+      .shopify-section--mini-cart .tiered-progress-bar__heading strong {
+        font-weight: 700;
+      }
+      .shopify-section--mini-cart .tiered-progress-bar__row,
+      .shopify-section--mini-cart .tiered-progress-bar__track {
         position: relative;
-        height: 56px;
       }
-      .shopify-section--mini-cart .tiered-progress-bar__marker {
+      .shopify-section--mini-cart .tiered-progress-bar__row--labels {
+        height: 16px;
+        margin-bottom: 12px;
+      }
+      .shopify-section--mini-cart .tiered-progress-bar__row--amounts {
+        height: 16px;
+        margin-top: 12px;
+      }
+      .shopify-section--mini-cart .tiered-progress-bar__label,
+      .shopify-section--mini-cart .tiered-progress-bar__amount {
         position: absolute;
         top: 0;
         transform: translateX(-50%);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        line-height: 1.15;
-        width: 84px;
-        font-size: 10.5px;
-        gap: 4px;
+        white-space: nowrap;
+        font-size: 8px;
+        line-height: 16px;
+        letter-spacing: 0.02em;
       }
-      .shopify-section--mini-cart .tiered-progress-bar__marker-icon {
+      .shopify-section--mini-cart .tiered-progress-bar__label {
+        text-transform: uppercase;
+        color: var(--tp-text);
+      }
+      .shopify-section--mini-cart .tiered-progress-bar__amount {
+        color: var(--tp-text);
+      }
+      .shopify-section--mini-cart .tiered-progress-bar__amount--start {
+        transform: translateX(0);
+      }
+      .shopify-section--mini-cart .tiered-progress-bar__label.is-reached,
+      .shopify-section--mini-cart .tiered-progress-bar__amount.is-reached {
+        font-weight: 700;
+      }
+      .shopify-section--mini-cart .tiered-progress-bar__track {
+        height: 18px;
+        border-radius: 999px;
+        background: var(--tp-track);
+        overflow: visible;
+      }
+      .shopify-section--mini-cart .tiered-progress-bar__fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        border-radius: 999px;
+        background: var(--tp-accent);
+        transition: width .3s ease;
+      }
+      .shopify-section--mini-cart .tiered-progress-bar__marker {
+        --tp-circle-bg: #fff;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 24px;
-        height: 24px;
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
-        background: #fff;
-        border: 1px solid rgba(24, 24, 24, 0.25);
-        color: rgba(24, 24, 24, 0.55);
-        flex-shrink: 0;
+        background: var(--tp-circle-bg);
+        border: 1.5px solid var(--tp-accent);
+        color: var(--tp-accent);
+        box-sizing: border-box;
       }
-      .shopify-section--mini-cart .tiered-progress-bar__marker-icon svg {
-        width: 11px;
-        height: 11px;
-      }
-      .shopify-section--mini-cart .tiered-progress-bar__marker.is-reached .tiered-progress-bar__marker-icon {
-        background: var(--tiered-progress-fill, #181818);
-        border-color: var(--tiered-progress-fill, #181818);
+      .shopify-section--mini-cart .tiered-progress-bar__marker.is-reached {
+        --tp-circle-bg: var(--tp-accent);
+        background: var(--tp-accent);
         color: #fff;
       }
-      .shopify-section--mini-cart .tiered-progress-bar__marker-label {
-        font-weight: 600;
+      .shopify-section--mini-cart .tiered-progress-bar__svg {
+        width: 17px;
+        height: 17px;
         display: block;
-        max-width: 100%;
-        word-wrap: break-word;
-      }
-      .shopify-section--mini-cart .shipping-bar--tiered {
-        display: block;
-        padding: 0;
-        margin: 0;
-        background: transparent;
-        text-align: left;
-        color: var(--tiered-progress-fill, #181818);
-      }
-      .shopify-section--mini-cart .shipping-bar--tiered .shipping-bar__progress {
-        margin: 0;
       }
     </style>
   {%- endif -%}

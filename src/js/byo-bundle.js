@@ -69,6 +69,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 items[index] = newObject;
             });
 
+            // Optional free gift set in the section settings — added alongside the bundle.
+            // Discounting is handled separately (e.g. an automatic discount in Shopify).
+            var giftId = $(this).data("gift-id");
+            if (giftId) {
+                items[Object.keys(items).length] = {
+                    quantity: 1,
+                    id: giftId,
+                    properties: {
+                        '_free_gift': 'true',
+                        'Free Gift': 'Added with your bundle'
+                    }
+                };
+            }
+
 
             $.ajax({
                 url:	"/cart/add.js",

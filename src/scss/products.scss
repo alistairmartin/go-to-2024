@@ -62,6 +62,244 @@
   }
 }
 
+/* ---------------------------------------------------------------- *
+ * Sticky add-to-cart bar (v2) — Figma "Add To Cart Form"
+ * Visibility (slide down when hidden) is toggled via the [hidden]
+ * attribute by the <product-sticky-form-v2> element.
+ * ---------------------------------------------------------------- */
+/* Classic sticky bar (product-sticky-form) is desktop-only (≥1000px). */
+.shopify-section--main-product .product-sticky-form {
+  @media screen and (max-width: 999px) {
+    display: none !important;
+  }
+}
+
+.sticky-atc-v2 {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Sits above page content (carousel arrows in "Pairs well with" / reviews
+     would otherwise paint over the bar) but below the drawers (mini-cart and
+     mobile menu are z-index 15), so those still overlay it. */
+  z-index: 10;
+  width: 100%;
+  display: block;
+
+  /* v2 compact bar is mobile-only (≤999px). */
+  @media screen and (min-width: 1000px) {
+    display: none !important;
+  }
+  background: #ffffff;
+  /* Figma: 0px 0px 3px rgba(0,0,0,0.02), 0px -2px 2px rgba(0,0,0,0.08) */
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.02), 0 -2px 2px rgba(0, 0, 0, 0.08);
+  padding-block-end: max(0px, env(safe-area-inset-bottom, 0px));
+  transition: transform 0.35s ease, opacity 0.35s ease, visibility 0.35s ease;
+
+  &[hidden] {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%);
+    pointer-events: none;
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 15px; /* Figma: p-[15px] */
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px; /* Figma: Price Title Lockup gap-[6px] */
+    align-items: flex-start;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  &__title {
+    font-size: 20px; /* Figma: text-[20px] */
+    line-height: 1.15;
+    font-style: italic; /* BentonModDisp RegularItalic */
+    font-weight: 400;
+    color: #000000;
+    max-width: 100%;
+    /* Long names ("Very Luxe Lifting Mask") wrap to a second line rather than
+       truncating; beyond 2 lines they ellipsis. The bar grows to suit, and
+       <product-sticky-form-v2> re-reads clientHeight so the chat bubble and
+       cart-notification offsets follow. */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Figma: meta row gap 6–10px */
+    flex-wrap: wrap;
+  }
+
+  &__swatch {
+    display: inline-block;
+    width: 12px; /* Figma: size-[12px] */
+    height: 12px;
+    flex: 0 0 auto;
+    /* Actual colour/image comes from the inline style emitted by
+       color-swatch-style.liquid; this is only a neutral fallback. */
+    background-color: #a22b2e;
+    background-size: cover;
+    background-position: center;
+
+    &--white {
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  &__variant-label {
+    /* Figma: MNKY Marcel Medium 12/18, Neutral #484848 */
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    color: #484848;
+  }
+
+  &__price {
+    /* Figma: MNKY Marcel Bold 13/20, black */
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 20px;
+    color: #000000;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px; /* Figma: Product Price gap-[5px] */
+  }
+
+  &__compare-price {
+    /* Figma: MNKY Marcel Regular 12px, Neutral #484848, strikethrough */
+    font-size: 12px;
+    font-weight: 400;
+    color: #484848;
+    text-decoration: line-through;
+  }
+
+  /* Native select styled as the Figma bordered dropdown (swatch + value + chevron) */
+  &__select-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px; /* Figma: gap-[10px] */
+    border: 1px solid #dce0e4; /* Neutral 0403 */
+    border-radius: 0;
+    padding: 4px 8px; /* Figma: px-[8px] py-[4px] */
+    background: #ffffff;
+
+    .icon-chevron,
+    svg {
+      position: absolute;
+      right: 8px;
+      width: 16px; /* Figma: chevron size-[16px] */
+      height: 16px;
+      pointer-events: none;
+    }
+
+    .sticky-atc-v2__swatch {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  &__select {
+    appearance: none;
+    -webkit-appearance: none;
+    border: 0;
+    background: transparent;
+    /* Figma: MNKY Marcel Medium 12/18, Neutral #484848 */
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    color: #484848;
+    padding: 0 22px 0 0;
+    margin: 0;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__form {
+    flex: 0 0 auto;
+  }
+
+  /* Figma "button desktop": peach fill + peach border, black caps label */
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 25px; /* Figma: px-[25px] py-[12px] */
+    background: #fde4db;
+    border: 1px solid #f9c6b9; /* Go-To Primary Peach */
+    border-radius: 0;
+    color: #181818; /* Neutral 0406 */
+    font-size: 14px;
+    font-weight: 900; /* MNKY Marcel Black */
+    line-height: 20px;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    &:not([disabled]):hover {
+      background: #f9c6b9;
+      border-color: #f9c6b9;
+      color: #181818;
+    }
+  }
+}
+
+/* Gorgias chat bubble on mobile PDP.
+
+   It stays hidden until the shopper has scrolled PAST the Add to cart button and
+   the sticky bar comes back up — then it fades in, sitting above the bar at 86px.
+   Note the bar alone is not a sufficient signal: it is also up on page load (while
+   the ATC is still below the fold), and the chat must stay hidden there. So
+   <product-sticky-form-v2> emits a second class, .sticky-atc-v2-past-atc, set only
+   once the ATC's bottom edge has scrolled above the top of the viewport. The chat
+   requires BOTH that and .sticky-atc-v2-visible.
+
+   Everything is flipped by classes with static values — never by a changing custom
+   property — because iOS Safari skips the transition when a transitioned property
+   resolves through calc(var(...)) and the variable is what changed, which makes the
+   bubble snap instead of animate. */
+@media screen and (max-width: 999px) {
+  .template-product #gorgias-chat-container iframe,
+  .template-product #chat-button {
+    /* Hidden by default: on load, and any time the ATC has not been passed. This
+       also covers the top of the page, which the theme separately fades out via
+       .header-position--top.template-product #chat-button { opacity: 0 }. */
+    opacity: 0;
+    pointer-events: none;
+    bottom: 86px !important;
+    /* opacity must be named explicitly — this !important transition replaces the
+       theme's `transition: 200ms all` on #chat-button, so leaving it out would kill
+       the fade. bottom matches the bar's 0.35s slide. */
+    transition: bottom 0.35s ease, opacity 200ms ease !important;
+  }
+
+  /* Scrolled past the ATC AND the bar is back up → fade the chat in above it. */
+  .sticky-atc-v2-past-atc.sticky-atc-v2-visible .template-product #gorgias-chat-container iframe,
+  .sticky-atc-v2-past-atc.sticky-atc-v2-visible .template-product #chat-button {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
 .product-meta {
     text-align: left;
     margin: 0;
@@ -2042,18 +2280,18 @@
         img {
           height: 100%;
           object-fit: cover;
-          mix-blend-mode: multiply;
+          // mix-blend-mode: multiply;
         }
 
-        .product-item__aspect-ratio {
-          // height: 100%;
-          background: #F7F7F7;
-        }
+        // .product-item__aspect-ratio {
+        //   // height: 100%;
+        //   background: #F7F7F7;
+        // }
 
-        .product-item__image-wrapper {
-          margin: 0 !important;
-          background: #F7F7F7;
-        }
+        // .product-item__image-wrapper {
+        //   margin: 0 !important;
+        //   background: #F7F7F7;
+        // }
       }
 
       .product-item-meta {
@@ -2074,7 +2312,7 @@
       }
 
       .product-item-meta__subtitle {
-        color: $gotoGrey;
+        color: #484848;
         margin-bottom: 0;
       }
 
@@ -2959,23 +3197,120 @@
 }
 
 
-.product-form--ichange {
+.product-form--charity {
   display: flex;
-  gap: 15px;
+  gap: 10px;
   padding: 15px;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  box-sizing: border-box;
+  max-width: 100%;
   background: $gotoGreyLight;
 
-  svg {
-    min-width: 35px;
-    min-height: 35px;
+  > svg {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
     display: block;
   }
 
-  p {
-    font-size: 14px;
+  > .product-form--charity__text {
+    flex: 1 1 auto;
+    min-width: 0;
+    text-align: left;
+
+    > p {
+      font-size: 14px;
+      margin: 0;
+      display: inline;
+    }
+  }
+
+  > .product-form--charity__text > .popover-buttons {
+    display: inline;
     margin: 0;
+
+    button {
+      display: inline;
+      font-size: 14px;
+      font-weight: inherit;
+      line-height: inherit;
+      text-transform: none;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      border-bottom: 0;
+      padding: 0;
+    }
+  }
+}
+
+.product-charity-popup {
+
+  .product-charity-popup__image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 0 20px;
+  }
+
+  .product-charity-popup__title {
+    margin: 0 0 10px;
+    font-size: 24px;
+    line-height: 1.1;
+
+    @include media-query($medium-up) {
+      font-size: 32px;
+      line-height: 1.1;
+    }
+  }
+
+  .product-charity-popup__excerpt {
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 500;
+
+    * {
+      font-weight: 500;
+      margin: 0;
+      font-size: inherit;
+      line-height: inherit;
+    }
+  }
+
+  // Mirrors .article__content in articles.scss, which isn't loaded on the PDP
+  .product-charity-popup__body {
+
+    .rte {
+      font-family: Marcel;
+      line-height: 1.5;
+      font-size: 14px;
+
+      h1, h2, h3, h4, h5, h6 {
+        font-family: Marcel;
+        line-height: 1.5;
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      p {
+        display: block;
+      }
+
+      p + p {
+        margin-block-start: 24px;
+      }
+
+      ol li::marker {
+        font-size: 18px;
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+    }
   }
 }
 
@@ -3057,6 +3392,21 @@
         width: 100%;
         height: 100%;
          border: 0;
+      }
+    }
+  }
+
+  &.product-how-to-apply--no-video {
+    .product-how-to-apply--images {
+      max-width: 100%;
+    }
+
+    .product-how-to-apply--items {
+      @include media-query($large-up) {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 80px;
+        row-gap: 40px;
       }
     }
   }
@@ -3155,4 +3505,1083 @@
   .modal__content {
     width: auto;
   }
+}
+
+/* =========================================================
+   Collection filter drawer — 25/26 refresh
+   Pink header bar to match Figma (snippets/facet-filters.liquid)
+   ========================================================= */
+.shopify-section--main-collection {
+
+  .container {
+   
+     @include media-query($medium-down) {
+        padding: 0;
+    }
+  }
+
+  .product-list__inner {
+    margin: 0;
+    gap: 20px 2px;
+    grid-template-columns: 1fr 1fr;
+
+
+     @include media-query($medium-up) {
+        gap: 30px 2px;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+      }
+  }
+
+  .product-facet__filters {
+    .drawer__header {
+      background: var(--color-secondary);
+      border-bottom: 0;
+    }
+
+    .drawer__title {
+      font-family: var(--heading-font-family);
+      font-size: 24px;
+      line-height: 1.2;
+      font-style: italic;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .drawer__close-button {
+      color: #000;
+    }
+  }
+}
+
+/* =========================================================
+   Collection product card — V3 "Shop All" 25/26 refresh
+   (snippets/product-item--collection.liquid)
+   ========================================================= */
+
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    // gap: 14px;
+    text-align: left;
+    padding-bottom: 0;
+
+    /* ---- Media ---- */
+    .product-card__media {
+      position: relative;
+      margin: 0;
+    }
+
+    .product-card__aspect-ratio {
+      display: block;
+    }
+
+    /* ---- Mobile swipe gallery (hidden on desktop) ---- */
+    .product-card__slider {
+      display: none;
+    }
+
+    .product-card__track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    .product-card__slide {
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+      // aspect-ratio: 4 / 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // background: #F7F7F7;
+    }
+
+    .product-card__slide-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      // mix-blend-mode: multiply;
+    }
+
+    .product-card__slide-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1;
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      color: $gotoGrey;
+
+      &[hidden] {
+        display: none;
+      }
+
+      svg {
+        width: 15px;
+        height: 15px;
+      }
+    }
+
+    .product-card__slide-arrow--prev {
+      left: 1px;
+    }
+
+    .product-card__slide-arrow--next {
+      right: 1px;
+    }
+
+    .product-card__dots {
+      position: absolute;
+      left: 50%;
+      bottom: 10px;
+      transform: translateX(-50%);
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .product-card__dot {
+      width: 8px;
+      height: 2px;
+      border-radius: 2px;
+      background: #C9CDD2;
+      transition: background .2s ease;
+    }
+
+    .product-card__dot.is-active {
+      background: $gotoBlack;
+    }
+
+    /* Inline card video */
+    .product-card__video {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .product-card__video-play {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      color: $gotoBlack;
+      pointer-events: auto;
+
+      svg {
+        width: 15px;
+        height: 15px;
+      }
+    }
+
+    .product-card__video.is-playing .product-card__video-play {
+      display: none;
+    }
+
+    .product-card__video-stage {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: auto;
+      background: $gotoGreyLight;
+
+      &[hidden] {
+        display: none;
+      }
+    }
+
+    .product-card__video-player {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .product-card__video-controls {
+      position: absolute;
+      right: 14px;
+      bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .product-card__video-ctl {
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      color: $gotoGrey;
+
+      svg {
+        width: 22px;
+        height: 22px;
+      }
+    }
+
+    /* Sound icon reflects muted state */
+    .product-card__video .cv-icon--unmuted {
+      display: none;
+    }
+
+    .product-card__video:not(.is-muted) .cv-icon--muted {
+      display: none;
+    }
+
+    .product-card__video:not(.is-muted) .cv-icon--unmuted {
+      display: block;
+    }
+
+    /* Badges — top-left */
+    .product-card__labels {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0;
+
+      .label {
+        margin: 0;
+        padding: 3px 6px;
+        background: $gotoPinkLight;
+        color: $gotoBlack;
+        font-size: 10px;
+        line-height: 1;
+        font-weight: 700;
+        text-transform: uppercase;
+        border-radius: 0;
+        min-width: unset;
+      }
+
+      // .label--new {
+      //   background: $gotoPinkLight;
+      // }
+
+      // .label--highlight {
+      //   background: $gotoPink;
+      // }
+
+      .label.hide {
+        display: none;
+      }
+    }
+
+    /* Wishlist — top-right */
+    .product-card__wish {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1;
+      width: 15px;
+      height: 15px;
+      line-height: 0;
+
+      svg {
+        width: 15px;
+        height: 15px;
+        top: 0;
+        right: 0;
+      }
+    }
+
+    /* ---- Info ---- */
+    .product-card__info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px;
+      width: 100%;
+      text-align: left;
+      /* Grow to fill the card so the buy row can anchor to the bottom.
+         Cards already stretch to equal height per grid row, so this lines
+         every CTA up across the row regardless of content height above it. */
+      flex: 1 1 auto;
+    }
+
+    /* Title + price on one row */
+    .product-card__head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      text-decoration: none;
+      color: $gotoBlack;
+    }
+
+    .product-card__title {
+      font-family: var(--heading-font-family);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 1.05;
+      color: $gotoBlack;
+
+      @include media-query($medium-down) {
+        font-size: 18px;
+        line-height: normal;
+      }
+    }
+
+    .product-card__price {
+      flex: none;
+      white-space: nowrap;
+
+      .price-list {
+        display: flex;
+        gap: 6px;
+        align-items: baseline;
+        justify-content: flex-end;
+        margin: 0;
+      }
+
+      .price {
+        font-family: var(--text-font-family);
+        font-weight: 700;
+        font-size: 13px;
+        line-height: 1.2;
+        color: $gotoBlack;
+        margin: 0 !important;
+      }
+
+      .price--compare {
+        font-weight: 400;
+        color: $gotoGrey;
+        text-decoration: line-through;
+      }
+
+      .price--highlight {
+        color: $gotoBlack;
+      }
+    }
+
+    /* Subtitle */
+    .product-card__subtitle {
+      display: block;
+      font-size: 12px;
+      line-height: 1.3;
+      color: $gotoGrey;
+      text-decoration: none;
+      margin: 0;
+    }
+
+    /* Variant chips */
+    .product-card__variants {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 2px;
+
+      .option {
+        font-family: var(--text-font-family);
+        font-size: 10px;
+        line-height: 18px;
+        font-weight: 500;
+        background: #FEF9F8;
+        color: #484848;
+        border: 1px solid #DCE0E4;
+        padding: 2px 7px;
+        border-radius: 0;
+      }
+
+      .option.active {
+        background: $gotoPinkLight;
+        border: 1px solid $gotoPinkLight;
+        color: $gotoBlack;
+      }
+    }
+
+    /* Colour swatches */
+    .product-card__swatches {
+      margin: 0;
+      justify-content: flex-start;
+    //   grid-template-columns: repeat(auto-fit, 18px);
+    //   gap: 8px;
+    //   margin-top: 2px;
+
+    //   .color-swatch__item {
+    //     width: 18px;
+    //     height: 18px;
+    //     border-radius: 50%;
+    //     border-width: 1px;
+    //     border-color: $gotoPink;
+    //   }
+
+    //   .color-swatch__item:before {
+    //     border-radius: 50%;
+    //   }
+    }
+
+    /* Rating — peach stars + muted caption */
+    .product-card__rating {
+      --product-star-rating: 249, 198, 185;
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+
+      .rating {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .rating__stars {
+        -moz-column-gap: 2px;
+             column-gap: 2px;
+      }
+
+      .rating__star {
+        width: 14px;
+        height: 14px;
+      }
+
+      .rating__caption {
+        font-size: 10px;
+        color: $gotoGrey;
+      }
+    }
+
+    /* CTA — underline "+ ADD TO CART" / "SELECT" */
+    .product-card__cta-wrapper {
+      margin-top: 0;
+    }
+
+    .product-item__quick-form,
+    .product-card__cta-wrapper form {
+      margin: 0;
+    }
+
+    .product-card__cta {
+      display: inline-block;
+      width: auto;
+      align-self: flex-start;
+      // padding: 0 0 4px 0;
+      // font-family: var(--text-font-family);
+      // font-size: 12px;
+      // line-height: 18px;
+      // font-weight: 700;
+      // letter-spacing: 0;
+      // text-transform: uppercase;
+      // color: $gotoBlack;
+      // background: transparent;
+      // border: 0;
+      // cursor: pointer;
+      position: relative;
+    }
+
+    // .product-card__cta:after {
+    //   content: "";
+    //   position: absolute;
+    //   left: 0;
+    //   bottom: 0;
+    //   width: 100%;
+    //   height: 1px;
+    //   background: $gotoBlack;
+    //   transform: scaleX(1);
+    //   transition: height .2s ease, background .2s ease;
+    // }
+
+    // .product-card__cta:hover:after {
+    //   height: 3px;
+    //   background: $gotoPink;
+    // }
+
+    // .product-card__cta.back-in-stock:after {
+    //   background: $gotoGrey;
+    // }
+
+    /* ---- Price + CTA row ---- */
+    /* Desktop: price sits beside the title; this row holds just the CTA.
+       margin-top:auto anchors it to the bottom of the (stretched) card. */
+    .product-card__buy {
+      margin-top: auto;
+      padding-top: 10px;
+    }
+
+    /* BYO bundle buttons follow the card's left-aligned layout */
+    .product-item--BYO-ATC__container {
+      justify-content: flex-start;
+    }
+
+    .product-card__price--inline {
+      display: none;
+    }
+
+    .product-card__cta-full {
+      display: inline;
+    }
+
+    .product-card__cta-short {
+      display: none;
+    }
+
+    /* ---- Mobile ---- */
+    @include media-query($small) {
+      /* Swap the static desktop image for the swipe gallery */
+      .product-card__aspect-ratio {
+        display: none;
+      }
+
+      .product-card__slider {
+        display: block;
+        position: relative;
+        width: 100%;
+      }
+
+      /* `mobile_swipe: false` — keep the static image, drop the swipe gallery
+         (used where the surrounding section is already a swipe carousel) */
+      &.product-card--no-mobile-swipe {
+        .product-card__aspect-ratio {
+          display: block;
+        }
+
+        .product-card__slider {
+          display: none;
+        }
+      }
+
+      /* A touch more breathing room between the media and the copy */
+      // gap: 16px;
+
+      .product-card__info {
+        gap: 10px;
+        padding: 15px;
+      }
+
+      /* Slightly larger, airier badges to match the design */
+      .product-card__labels {
+        top: 10px;
+        left: 10px;
+
+        .label {
+          font-size: 10px;
+          padding: 3px 6px;
+        }
+      }
+
+      .product-card__wish {
+        top: 10px;
+        right: 10px;
+      }
+
+      /* Title goes full width — its trailing price is hidden */
+      .product-card__head .product-card__price--head {
+        display: none;
+      }
+
+      /* Price drops down and sits inline with the CTA at the bottom */
+      .product-card__buy {
+        display: flex;
+        align-items: baseline;
+        gap: 15px;
+        margin-top: auto;
+      }
+
+      .product-card__price--inline {
+        display: inline-flex;
+      }
+
+      .product-card__price--inline .price-list {
+        justify-content: flex-start;
+      }
+
+      /* Shorter "+ Add" label on the narrow card */
+      .product-card__cta-full {
+        display: none;
+      }
+
+      .product-card__cta-short {
+        display: inline;
+      }
+
+      .product-card__video-play {
+        right: 3px;
+        bottom: 0px;
+      }
+
+      /* Keep the stop control's icon centred on the same spot the play
+         icon sat (play box 30px @ right:3/bottom:0 → icon centre 18px/15px;
+         stop box is 26px, so offset by 5px/2px to match). */
+      .product-card__video-controls {
+        right: 5px;
+        bottom: 2px;
+      }
+    }
+  }
+
+
+
+/* =========================================================
+   Collection Content Cards (.cc-card)
+   A custom card slotted into the collection product grid by
+   slotCards() in products.js. Image OR video background with a
+   positioned text + button overlay. Spans match the product grid's
+   column count, which switches at 741px (see main-collection.liquid).
+   ========================================================= */
+.cc-holder {
+  display: none;
+}
+
+/* Page-load reveal — mirrors the product-item stagger (ProductList in theme.js):
+   opacity 0→1 + translateY→0, 600ms ease, with a per-slot stagger delay set by
+   slotCards() in products.js. Applied once, only on the initial page load.
+   NB: keyframes use literal translateY values (no var()) — a var()-based
+   transform inside @keyframes snaps instead of interpolating ("flashes in"). */
+@keyframes cc-card-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cc-card-reveal-sm {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cc-card-reveal-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.cc-card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  grid-column: span var(--cc-span-m, 2);
+  background: var(--cc-bg-mobile, transparent);
+  min-width: 0;
+
+  &--reveal {
+    animation: cc-card-reveal 600ms ease both;
+    animation-delay: var(--cc-reveal-delay, 0ms);
+  }
+
+  @media screen and (max-width: 999px) {
+    &--reveal {
+      animation-name: cc-card-reveal-sm;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &--reveal {
+      animation-name: cc-card-reveal-fade;
+      animation-delay: 0ms;
+    }
+  }
+  /* Floor so a card that's full-width on its own row (no neighbouring product to
+     set the row height) — or still empty during setup — stays visible. When the
+     card shares a row with products it stretches taller than this. */
+  min-height: 220px;
+
+  @media screen and (min-width: 741px) {
+    grid-column: span var(--cc-span-d, 2);
+    background: var(--cc-bg-desktop, transparent);
+  }
+
+  &.cc-card--aspect-mobile {
+    aspect-ratio: var(--cc-aspect-mobile);
+  }
+
+  @media screen and (min-width: 741px) {
+    &.cc-card--aspect-desktop {
+      aspect-ratio: var(--cc-aspect-desktop);
+    }
+  }
+
+  &__media,
+  &__media video,
+  &__media img,
+  &__link {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__media {
+    z-index: 0;
+
+    video,
+    img {
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  /* Responsive background image swap */
+  &__img--desktop,
+  &__video--desktop {
+    display: none;
+  }
+  &__img--mobile,
+  &__video--mobile {
+    display: block;
+  }
+  @media screen and (min-width: 741px) {
+    .cc-card__img--desktop,
+    .cc-card__video--desktop {
+      display: block;
+    }
+    .cc-card__img--mobile,
+    .cc-card__video--mobile {
+      display: none;
+    }
+  }
+
+  /* Whole-card link sits above the media, below the content. */
+  &__link {
+    z-index: 1;
+  }
+
+  &__content {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    /* Column flex: justify-content = vertical, align-items = horizontal. */
+    justify-content: var(--cc-align-mobile, center);
+    align-items: var(--cc-justify-mobile, center);
+    gap: var(--cc-gap-mobile, 8px);
+    padding: var(--cc-pad-v-mobile, 16px) var(--cc-pad-h-mobile, 16px);
+    pointer-events: none; /* let clicks fall through to the card link... */
+
+    > * {
+      pointer-events: auto; /* ...except on the text/button blocks themselves. */
+    }
+
+    @media screen and (min-width: 741px) {
+      justify-content: var(--cc-align-desktop, center);
+      align-items: var(--cc-justify-desktop, center);
+      gap: var(--cc-gap-desktop, 8px);
+      padding: var(--cc-pad-v-desktop, 30px) var(--cc-pad-h-desktop, 30px);
+    }
+  }
+}
+
+
+/* =========================================================
+   Collapsible promo banner card (.cc-banner)
+   The collapsible-promo-banner embedded as a full-width item in the collection
+   grid (blocks/_promo-banner-card.liquid). Slotted by slotCards() in products.js;
+   always spans the whole row. .cpb base styles mirror sections/collapsible-promo-banner.
+   ========================================================= */
+.cc-banner {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+.cpb {
+  display: block;
+  width: 100%;
+  background-color: var(--cpb-bg);
+  color: var(--cpb-text);
+  font-family: var(--text-font-family);
+  text-align: center;
+
+  &__row {
+    padding: 8px 20px;
+    line-height: 1.3;
+  }
+
+  &__row--top {
+    padding-bottom: 4px;
+  }
+
+  &__row--bottom {
+    padding-top: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__title {
+    margin: 0;
+    font-weight: 500;
+  }
+
+  &__countdown {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__toggle {
+    background: transparent;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  &__image-wrap {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 400ms ease;
+  }
+
+  /* Explicit toggle always wins, at any width. */
+  &[data-open="true"] &__image-wrap {
+    max-height: 1200px;
+  }
+
+  &[data-open="false"] &__image-wrap {
+    max-height: 0;
+  }
+
+  /* Open-by-default (per breakpoint) until the visitor toggles. */
+  &[data-default-desktop="true"]:not([data-open]) &__image-wrap {
+    max-height: 1200px;
+  }
+
+  &__image-inner {
+    position: relative;
+  }
+
+  &__image-link,
+  &__image-block {
+    display: block;
+    width: 100%;
+    line-height: 0;
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  &__media--mobile {
+    display: none;
+  }
+
+  &__blocks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  &__blocks--overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    > * {
+      pointer-events: auto;
+    }
+  }
+
+  @media (max-width: 740px) {
+    &__row {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    &__image-inner--has-mobile &__media--desktop {
+      display: none;
+    }
+
+    &__image-inner--has-mobile &__media--mobile {
+      display: block;
+    }
+
+    /* The desktop default does not apply on mobile; the mobile default governs. */
+    &[data-default-desktop="true"]:not([data-open]) &__image-wrap {
+      max-height: 0;
+    }
+
+    &[data-default-mobile="true"]:not([data-open]) &__image-wrap {
+      max-height: 1200px;
+    }
+  }
+}
+
+/* ── Collection "Sort by" dropdown ────────────────────────────
+   Scoped to the collection meta-bar so the header/locale popovers
+   are untouched. Turns the plain option list into padded rows with
+   hover feedback and a peach-tinted selected state. */
+.product-facet__meta-bar-item--sort {
+  // Header title — match the filter drawer (italic heading, larger, left-aligned).
+  // Only visible in the bottom-sheet view (<1000px); the desktop dropdown hides
+  // .popover__header entirely.
+  .popover__header {
+    justify-content: flex-start;
+  }
+
+  .popover__title {
+    justify-content: flex-start;
+    font-family: var(--heading-font-family);
+    font-size: 24px;
+    line-height: 1.2;
+    font-style: italic;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  // Trigger
+  .popover-button {
+    font-weight: 500;
+    transition: color .15s ease;
+
+    &:hover {
+      color: rgb(var(--root-heading-color));
+    }
+
+    svg {
+      -webkit-margin-start: 6px;
+              margin-inline-start: 6px;
+    }
+  }
+
+  // Panel — only the desktop dropdown; mobile keeps the bottom sheet
+  @media screen and (min-width: 1000px) {
+    .popover {
+      min-width: 224px;
+      border-radius: 12px;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, .12);
+      overflow: hidden;
+    }
+
+    .popover__content {
+      padding: 8px;
+    }
+  }
+
+  .popover__choice-list {
+    white-space: normal;
+  }
+
+  .popover__choice-item {
+    text-align: left;
+
+    &:not(:first-child) {
+      -webkit-margin-before: 2px;
+              margin-block-start: 2px;
+    }
+  }
+
+  // Each option becomes a full-width, padded, rounded row
+  .popover__choice-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0;
+    padding: 10px 14px;
+    border-radius: 8px;
+    white-space: nowrap;
+    transition: background-color .15s ease, color .15s ease, font-weight .15s ease;
+
+    &:hover {
+      background-color: rgba(var(--root-text-color), .05);
+    }
+  }
+
+  // Selected row — bold text on a soft peach tint
+  input:checked + .popover__choice-label {
+    font-weight: 600;
+    background-color: rgba(249, 198, 185, .3);
+  }
+
+  // Tick — let it flow to the right edge of the padded row (uses
+  // currentColor from the base rule, so it stays dark on the tint).
+  // `.popover` ancestor keeps this ahead of the theme's base rule.
+  .popover input:checked + .popover__choice-label:after,
+  .popover .popover__choice-label[aria-current]:after {
+    position: static;
+    inset: auto;
+    flex-shrink: 0;
+    -webkit-margin-start: 12px;
+            margin-inline-start: 12px;
+  }
+}
+/* =========================================================
+   PDP gallery autoplay fallback play button
+   Injected by products.js when the browser blocks autoplay
+   (iOS Low Power Mode, data saver). Sits over the frozen
+   first frame; removed as soon as playback starts.
+   ========================================================= */
+.video-autoplay-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  svg {
+    width: 64px;
+    height: 64px;
+    transition: transform .15s ease;
+  }
+
+  &:active svg {
+    transform: scale(.94);
+  }
+}
+
+// While our fallback button is showing, make sure iOS's own centered
+// play glyph (part of the native controls) can't render behind it.
+native-video[autoplay]:has(.video-autoplay-fallback) video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
 }

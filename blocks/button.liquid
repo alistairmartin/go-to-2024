@@ -83,6 +83,13 @@
         {%- endif -%}
       {%- endfor -%}
 
+      {%- if block.settings.modal_content != blank -%}
+        {%- assign modalId = block.id -%}
+        {%- assign buttonId = block.id | prepend: "block-" -%}
+        {%- assign buttonIdMobile = buttonId | append: "--mobile" -%}
+        {%- render 'modal', modalId: modalId, content: block.settings.modal_content, buttonId: buttonId, buttonIdMobile: buttonIdMobile, content_square_id: block.settings.content_square_id, teleport: true -%}
+      {%- endif -%}
+
       {% schema %}
         {
           "name": "Button",
@@ -170,7 +177,8 @@
           {
             "type": "liquid",
             "id": "modal_content",
-            "label": "Modal Content"
+            "label": "Modal Content",
+            "info": "Can also add HTML + Liquid Code"
           },
           {
           "type": "header",

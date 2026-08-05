@@ -593,12 +593,12 @@
       
       {%- comment -%}
       ----------------------------------------------------------------------------------------------------------------
-      Product Tabs
+      Charity
       ----------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
-      {%- when 'product_ichange' -%}
+      {%- when 'product_charity' -%}
         {% if context != 'quick-buy' %}
-          {%- render 'product-form--ichange' -%}
+          {%- render 'product-form--charity', block: block -%}
         {% endif %}
 
       {%- comment -%}

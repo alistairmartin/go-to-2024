@@ -144,64 +144,16 @@
     <p class="hide-mobile description text-base">{{ product.metafields.global.description_tag }}</p>
   {%- endif -%}
 
-  {% assign skinTypeCounter = 0 %}
-  {%- for tag in product.tags -%}
-    {%- if tag contains "skintype_" or tag == "badge_All Hair Types" -%}
-      {%- unless tag contains "jebbit" -%}
-      {% assign skinTypeFound = true %}
-      {%- assign skinTypeCounter = skinTypeCounter | plus: 1 -%}
-    {% endunless %}
-    {%- endif -%}
-  {%- endfor -%}
-
-  {% assign badgeCounter = 0 %}
-  {%- for tag in product.tags -%}
-    {%- if tag contains "badge_" and tag != "badge_All Hair Types" -%}
-      {%- unless tag contains "jebbit" -%}
-      {% assign badgeFound = true %}
-      {%- assign badgeCounter = badgeCounter | plus: 1 -%}
-      {% break %}
-      {% endunless %}
-    {%- endif -%}
-  {%- endfor -%}
-
+  {%- assign plays_nice_badges = product.metafields.custom.badges_plays_nice_with.value -%}
+  {%- assign good_to_know_badges = product.metafields.custom.badges_good_to_know.value -%}
+  {%- assign plays_nice_heading = 'product.content.plays_nice_with' | t -%}
+  {%- assign good_to_know_heading = 'product.content.good_to_know' | t -%}
 
     <div class="quick-buy-product--below-content">
 
-      {%- if skinTypeFound -%}
-        <div class="perfect-for">
-          <h3 class="text--bold">{{ 'product.content.plays_nice_with' | t }}</h3>
-          <div class="perfect-for--container items-{{ skinTypeCounter }}">
-            {%- for tag in product.tags -%}
-              {%- if tag == "badge_All Hair Types" -%}
-                {% render "product-content-icons--perfect-for", icon: 'all-hair' %}
-              {%- elsif tag contains "skintype_" -%}
-                {%- unless tag contains "jebbit" -%}
-                {% assign icon = tag | remove: "skintype_" %}
-                {% render "product-content-icons--perfect-for", icon: icon %}
-              {% endunless %}
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        </div> 
-      {%- endif -%}
-    
+      {% render "product-content-badges", badges: plays_nice_badges, heading: plays_nice_heading, class_root: 'perfect-for' %}
 
-      {%- if badgeFound -%}
-        <div class="who-is-it-for">
-          <h3 class="text--bold">{{ 'product.content.good_to_know' | t }}</h3>
-          <div class="who-is-it-for--container items-{{ badgeCounter }}">
-            {%- for tag in product.tags -%}
-              {%- if tag contains "badge_" and tag != "badge_All Hair Types" -%}
-                {%- unless tag contains "jebbit" -%}
-                {% assign icon = tag | remove: "badge_" %}
-                {% render "product-content-icons--good-to-know", icon: icon %}
-              {% endunless %}
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        </div>
-      {%- endif -%}
+      {% render "product-content-badges", badges: good_to_know_badges, heading: good_to_know_heading, class_root: 'who-is-it-for' %}
 
   </div>
 {%- endcapture -%}

@@ -1,0 +1,37 @@
+{%- comment -%}
+  Renders a PDP badge row from a list.metaobject_reference metafield
+  (custom.badges_plays_nice_with / custom.badges_good_to_know).
+
+  Accepts:
+  - badges: the metafield .value (list of badge metaobjects)
+  - heading: section heading text
+  - class_root: 'perfect-for' or 'who-is-it-for'
+
+  Each badge renders its svg_code inline when set, otherwise falls back
+  to the image file reference.
+{%- endcomment -%}
+
+{%- if badges != blank -%}
+  <div class="{{ class_root }}">
+    <h3 class="text--bold">{{ heading }}</h3>
+    <div class="{{ class_root }}--container items-{{ badges | size }}">
+      {%- for badge in badges -%}
+        <div class="{{ class_root }}--icon">
+          {%- if badge.svg_code != blank -%}
+            {%- comment -%}
+              Namespace the generic class/id names Illustrator exports (.cls-1, #clippath)
+              with the badge handle — inline SVGs share one document, so without this
+              the <style> blocks of different badges override each other.
+            {%- endcomment -%}
+            {%- assign scoped_class = badge.system.handle | append: '-cls-' -%}
+            {%- assign scoped_clip = badge.system.handle | append: '-clippath' -%}
+            {{ badge.svg_code | replace: 'cls-', scoped_class | replace: 'clippath', scoped_clip }}
+          {%- elsif badge.image != blank -%}
+            <img src="{{ badge.image | image_url: width: 140 }}" alt="{{ badge.customer_title }}" loading="lazy" width="70" height="70">
+          {%- endif -%}
+          <p>{{ badge.customer_title }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}

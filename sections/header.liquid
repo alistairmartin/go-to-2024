@@ -159,6 +159,44 @@ z-index: 4;
   }
 {%- endif -%}
 
+@media screen and (max-width: 740px) {
+  {%- if section.settings.goto_header_background_mobile != blank -%}
+    .go-to #shopify-section-{{ section.id }} .header {
+      background: {{ section.settings.goto_header_background_mobile }};
+    }
+  {%- endif -%}
+
+  {%- if section.settings.goto_nav_color_mobile != blank -%}
+    .go-to #shopify-section-{{ section.id }} {
+      --header-text-color: {{ section.settings.goto_nav_color_mobile.red }}, {{ section.settings.goto_nav_color_mobile.green }}, {{ section.settings.goto_nav_color_mobile.blue }};
+    }
+    .go-to #shopify-section-{{ section.id }} .header__icon-wrapper svg {
+      fill: {{ section.settings.goto_nav_color_mobile }};
+    }
+    .go-to #shopify-section-{{ section.id }} .cart-link .header__cart-count {
+      color: {{ section.settings.goto_nav_color_mobile }};
+    }
+  {%- endif -%}
+
+  {%- if section.settings.broto_header_background_mobile != blank -%}
+    .bro-to #shopify-section-{{ section.id }} .header {
+      background: {{ section.settings.broto_header_background_mobile }};
+    }
+  {%- endif -%}
+
+  {%- if section.settings.broto_nav_color_mobile != blank -%}
+    .bro-to #shopify-section-{{ section.id }} {
+      --header-text-color: {{ section.settings.broto_nav_color_mobile.red }}, {{ section.settings.broto_nav_color_mobile.green }}, {{ section.settings.broto_nav_color_mobile.blue }};
+    }
+    .bro-to #shopify-section-{{ section.id }} .header__icon-wrapper svg {
+      fill: {{ section.settings.broto_nav_color_mobile }};
+    }
+    .bro-to #shopify-section-{{ section.id }} .cart-link .header__cart-count {
+      color: {{ section.settings.broto_nav_color_mobile }};
+    }
+  {%- endif -%}
+}
+
 {%- if request.page_type == '404' -%}
   .shopify-section--404 {
     /* For the 404 page, we re-use the same colors as the header for design reason */
@@ -835,6 +873,16 @@ z-index: 4;
         "id": "goto_nav_color",
         "label": "Navigation & icon colour"
       }, {
+        "type": "color",
+        "id": "goto_header_background_mobile",
+        "label": "Header background (mobile)",
+        "info": "Overrides the header background on mobile. Leave empty to use the same colour as desktop."
+      }, {
+        "type": "color",
+        "id": "goto_nav_color_mobile",
+        "label": "Navigation & icon colour (mobile)",
+        "info": "Overrides the navigation & icon colour on mobile. Leave empty to use the same colour as desktop."
+      }, {
         "type": "header",
         "content": "Bro-To brand colours"
       }, {
@@ -845,6 +893,16 @@ z-index: 4;
         "type": "color",
         "id": "broto_nav_color",
         "label": "Navigation & icon colour"
+      }, {
+        "type": "color",
+        "id": "broto_header_background_mobile",
+        "label": "Header background (mobile)",
+        "info": "Overrides the header background on mobile. Leave empty to use the same colour as desktop."
+      }, {
+        "type": "color",
+        "id": "broto_nav_color_mobile",
+        "label": "Navigation & icon colour (mobile)",
+        "info": "Overrides the navigation & icon colour on mobile. Leave empty to use the same colour as desktop."
       }
     ],
     "blocks": [

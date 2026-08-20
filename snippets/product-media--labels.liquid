@@ -2,6 +2,29 @@
 
 <div class="product-media--labels">
 
+{%- comment -%}
+  Market-aware savings: largest compare-at discount across variants, in the
+  buyer's local currency. Used to replace hard-coded "SAVE $X" label text.
+{%- endcomment -%}
+{%- liquid
+  assign max_saving = 0
+  for variant in product.variants
+    if variant.compare_at_price > variant.price
+      assign variant_saving = variant.compare_at_price | minus: variant.price
+      if variant_saving > max_saving
+        assign max_saving = variant_saving
+      endif
+    endif
+  endfor
+  if max_saving > 0
+    capture dynamic_save_label
+      echo 'product.labels.save' | t
+      echo ' '
+      echo max_saving | money | remove: '.00' | remove: ',00'
+    endcapture
+  endif
+-%}
+
 
 {%- if product.template_suffix == 'coming-soon' -%}
     <span class="label label--label-custom label--coming-soon">{{ 'product.labels.coming_soon' | t }}</span>
@@ -20,24 +43,53 @@
     <span class="label label--label-custom label--waitlist {% if noWaitlist == true %}hide{% endif %}">{{ 'product.labels.waitlist' | t }}</span>
     <span class="label label--label-custom label--soldout {% if noWaitlist == false %}hide{% endif %}">{{ 'product.labels.sold_out' | t }}</span>
   {%-  elsif product.metafields.gts_theme.label != blank -%}
-    <span class="label label--label-custom label--{{ product.metafields.gts_theme.label | handle }}">{{ product.metafields.gts_theme.label }}</span>
+    {%- assign label_check = product.metafields.gts_theme.label | strip | downcase | slice: 0, 4 -%}
+    {%- if label_check == 'save' -%}
+      {%- if max_saving > 0 -%}
+        <span class="label label--label-custom label--{{ product.metafields.gts_theme.label | handle }}">{{ dynamic_save_label }}</span>
+      {%- endif -%}
+    {%- else -%}
+      <span class="label label--label-custom label--{{ product.metafields.gts_theme.label | handle }}">{{ product.metafields.gts_theme.label }}</span>
+    {%- endif -%}
   {%- endif  -%}
 
   {%- if product.metafields.gts_theme.label2 != blank -%}
-    <span class="label label--label-custom label--{{ product.metafields.gts_theme.label2 | handle }}">{{ product.metafields.gts_theme.label2 }}</span>
+    {%- assign label2_check = product.metafields.gts_theme.label2 | strip | downcase | slice: 0, 4 -%}
+    {%- if label2_check == 'save' -%}
+      {%- if max_saving > 0 -%}
+        <span class="label label--label-custom label--{{ product.metafields.gts_theme.label2 | handle }}">{{ dynamic_save_label }}</span>
+      {%- endif -%}
+    {%- else -%}
+      <span class="label label--label-custom label--{{ product.metafields.gts_theme.label2 | handle }}">{{ product.metafields.gts_theme.label2 }}</span>
+    {%- endif -%}
   {%- endif  -%}
 
   {% comment %} --- END - Go-To Tags --- {% endcomment %}
   
   {%- if product.metafields.custom.badges != blank -%}
     {%- for custom_badge in product.metafields.custom.badges.value -%}
-      <span class="label {% if forloop.index == 1 %}label--custom{% else %}label--custom2{% endif %}">{{ custom_badge }}</span>
+      {%- assign badge_check = custom_badge | strip | downcase | slice: 0, 4 -%}
+      {%- if badge_check == 'save' -%}
+        {%- if max_saving > 0 -%}
+          <span class="label {% if forloop.index == 1 %}label--custom{% else %}label--custom2{% endif %}">{{ dynamic_save_label }}</span>
+        {%- endif -%}
+      {%- else -%}
+        <span class="label {% if forloop.index == 1 %}label--custom{% else %}label--custom2{% endif %}">{{ custom_badge }}</span>
+      {%- endif -%}
     {%- endfor -%}
   {%- endif -%}
 
   {%- for tag in product.tags -%}
     {%- if tag contains '__label' -%}
-      <span class="label label--label-custom label--{{ tag | split: ':' | last | handle }}">{{ tag | split: ':' | last }}</span>
+      {%- assign tag_label = tag | split: ':' | last -%}
+      {%- assign tag_check = tag_label | strip | downcase | slice: 0, 4 -%}
+      {%- if tag_check == 'save' -%}
+        {%- if max_saving > 0 -%}
+          <span class="label label--label-custom label--{{ tag_label | handle }}">{{ dynamic_save_label }}</span>
+        {%- endif -%}
+      {%- else -%}
+        <span class="label label--label-custom label--{{ tag_label | handle }}">{{ tag_label }}</span>
+      {%- endif -%}
     {%- endif -%}
   {%- endfor -%}
 

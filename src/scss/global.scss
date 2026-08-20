@@ -1089,15 +1089,6 @@ store-header.background-blur {
 }
 
 
-.shopify-section-group-header-group--bro-to  {
-  @include media-query($small) {
-    store-header {
-      background: rgba(25,42,66,0.8) !important;;
-    }
-  }
-}
-
-
 .shopify-section-group-header-group--gro-to  {
   @include media-query($small) {
     store-header {

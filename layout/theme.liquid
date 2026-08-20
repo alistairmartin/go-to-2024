@@ -196,14 +196,7 @@
          {%- section 'global-liquid' -%}
         {%- sections 'aside-group' -%}
 
-        {%- assign canShowGoToGang = false -%}
-        {%- if currentMarket == "AU" or currentMarket == "NZ" -%}
-          {%- assign canShowGoToGang = true -%}
-        {%- endif -%}
-
-        {%- if canShowGoToGang == false and page.handle == "go-to-gang" -%}
-            {%- section 'main-not-found' -%}
-        {%- elsif template.suffix contains 'vip-access' and customer -%}
+        {%- if template.suffix contains 'vip-access' and customer -%}
           {% include 'vip-access--validator' %}
           {%- if validVIPCustomer == true -%}
             {{ content_for_layout }}

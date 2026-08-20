@@ -1528,7 +1528,7 @@ p a:not(.button), .rte a:not(.button), .link {
   max-width: 460px;
 }
 
-.page-content--fluid {
+.page-content--fluid, .page-content--full-width {
   max-width: none;
 }
 

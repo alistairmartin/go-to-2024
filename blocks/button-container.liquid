@@ -1,0 +1,313 @@
+{%- capture styles -%}
+<style>
+  #shopify-block-{{ block.id }} {
+    width: 100%;
+  }
+
+  #block-button-container-{{ block.id }} {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: {{ block.settings.flex_justify_content_mobile }};
+    align-items: center;
+
+    gap: {{ block.settings.gap_mobile }}px;
+
+    padding: {{ block.settings.padding_vertical_mobile }}px {{ block.settings.padding_horizontal_mobile }}px;
+
+    margin-top: {{ block.settings.margin_top_mobile }}px;
+    margin-bottom: {{ block.settings.margin_bottom_mobile }}px;
+
+    {%- if block.settings.stack_mobile -%}
+      flex-direction: column;
+      align-items: {{ block.settings.flex_justify_content_mobile }};
+    {%- endif -%}
+  }
+
+  #block-button-container-{{ block.id }} > * {
+    {%- if block.settings.buttons_fill_mobile -%}
+      flex: 1 1 0;
+      min-width: 0;
+    {%- else -%}
+      flex: 0 0 auto;
+    {%- endif -%}
+  }
+
+  {%- if block.settings.buttons_fill_mobile -%}
+    @media (max-width: 739px) {
+      #block-button-container-{{ block.id }} .blocks--button {
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+    }
+  {%- endif -%}
+
+  #block-button-container-{{ block.id }} .button,
+  #block-button-container-{{ block.id }} a,
+  #block-button-container-{{ block.id }} button {
+    white-space: nowrap;
+  }
+
+  @media (min-width: 740px) {
+    #block-button-container-{{ block.id }} > * {
+      {%- if block.settings.buttons_fill_desktop -%}
+        flex: 1 1 0;
+        min-width: 0;
+      {%- else -%}
+        flex: 0 0 auto;
+      {%- endif -%}
+    }
+
+    {%- if block.settings.buttons_fill_desktop -%}
+      #block-button-container-{{ block.id }} .blocks--button {
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+    {%- endif -%}
+
+    #block-button-container-{{ block.id }} {
+      flex-direction: row;
+      justify-content: {{ block.settings.flex_justify_content_desktop }};
+      align-items: center;
+
+      gap: {{ block.settings.gap_desktop }}px;
+
+      padding: {{ block.settings.padding_vertical_desktop }}px {{ block.settings.padding_horizontal_desktop }}px;
+
+      margin-top: {{ block.settings.margin_top_desktop }}px;
+      margin-bottom: {{ block.settings.margin_bottom_desktop }}px;
+    }
+  }
+</style>
+{%- endcapture -%}
+{{- styles | strip_newlines | strip -}}
+
+<div class="blocks--button-container" id="block-button-container-{{ block.id }}" {{ block.shopify_attributes }}>
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Button Container",
+  "blocks": [{ "type": "button" }],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Block Note",
+      "info": "Only Admin Will See This.",
+      "default": "🔳 Button Container"
+    },
+    {
+      "type": "header",
+      "content": "--- 🖥️ DESKTOP SETTINGS 🖥️  ---"
+    },
+    {
+      "type": "select",
+      "id": "flex_justify_content_desktop",
+      "label": "Buttons Position",
+      "info": "Position the buttons (Left, Center, Right)",
+      "default": "flex-start",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        },
+        {
+          "value": "space-between",
+          "label": "Space Between"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "buttons_fill_desktop",
+      "label": "Equal Width Buttons (Fill Row)?",
+      "info": "Buttons split the row equally instead of using their natural width.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "gap_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "label": "⏸️ Gap Between Buttons"
+    },
+    {
+      "type": "header",
+      "content": "⏹️ Padding (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "label": "↕️ Top/Bottom"
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "label": "↔️ Left/Right"
+    },
+    {
+      "type": "header",
+      "content": "↕️ Margins (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "label": "⬆ Margin Top"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "label": "⬇ Margin Bottom"
+    },
+    {
+      "type": "header",
+      "content": "--- 📱 MOBILE SETTINGS 📱 ---"
+    },
+    {
+      "type": "checkbox",
+      "id": "stack_mobile",
+      "label": "Stack Buttons on Mobile?",
+      "info": "Buttons will sit on top of each other instead of side by side.",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "flex_justify_content_mobile",
+      "label": "Buttons Position",
+      "info": "Position the buttons (Left, Center, Right)",
+      "default": "flex-start",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        },
+        {
+          "value": "space-between",
+          "label": "Space Between"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "buttons_fill_mobile",
+      "label": "Equal Width Buttons (Fill Row)?",
+      "info": "Buttons split the row equally instead of using their natural width. Overrides the Button block's width setting.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 12,
+      "label": "⏸️ Gap Between Buttons"
+    },
+    {
+      "type": "header",
+      "content": "⏹️ Padding (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "label": "↕️ Top/Bottom"
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "label": "↔️ Left/Right"
+    },
+    {
+      "type": "header",
+      "content": "↕️ Margins (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "label": "⬆ Margin Top"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "label": "⬇ Margin Bottom"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Button Container",
+      "blocks": [
+        { "type": "button" },
+        { "type": "button" }
+      ]
+    }
+  ]
+}
+{% endschema %}

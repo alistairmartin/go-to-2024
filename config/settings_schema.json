@@ -970,6 +970,38 @@
     "settings": [
       {
         "type": "header",
+        "content": "Visibility"
+      },
+      {
+        "type": "checkbox",
+        "id": "banner_show_go_to",
+        "label": "Show for Go-To 🟪",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "banner_show_bro_to",
+        "label": "Show for Bro-To 🟥",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "banner_hide_product_handles",
+        "label": "Hide If Product In Cart",
+        "info": "Comma-separated product handles. If any of these products are in the cart, the banner is hidden. e.g. much-plumper-skin,very-useful-face-cream"
+      },
+      {
+        "type": "url",
+        "id": "banner_link",
+        "label": "Banner Link",
+        "info": "Optional. Makes the whole banner clickable."
+      },
+      {
+        "type": "paragraph",
+        "content": "Bro-To images are optional - if left empty, the Bro-To cart falls back to the market's Go-To image."
+      },
+      {
+        "type": "header",
         "content": "Australia (AU 🇦🇺)"
       },
        {
@@ -981,6 +1013,16 @@
         "type": "image_picker",
         "id": "image_mobile_AU",
         "label": "Image Mobile (AU)"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_desktop_AU_bro",
+        "label": "Image Desktop (AU) - Bro-To 🟥"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile_AU_bro",
+        "label": "Image Mobile (AU) - Bro-To 🟥"
       },
       {
         "type": "header",
@@ -997,6 +1039,16 @@
         "label": "Image Mobile (NZ)"
       },
       {
+        "type": "image_picker",
+        "id": "image_desktop_NZ_bro",
+        "label": "Image Desktop (NZ) - Bro-To 🟥"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile_NZ_bro",
+        "label": "Image Mobile (NZ) - Bro-To 🟥"
+      },
+      {
         "type": "header",
         "content": "Great Britain (GB 🇬🇧)"
       },
@@ -1009,6 +1061,16 @@
         "type": "image_picker",
         "id": "image_mobile_GB",
         "label": "Image Mobile (GB)"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_desktop_GB_bro",
+        "label": "Image Desktop (GB) - Bro-To 🟥"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile_GB_bro",
+        "label": "Image Mobile (GB) - Bro-To 🟥"
       },
       {
         "type": "header",
@@ -1025,6 +1087,16 @@
         "label": "Image Mobile (EU)"
       },
       {
+        "type": "image_picker",
+        "id": "image_desktop_EU_bro",
+        "label": "Image Desktop (EU) - Bro-To 🟥"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile_EU_bro",
+        "label": "Image Mobile (EU) - Bro-To 🟥"
+      },
+      {
         "type": "header",
         "content": "United States (US 🇺🇸)"
       },
@@ -1037,6 +1109,16 @@
         "type": "image_picker",
         "id": "image_mobile_US",
         "label": "Image Mobile (US)"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_desktop_US_bro",
+        "label": "Image Desktop (US) - Bro-To 🟥"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile_US_bro",
+        "label": "Image Mobile (US) - Bro-To 🟥"
       }
     ]
   },

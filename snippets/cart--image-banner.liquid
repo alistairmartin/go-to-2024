@@ -1,31 +1,79 @@
-{% if localization.market.handle == 'au' %}
-  {% assign image_desktop = settings.image_desktop_AU %}
-  {% assign image_mobile = settings.image_mobile_AU %}
-{% elsif localization.market.handle == 'nz' %}
-  {% assign image_desktop = settings.image_desktop_NZ %}
-  {% assign image_mobile = settings.image_mobile_NZ %}
-{% elsif localization.market.handle == 'gb' %}
-  {% assign image_desktop = settings.image_desktop_GB %}
-  {% assign image_mobile = settings.image_mobile_GB %}
-{% elsif localization.market.handle == 'eu' %}
-  {% assign image_desktop = settings.image_desktop_EU %}
-  {% assign image_mobile = settings.image_mobile_EU %}
-{% elsif localization.market.handle == 'us' %}
-  {% assign image_desktop = settings.image_desktop_US %}
-  {% assign image_mobile = settings.image_mobile_US %}
-{% endif %}
+{%- comment -%}
+  Mini cart image banner. Configured in Theme settings → Cart (Image Banner).
+  - Images are per market (AU/NZ/GB/EU/US), desktop + mobile.
+  - Brand comes from the "_last-visited-brand" cart attribute. Bro-To uses its
+    own images when set, otherwise falls back to the market's default (Go-To) image.
+  - Hidden entirely when the brand's "Show for..." checkbox is off, or when any
+    product handle listed in "Hide If Product In Cart" is in the cart.
+{%- endcomment -%}
 
-{% if image_desktop or image_mobile %}
-  <div class="cart-image-banner">
-    {% if image_desktop %}
-      <div class="cart-image-banner__desktop hide-mobile">
-        {{ image_desktop | image_url: width: 1200 | image_tag: loading: 'lazy', alt: image_desktop.alt }}
+{%- assign brand = 'go-to' -%}
+{%- for attribute in cart.attributes -%}
+  {%- if attribute.first == '_last-visited-brand' and attribute.last != blank -%}
+    {%- assign brand = attribute.last -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign show_banner = true -%}
+
+{%- if brand == 'bro-to' -%}
+  {%- unless settings.banner_show_bro_to -%}{%- assign show_banner = false -%}{%- endunless -%}
+{%- else -%}
+  {%- unless settings.banner_show_go_to -%}{%- assign show_banner = false -%}{%- endunless -%}
+{%- endif -%}
+
+{%- if show_banner and settings.banner_hide_product_handles != blank -%}
+  {%- assign hide_handles = settings.banner_hide_product_handles | remove: ' ' | downcase | split: ',' -%}
+  {%- for line_item in cart.items -%}
+    {%- if hide_handles contains line_item.product.handle -%}
+      {%- assign show_banner = false -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- if show_banner -%}
+  {%- assign market = localization.market.handle | upcase -%}
+  {%- assign desktop_key = 'image_desktop_' | append: market -%}
+  {%- assign mobile_key = 'image_mobile_' | append: market -%}
+
+  {%- assign image_desktop = settings[desktop_key] -%}
+  {%- assign image_mobile = settings[mobile_key] -%}
+
+  {%- if brand == 'bro-to' -%}
+    {%- assign desktop_key_bro = desktop_key | append: '_bro' -%}
+    {%- assign mobile_key_bro = mobile_key | append: '_bro' -%}
+
+    {%- if settings[desktop_key_bro] != blank -%}
+      {%- assign image_desktop = settings[desktop_key_bro] -%}
+    {%- endif -%}
+    {%- if settings[mobile_key_bro] != blank -%}
+      {%- assign image_mobile = settings[mobile_key_bro] -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- if image_desktop or image_mobile -%}
+    {%- capture banner_images -%}
+      {%- if image_desktop -%}
+        <div class="cart-image-banner__desktop hide-mobile">
+          {{ image_desktop | image_url: width: 1200 | image_tag: loading: 'lazy', alt: image_desktop.alt }}
+        </div>
+      {%- endif -%}
+      {%- if image_mobile -%}
+        <div class="cart-image-banner__mobile hide-desktop">
+          {{ image_mobile | image_url: width: 600 | image_tag: loading: 'lazy', alt: image_mobile.alt }}
+        </div>
+      {%- endif -%}
+    {%- endcapture -%}
+
+    {%- if settings.banner_link != blank -%}
+      <a href="{{ settings.banner_link }}" class="cart-image-banner cart-image-banner--link">
+        {{ banner_images }}
+      </a>
+    {%- else -%}
+      <div class="cart-image-banner">
+        {{ banner_images }}
       </div>
-    {% endif %}
-    {% if image_mobile %}
-      <div class="cart-image-banner__mobile hide-desktop">
-        {{ image_mobile | image_url: width: 600 | image_tag: loading: 'lazy', alt: image_mobile.alt }}
-      </div>
-    {% endif %}
-  </div>
-{% endif %}
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}

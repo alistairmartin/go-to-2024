@@ -22,7 +22,7 @@ const cartAttributes = {
   "_last-visited-brand": "{{ brand }}"
 };
 // In the theme editor the section re-renders on every keystroke. Skip the cart
-// write while designing so we don't fire a /cart/update.js POST per character —
+// write while designing so we don't fire a /cart/update.js POST per character -
 // that network write makes each editor reload heavier and the typing janky.
 if (!(window.Shopify && Shopify.designMode)) {
   updateCartAttributes(cartAttributes);
@@ -668,8 +668,6 @@ if (!(window.Shopify && Shopify.designMode)) {
           "label": "🟥 Bro-To"
         },
         {
-          "type": "checkbox",
-        {
           "type": "header",
           "content": "Buy Condition"
         },
@@ -799,8 +797,6 @@ if (!(window.Shopify && Shopify.designMode)) {
           "id": "bro-to",
           "label": "🟥 Bro-To"
         },
-        {
-          "type": "checkbox",
         {
           "type": "header",
           "content": "Enable For Markets"
@@ -1074,8 +1070,6 @@ if (!(window.Shopify && Shopify.designMode)) {
           "label": "🟥 Bro-To"
         },
         {
-          "type": "checkbox",
-        {
           "type": "header",
           "content": "Buy Product"
         },
@@ -1187,8 +1181,6 @@ if (!(window.Shopify && Shopify.designMode)) {
           "id": "bro-to",
           "label": "🟥 Bro-To"
         },
-        {
-          "type": "checkbox",
         {
           "type": "header",
           "content": "Tier 1"
@@ -1505,8 +1497,6 @@ if (!(window.Shopify && Shopify.designMode)) {
           {
             "value": "bro-to",
             "label": "🟥 Bro-To"
-          },
-          {
           }
         ]
       }

@@ -1,0 +1,81 @@
+{%- comment -%}
+  SAFE carousel — used by sections/featured-collections.liquid and
+  blocks/featured-collection.liquid when the section's "Enable SAFE carousel"
+  checkbox is on (and products aren't stacked).
+
+  Why: the theme's default product carousel stacks a WAAPI stagger animation
+  (opacity + translateY per card), a `[reveal]` opacity layer per card, nested
+  scroll containers (.scroller > .product-list__inner--scroller) and animated
+  prev/next arrows. On iOS 17+ WebKit that many GPU-backed layers entering the
+  viewport at once can crash the content process / leave cards blank.
+
+  This variant is one native horizontal scroll container with CSS scroll-snap,
+  plain buttons for prev/next and optional dots — same features, far fewer
+  layers. Behaviour lives in <safe-carousel> (src/js/products.js); layout in
+  src/scss/components/safe-carousel.scss.
+
+  Expects in scope: section, block, collection, outerCollectionHandle.
+  Optional: with_grid_images (section only — the grid-image / Tolstoy includes
+  rely on the caller's forloop, so they're `include`d, not `render`ed).
+{%- endcomment -%}
+
+{%- liquid
+  assign smallest_image_aspect_ratio = 0
+  assign number_of_products_minus_one = section.settings.products_per_row | minus: 1
+  assign gap_width = 24.0 | divided_by: section.settings.products_per_row | times: number_of_products_minus_one
+-%}
+{%- capture sizes_attribute -%}(max-width: 740px) 52vw, calc(min(100vw - 80px, 1520px) / {{ section.settings.products_per_row }} - {{ gap_width | ceil }}px){%- endcapture -%}
+
+{%- capture safe_carousel_items -%}
+  {%- for product in collection.products limit: section.settings.products_count -%}
+    {%- if product.featured_media -%}
+      {%- assign smallest_image_aspect_ratio = smallest_image_aspect_ratio | at_least: product.featured_media.aspect_ratio -%}
+    {%- endif -%}
+
+    {%- render 'product-item', product: product, collection: collection, reduced_content: true, show_cta: section.settings.show_cta, block: block, sizes_attribute: sizes_attribute, reveal: false, section_name: "featured-collections", outerCollectionHandle: outerCollectionHandle, enable_byo_bundle: block.settings.enable_byo_bundle, showHiddenProduct: section.settings.show_hidden_products, mobile_swipe: false, hide_variants: section.settings.hide_variants -%}
+
+    {%- if with_grid_images -%}
+      {%- include 'featured-collections--grid-images', validCollectionForImages: validCollectionForImages, reveal: false -%}
+      {%- include 'featured-collections--tolstoy-video', validCollectionForImages: validCollectionForImages, reveal: false, collection: collection -%}
+    {%- endif -%}
+  {%- else -%}
+    {%- assign smallest_image_aspect_ratio = 1 -%}
+
+    {%- for i in (1..section.settings.products_count) -%}
+      {%- capture product_image -%}product-{% cycle '1', '2', '3', '4', '5' %}{% endcapture %}
+      {%- render 'product-item-placeholder', product_image: product_image, show_cta: section.settings.show_cta, reveal: false -%}
+    {%- endfor -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if smallest_image_aspect_ratio == 0 -%}
+  {%- assign smallest_image_aspect_ratio = 1 -%}
+{%- endif -%}
+
+<safe-carousel class="safe-carousel" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
+  <div class="safe-carousel__scroller hide-scrollbar" data-sc-scroller>
+    {{- safe_carousel_items -}}
+  </div>
+
+  {%- comment -%}
+    Arrows reuse the section's .product-list__prev-next / .product-list__arrow
+    styling (desktop + mobile). Both start disabled; <safe-carousel> enables
+    them once it measures real overflow, and the section CSS fades a disabled
+    arrow out — so a list that fits shows no arrows at all.
+  {%- endcomment -%}
+  <div class="product-list__prev-next safe-carousel__arrows hidden-pocket" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
+    <button type="button" class="product-list__arrow prev-next-button prev-next-button--prev" data-sc-prev disabled>
+      <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
+      {%- render 'icon' with 'brand-chevron-left', block: true, direction_aware: true -%}
+    </button>
+
+    <button type="button" class="product-list__arrow prev-next-button prev-next-button--next" data-sc-next disabled>
+      <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
+      {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
+    </button>
+  </div>
+
+  {%- if section.settings.safe_carousel_dots -%}
+    <div class="safe-carousel__dots" data-sc-dots aria-hidden="true"></div>
+  {%- endif -%}
+</safe-carousel>

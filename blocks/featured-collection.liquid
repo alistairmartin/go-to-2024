@@ -26,14 +26,26 @@
     `content_for`, so the block can't reliably know whether it is the first tab.
   endcomment
   assign smallest_image_aspect_ratio = 0
+
+  comment
+    SAFE carousel (section setting): lighter native-scroll carousel, see
+    snippets/featured-collection--safe-carousel.liquid. Scrolling layout only.
+  endcomment
+  assign safe_carousel = false
+  if section.settings.enable_safe_carousel and section.settings.stack_products == false
+    assign safe_carousel = true
+  endif
 -%}
 
 <product-list
-  {% if settings.stagger_products_apparition %}stagger-apparition{% endif %}
+  {% if settings.stagger_products_apparition and safe_carousel == false %}stagger-apparition{% endif %}
   id="block-{{ section.id }}-{{ block.id }}"
   class="product-list product-list--{{ block.settings.product_list_alignment }} {% if section.settings.enable_background %}product-list__background{% endif %}"
   {{ block.shopify_attributes }}
 >
+  {%- if safe_carousel -%}
+    {%- render 'featured-collection--safe-carousel', section: section, block: block, collection: collection, outerCollectionHandle: outerCollectionHandle -%}
+  {%- else -%}
   <div {% unless section.settings.stack_products %}class="scroller"{% endunless %}>
     <div class="product-list__inner {% unless section.settings.stack_products %}product-list__inner--scroller hide-scrollbar{% endunless %}">
       {%- assign number_of_products_minus_one = section.settings.products_per_row | minus: 1 -%}
@@ -60,6 +72,7 @@
       <div class="product-list__dots" aria-hidden="true"></div>
     {%- endif -%}
   </div>
+  {%- endif -%}
 
   {%- comment -%}
     Content cards / promo banners for this tab. Hidden until slotFeaturedCards()
@@ -69,7 +82,7 @@
     {% content_for 'blocks' %}
   </div>
 
-  {%- unless section.settings.stack_products -%}
+  {%- unless section.settings.stack_products or safe_carousel -%}
     {%- if collection.products_count == 0 -%}
       {%- assign products_shown = section.settings.products_count -%}
     {%- else -%}

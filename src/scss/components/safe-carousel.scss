@@ -1,0 +1,92 @@
+/* =========================================================
+   SAFE carousel — featured collections (section setting "Enable SAFE carousel").
+
+   One native horizontal scroll container with scroll-snap. No transforms,
+   no will-change, no nested scrollers, no entrance animation — keeps the
+   composited-layer count low so iOS WebKit doesn't crash / blank the cards.
+   Markup: snippets/featured-collection--safe-carousel.liquid
+   Behaviour: <safe-carousel> in src/js/products.js
+   Arrows reuse the section's .product-list__prev-next / .product-list__arrow
+   styles (already defined per-section in sections/featured-collections*.liquid).
+   ========================================================= */
+
+.safe-carousel {
+  display: block;
+  position: relative;
+}
+
+.safe-carousel__scroller {
+  display: grid;
+  grid-auto-flow: column;
+  /* Mobile card width comes from the section (--section-products-per-row-mobile = Nvw). */
+  grid-auto-columns: var(--section-products-per-row-mobile, 52vw);
+  column-gap: var(--product-list-column-gap, var(--grid-gap, 24px));
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  /* Edge-to-edge on mobile like the theme's .scroller, keeping the gutter as padding. */
+  margin-inline: calc(-1 * var(--container-gutter));
+  padding-inline: var(--container-gutter);
+  scroll-padding-inline: var(--container-gutter);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  > * {
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+
+  > [hidden] {
+    display: none;
+  }
+
+  @media screen and (min-width: 1000px) {
+    margin-inline: 0;
+    padding-inline: 0;
+    scroll-padding-inline: 0;
+    /* N cards per viewport (N = section "Products per row"), gaps included. */
+    grid-auto-columns: calc(
+      (100% - var(--product-list-column-gap, var(--grid-gap, 24px)) * (var(--section-products-per-row, 4) - 1)) /
+        var(--section-products-per-row, 4)
+    );
+  }
+}
+
+/* Fewer cards than fit: honour the block's "Product alignment" setting. */
+.product-list--center .safe-carousel__scroller {
+  justify-content: safe center;
+}
+
+/* Page dots (optional, section setting). Not the theme's .product-list__dots,
+   which global.scss hides everywhere. */
+.safe-carousel__dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.safe-carousel__dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid rgb(var(--text-color));
+  border-radius: 50%;
+  cursor: pointer;
+
+  &.is-active {
+    background: $gotoPinkLight;
+    border-color: transparent;
+  }
+}

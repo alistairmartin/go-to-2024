@@ -654,7 +654,7 @@ if (!customElements.get("collapsible-promo-banner")) {
   }
 
   function slotList(productList) {
-    var grid = productList.querySelector(".product-list__inner");
+    var grid = productList.querySelector(".product-list__inner, .safe-carousel__scroller");
     if (!grid) return;
 
     // Cards rendered by this tab's holder (or already slotted into its grid).
@@ -999,4 +999,183 @@ if (!customElements.get("collapsible-promo-banner")) {
     schedule();
   }
   document.addEventListener("shopify:section:load", schedule);
+})();
+
+/* ------------------------------------------------------------------ *
+ * <safe-carousel>
+ *
+ * iOS-safe product carousel for the featured-collections section (section
+ * setting "Enable SAFE carousel"). The theme's default carousel layers a WAAPI
+ * stagger animation per card, `[reveal]` opacity, nested scroll containers and
+ * scale/opacity-animated arrows — on iOS 17+ that many composited layers
+ * entering the viewport at once can crash the WebKit content process or leave
+ * cards blank. This is one native scroll-snap container; the only JS is
+ * arrow/dot state and scrollBy(). Markup: snippets/featured-collection--safe-carousel.liquid.
+ * Defined here (bundled products.js) rather than inline — see the
+ * innerHTML-swap / define() race note on <product-sticky-form-v2>.
+ * ------------------------------------------------------------------ */
+(function () {
+  if (window.customElements.get("safe-carousel")) return;
+
+  class SafeCarousel extends HTMLElement {
+    connectedCallback() {
+      this.scroller = this.querySelector("[data-sc-scroller]");
+      if (!this.scroller) return;
+
+      this.prevButton = this.querySelector("[data-sc-prev]");
+      this.nextButton = this.querySelector("[data-sc-next]");
+      this.dotsHolder = this.querySelector("[data-sc-dots]");
+      this._raf = null;
+
+      this._onScroll = this._onScroll.bind(this);
+      this._update = this._update.bind(this);
+      this._onPrev = this._step.bind(this, -1);
+      this._onNext = this._step.bind(this, 1);
+      this._onDotClick = this._onDotClick.bind(this);
+
+      if (this.prevButton) this.prevButton.addEventListener("click", this._onPrev);
+      if (this.nextButton) this.nextButton.addEventListener("click", this._onNext);
+      if (this.dotsHolder) this.dotsHolder.addEventListener("click", this._onDotClick);
+      this.scroller.addEventListener("scroll", this._onScroll, { passive: true });
+      window.addEventListener("resize", this._onScroll);
+      // Lazy images / fonts can change the track width after first paint.
+      window.addEventListener("load", this._update);
+
+      // Tab panels: when the parent <product-list> is shown (tabs-nav clears
+      // `hidden`), start from the first card and re-measure — a hidden panel
+      // has zero width so arrows/dots computed while hidden are meaningless.
+      var panel = this.closest("product-list");
+      if (panel && typeof MutationObserver !== "undefined") {
+        this._panelObserver = new MutationObserver(this._onPanelToggle.bind(this, panel));
+        this._panelObserver.observe(panel, { attributes: true, attributeFilter: ["hidden"] });
+      }
+
+      this._update();
+    }
+
+    disconnectedCallback() {
+      if (!this.scroller) return;
+      if (this.prevButton) this.prevButton.removeEventListener("click", this._onPrev);
+      if (this.nextButton) this.nextButton.removeEventListener("click", this._onNext);
+      if (this.dotsHolder) this.dotsHolder.removeEventListener("click", this._onDotClick);
+      this.scroller.removeEventListener("scroll", this._onScroll);
+      window.removeEventListener("resize", this._onScroll);
+      window.removeEventListener("load", this._update);
+      if (this._panelObserver) this._panelObserver.disconnect();
+      if (this._raf) cancelAnimationFrame(this._raf);
+    }
+
+    _onPanelToggle(panel) {
+      if (panel.hidden) return;
+      this.scroller.scrollLeft = 0;
+      this._update();
+    }
+
+    // Coalesce scroll/resize bursts into one measurement per frame.
+    _onScroll() {
+      if (this._raf) return;
+      this._raf = requestAnimationFrame(
+        function () {
+          this._raf = null;
+          this._update();
+        }.bind(this)
+      );
+    }
+
+    get _isRtl() {
+      return document.documentElement.getAttribute("dir") === "rtl";
+    }
+
+    // Distance scrolled from the start, always positive (RTL scrollLeft is negative).
+    get _position() {
+      return Math.abs(this.scroller.scrollLeft);
+    }
+
+    get _maxPosition() {
+      return Math.max(0, this.scroller.scrollWidth - this.scroller.clientWidth);
+    }
+
+    // First slotted card that's actually laid out (skips hidden content cards).
+    _firstCard() {
+      var children = this.scroller.children;
+      for (var i = 0; i < children.length; i++) {
+        if (!children[i].hidden && children[i].offsetWidth > 0) return children[i];
+      }
+      return null;
+    }
+
+    // One "page" = as many whole cards as fit in the viewport (1 on mobile).
+    _pageWidth() {
+      var card = this._firstCard();
+      var gap = parseFloat(getComputedStyle(this.scroller).columnGap) || 0;
+      var viewport = this.scroller.clientWidth;
+      if (!card) return viewport;
+      var cardWidth = card.getBoundingClientRect().width + gap;
+      var perPage = Math.max(1, Math.floor((viewport + gap) / cardWidth));
+      return perPage * cardWidth;
+    }
+
+    _step(direction) {
+      var target = this._position + direction * this._pageWidth();
+      this._scrollToPosition(target);
+    }
+
+    _scrollToPosition(position) {
+      var clamped = Math.min(Math.max(0, position), this._maxPosition);
+      var flip = this._isRtl ? -1 : 1;
+      this.scroller.scrollTo({ left: clamped * flip, behavior: "smooth" });
+    }
+
+    _onDotClick(event) {
+      var dot = event.target.closest("[data-sc-dot]");
+      if (!dot) return;
+      var index = parseInt(dot.getAttribute("data-sc-dot"), 10) || 0;
+      this._scrollToPosition(index * this.scroller.clientWidth);
+    }
+
+    _update() {
+      if (!this.scroller) return;
+      var max = this._maxPosition;
+      var position = this._position;
+      var canScroll = max > 1;
+
+      if (this.prevButton) this.prevButton.disabled = !canScroll || position <= 1;
+      if (this.nextButton) this.nextButton.disabled = !canScroll || position >= max - 1;
+      this.toggleAttribute("data-scrollable", canScroll);
+
+      this._updateDots(canScroll, position, max);
+    }
+
+    _updateDots(canScroll, position, max) {
+      var holder = this.dotsHolder;
+      if (!holder) return;
+
+      var viewport = this.scroller.clientWidth;
+      var pages = canScroll && viewport > 0 ? Math.ceil(this.scroller.scrollWidth / viewport) : 0;
+
+      if (holder.children.length !== pages) {
+        holder.innerHTML = "";
+        for (var i = 0; i < pages; i++) {
+          var dot = document.createElement("button");
+          dot.type = "button";
+          dot.className = "safe-carousel__dot";
+          dot.setAttribute("data-sc-dot", String(i));
+          dot.setAttribute("aria-label", "Go to page " + (i + 1));
+          dot.tabIndex = -1;
+          holder.appendChild(dot);
+        }
+      }
+      if (!pages) return;
+
+      var active = Math.round(position / viewport);
+      if (position >= max - 1) active = pages - 1;
+      active = Math.min(Math.max(0, active), pages - 1);
+
+      for (var j = 0; j < holder.children.length; j++) {
+        holder.children[j].classList.toggle("is-active", j === active);
+      }
+    }
+  }
+
+  window.customElements.define("safe-carousel", SafeCarousel);
 })();

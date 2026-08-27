@@ -3,7 +3,7 @@
     fetch('/cart/add.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: variantId, quantity: 1 })
+      body: JSON.stringify({ id: variantId, quantity: 1, properties: window.buildAddSourceProperties ? window.buildAddSourceProperties('Cart:Rivo Reward') : {} })
     })
     .then(response => response.json())
     .then(cart => {

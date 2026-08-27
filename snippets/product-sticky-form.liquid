@@ -3,7 +3,7 @@
 {%- assign buy_buttons_block = section.blocks | where: 'type', 'buy_buttons' | first -%}
 
 {%- if buy_buttons_block != blank -%}
-  <product-rerender id="product-sticky-form-{{ product.id }}-{{ section.id }}" observe-form="{{ product_form_id }}">
+  <product-rerender data-add-source="Sticky Bar" id="product-sticky-form-{{ product.id }}-{{ section.id }}" observe-form="{{ product_form_id }}">
     {%- if product.selected_or_first_available_variant != nil -%}
       <style>
         @media screen and (min-width: 1000px) {

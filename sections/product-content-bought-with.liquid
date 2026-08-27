@@ -9,7 +9,7 @@
 </style>
 
 
-<product-recommendations section-id="{{ section.id }}" intent="complementary" product-id="{{ product.id }}" recommendations-count="10" class="section {% unless blends_with_background %}section--flush{% endunless %}" hidden>
+<product-recommendations data-add-source="Bought With" section-id="{{ section.id }}" intent="complementary" product-id="{{ product.id }}" recommendations-count="10" class="section {% unless blends_with_background %}section--flush{% endunless %}" hidden>
   {%- assign acceptable_recommendations_count = 0 -%}
 
   {% comment %} {%- for product in recommendations.products -%}

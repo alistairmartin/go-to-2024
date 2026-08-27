@@ -161,7 +161,7 @@
 {%- capture product_form_id -%}product-form-quick-buy-{{ template.suffix }}-{{ product.id }}-{{ section.id }}{%- endcapture -%}
 
 <template id="quick-buy-content">
-  <quick-buy-drawer class="drawer drawer--large drawer--quick-buy">
+  <quick-buy-drawer data-add-source="Quick Buy" class="drawer drawer--large drawer--quick-buy">
     <cart-notification hidden class="cart-notification cart-notification--drawer"></cart-notification>
 
     <span class="drawer__overlay"></span>
@@ -185,7 +185,7 @@
     </product-rerender>
   </quick-buy-drawer>
 
-  <quick-buy-popover class="popover popover--quick-buy">
+  <quick-buy-popover data-add-source="Quick Buy" class="popover popover--quick-buy">
     <span class="popover__overlay"></span>
 
     <product-rerender id="quick-buy-popover-{{ product_form_id }}" observe-form="{{ product_form_id }}">

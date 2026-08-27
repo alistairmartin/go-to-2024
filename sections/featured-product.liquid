@@ -85,7 +85,7 @@
 
 {%- capture product_form_id -%}product-featured-product-{{ product.id }}-{{ section.id }}{%- endcapture -%}
 
-<section class="section {% unless blends_with_background %}section--flush{% endunless %}">
+<section data-add-source="Featured Product" class="section {% unless blends_with_background %}section--flush{% endunless %}">
   <div class="section__color-wrapper">
     <div class="container {% unless blends_with_background %}vertical-breather{% endunless %}">
       {%- if section.settings.subheading != blank or section.settings.title != blank -%}

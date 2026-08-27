@@ -1,0 +1,95 @@
+{%- comment -%}
+  ATC attribution: stamps two hidden line item properties on every add to cart.
+    __addSource      where the item was added from (e.g. "PDP", "Collection:Quick Buy",
+                     "Cart:Recommendations")
+    __addSourcePage  the page path it was added on (e.g. "/collections/best-sellers")
+
+  Properties starting with "_" are already skipped by mini-cart / main-cart /
+  checkout, so these never show to the customer.
+
+  How the source is resolved for a form submit (first hit wins):
+    1. Closest ancestor with data-add-source="..." — a section label.
+       If the label has no ":" it is prefixed with the page type
+       ("Quick Buy" on a collection page → "Collection:Quick Buy").
+       Labels that already contain ":" are used verbatim ("Cart:Recommendations").
+    2. Fallback: "<PageType>:<section handle>" derived from the .shopify-section id.
+
+  Programmatic adds: use window.buildAddSourceProperties('Cart:Rivo Reward')
+  and merge the result into the properties you POST to /cart/add.js.
+{%- endcomment -%}
+<script>
+(function () {
+  var PAGE_TYPES = {
+    product: 'PDP', collection: 'Collection', index: 'Homepage', search: 'Search',
+    cart: 'Cart', page: 'Page', article: 'Article', blog: 'Blog', list_collections: 'Collections'
+  };
+
+  function pageType() {
+    var t = (window.themeVariables && window.themeVariables.settings && window.themeVariables.settings.pageType) || '';
+    if (PAGE_TYPES[t]) return PAGE_TYPES[t];
+    var path = window.location.pathname || '';
+    if (path.indexOf('/products/') !== -1) return 'PDP';
+    if (path.indexOf('/collections/') !== -1) return 'Collection';
+    if (path.indexOf('/search') !== -1) return 'Search';
+    if (path.indexOf('/cart') !== -1) return 'Cart';
+    return 'Other';
+  }
+
+  function sectionHandle(el) {
+    var section = el && el.closest ? el.closest('.shopify-section') : null;
+    if (!section || !section.id) return '';
+    // shopify-section-template--123__product-recommendations → product-recommendations
+    // shopify-section-mini-cart → mini-cart
+    var id = section.id.replace(/^shopify-section-/, '');
+    var idx = id.lastIndexOf('__');
+    return idx !== -1 ? id.slice(idx + 2) : id;
+  }
+
+  function deriveAddSource(el) {
+    var page = pageType();
+    var wrapper = el && el.closest ? el.closest('[data-add-source]') : null;
+    var label = wrapper ? (wrapper.getAttribute('data-add-source') || '').trim() : '';
+    if (label) {
+      if (label === page || label.indexOf(':') !== -1) return label;
+      return page + ':' + label;
+    }
+    var handle = sectionHandle(el);
+    return handle ? page + ':' + handle : page;
+  }
+
+  function buildAddSourceProperties(addSource, el) {
+    return {
+      __addSource: addSource || deriveAddSource(el),
+      __addSourcePage: window.location.pathname || ''
+    };
+  }
+
+  function setHidden(form, name, value) {
+    var input = form.querySelector('input[name="' + name + '"]');
+    if (!input) {
+      input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      form.appendChild(input);
+    }
+    input.value = value;
+  }
+
+  // Capture phase on document runs before the theme's <form is="product-form">
+  // submit handler builds its FormData, regardless of script order.
+  document.addEventListener('submit', function (event) {
+    var form = event.target;
+    if (!form || !form.getAttribute) return;
+    var action = form.getAttribute('action') || '';
+    if (action.indexOf('/cart/add') === -1) return;
+
+    var existing = form.querySelector('input[name="properties[__addSource]"]');
+    var source = (existing && existing.value) || deriveAddSource(form);
+    setHidden(form, 'properties[__addSource]', source);
+    setHidden(form, 'properties[__addSourcePage]', window.location.pathname || '');
+  }, true);
+
+  window.deriveAddSource = deriveAddSource;
+  window.buildAddSourceProperties = buildAddSourceProperties;
+})();
+</script>

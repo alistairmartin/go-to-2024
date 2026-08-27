@@ -44,7 +44,7 @@
   }
 </style>
 
-<product-recommendations section-id="{{ section.id }}" intent="related" product-id="{{ product.id }}" recommendations-count="{{ section.settings.recommendations_count }}" class="section {% unless blends_with_background %}section--flush{% endunless %}">
+<product-recommendations data-add-source="Recommendations" section-id="{{ section.id }}" intent="related" product-id="{{ product.id }}" recommendations-count="{{ section.settings.recommendations_count }}" class="section {% unless blends_with_background %}section--flush{% endunless %}">
   {%- if recommendations.performed and recommendations.products.size > 0 -%}
     <div class="section__color-wrapper">
       <div class="container {% unless blends_with_background %}vertical-breather{% endunless %}">

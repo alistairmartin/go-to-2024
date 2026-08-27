@@ -6278,6 +6278,8 @@ var CartDrawer = class extends DrawerContent {
                 "_promo" :"true",
                 "_type": admin_type,
                 "_source": `Cart: ${type}`,
+                "__addSource": "Cart GWP",
+                "__addSourcePage": window.location.pathname || "",
                 "Promo": gwp_item_message
               }
           }),

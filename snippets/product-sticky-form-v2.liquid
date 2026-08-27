@@ -18,7 +18,7 @@
 {%- assign color_swatch_config = settings.color_swatch_config | newline_to_br | split: '<br />' -%}
 
 {%- if buy_buttons_block != blank -%}
-  <product-rerender id="product-sticky-form-v2-{{ product.id }}-{{ section.id }}" observe-form="{{ product_form_id }}">
+  <product-rerender data-add-source="Sticky Bar" id="product-sticky-form-v2-{{ product.id }}-{{ section.id }}" observe-form="{{ product_form_id }}">
     {%- if product.selected_or_first_available_variant != nil -%}
       {%- assign selected_variant = product.selected_or_first_available_variant -%}
 

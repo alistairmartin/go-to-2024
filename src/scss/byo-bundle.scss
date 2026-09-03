@@ -73,7 +73,7 @@
       .add-bundle-to-cart {
         background: $gotoPink;
         /* Ready state (4+ items): black border so it reads as active on the pink bar. */
-        border: 1px solid #000;
+        border: 2px solid #000;
 
         @include media-query($small) {
           width: 100%;

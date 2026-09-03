@@ -109,7 +109,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding: 15px; /* Figma: p-[15px] */
+    padding: 20px;
   }
 
   &__info {
@@ -243,10 +243,14 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 12px 25px; /* Figma: px-[25px] py-[12px] */
+    padding: 12px 10px; /* Tighter than Figma's px-[25px] so long titles get more room */
     background: #fde4db;
     border: 1px solid #f9c6b9; /* Go-To Primary Peach */
     border-radius: 0;
+    /* No drop-shadow (Figma has none; the theme's .button--* 4px offset shadow
+       adds width/height to the bar). Also cancels the hover translate. */
+    box-shadow: none !important;
+    transform: none !important;
     color: #181818; /* Neutral 0406 */
     font-size: 14px;
     font-weight: 900; /* MNKY Marcel Black */
@@ -255,10 +259,13 @@
     text-transform: uppercase;
     white-space: nowrap;
 
-    &:not([disabled]):hover {
+    &:not([disabled]):hover,
+    &:not([disabled]):active {
       background: #f9c6b9;
       border-color: #f9c6b9;
       color: #181818;
+      box-shadow: none !important;
+      transform: none !important;
     }
   }
 }

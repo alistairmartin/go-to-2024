@@ -41,6 +41,20 @@
           return;
         }
 
+        // Lazy content: inject iframe-bearing markup on first open. Scripts cloned out of a
+        // <template> are inert, so rebuild them so Jebbit's message listeners still register.
+        var lazy = target.querySelector('template[data-modal-lazy-content]');
+        if (lazy) {
+          var frag = document.importNode(lazy.content, true);
+          frag.querySelectorAll('script').forEach(function(old) {
+            var fresh = document.createElement('script');
+            Array.prototype.forEach.call(old.attributes, function(a) { fresh.setAttribute(a.name, a.value); });
+            fresh.textContent = old.textContent;
+            old.parentNode.replaceChild(fresh, old);
+          });
+          lazy.parentNode.replaceChild(frag, lazy);
+        }
+
         var overlay = target.querySelector('.modal__overlay');
         var content = target.querySelector('.modal__content');
 
@@ -83,7 +97,15 @@
     </button>
 
     <div class="modal__content-inner {{ class }}">
-        {{ content }}
+        {%- if content contains '<iframe' -%}
+          {%- comment -%}
+            Iframe embeds (e.g. Jebbit quizzes) boot a full app the moment they're parsed,
+            even inside a hidden modal. Keep them inert until the modal is first opened.
+          {%- endcomment -%}
+          <template data-modal-lazy-content>{{ content }}</template>
+        {%- else -%}
+          {{ content }}
+        {%- endif -%}
     </div>
   </div>
 </modal-content>

@@ -76,7 +76,7 @@ endif
 
 <!-- AU -->
 {% for country in AuStoreList -%}
-<link rel="alternate" hreflang="en-{{ country }}" href="https://www.{{ maindomain }}.com/{{ currentURL }}" />
+<link rel="alternate" hreflang="en-{{ country }}" href="https://{{ maindomain }}.com/{{ currentURL }}" />
 {% endfor %}
 <!-- EU -->
 {% for country in EuStoreList -%}
@@ -86,6 +86,6 @@ endif
 {% comment %} <!-- FR -->
 <link rel="alternate" hreflang="fr-FR" href="https://eu.{{ maindomain }}.com/fr/{{ currentURL }}" /> {% endcomment %}
 
-<link rel="alternate" href="https://www.{{ maindomain }}.com/{{ currentURL }}" hreflang="x-default" />
+<link rel="alternate" href="https://{{ maindomain }}.com/{{ currentURL }}" hreflang="x-default" />
 
 <link rel="canonical" href="{{ canonical_url }}">

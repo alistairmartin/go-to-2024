@@ -63,7 +63,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
                   id: $(obj).data("id"),
                   properties: {
                     'BYO Bundle': 'Select four or more unique products. Then we’ll knock off 10%.',
-                    '_tags': `${$(obj).data("tags")}`
+                    '_tags': `${$(obj).data("tags")}`,
+                    '__addSource': 'BYO Bundle',
+                    '__addSourcePage': window.location.pathname || ''
                   }
                 }
                 items[index] = newObject;
@@ -78,7 +80,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     id: giftId,
                     properties: {
                         '_free_gift': 'true',
-                        'Free Gift': 'Added with your bundle'
+                        'Free Gift': 'Added with your bundle',
+                        '__addSource': 'BYO Bundle:Free Gift',
+                        '__addSourcePage': window.location.pathname || ''
                     }
                 };
             }

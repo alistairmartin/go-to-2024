@@ -27,7 +27,7 @@
   "homepage": "https://github.com/alistairmartin/go-to-2024#readme",
   "dependencies": {
     "@shopify/themekit": "^1.1.9",
-    "autoprefixer": "^10.4.13",
+    "autoprefixer": "^10.5.4",
     "chokidar": "^3.6.0",
     "concurrently": "^8.2.2",
     "cssnano": "^6.0.3",

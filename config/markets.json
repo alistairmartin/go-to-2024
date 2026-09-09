@@ -1,0 +1,22 @@
+{
+  "markets": {
+    "gb": {
+      "parent": "@default"
+    },
+    "eu": {
+      "parent": "@default"
+    },
+    "international": {
+      "parent": "@default"
+    },
+    "us": {
+      "parent": "@default"
+    },
+    "au": {
+      "parent": "@default"
+    },
+    "nz": {
+      "parent": "@default"
+    }
+  }
+}

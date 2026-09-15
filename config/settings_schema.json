@@ -82,6 +82,33 @@
     ]
   },
   {
+    "name": "🧴 Sensitive Skin",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Applied when the product, collection or page handle contains \"sensitive\", or the current product is in the list below. The announcement bar follows the header colour."
+      },
+      {
+        "type": "product_list",
+        "id": "sensitive_products",
+        "label": "Sensitive Skin products",
+        "info": "Products that should use the Sensitive Skin colours even if their handle does not contain \"sensitive\"."
+      },
+      {
+        "type": "color",
+        "id": "sensitive_header_background",
+        "label": "Header background",
+        "default": "#E8C192"
+      },
+      {
+        "type": "color",
+        "id": "sensitive_footer_background",
+        "label": "Footer background",
+        "default": "#E8C192"
+      }
+    ]
+  },
+  {
     "name": "🟪 Colors (Go-To)",
     "settings": [
       {

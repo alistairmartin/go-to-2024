@@ -8,8 +8,7 @@
 {%- assign video_ratio_desktop_value = block.settings.video_aspect_ratio_desktop | default: 1 -%}
 {%- assign video_ratio_mobile_value = block.settings.video_aspect_ratio_mobile | default: 1 -%}
 
-{%- if block.settings.video_source == "shopify" -%}
-  {%- if video_ratio_desktop_value == "auto" -%}
+{%- if video_ratio_desktop_value == "auto" -%}
     {%- if block.settings.video_desktop != blank -%}
       {%- assign video_ratio_desktop_value = 1.0 | divided_by: block.settings.video_desktop.aspect_ratio -%}
     {%- elsif block.settings.video_mobile != blank -%}
@@ -24,13 +23,55 @@
       {%- assign video_ratio_mobile_value = 1.0 | divided_by: block.settings.video_desktop.aspect_ratio -%}
     {%- endif -%}
   {%- endif -%}
-{%- endif -%}
 
 {%- if video_ratio_desktop_value == "auto" -%}
   {%- assign video_ratio_desktop_value = 1 -%}
 {%- endif -%}
 {%- if video_ratio_mobile_value == "auto" -%}
   {%- assign video_ratio_mobile_value = 1 -%}
+{%- endif -%}
+
+{%- comment -%} Custom poster images: injected as the first poster attribute so they win over the video_tag default {%- endcomment -%}
+{%- assign poster_desktop_attr = "<video" -%}
+{%- assign poster_mobile_attr = "<video" -%}
+{%- if block.settings.video_poster_desktop != blank -%}
+  {%- capture poster_desktop_attr -%}<video poster="{{ block.settings.video_poster_desktop | image_url: width: 2400 }}"{%- endcapture -%}
+  {%- assign poster_mobile_attr = poster_desktop_attr -%}
+{%- endif -%}
+{%- if block.settings.video_poster_mobile != blank -%}
+  {%- capture poster_mobile_attr -%}<video poster="{{ block.settings.video_poster_mobile | image_url: width: 1200 }}"{%- endcapture -%}
+{%- endif -%}
+
+{%- comment -%} Poster overlay: covers the paused video (hides iOS native play glyph), fades out on play {%- endcomment -%}
+{%- assign poster_overlay_markup = "" -%}
+{%- if block.settings.background_media == "video" -%}
+  {%- assign ov_desktop_video = block.settings.video_desktop -%}
+  {%- assign ov_mobile_video = block.settings.video_mobile -%}
+  {%- if ov_desktop_video == blank and ov_mobile_video != blank -%}
+    {%- assign ov_desktop_video = ov_mobile_video -%}
+    {%- assign ov_mobile_video = blank -%}
+  {%- endif -%}
+  {%- assign ov_desktop_img = block.settings.video_poster_desktop -%}
+  {%- if ov_desktop_img == blank and ov_desktop_video != blank -%}
+    {%- assign ov_desktop_img = ov_desktop_video.preview_image -%}
+  {%- endif -%}
+  {%- assign ov_mobile_img = block.settings.video_poster_mobile -%}
+  {%- if ov_mobile_img == blank and ov_mobile_video != blank -%}
+    {%- assign ov_mobile_img = ov_mobile_video.preview_image -%}
+  {%- endif -%}
+  {%- if ov_mobile_img == blank -%}
+    {%- assign ov_mobile_img = ov_desktop_img -%}
+  {%- endif -%}
+  {%- capture poster_overlay_markup -%}
+    <div class="slide-video-poster" id="video-poster-{{ block.id }}" aria-hidden="true">
+      {%- if ov_desktop_img != blank -%}
+        {{ ov_desktop_img | image_url: width: 2400 | image_tag: loading: "eager", sizes: "100vw", widths: "800,1200,1600,2000,2400", class: "hide-mobile", alt: "" }}
+      {%- endif -%}
+      {%- if ov_mobile_img != blank -%}
+        {{ ov_mobile_img | image_url: width: 1200 | image_tag: loading: "eager", sizes: "100vw", widths: "600,800,1000,1200", class: "hide-desktop", alt: "" }}
+      {%- endif -%}
+    </div>
+  {%- endcapture -%}
 {%- endif -%}
 
 {%- capture styles -%}
@@ -64,12 +105,6 @@
     --video-aspect-ratio-desktop: {{ video_ratio_desktop_value | times: 100.000 }}%;
 
     --split-slide-mobile-height: {{ block.settings.split_slide_min_height_mobile | default: 0 }}vh;
-  }
-
-  .video-poster-overlay.hide-poster {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease;
   }
 
   .custom-slideshow--slide-video>video {
@@ -182,7 +217,6 @@
 
         {%- if block.settings.background_media == "video" -%}
           <div class="custom-slideshow--slide-video" id="video-container-{{ block.id }}">
-            {%- if block.settings.video_source == "shopify" -%}
               {%- assign desktop_video = block.settings.video_desktop -%}
               {%- assign mobile_video = block.settings.video_mobile -%}
               {%- if desktop_video == blank and mobile_video != blank -%}
@@ -195,16 +229,13 @@
                 {%- if mobile_video != blank -%}
                   {%- assign desktop_video_class = "hide-mobile" -%}
                 {%- endif -%}
-                {{ desktop_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: desktop_video_class }}
+                {{ desktop_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: desktop_video_class | replace_first: "<video", poster_desktop_attr }}
 
                 {%- if mobile_video != blank -%}
-                  {{ mobile_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: "hide-desktop" }}
+                  {{ mobile_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: "hide-desktop" | replace_first: "<video", poster_mobile_attr }}
                 {%- endif -%}
               {%- endif -%}
-            {%- else -%}
-              <div class="video-poster-overlay" id="poster-{{ block.id }}"></div>
-              <div id="video-{{ block.id }}"></div>
-            {%- endif -%}
+              {{ poster_overlay_markup }}
           </div>
       {% else %}    
           {%- capture class_attribute -%}{% if block.settings.mobile_image != blank %}hide-mobile{% endif %}{%- endcapture -%}
@@ -242,7 +273,6 @@
     <a href="{{ block.settings.url }}">
       {%- if block.settings.background_media == "video" -%}
         <div class="custom-slideshow--slide-video" id="video-container-{{ block.id }}">
-          {%- if block.settings.video_source == "shopify" -%}
             {%- assign desktop_video = block.settings.video_desktop -%}
             {%- assign mobile_video = block.settings.video_mobile -%}
             {%- if desktop_video == blank and mobile_video != blank -%}
@@ -255,16 +285,13 @@
               {%- if mobile_video != blank -%}
                 {%- assign desktop_video_class = "hide-mobile" -%}
               {%- endif -%}
-              {{ desktop_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: desktop_video_class }}
+              {{ desktop_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: desktop_video_class | replace_first: "<video", poster_desktop_attr }}
 
               {%- if mobile_video != blank -%}
-                {{ mobile_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: "hide-desktop" }}
+                {{ mobile_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, class: "hide-desktop" | replace_first: "<video", poster_mobile_attr }}
               {%- endif -%}
             {%- endif -%}
-          {%- else -%}
-            <div class="video-poster-overlay" id="poster-{{ block.id }}"></div>
-            <div id="video-{{ block.id }}"></div>
-          {%- endif -%}
+            {{ poster_overlay_markup }}
         </div>
       {% else %}
   
@@ -288,68 +315,178 @@
     </a>
     {% endunless %}
 
+  {%- if block.settings.background_media == "video" -%}
+    <button type="button" class="slide-video-toggle" id="video-toggle-{{ block.id }}" data-pos-mobile="{{ block.settings.video_toggle_position_mobile | default: 'bottom_right' }}" data-pos-desktop="{{ block.settings.video_toggle_position_desktop | default: 'bottom_right' }}" aria-label="Play video" aria-controls="video-container-{{ block.id }}">
+      <svg class="slide-video-toggle__play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>
+      <svg class="slide-video-toggle__pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="7" y="5.5" width="3.5" height="13" rx="1" fill="currentColor"/><rect x="13.5" y="5.5" width="3.5" height="13" rx="1" fill="currentColor"/></svg>
+    </button>
+  {%- endif -%}
 
 </div>
 
-  {%- if block.settings.background_media == "video" and block.settings.video_source == "vimeo" -%}
+  {%- if block.settings.background_media == "video" -%}
+  <style>
+    .custom-slideshow--slide .slide-video-toggle {
+      --toggle-inset: 20px;
+      display: none;
+      position: absolute;
+      inset: auto var(--toggle-inset) var(--toggle-inset) auto;
+      transform: none;
+      z-index: 4;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      margin: 0;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.55);
+      color: #fff;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      -webkit-appearance: none;
+      appearance: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .custom-slideshow--slide .slide-video-toggle.is-visible { display: flex; }
+    /* Button position: mobile below 740px, desktop at 740px and up */
+    @media only screen and (max-width: 739px) {
+  .custom-slideshow--slide .slide-video-toggle[data-pos-mobile="top_left"] { inset: var(--toggle-inset) auto auto var(--toggle-inset); transform: none; }
+  .custom-slideshow--slide .slide-video-toggle[data-pos-mobile="top_center"] { inset: var(--toggle-inset) auto auto 50%; transform: translateX(-50%); }
+  .custom-slideshow--slide .slide-video-toggle[data-pos-mobile="top_right"] { inset: var(--toggle-inset) var(--toggle-inset) auto auto; transform: none; }
+  .custom-slideshow--slide .slide-video-toggle[data-pos-mobile="middle_left"] { inset: 50% auto auto var(--toggle-inset); transform: translateY(-50%); }
+  .custom-slideshow--slide .slide-video-toggle[data-pos-mobile="middle_center"] { inset: 50% auto auto 50%; transform: translate(-50%, -50%); }
+  .custom-slideshow--slide .slide-video-toggle[data-pos-mobile="middle_right"] { inset: 50% var(--toggle-inset) auto auto; transform: translateY(-50%); }
+  .custom-slideshow--slide .slide-video-toggle[data-pos-mobile="bottom_left"] { inset: auto auto var(--toggle-inset) var(--toggle-inset); transform: none; }
+  .custom-slideshow--slide .slide-video-toggle[data-pos-mobile="bottom_center"] { inset: auto auto var(--toggle-inset) 50%; transform: translateX(-50%); }
+  .custom-slideshow--slide .slide-video-toggle[data-pos-mobile="bottom_right"] { inset: auto var(--toggle-inset) var(--toggle-inset) auto; transform: none; }
+    }
+    @media only screen and (min-width: 740px) {
+  .custom-slideshow--slide .slide-video-toggle[data-pos-desktop="top_left"] { inset: var(--toggle-inset) auto auto var(--toggle-inset); transform: none; }
+  .custom-slideshow--slide .slide-video-toggle[data-pos-desktop="top_center"] { inset: var(--toggle-inset) auto auto 50%; transform: translateX(-50%); }
+  .custom-slideshow--slide .slide-video-toggle[data-pos-desktop="top_right"] { inset: var(--toggle-inset) var(--toggle-inset) auto auto; transform: none; }
+  .custom-slideshow--slide .slide-video-toggle[data-pos-desktop="middle_left"] { inset: 50% auto auto var(--toggle-inset); transform: translateY(-50%); }
+  .custom-slideshow--slide .slide-video-toggle[data-pos-desktop="middle_center"] { inset: 50% auto auto 50%; transform: translate(-50%, -50%); }
+  .custom-slideshow--slide .slide-video-toggle[data-pos-desktop="middle_right"] { inset: 50% var(--toggle-inset) auto auto; transform: translateY(-50%); }
+  .custom-slideshow--slide .slide-video-toggle[data-pos-desktop="bottom_left"] { inset: auto auto var(--toggle-inset) var(--toggle-inset); transform: none; }
+  .custom-slideshow--slide .slide-video-toggle[data-pos-desktop="bottom_center"] { inset: auto auto var(--toggle-inset) 50%; transform: translateX(-50%); }
+  .custom-slideshow--slide .slide-video-toggle[data-pos-desktop="bottom_right"] { inset: auto var(--toggle-inset) var(--toggle-inset) auto; transform: none; }
+    }
+    .custom-slideshow--slide .slide-video-toggle svg { width: 22px; height: 22px; display: block; }
+    .custom-slideshow--slide .slide-video-toggle .slide-video-toggle__pause { display: none; }
+    .custom-slideshow--slide .slide-video-toggle.is-playing .slide-video-toggle__play { display: none; }
+    .custom-slideshow--slide .slide-video-toggle.is-playing .slide-video-toggle__pause { display: block; }
+    .custom-slideshow--slide .slide-video-toggle:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    .custom-slideshow--slide-video .slide-video-poster {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+    .custom-slideshow--slide-video .slide-video-poster img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .custom-slideshow--slide-video .slide-video-poster.is-hidden { opacity: 0; }
+    .custom-slideshow--slide-video video { -webkit-appearance: none; appearance: none; }
+    /* Hide iOS Safari's native centre play overlay when autoplay is blocked */
+    .custom-slideshow--slide-video video::-webkit-media-controls-start-playback-button,
+    .custom-slideshow--slide-video video::-webkit-media-controls-overlay-play-button,
+    .custom-slideshow--slide-video video::-webkit-media-controls-panel,
+    .custom-slideshow--slide-video video::-webkit-media-controls {
+      display: none !important;
+      -webkit-appearance: none !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+  </style>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var videoId{{ block.id }} = "{{ block.settings.video_url_desktop | remove: 'https://vimeo.com/' }}";
-      var vimeoEmbedUrl{{ block.id }}= `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId{{ block.id }}}`;
+    (function () {
+      function init() {
+        var container = document.getElementById('video-container-{{ block.id }}');
+        var btn = document.getElementById('video-toggle-{{ block.id }}');
+        if (!container || !btn || btn.dataset.bound) return;
+        btn.dataset.bound = 'true';
 
-      if (window.innerWidth > 469) {
-        var videoId{{ block.id }} = "{{ block.settings.video_url_desktop | remove: 'https://vimeo.com/' }}";
-        var vimeoEmbedUrl{{ block.id }} = `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId{{ block.id }}}`;
+        var videos = Array.prototype.slice.call(container.querySelectorAll('video'));
+        if (!videos.length) return;
 
-      } else {
-        var videoId{{ block.id }} = "{{ block.settings.video_url_mobile | remove: 'https://vimeo.com/' }}";
-        var vimeoEmbedUrl{{ block.id }} = `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${videoId{{ block.id }}}`;
+        var userControlled = false;
 
+        function activeVideo() {
+          for (var i = 0; i < videos.length; i++) {
+            if (window.getComputedStyle(videos[i]).display !== 'none') return videos[i];
+          }
+          return videos[0];
+        }
+
+        var poster = document.getElementById('video-poster-{{ block.id }}');
+
+        function setState(playing) {
+          btn.classList.toggle('is-playing', playing);
+          btn.setAttribute('aria-label', playing ? 'Pause video' : 'Play video');
+          if (poster) poster.classList.toggle('is-hidden', playing);
+        }
+
+        function showButton() {
+          btn.classList.add('is-visible');
+        }
+
+        // Low power mode / autoplay blocked: play() rejects, or the video never leaves paused.
+        function probeAutoplay() {
+          if (userControlled) return;
+          var v = activeVideo();
+          if (!v.paused) { setState(true); return; }
+          var p;
+          try { p = v.play(); } catch (e) { showButton(); setState(false); return; }
+          if (p && typeof p.catch === 'function') {
+            p.then(function () { btn.classList.add('is-playing'); }).catch(function () { showButton(); setState(false); });
+          } else if (v.paused) {
+            showButton(); setState(false);
+          }
+        }
+
+        videos.forEach(function (v) {
+          v.addEventListener('playing', function () { setState(true); });
+          v.addEventListener('pause', function () { setState(false); });
+          // iOS Low Power Mode fires suspend and leaves the video paused
+          v.addEventListener('suspend', function () { if (v.paused) probeAutoplay(); });
+          v.addEventListener('loadedmetadata', probeAutoplay);
+        });
+
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          userControlled = true;
+          var v = activeVideo();
+          if (v.paused) {
+            var p = v.play();
+            if (p && typeof p.catch === 'function') p.catch(function () { setState(false); });
+          } else {
+            v.pause();
+          }
+        });
+
+        // Fallback probe in case no media events fire
+        setTimeout(probeAutoplay, 1500);
+        setTimeout(probeAutoplay, 4000);
       }
 
-      
-      fetch(vimeoEmbedUrl{{ block.id }})
-        .then(response => response.json())
-        .then(data => {
-          let thumbnailUrl{{ block.id }} = data.thumbnail_url;
-          var posterOverlay{{ block.id }} = document.getElementById('poster-{{ block.id }}');
-
-          //    if (window.innerWidth > 469) {
-          //   let parts = thumbnailUrl.split("_");
-          //   let lastPart = parts.pop(); 
-          //   let updatedThumbnailUrl = parts.join("_") + "_252x108." + lastPart.split(".").pop();
-          //   posterOverlay.style.backgroundImage = `url('${updatedThumbnailUrl}')`;
-          // } else {
-          //   let parts = thumbnailUrl.split("_");
-          //   let lastPart = parts.pop(); 
-          //   let updatedThumbnailUrl = parts.join("_") + "_250x250." + lastPart.split(".").pop();
-          //   posterOverlay.style.backgroundImage = `url('${updatedThumbnailUrl}')`;
-          // }
-
-          posterOverlay{{ block.id }}.style.backgroundImage = `url('${thumbnailUrl{{ block.id }}}')`;
-
-        })
-        .catch(err => console.error('Error fetching thumbnail:', err));
-
-      var playerOptions{{ block.id }} = {
-        id: videoId{{ block.id }},
-        background: true,
-        loop: true,
-        autoplay: true,
-        muted: true
-      };
-
-      var player{{ block.id }} = new Vimeo.Player('video-{{ block.id }}', playerOptions{{ block.id }});
-      // Hide overlay when video has loaded
-      // player.on('loaded', function() {
-      //   document.getElementById('poster-{{ block.id }}').classList.add('hide-poster');
-      // });
-      player{{ block.id }}.on('play', function() {
-        document.getElementById('poster-{{ block.id }}').classList.add('hide-poster');
-      });
-    });
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+      document.addEventListener('shopify:section:load', init);
+    })();
   </script>
   {%- endif -%}
+
 
 {% if section.settings.enable_slideshow %}
 </div>
@@ -424,39 +561,61 @@
           "content": "--- 🎥 VIDEO  ---"
         },
         {
-          "type": "select",
-          "id": "video_source",
-          "label": "Video source",
-          "default": "vimeo",
-          "options": [
-            {
-              "value": "vimeo",
-              "label": "Vimeo"
-            },
-            {
-              "value": "shopify",
-              "label": "Shopify"
-            }
-          ]
-        },
-        {
           "type": "video",
           "id": "video_desktop",
-          "label": "Shopify video (Desktop)",
-          "info": "Used when Video source is Shopify."
+          "label": "Video (Desktop)"
         },
         {
           "type": "video",
           "id": "video_mobile",
-          "label": "Shopify video (Mobile)",
-          "info": "Optional. Used when Video source is Shopify."
+          "label": "Video (Mobile)",
+          "info": "Optional."
         },
         {
-          "type": "video_url",
-          "id": "video_url_desktop",
-          "label": "Vimeo video (Desktop)",
-          "accept": [
-            "vimeo"
+          "type": "image_picker",
+          "id": "video_poster_desktop",
+          "label": "Video poster image (Desktop)",
+          "info": "Optional. Shown before the video plays (e.g. in Low Power Mode)."
+        },
+        {
+          "type": "image_picker",
+          "id": "video_poster_mobile",
+          "label": "Video poster image (Mobile)",
+          "info": "Optional. Falls back to the desktop poster."
+        },
+        {
+          "type": "select",
+          "id": "video_toggle_position_desktop",
+          "label": "Play/pause button position (Desktop)",
+          "info": "Button only appears when autoplay is blocked (e.g. iOS Low Power Mode).",
+          "default": "bottom_right",
+          "options": [
+            { "value": "top_left", "label": "Top left" },
+            { "value": "top_center", "label": "Top center" },
+            { "value": "top_right", "label": "Top right" },
+            { "value": "middle_left", "label": "Middle left" },
+            { "value": "middle_center", "label": "Middle center" },
+            { "value": "middle_right", "label": "Middle right" },
+            { "value": "bottom_left", "label": "Bottom left" },
+            { "value": "bottom_center", "label": "Bottom center" },
+            { "value": "bottom_right", "label": "Bottom right" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "video_toggle_position_mobile",
+          "label": "Play/pause button position (Mobile)",
+          "default": "bottom_right",
+          "options": [
+            { "value": "top_left", "label": "Top left" },
+            { "value": "top_center", "label": "Top center" },
+            { "value": "top_right", "label": "Top right" },
+            { "value": "middle_left", "label": "Middle left" },
+            { "value": "middle_center", "label": "Middle center" },
+            { "value": "middle_right", "label": "Middle right" },
+            { "value": "bottom_left", "label": "Bottom left" },
+            { "value": "bottom_center", "label": "Bottom center" },
+            { "value": "bottom_right", "label": "Bottom right" }
           ]
         },
         {
@@ -466,7 +625,7 @@
           "options": [
             {
               "value": "auto",
-              "label": "Auto (Shopify only)"
+              "label": "Auto"
             },
             {
               "value": "1",
@@ -487,21 +646,13 @@
           ]
         },
         {
-          "type": "video_url",
-          "id": "video_url_mobile",
-          "label": "Vimeo video (Mobile)",
-          "accept": [
-            "vimeo"
-          ]
-        },
-        {
           "type": "select",
           "id": "video_aspect_ratio_mobile",
           "label": "Video aspect ratio (Mobile)",
           "options": [
             {
               "value": "auto",
-              "label": "Auto (Shopify only)"
+              "label": "Auto"
             },
             {
               "value": "1",

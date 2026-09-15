@@ -1,0 +1,57 @@
+{
+  "_comment": "Paste this object into the live theme's templates/collection.build-your-routine.json under \"sections\" (key: byo_quiz), then add \"byo_quiz\" to \"order\" right after the banner. Product handles are already filled in. Products not yet on the store (mellow-milk, much-calmer-skin, supremely-soothing-moisturiser) will render nothing until they exist.",
+  "byo_quiz": {
+    "type": "byo-quiz",
+    "blocks": {
+      "juicy_gel":         { "type": "product", "settings": { "product": "juicy-gel", "category": "cleanse", "usage": "AM/PM", "ages": "all", "skins": "combination, just-skin", "concerns": "all", "extra": false, "fallback": false, "excludes": "", "subtitle": "Soap-Free Gel Cleanser" } },
+      "properly_clean":    { "type": "product", "settings": { "product": "properly-clean", "category": "cleanse", "usage": "AM/PM", "ages": "all", "skins": "oily", "concerns": "all", "extra": false, "fallback": false, "excludes": "", "subtitle": "Mousse Cleanser" } },
+      "soft_and_creamy":   { "type": "product", "settings": { "product": "soft-and-creamy", "category": "cleanse", "usage": "AM/PM", "ages": "all", "skins": "dry, very-dry", "concerns": "all", "extra": false, "fallback": false, "excludes": "", "subtitle": "Hydrating Cream Cleanser" } },
+      "mellow_milk":       { "type": "product", "settings": { "product": "mellow-milk", "category": "cleanse", "usage": "AM/PM", "ages": "all", "skins": "sensitive", "concerns": "all", "extra": false, "fallback": false, "excludes": "", "subtitle": "Milk Cleanser" } },
+      "fancy_face":        { "type": "product", "settings": { "product": "fancy-face", "category": "cleanse", "usage": "PM", "ages": "all", "skins": "!sensitive", "concerns": "all", "extra": true, "fallback": false, "excludes": "", "subtitle": "Nourishing Oil Cleanser" } },
+
+      "glow_exfoliator":       { "type": "product", "settings": { "product": "glow-exfoliator", "category": "exfoliate", "usage": "PM", "ages": "all", "skins": "just-skin, combination, dry, very-dry, sensitive", "concerns": "fine-lines, dehydration, dullness", "extra": false, "fallback": false, "excludes": "", "subtitle": "Glycolic and Mandelic Acid" } },
+      "clarifying_exfoliator": { "type": "product", "settings": { "product": "clarifying-exfoliator", "category": "exfoliate", "usage": "PM", "ages": "all", "skins": "oily", "concerns": "congestion", "extra": false, "fallback": false, "excludes": "", "subtitle": "BHA Toner" } },
+      "gentle_exfoliator":     { "type": "product", "settings": { "product": "gentle-exfoliator", "category": "exfoliate", "usage": "PM", "ages": "all", "skins": "sensitive", "concerns": "all", "extra": false, "fallback": false, "excludes": "", "subtitle": "Lactic Acid" } },
+
+      "much_brighter_skin":   { "type": "product", "settings": { "product": "much-brighter-skin", "category": "serum", "usage": "AM/PM", "ages": "all", "skins": "!sensitive, !oily", "concerns": "dullness", "extra": false, "fallback": false, "excludes": "", "subtitle": "Vitamin C Serum" } },
+      "much_plumper_skin":    { "type": "product", "settings": { "product": "much-plumper-skin", "category": "serum", "usage": "AM/PM", "ages": "all", "skins": "!sensitive, !oily", "concerns": "dehydration", "extra": false, "fallback": false, "excludes": "", "subtitle": "Hyaluronic Serum" } },
+      "very_amazing_retinal": { "type": "product", "settings": { "product": "very-amazing-retinal", "category": "serum", "usage": "PM", "ages": "26-35, 36-45, 46-55, 56+", "skins": "!sensitive", "concerns": "all", "extra": false, "fallback": false, "excludes": "clarifying-face-hero", "subtitle": "Vitamin A Face Serum" } },
+      "much_calmer_skin":     { "type": "product", "settings": { "product": "much-calmer-skin", "category": "serum", "usage": "AM/PM", "ages": "all", "skins": "sensitive", "concerns": "all", "extra": false, "fallback": false, "excludes": "", "subtitle": "Soothing Serum" } },
+
+      "clarifying_face_hero": { "type": "product", "settings": { "product": "clarifying-face-hero", "category": "oil", "usage": "AM/PM", "ages": "all", "skins": "combination, oily", "concerns": "congestion", "extra": false, "fallback": false, "excludes": "face-hero, very-amazing-retinal", "subtitle": "Clarifying Face Oil" } },
+      "face_hero":            { "type": "product", "settings": { "product": "face-hero", "category": "oil", "usage": "AM/PM", "ages": "all", "skins": "!sensitive, !oily", "concerns": "fine-lines, dehydration, dullness", "extra": false, "fallback": false, "excludes": "clarifying-face-hero", "subtitle": "Nourishing Face Oil" } },
+
+      "very_luxe_face_cream":   { "type": "product", "settings": { "product": "very-luxe-face-cream", "category": "moisturiser", "usage": "AM/PM", "ages": "36-45, 46-55, 56+", "skins": "!sensitive, !oily", "concerns": "fine-lines, dullness", "extra": false, "fallback": false, "excludes": "", "subtitle": "Firming Moisturiser" } },
+      "very_useful_face_cream": { "type": "product", "settings": { "product": "very-useful-face-cream", "category": "moisturiser", "usage": "AM/PM", "ages": "16-25, 26-35", "skins": "!sensitive, !oily", "concerns": "fine-lines, dullness", "extra": false, "fallback": false, "excludes": "", "subtitle": "Daily Moisturiser" } },
+      "very_lightweight":       { "type": "product", "settings": { "product": "very-lightweight-moisturiser", "category": "moisturiser", "usage": "AM/PM", "ages": "all", "skins": "combination, oily", "concerns": "all", "extra": false, "fallback": false, "excludes": "", "subtitle": "Lightweight Moisturiser" } },
+      "supremely_soothing":     { "type": "product", "settings": { "product": "supremely-soothing-moisturiser", "category": "moisturiser", "usage": "AM/PM", "ages": "all", "skins": "sensitive", "concerns": "all", "extra": false, "fallback": false, "excludes": "", "subtitle": "Soothing Moisturiser" } },
+
+      "nifty_fifty_mineral":  { "type": "product", "settings": { "product": "nifty-fifty-mineral", "category": "protect", "usage": "AM", "ages": "all", "skins": "sensitive, oily", "concerns": "all", "extra": false, "fallback": false, "excludes": "", "subtitle": "Mineral SPF50" } },
+      "nifty_fifty":          { "type": "product", "settings": { "product": "nifty-fifty", "category": "protect", "usage": "AM", "ages": "all", "skins": "!sensitive, !oily", "concerns": "all", "extra": false, "fallback": false, "excludes": "", "subtitle": "SPF50 Moisturiser" } },
+      "nifty_fifty_fallback": { "type": "product", "settings": { "product": "nifty-fifty", "category": "protect", "usage": "AM", "ages": "all", "skins": "all", "concerns": "all", "extra": false, "fallback": true, "excludes": "", "subtitle": "SPF50 Moisturiser" } }
+    },
+    "block_order": [
+      "juicy_gel", "properly_clean", "soft_and_creamy", "mellow_milk", "fancy_face",
+      "glow_exfoliator", "clarifying_exfoliator", "gentle_exfoliator",
+      "much_brighter_skin", "much_plumper_skin", "very_amazing_retinal", "much_calmer_skin",
+      "clarifying_face_hero", "face_hero",
+      "very_luxe_face_cream", "very_useful_face_cream", "very_lightweight", "supremely_soothing",
+      "nifty_fifty_mineral", "nifty_fifty", "nifty_fifty_fallback"
+    ],
+    "settings": {
+      "title": "Not sure where to start?",
+      "subtitle": "Three quick questions and we'll help you create your dream routine!",
+      "open_by_default": true,
+      "q1_title": "How old are you?",
+      "q2_title": "Tell us about your skin",
+      "q3_title": "What's bugging you the most?",
+      "results_title": "Your Very Good Routine",
+      "results_subtitle": "Picked especially for you, based on your skin and what it needs most.",
+      "show_add_all": true,
+      "add_all_label": "Add all to bundle • Save 10%",
+      "footnote": "Add these from the steps below. Any 4+ gets you 10% off!",
+      "product_cap": 8,
+      "min_items": 6
+    }
+  }
+}

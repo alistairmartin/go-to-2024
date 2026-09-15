@@ -1,0 +1,29 @@
+{%- comment -%}
+  Sensitive Skin theming.
+  When the current product, collection or page handle contains "sensitive",
+  recolour the announcement bar + header and the footer using the
+  "Sensitive Skin" theme settings. Rendered from layout/theme.liquid;
+  `is_sensitive` is assigned there.
+{%- endcomment -%}
+{%- if is_sensitive -%}
+  {%- assign sk_header = settings.sensitive_header_background -%}
+  {%- assign sk_footer = settings.sensitive_footer_background -%}
+  <style>
+    {%- if sk_header != blank -%}
+    body.sensitive-skin store-header.header {
+      --header-background: {{ sk_header.red }}, {{ sk_header.green }}, {{ sk_header.blue }};
+      background: {{ sk_header }} !important;
+    }
+    body.sensitive-skin .shopify-section--announcement-bar .announcement-bar {
+      --section-background: {{ sk_header.red }}, {{ sk_header.green }}, {{ sk_header.blue }} !important;
+      background: {{ sk_header }} !important;
+    }
+    {%- endif -%}
+    {%- if sk_footer != blank -%}
+    body.sensitive-skin .shopify-section--footer .footer {
+      --background: {{ sk_footer.red }}, {{ sk_footer.green }}, {{ sk_footer.blue }} !important;
+      background: {{ sk_footer }} !important;
+    }
+    {%- endif -%}
+  </style>
+{%- endif -%}

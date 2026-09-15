@@ -1,0 +1,243 @@
+{%- comment -%}
+  BYO Routine Quiz
+  ----------------
+  Three questions (age, skin type, concern) → a recommended routine built from
+  the product blocks below, using the rules in "Routines Page" (examples/byo quiz).
+
+  Output contract (read by byo-bundle.js and anything else on the page):
+    window.byo_quiz_products  – array of variant ids (first available variant), in routine order
+    window.byo_quiz_answers   – { age, skin_type, concern } as display labels, or null
+    window.byo_quiz_progress  – "0/3" … "3/3" (how far the customer got)
+    document event "byo-quiz:complete" with detail { products, answers, items }
+
+  Each product block carries its own eligibility rules (ages / skin types /
+  concerns) plus optional "extra" (always added alongside the step's main pick,
+  e.g. Fancy Face PM cleanse), "fallback" (used only when nothing else in the
+  step matches, e.g. an SPF) and "excludes" (handles that can't share a routine).
+{%- endcomment -%}
+
+{{ 'byo-quiz.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'byo-quiz.min.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign body_id = 'byo-quiz-body-' | append: section.id
+  assign open_by_default = section.settings.open_by_default
+-%}
+
+<byo-quiz
+  class="byo-quiz{% unless open_by_default %} byo-quiz--collapsed{% endunless %}"
+  id="byo-quiz-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  data-cap="{{ section.settings.product_cap | default: 8 }}"
+  data-min="{{ section.settings.min_items | default: 6 }}"
+  data-storage-key="byo_quiz_{{ section.id }}"
+>
+  <div class="byo-quiz__header">
+    <button type="button" class="byo-quiz__toggle" aria-expanded="{% if open_by_default %}true{% else %}false{% endif %}" aria-controls="{{ body_id }}" data-quiz-toggle>
+      <span class="byo-quiz__header-copy">
+        <span class="byo-quiz__title">{{ section.settings.title }}</span>
+        <span class="byo-quiz__subtitle">{{ section.settings.subtitle }}</span>
+      </span>
+      <span class="byo-quiz__toggle-icon" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <div class="byo-quiz__body" id="{{ body_id }}" {% unless open_by_default %}hidden{% endunless %}>
+    <div class="byo-quiz__questions" data-quiz-questions aria-live="polite"></div>
+    <div class="byo-quiz__results" data-quiz-results hidden></div>
+  </div>
+
+  <script type="application/json" data-quiz-config>
+    {
+      "copy": {
+        "question_label": "Question {n} of {total}",
+        "back": {{ section.settings.back_label | default: 'Back' | json }},
+        "results_title": {{ section.settings.results_title | json }},
+        "results_subtitle": {{ section.settings.results_subtitle | json }},
+        "start_again": {{ section.settings.start_again_label | default: 'Start again' | json }},
+        "add_all": {{ section.settings.add_all_label | json }},
+        "added": {{ section.settings.added_label | default: 'Added to your bundle' | json }},
+        "disclaimer": {{ section.settings.disclaimer | json }},
+        "footnote": {{ section.settings.footnote | json }},
+        "empty": {{ section.settings.empty_message | json }},
+        "step": "Step {n}"
+      },
+      "show_add_all": {{ section.settings.show_add_all | json }},
+      "questions": [
+        {
+          "id": "age",
+          "title": {{ section.settings.q1_title | json }},
+          "options": [
+            { "value": "16-25", "label": "16-25" },
+            { "value": "26-35", "label": "26-35" },
+            { "value": "36-45", "label": "36-45" },
+            { "value": "46-55", "label": "46-55" },
+            { "value": "56+",   "label": "Over 56" }
+          ]
+        },
+        {
+          "id": "skin_type",
+          "title": {{ section.settings.q2_title | json }},
+          "options": [
+            { "value": "just-skin",   "label": "Just skin" },
+            { "value": "combination", "label": "Combination" },
+            { "value": "oily",        "label": "Oily" },
+            { "value": "dry",         "label": "Dry" },
+            { "value": "very-dry",    "label": "Very dry" },
+            { "value": "sensitive",   "label": "Sensitive" }
+          ]
+        },
+        {
+          "id": "concern",
+          "title": {{ section.settings.q3_title | json }},
+          "options": [
+            { "value": "fine-lines",  "label": "Fine lines & ageing" },
+            { "value": "dehydration", "label": "Dehydration" },
+            { "value": "dullness",    "label": "Dullness & pigmentation" },
+            { "value": "congestion",  "label": "Congestion & breakouts" }
+          ]
+        }
+      ],
+      "categories": [
+        { "id": "cleanse",     "label": "Cleanse" },
+        { "id": "exfoliate",   "label": "Exfoliate" },
+        { "id": "serum",       "label": "Treat" },
+        { "id": "oil",         "label": "Nourish" },
+        { "id": "moisturiser", "label": "Nourish" },
+        { "id": "protect",     "label": "Protect" }
+      ],
+      "products": [
+        {%- for block in section.blocks -%}
+          {%- assign product = block.settings.product -%}
+          {%- if product == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign variant = product.selected_or_first_available_variant -%}
+          {
+            "block_id": {{ block.id | json }},
+            "handle": {{ product.handle | json }},
+            "title": {{ product.title | json }},
+            "subtitle": {{ product.metafields.custom.product_subtitle__description | default: block.settings.subtitle | json }},
+            "url": {{ product.url | json }},
+            "image": {{ product | image_url: width: 240 | json }},
+            "price": {{ product.price | money_without_trailing_zeros | strip_html | json }},
+            "variant_id": {{ variant.id | json }},
+            "product_id": {{ product.id | json }},
+            "available": {{ product.available | json }},
+            "category": {{ block.settings.category | json }},
+            "usage": {{ block.settings.usage | json }},
+            "extra": {{ block.settings.extra | json }},
+            "fallback": {{ block.settings.fallback | json }},
+            "ages": {{ block.settings.ages | default: 'all' | json }},
+            "skins": {{ block.settings.skins | default: 'all' | json }},
+            "concerns": {{ block.settings.concerns | default: 'all' | json }},
+            "excludes": {{ block.settings.excludes | default: '' | json }}
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+</byo-quiz>
+
+{% schema %}
+{
+  "name": "BYO Routine Quiz",
+  "class": "shopify-section--byo-quiz",
+  "tag": "section",
+  "max_blocks": 40,
+  "settings": [
+    { "type": "header", "content": "Header" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Not sure where to start?" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Three quick questions and we'll help you create your dream routine!" },
+    { "type": "checkbox", "id": "open_by_default", "label": "Open by default", "default": true },
+
+    { "type": "header", "content": "Questions", "info": "Answer options are fixed because the product rules depend on them." },
+    { "type": "text", "id": "q1_title", "label": "Question 1 (age)", "default": "How old are you?" },
+    { "type": "text", "id": "q2_title", "label": "Question 2 (skin type)", "default": "Tell us about your skin" },
+    { "type": "text", "id": "q3_title", "label": "Question 3 (concern)", "default": "What's bugging you the most?" },
+    { "type": "text", "id": "back_label", "label": "Back link", "default": "Back" },
+
+    { "type": "header", "content": "Results" },
+    { "type": "text", "id": "results_title", "label": "Results title", "default": "Your Very Good Routine" },
+    { "type": "text", "id": "results_subtitle", "label": "Results subtitle", "default": "Picked especially for you, based on your skin and what it needs most." },
+    { "type": "text", "id": "start_again_label", "label": "Start again link", "default": "Start again" },
+    { "type": "checkbox", "id": "show_add_all", "label": "Show 'Add all to bundle' button", "default": true },
+    { "type": "text", "id": "add_all_label", "label": "Add all button", "default": "Add all to bundle • Save 10%" },
+    { "type": "text", "id": "added_label", "label": "Add all button (after click)", "default": "Added to your bundle" },
+    { "type": "text", "id": "disclaimer", "label": "Disclaimer", "default": "*Some products are intended for AM or PM use and shouldn't be combined with certain ingredients. Always follow the product directions." },
+    { "type": "text", "id": "footnote", "label": "Footnote", "default": "Add these from the steps below. Any 4+ gets you 10% off!" },
+    { "type": "text", "id": "empty_message", "label": "No-match message", "default": "We couldn't find a full routine for that combo. Browse the steps below to build your own." },
+
+    { "type": "header", "content": "Rules" },
+    { "type": "range", "id": "product_cap", "label": "Maximum products in a routine", "min": 4, "max": 12, "step": 1, "default": 8 },
+    { "type": "range", "id": "min_items", "label": "Target minimum products", "min": 3, "max": 8, "step": 1, "default": 6, "info": "Informational only. Steps with no eligible product are skipped." }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product rule",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle fallback", "info": "Used when the product has no custom.product_subtitle__description metafield." },
+        {
+          "type": "select",
+          "id": "category",
+          "label": "Routine step",
+          "default": "cleanse",
+          "options": [
+            { "value": "cleanse", "label": "1. Cleanse" },
+            { "value": "exfoliate", "label": "2. Exfoliate" },
+            { "value": "serum", "label": "3. Treat (serum)" },
+            { "value": "oil", "label": "4. Nourish (oil)" },
+            { "value": "moisturiser", "label": "5. Nourish (moisturiser)" },
+            { "value": "protect", "label": "6. Protect (SPF)" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "usage",
+          "label": "Usage badge",
+          "default": "AM/PM",
+          "options": [
+            { "value": "AM/PM", "label": "AM/PM" },
+            { "value": "AM", "label": "AM" },
+            { "value": "PM", "label": "PM" }
+          ]
+        },
+        { "type": "text", "id": "ages", "label": "Ages", "default": "all", "info": "Comma separated: 16-25, 26-35, 36-45, 46-55, 56+ — or 'all'" },
+        { "type": "text", "id": "skins", "label": "Skin types", "default": "all", "info": "Comma separated: just-skin, combination, dry, very-dry, oily, sensitive — or 'all'. Prefix with ! to exclude, e.g. '!sensitive, !oily'" },
+        { "type": "text", "id": "concerns", "label": "Concerns", "default": "all", "info": "Comma separated: fine-lines, dehydration, dullness, congestion — or 'all'" },
+        { "type": "checkbox", "id": "extra", "label": "Add alongside the step's main pick", "default": false, "info": "E.g. Fancy Face as a PM cleanse on top of the AM/PM cleanser." },
+        { "type": "checkbox", "id": "fallback", "label": "Fallback only", "default": false, "info": "Only used when nothing else in this step matches (ignores skin/concern rules)." },
+        { "type": "text", "id": "excludes", "label": "Never with (product handles)", "info": "Comma separated handles, e.g. face-hero, very-amazing-retinal" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "BYO Routine Quiz",
+      "blocks": [
+        { "type": "product", "settings": { "category": "cleanse", "usage": "AM/PM", "ages": "all", "skins": "combination, just-skin", "concerns": "all", "subtitle": "Juicy Gel" } },
+        { "type": "product", "settings": { "category": "cleanse", "usage": "AM/PM", "ages": "all", "skins": "oily", "concerns": "all", "subtitle": "Properly Clean" } },
+        { "type": "product", "settings": { "category": "cleanse", "usage": "AM/PM", "ages": "all", "skins": "dry, very-dry", "concerns": "all", "subtitle": "Soft and Creamy" } },
+        { "type": "product", "settings": { "category": "cleanse", "usage": "AM/PM", "ages": "all", "skins": "sensitive", "concerns": "all", "subtitle": "Mellow Milk" } },
+        { "type": "product", "settings": { "category": "cleanse", "usage": "PM", "ages": "all", "skins": "!sensitive", "concerns": "all", "extra": true, "subtitle": "Fancy Face" } },
+        { "type": "product", "settings": { "category": "exfoliate", "usage": "PM", "ages": "all", "skins": "just-skin, combination, dry, very-dry, sensitive", "concerns": "fine-lines, dehydration, dullness", "subtitle": "Glow Exfoliator" } },
+        { "type": "product", "settings": { "category": "exfoliate", "usage": "PM", "ages": "all", "skins": "oily", "concerns": "congestion", "subtitle": "Clarifying Exfoliator" } },
+        { "type": "product", "settings": { "category": "exfoliate", "usage": "PM", "ages": "all", "skins": "sensitive", "concerns": "all", "subtitle": "Gentle Exfoliator" } },
+        { "type": "product", "settings": { "category": "serum", "usage": "AM/PM", "ages": "all", "skins": "!sensitive, !oily", "concerns": "dullness", "subtitle": "Much Brighter Skin" } },
+        { "type": "product", "settings": { "category": "serum", "usage": "AM/PM", "ages": "all", "skins": "!sensitive, !oily", "concerns": "dehydration", "subtitle": "Much Plumper Skin" } },
+        { "type": "product", "settings": { "category": "serum", "usage": "PM", "ages": "26-35, 36-45, 46-55, 56+", "skins": "!sensitive", "concerns": "all", "excludes": "clarifying-face-hero", "subtitle": "Very Amazing Retinal" } },
+        { "type": "product", "settings": { "category": "serum", "usage": "AM/PM", "ages": "all", "skins": "sensitive", "concerns": "all", "subtitle": "Much Calmer Skin" } },
+        { "type": "product", "settings": { "category": "oil", "usage": "AM/PM", "ages": "all", "skins": "combination, oily", "concerns": "congestion", "excludes": "face-hero, very-amazing-retinal", "subtitle": "Clarifying Face Hero" } },
+        { "type": "product", "settings": { "category": "oil", "usage": "AM/PM", "ages": "all", "skins": "!sensitive, !oily", "concerns": "fine-lines, dehydration, dullness", "excludes": "clarifying-face-hero", "subtitle": "Face Hero" } },
+        { "type": "product", "settings": { "category": "moisturiser", "usage": "AM/PM", "ages": "36-45, 46-55, 56+", "skins": "!sensitive, !oily", "concerns": "fine-lines, dullness", "subtitle": "Very Luxe Face Cream" } },
+        { "type": "product", "settings": { "category": "moisturiser", "usage": "AM/PM", "ages": "16-25, 26-35", "skins": "!sensitive, !oily", "concerns": "fine-lines, dullness", "subtitle": "Very Useful Face Cream" } },
+        { "type": "product", "settings": { "category": "moisturiser", "usage": "AM/PM", "ages": "all", "skins": "combination, oily", "concerns": "all", "subtitle": "Very Lightweight Moisturiser" } },
+        { "type": "product", "settings": { "category": "moisturiser", "usage": "AM/PM", "ages": "all", "skins": "sensitive", "concerns": "all", "subtitle": "Supremely Soothing Moisturiser" } },
+        { "type": "product", "settings": { "category": "protect", "usage": "AM", "ages": "all", "skins": "sensitive, oily", "concerns": "all", "subtitle": "Nifty Fifty Mineral" } },
+        { "type": "product", "settings": { "category": "protect", "usage": "AM", "ages": "all", "skins": "!sensitive, !oily", "concerns": "all", "subtitle": "Nifty Fifty" } },
+        { "type": "product", "settings": { "category": "protect", "usage": "AM", "ages": "all", "skins": "all", "concerns": "all", "fallback": true, "subtitle": "Nifty Fifty (fallback)" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

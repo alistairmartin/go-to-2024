@@ -1,0 +1,460 @@
+@import "components/media-queries";
+@import "components/variables";
+
+// Figma: 25-26 Design Updates › BYOB Quiz (node 3595-14556)
+$quizPeach: #f9c6b9;        // Go-To/Primary/0101
+$quizPeachLight: #fde4db;   // Go-To/Primary/0102
+$quizPeachBarely: #fef9f8;  // Go-To/Primary/0103
+$quizGrey: #484848;         // Neutrals/0404
+$quizGreyLight: #f2f2f2;    // Neutrals/0402
+$quizGreyLine: #dce0e4;     // Neutrals/0403
+$quizInk: #181818;
+
+.shopify-section--byo-quiz {
+  padding: 0 20px;
+
+  @include media-query($medium-up) {
+    padding: 0 40px;
+  }
+}
+
+.byo-quiz {
+  display: block;
+  background: #fff;
+  border: 1px solid $quizPeachLight;
+  border-radius: 12px;
+  overflow: hidden;
+  font-family: var(--text-font-family);
+  color: $quizInk;
+
+  * { box-sizing: border-box; }
+
+  /* ---------- header ---------- */
+
+  &__header {
+    background: $quizPeachBarely;
+    border-bottom: 1px solid $quizPeachLight;
+  }
+
+  &--collapsed &__header {
+    border-bottom-color: transparent;
+  }
+
+  &__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    padding: 15px;
+    margin: 0;
+    background: none;
+    border: 0;
+    text-align: left;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+
+    @include media-query($medium-up) {
+      padding: 15px 20px;
+    }
+  }
+
+  &__header-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    line-height: 24px;
+
+    @include media-query($medium-up) {
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    line-height: 22px;
+    color: $quizInk;
+  }
+
+  &__toggle-icon {
+    position: relative;
+    flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 12px;
+      height: 1.5px;
+      background: currentColor;
+      transform: translate(-50%, -50%);
+      transition: transform 0.2s ease;
+    }
+
+    &::after {
+      transform: translate(-50%, -50%) rotate(90deg);
+      opacity: 0;
+    }
+  }
+
+  &--collapsed &__toggle-icon::after {
+    opacity: 1;
+  }
+
+  /* ---------- questions ---------- */
+
+  &__body {
+    padding: 20px 20px 25px;
+
+    @include media-query($medium-up) {
+      padding: 20px 30px;
+    }
+  }
+
+  &__question {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+
+    @include media-query($medium-up) {
+      flex-direction: row;
+      align-items: flex-end;
+      gap: 40px;
+      text-align: left;
+    }
+  }
+
+  &__question-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 0 0 auto;
+    align-items: center;
+
+    @include media-query($medium-up) {
+      align-items: flex-start;
+      gap: 10px;
+    }
+  }
+
+  &__question-label {
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: $quizGrey;
+  }
+
+  &__question-title {
+    margin: 0;
+    font-family: var(--heading-font-family);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.1;
+    color: $quizInk;
+  }
+
+  &__options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    @include media-query($medium-up) {
+      justify-content: flex-start;
+      gap: 15px;
+    }
+  }
+
+  &__option {
+    padding: 10px 20px;
+    margin: 0;
+    background: #fff;
+    border: 1px solid $quizPeach;
+    border-radius: 100px;
+    font: inherit;
+    font-size: 14px;
+    line-height: 22px;
+    color: $quizInk;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    -webkit-appearance: none;
+    appearance: none;
+
+    &:hover,
+    &:focus-visible,
+    &[aria-pressed="true"] {
+      background: $quizPeachLight;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $quizInk;
+      outline-offset: 2px;
+    }
+  }
+
+  &__back,
+  &__restart {
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: 0;
+    font: inherit;
+    font-size: 13px;
+    line-height: 22px;
+    color: $quizGrey;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+
+    &:hover { color: $quizInk; }
+  }
+
+  /* ---------- results ---------- */
+
+  &__results {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    @include media-query($medium-up) {
+      gap: 20px;
+    }
+  }
+
+  &__results-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  &__results-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  &__results-title {
+    margin: 0;
+    font-family: var(--heading-font-family);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.2;
+    color: $quizInk;
+  }
+
+  &__results-subtitle {
+    margin: 0;
+    font-size: 16px;
+    line-height: 22px;
+    color: $quizGrey;
+  }
+
+  &__restart {
+    flex: 0 0 auto;
+    font-size: 16px;
+    margin-top: 4px;
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 2px;
+  }
+
+  &__chip {
+    padding: 4px 12px;
+    background: $quizGreyLight;
+    border: 1px solid $quizGreyLine;
+    border-radius: 50px;
+    font-size: 14px;
+    line-height: 22px;
+    color: $quizGrey;
+
+    @include media-query($medium-up) {
+      font-size: 16px;
+    }
+  }
+
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    @include media-query($medium-up) {
+      flex-direction: row;
+      gap: 15px;
+      margin: 0 -30px;
+      padding: 0 30px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      &::-webkit-scrollbar { display: none; }
+    }
+  }
+
+  &__card {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    flex: 0 0 auto;
+    background: $quizPeachBarely;
+    color: inherit;
+    text-decoration: none;
+
+    &:hover &-title { text-decoration: underline; text-underline-offset: 3px; }
+  }
+
+  &__card-image {
+    display: block;
+    flex: 0 0 80px;
+    width: 80px;
+    background: $quizGreyLight;
+
+    @include media-query($medium-up) {
+      flex-basis: 120px;
+      width: 120px;
+      height: 150px;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__card-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 15px 60px 15px 15px;
+
+    @include media-query($medium-up) {
+      min-width: 180px;
+      padding: 15px 20px 15px 15px;
+      padding-top: 34px; // clear the badge
+    }
+  }
+
+  &__card-cat {
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 700;
+    color: $quizGrey;
+  }
+
+  &__card-title {
+    font-family: var(--heading-font-family);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 1.2;
+    color: $quizInk;
+
+    @include media-query($medium-up) {
+      font-size: 20px;
+      white-space: nowrap;
+    }
+  }
+
+  &__card-sub {
+    font-size: 12px;
+    line-height: 18px;
+    color: $quizGrey;
+
+    @include media-query($medium-up) {
+      white-space: nowrap;
+    }
+  }
+
+  &__card-price {
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 700;
+    color: $quizInk;
+  }
+
+  &__badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px 15px;
+    background: $quizPeach;
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 600;
+    color: $quizGrey;
+    text-transform: uppercase;
+  }
+
+  // Mobile shows the step number, desktop shows AM / PM usage (per Figma).
+  &__badge-usage { display: none; }
+  &__badge-step { display: inline; }
+
+  @include media-query($medium-up) {
+    &__badge-usage { display: inline; }
+    &__badge-step { display: none; }
+  }
+
+  &__add-all {
+    width: 100%;
+    margin: 0;
+
+    @include media-query($medium-up) {
+      width: auto;
+      align-self: flex-start;
+    }
+
+    &--done {
+      cursor: default;
+      opacity: 0.8;
+    }
+  }
+
+  &__disclaimer,
+  &__footnote,
+  &__empty {
+    margin: 0;
+    color: $quizGrey;
+  }
+
+  &__disclaimer {
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  &__footnote,
+  &__empty {
+    font-size: 16px;
+    line-height: 22px;
+  }
+}

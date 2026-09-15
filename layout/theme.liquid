@@ -9,6 +9,17 @@
 {%- endcomment -%}
 {%- assign currentMarket = localization.market.handle | upcase -%}
 {%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+{%- assign is_sensitive = false -%}
+{%- if product.handle contains 'sensitive' or collection.handle contains 'sensitive' or page.handle contains 'sensitive' -%}
+  {%- assign is_sensitive = true -%}
+{%- elsif product != blank and settings.sensitive_products != blank -%}
+  {%- for sensitive_product in settings.sensitive_products -%}
+    {%- if sensitive_product.id == product.id -%}
+      {%- assign is_sensitive = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
 
 <!doctype html>
 
@@ -107,6 +118,7 @@
 
     {% section 'label-colours' %}
     {% section 'header-colours' %}
+    {%- render 'sensitive-skin', is_sensitive: is_sensitive -%}
     {% section 'swatch-colours' %}
     {% section 'header--content-square' %}
     {% render 'header--cart-clear' %}
@@ -137,6 +149,7 @@
 
   {% capture template_classes %} template-{{ template.name }} template-{{ template.name }}--{{ template.suffix }} {{ template.name }}--{{ page_title | handle }} product--{{ product.handle }} product-type--{{ product.type | handle }}{% endcapture %}
   {%- assign feature_classes = feature_classes | append: template_classes -%}
+  {%- if is_sensitive -%}{% assign feature_classes = feature_classes | append: ' sensitive-skin' %}{%- endif -%}
 
 
   <body class="{{ brand }} brand-{{ brand }} no-focus-outline {{ feature_classes }} market-{{ localization.market.handle | upcase }}" data-instant-allow-query-string>

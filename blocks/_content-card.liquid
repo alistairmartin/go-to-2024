@@ -56,7 +56,7 @@
           {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata', class: dv_class }}
         {%- else -%}
           <video class="{{ dv_class }}" autoplay muted loop playsinline preload="metadata"
-            {% if block.settings.background_image_desktop != blank %}poster="{{ block.settings.background_image_desktop | image_url: width: 1200 }}"{% endif %}>
+            {% if block.settings.background_image_desktop != blank %}poster="{{ block.settings.background_image_desktop | image_url: width: 2400 }}"{% endif %}>
             <source src="{{ block.settings.video_url }}" type="video/mp4">
           </video>
         {%- endif -%}
@@ -69,10 +69,12 @@
   {%- elsif block.settings.background_image_desktop != blank or bg_mobile != blank -%}
     <div class="cc-card__media">
       {%- if block.settings.background_image_desktop != blank -%}
-        {{ block.settings.background_image_desktop | image_url: width: block.settings.background_image_desktop.width | image_tag: loading: 'lazy', sizes: '(max-width: 740px) 100vw, 50vw', widths: '400,600,800,1000,1200,1400,1600', class: 'cc-card__img cc-card__img--desktop' }}
+        {%- comment -%} Grid is max 1520px wide; the card spans d_span of 4 columns. Widths go to 3200 so a full-width card stays sharp on 2x displays. {%- endcomment -%}
+        {%- capture desktop_sizes -%}(max-width: 740px) 100vw, calc(min(100vw - 80px, 1520px) * {{ d_span }} / 4){%- endcapture -%}
+        {{ block.settings.background_image_desktop | image_url: width: block.settings.background_image_desktop.width | image_tag: loading: 'lazy', sizes: desktop_sizes, widths: '400,600,800,1000,1200,1400,1600,2000,2400,2800,3200', class: 'cc-card__img cc-card__img--desktop' }}
       {%- endif -%}
       {%- if bg_mobile != blank -%}
-        {{ bg_mobile | image_url: width: bg_mobile.width | image_tag: loading: 'lazy', sizes: '100vw', widths: '300,400,500,600,800', class: 'cc-card__img cc-card__img--mobile' }}
+        {{ bg_mobile | image_url: width: bg_mobile.width | image_tag: loading: 'lazy', sizes: '100vw', widths: '300,400,500,600,800,1000,1200,1400', class: 'cc-card__img cc-card__img--mobile' }}
       {%- endif -%}
     </div>
   {%- endif -%}

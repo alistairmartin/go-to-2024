@@ -57,18 +57,32 @@ document.addEventListener("DOMContentLoaded", function(event) {
             $(this).addClass("loading");
             $(this).prop("disabled", true);
 
+            // Quiz analytics (set by sections/byo-quiz.liquid → byo-quiz.js).
+            // Underscore-prefixed properties are hidden in the cart but land on the order line item.
+            var quizAnswers = window.byo_quiz_answers || null;
+            var quizPicks = (window.byo_quiz_products || []).map(String);
+            var quizProgress = window.byo_quiz_progress || (document.querySelector('byo-quiz') ? '0/3' : 'no-quiz');
+
             $('.product-item--BYO-ATC.active,.product-item--BYO-ATC-variant.active').each(function(index, obj){
-                var newObject = {
-                  quantity: 1,
-                  id: $(obj).data("id"),
-                  properties: {
+                var variantId = $(obj).data("id");
+                var properties = {
                     'BYO Bundle': 'Select four or more unique products. Then we’ll knock off 10%.',
                     '_tags': `${$(obj).data("tags")}`,
                     '__addSource': 'BYO Bundle',
-                    '__addSourcePage': window.location.pathname || ''
-                  }
+                    '__addSourcePage': window.location.pathname || '',
+                    '_byo_quiz_progress': quizProgress
+                };
+                if (quizAnswers) {
+                    properties['_byo_quiz_age'] = quizAnswers.age || '';
+                    properties['_byo_quiz_skin_type'] = quizAnswers.skin_type || '';
+                    properties['_byo_quiz_concern'] = quizAnswers.concern || '';
+                    properties['_byo_quiz_pick'] = quizPicks.indexOf(String(variantId)) > -1 ? 'yes' : 'no';
                 }
-                items[index] = newObject;
+                items[index] = {
+                  quantity: 1,
+                  id: variantId,
+                  properties: properties
+                };
             });
 
             // Optional free gift set in the section settings — added alongside the bundle.

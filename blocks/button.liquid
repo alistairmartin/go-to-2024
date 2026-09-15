@@ -40,6 +40,10 @@
       {%- unless block.settings.flex_justify_content_desktop == "unset" -%}
           {%- assign classes = classes | append: " flex-content--desktop" -%}
       {%- endunless -%}
+
+      {%- if block.settings.button_underline_match_color -%}
+          {%- assign classes = classes | append: " blocks--button--underline-color" -%}
+      {%- endif -%}
   
       {%- comment -%} Resolve per-breakpoint styles. Mobile falls back to the desktop style unless overridden. {%- endcomment -%}
       {%- assign desktop_style = block.settings.button_style -%}
@@ -238,7 +242,14 @@
             "id": "button_color_desktop",
             "label": "Button - Colour",
             "default": "#000000",
-            "info": "Only works with button 'Outline' option"
+            "info": "Sets the text colour for 'Outline' and 'Link' styles."
+          },
+          {
+            "type": "checkbox",
+            "id": "button_underline_match_color",
+            "label": "Link underline matches colour",
+            "default": false,
+            "info": "For 'Link' styles: colours the underline with the Button Colour above (desktop and mobile)."
           },
           {
               "type": "range",
@@ -358,7 +369,7 @@
             "id": "button_color_mobile",
             "label": "Button - Colour",
             "default": "#000000",
-            "info": "Only works with button 'Outline' option"
+            "info": "Sets the text colour for 'Outline' and 'Link' styles."
           },
           {
               "type": "range",

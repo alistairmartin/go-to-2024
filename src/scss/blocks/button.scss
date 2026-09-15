@@ -26,6 +26,14 @@
     }
 
 
+    // Link styles draw their underline with border-bottom; opt-in to colour it with the button colour.
+    &.blocks--button--underline-color[class*="link--"] {
+      border-bottom-color: var(--button-color-text-mobile) !important;
+      @include media-query($medium-up) {
+        border-bottom-color: var(--button-color-text-desktop) !important;
+      }
+    }
+
     &.button--outline {
       color: var(--button-color-text-mobile) !important;
       border-color: var(--button-color-text-mobile) !important;

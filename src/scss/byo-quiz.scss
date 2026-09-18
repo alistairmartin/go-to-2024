@@ -18,6 +18,22 @@ $quizInk: #181818;
   }
 }
 
+// Inside the Rebuy bundle builder. The widget has no side padding on mobile
+// (steps inset their own content by 16px) but does on desktop.
+.rebuy-bundle-builder__quiz {
+  margin-bottom: 20px;
+
+  &:empty { display: none; }
+
+  .shopify-section--byo-quiz {
+    padding: 16px 16px 0;
+
+    @include media-query($medium-up) {
+      padding: 0;
+    }
+  }
+}
+
 .byo-quiz {
   display: block;
   background: #fff;

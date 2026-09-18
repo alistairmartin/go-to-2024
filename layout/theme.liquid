@@ -170,6 +170,9 @@
     {% endcomment %}
 
     {%- if request.page_type != 'password' -%}
+      {%- comment -%} Regionalisation prompt (replaces forced IP redirects) - static so it renders for every brand. {%- endcomment -%}
+      {%- section 'regionalisation' -%}
+
       {%- if brand == 'go-to' -%}
         {%- sections 'header-group' -%}
       {%- elsif brand == 'bro-to' -%}

@@ -147,7 +147,7 @@
     { "type": "header", "content": "Header" },
     { "type": "text", "id": "title", "label": "Title", "default": "Not sure where to start?" },
     { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Three quick questions and we'll help you create your dream routine!" },
-    { "type": "checkbox", "id": "open_by_default", "label": "Open by default", "default": true },
+    { "type": "checkbox", "id": "open_by_default", "label": "Open by default", "default": false },
 
     { "type": "header", "content": "Questions", "info": "Answer options are fixed because the product rules depend on them." },
     { "type": "text", "id": "q1_title", "label": "Question 1 (age)", "default": "How old are you?" },
@@ -160,7 +160,7 @@
     { "type": "text", "id": "results_subtitle", "label": "Results subtitle", "default": "Picked especially for you, based on your skin and what it needs most." },
     { "type": "text", "id": "start_again_label", "label": "Start again link", "default": "Start again" },
     { "type": "checkbox", "id": "show_add_all", "label": "Show 'Add all to bundle' button", "default": true },
-    { "type": "text", "id": "add_all_label", "label": "Add all button", "default": "Add all to bundle • Save 10%" },
+    { "type": "text", "id": "add_all_label", "label": "Add all button", "default": "Add all to bundle & Save 10%" },
     { "type": "text", "id": "added_label", "label": "Add all button (after click)", "default": "Added to your bundle" },
     { "type": "text", "id": "disclaimer", "label": "Disclaimer", "default": "*Some products are intended for AM or PM use and shouldn't be combined with certain ingredients. Always follow the product directions." },
     { "type": "text", "id": "footnote", "label": "Footnote", "default": "Add these from the steps below. Any 4+ gets you 10% off!" },
@@ -202,9 +202,9 @@
             { "value": "PM", "label": "PM" }
           ]
         },
-        { "type": "text", "id": "ages", "label": "Ages", "default": "all", "info": "Comma separated: 16-25, 26-35, 36-45, 46-55, 56+ — or 'all'" },
-        { "type": "text", "id": "skins", "label": "Skin types", "default": "all", "info": "Comma separated: just-skin, combination, dry, very-dry, oily, sensitive — or 'all'. Prefix with ! to exclude, e.g. '!sensitive, !oily'" },
-        { "type": "text", "id": "concerns", "label": "Concerns", "default": "all", "info": "Comma separated: fine-lines, dehydration, dullness, congestion — or 'all'" },
+        { "type": "text", "id": "ages", "label": "Ages", "default": "all", "info": "Comma separated: 16-25, 26-35, 36-45, 46-55, 56+ - or 'all'" },
+        { "type": "text", "id": "skins", "label": "Skin types", "default": "all", "info": "Comma separated: just-skin, combination, dry, very-dry, oily, sensitive - or 'all'. Prefix with ! to exclude, e.g. '!sensitive, !oily'" },
+        { "type": "text", "id": "concerns", "label": "Concerns", "default": "all", "info": "Comma separated: fine-lines, dehydration, dullness, congestion - or 'all'" },
         { "type": "checkbox", "id": "extra", "label": "Add alongside the step's main pick", "default": false, "info": "E.g. Fancy Face as a PM cleanse on top of the AM/PM cleanser." },
         { "type": "checkbox", "id": "fallback", "label": "Fallback only", "default": false, "info": "Only used when nothing else in this step matches (ignores skin/concern rules)." },
         { "type": "text", "id": "excludes", "label": "Never with (product handles)", "info": "Comma separated handles, e.g. face-hero, very-amazing-retinal" }

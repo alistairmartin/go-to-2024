@@ -543,9 +543,11 @@
       ----------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
       {%- when 'pairs_with' -%}
+        {%- comment -%} Temporarily disabled: was leaving an empty gap + divider on the PDP
         {% if context != 'quick-buy' %}
          {%- render 'product-form--pairs-with' -%}
         {% endif %}
+        {%- endcomment -%}
 
       {%- comment -%}
       ----------------------------------------------------------------------------------------------------------------

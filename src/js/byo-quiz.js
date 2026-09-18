@@ -1,5 +1,5 @@
 /**
- * <byo-quiz> — three-question routine builder for the BYO bundle page.
+ * <byo-quiz> - three-question routine builder for the BYO bundle page.
  *
  * Rules live in the section blocks (sections/byo-quiz.liquid) and are read
  * from the inline JSON config. This element only:
@@ -33,7 +33,7 @@
       .filter(Boolean);
   };
 
-  /** rule: "all" | "a, b" (allow-list) | "!a, !b" (deny-list) — mixes allowed. */
+  /** rule: "all" | "a, b" (allow-list) | "!a, !b" (deny-list) - mixes allowed. */
   var ruleMatches = function (raw, value) {
     var list = parseList(raw);
     if (!list.length || list.indexOf("all") > -1) return true;
@@ -53,6 +53,9 @@
 
   class BYOQuiz extends HTMLElement {
     connectedCallback() {
+      // Re-runs when the element is moved into the Rebuy mount; set up only once.
+      if (this.initialised) return;
+      this.initialised = true;
       var cfgEl = this.querySelector("[data-quiz-config]");
       try {
         this.config = JSON.parse(cfgEl ? cfgEl.textContent : "{}");
@@ -81,6 +84,7 @@
 
       window.byoQuiz = this;
       this.render();
+      this.watchForRebuy();
     }
 
     /* ---------- state ---------- */
@@ -130,7 +134,131 @@
       window.byo_quiz_progress = this.answeredCount() + "/" + this.total;
       var detail = { products: window.byo_quiz_products, answers: window.byo_quiz_answers, raw: this.state.answers, items: items || [], progress: window.byo_quiz_progress };
       document.dispatchEvent(new CustomEvent(items ? "byo-quiz:complete" : "byo-quiz:reset", { detail: detail }));
+      this.stampRebuy();
+      if (this.userAction) { this.userAction = false; this.syncCartAttributes(); }
       return detail;
+    }
+
+    /** Analytics values shared by line-item properties and cart attributes. */
+    quizProperties() {
+      var a = window.byo_quiz_answers;
+      var props = { _byo_quiz_progress: window.byo_quiz_progress || "0/3" };
+      if (a) {
+        props._byo_quiz_age = a.age || "";
+        props._byo_quiz_skin_type = a.skin_type || "";
+        props._byo_quiz_concern = a.concern || "";
+      }
+      return props;
+    }
+
+    /** Order-level backup of the quiz answers, independent of who adds to cart. */
+    syncCartAttributes() {
+      var attrs = this.quizProperties();
+      if (!window.byo_quiz_answers) { attrs._byo_quiz_age = ""; attrs._byo_quiz_skin_type = ""; attrs._byo_quiz_concern = ""; }
+      var base = (window.themeVariables && window.themeVariables.routes && window.themeVariables.routes.cartUrl) || "/cart";
+      try {
+        fetch(base + "/update.js", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({ attributes: attrs })
+        }).catch(function () {});
+      } catch (err) { /* ignore */ }
+    }
+
+    /* ---------- Rebuy Bundle Builder integration ---------- */
+
+    rebuyWidget() {
+      var widgets = (window.Rebuy && window.Rebuy.widgets) || [];
+      return widgets.filter(function (w) {
+        return w && w.data && w.data.config && Array.isArray(w.data.config.steps);
+      })[0] || null;
+    }
+
+    rebuySteps() {
+      var w = this.rebuyWidget();
+      var steps = (w && w.data.config.steps) || [];
+      return steps.some(function (s) { return (s.products || []).length; }) ? steps : null;
+    }
+
+    /**
+     * The Rebuy page hides every theme section and renders the builder itself,
+     * so the quiz moves into the [data-byo-quiz-mount] placeholder that
+     * snippets/rebuy-extensions.liquid adds at the top of the widget.
+     */
+    watchForRebuy() {
+      var self = this;
+      var tryMount = function () {
+        var mount = document.querySelector("[data-byo-quiz-mount]");
+        if (!mount || mount.contains(self)) return false;
+        var wrapper = self.closest(".shopify-section") || self;
+        mount.appendChild(wrapper);
+        self.stampRebuy();
+        return true;
+      };
+      if (tryMount()) return;
+      if (!("MutationObserver" in window)) return;
+      this.rebuyObserver = new MutationObserver(function () {
+        if (tryMount()) { self.rebuyObserver.disconnect(); self.rebuyObserver = null; }
+      });
+      this.rebuyObserver.observe(document.body, { childList: true, subtree: true });
+    }
+
+    /**
+     * Rebuy copies `product.properties` onto the cart line when a product is
+     * added to the bundle, so the quiz answers are written onto every step
+     * product (and anything already in the bundle). Retries until the widget
+     * has loaded its products.
+     */
+    stampRebuy(attempt) {
+      var self = this;
+      attempt = attempt || 0;
+      var steps = this.rebuySteps();
+      if (!steps) {
+        if (attempt < 40 && (document.querySelector("[data-rebuy-id]") || window.Rebuy)) {
+          window.clearTimeout(this.stampTimer);
+          this.stampTimer = window.setTimeout(function () { self.stampRebuy(attempt + 1); }, 500);
+        }
+        return;
+      }
+      var props = this.quizProperties();
+      var picks = (window.byo_quiz_products || []).map(String);
+      var stamp = function (p) {
+        var next = {};
+        Object.keys(p.properties || {}).forEach(function (k) { if (k.indexOf("_byo_quiz_") !== 0) next[k] = p.properties[k]; });
+        Object.keys(props).forEach(function (k) { next[k] = props[k]; });
+        if (window.byo_quiz_answers) {
+          var hit = picks.indexOf(String(p.selected_variant_id)) > -1 ||
+            (p.variants || []).some(function (v) { return picks.indexOf(String(v.id)) > -1; });
+          next._byo_quiz_pick = hit ? "yes" : "no";
+        }
+        p.properties = next;
+      };
+      steps.forEach(function (s) { (s.products || []).forEach(stamp); });
+      var w = this.rebuyWidget();
+      ((w && w.data.products) || []).forEach(stamp);
+    }
+
+    /** Adds the recommended products through Rebuy's own addProductToBundle. */
+    addAllToRebuy() {
+      var w = this.rebuyWidget(), steps = this.rebuySteps();
+      if (!w || !steps || typeof w.addProductToBundle !== "function") return null;
+      var inBundle = (w.data.products || []).map(function (b) { return String(b.selected_variant_id); });
+      var added = 0, missing = [];
+      this.stampRebuy();
+      (this.lastItems || []).forEach(function (item) {
+        var vid = String(item.variant_id);
+        if (inBundle.indexOf(vid) > -1) return;
+        for (var i = 0; i < steps.length; i++) {
+          var prod = (steps[i].products || []).filter(function (p) {
+            return p.handle === item.handle || (p.variants || []).some(function (v) { return String(v.id) === vid; });
+          })[0];
+          if (!prod) continue;
+          try { w.addProductToBundle(prod, steps[i], i); added++; } catch (err) { console.error("byo-quiz: rebuy add failed", err); }
+          return;
+        }
+        missing.push(vid);
+      });
+      return { added: added, missing: missing };
     }
 
     /* ---------- recommendation ---------- */
@@ -210,9 +338,11 @@
         for (var i = this.state.step + 1; i < this.total; i++) delete this.state.answers[this.config.questions[i].id];
         option.setAttribute("aria-pressed", "true");
         this.state.step = Math.min(this.state.step + 1, this.total);
+        this.userAction = true;
         this.persist();
         window.byo_quiz_progress = this.answeredCount() + "/" + this.total;
         document.dispatchEvent(new CustomEvent("byo-quiz:answer", { detail: { question: q.id, value: option.dataset.value, progress: window.byo_quiz_progress } }));
+        if (!this.complete) { this.userAction = false; this.stampRebuy(); this.syncCartAttributes(); }
         var self = this;
         window.setTimeout(function () { self.render(); }, 160);
         return;
@@ -235,6 +365,7 @@
 
     reset() {
       this.state = { step: 0, answers: {} };
+      this.userAction = true;
       this.persist();
       this.publish(null);
       this.render();
@@ -248,7 +379,10 @@
      */
     addAllToBundle(button) {
       var added = 0, missing = [];
-      (window.byo_quiz_products || []).forEach(function (variantId) {
+      var viaRebuy = this.addAllToRebuy();
+      if (viaRebuy) {
+        added = viaRebuy.added; missing = viaRebuy.missing;
+      } else (window.byo_quiz_products || []).forEach(function (variantId) {
         var el = document.querySelector('.product-item--BYO-ATC[data-id="' + variantId + '"], .product-item--BYO-ATC-variant[data-id="' + variantId + '"]');
         if (!el) { missing.push(variantId); return; }
         if (!el.classList.contains("active") && !el.classList.contains("disabled")) { el.click(); added++; }
@@ -266,9 +400,11 @@
     render() {
       if (this.complete) {
         var items = this.recommend(this.state.answers);
+        this.lastItems = items;
         this.publish(items);
         this.renderResults(items);
       } else {
+        this.lastItems = [];
         if (window.byo_quiz_products.length) this.publish(null);
         this.renderQuestion();
       }

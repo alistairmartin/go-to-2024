@@ -12,7 +12,7 @@
 {% elsif page.handle contains 'bundle-builder' %}
   <!-- bb -->
   <div data-rebuy-id="305847" data-rebuy-shopify-product-ids="{{ product.id }}"></div>
-  <style>#main-inner .shopify-section { display: none; }</style>
+  <style>#main-inner .shopify-section:not(.shopify-section--byo-quiz) { display: none; }</style>
 
 {% endif %}
 
@@ -1167,6 +1167,10 @@
             </div>
             <!-- /Page Header Section -->
 
+            <!-- CUSTOM: BYO quiz mount. The theme section "BYO Routine Quiz" (sections/byo-quiz.liquid)
+                 moves itself in here once the widget renders. Keep this a plain div (no Vue bindings). -->
+            <div class="rebuy-bundle-builder__quiz" data-byo-quiz-mount></div>
+
             <!-- Sorting and Filtering Section -->
             <div
                 class="rebuy-bundle-builder__header-utility-container"
@@ -1526,48 +1530,6 @@
                 <!-- /Sorting Section -->
             </div>
             <!-- /Sorting and Filtering Section -->
-
-            <!-- CUSTOM -->
-            <details class="rebuy-bundle-builder__accordion">
-              <summary class="rebuy-bundle-builder__accordion-trigger">
-                <span>Not sure where to start?</span>
-                <rebuy-icon name="chevron-down"></rebuy-icon>
-              </summary>
-
-              <div class="rebuy-bundle-builder__accordion-content">
-                <p>Use our guides to help you pick the right products for your skin</p>
-
-                <div class="rebuy-bundle-builder__tabs">
-                  <input type="radio" name="rebuy-bb-guide" id="rebuy-bb-guide-0" class="rebuy-bundle-builder__tab-input" checked>
-                  <input type="radio" name="rebuy-bb-guide" id="rebuy-bb-guide-1" class="rebuy-bundle-builder__tab-input">
-                  <input type="radio" name="rebuy-bb-guide" id="rebuy-bb-guide-2" class="rebuy-bundle-builder__tab-input">
-                  <input type="radio" name="rebuy-bb-guide" id="rebuy-bb-guide-3" class="rebuy-bundle-builder__tab-input">
-                  <input type="radio" name="rebuy-bb-guide" id="rebuy-bb-guide-4" class="rebuy-bundle-builder__tab-input">
-
-                  <div class="rebuy-bundle-builder__tab-list" role="tablist">
-                    <label class="rebuy-bundle-builder__tab" for="rebuy-bb-guide-0">Daily Refresh</label>
-                    <label class="rebuy-bundle-builder__tab" for="rebuy-bb-guide-1">Sunny Days</label>
-                    <label class="rebuy-bundle-builder__tab" for="rebuy-bb-guide-2">Revitalise</label>
-                    <label class="rebuy-bundle-builder__tab" for="rebuy-bb-guide-3">Absolutely Necessary</label>
-                    <label class="rebuy-bundle-builder__tab" for="rebuy-bb-guide-4">Oil Saver</label>
-                  </div>
-
-                  <div class="rebuy-bundle-builder__tab-panels">
-                    <div class="rebuy-bundle-builder__tab-content">
-                      <div><b>Cleanse</b>: Properly Clean</div>
-                      <div><b>Exfoliate</b>: Gentle Exfoliator</div>
-                      <div><b>Treat</b>: Very Amazing Retinal</div>
-                      <div><b>Nourish</b>: Face Hero</div>
-                      <div><b>Protect</b>: Nifty Fifty SPF</div>
-                    </div>
-                    <div class="rebuy-bundle-builder__tab-content">Sunny days tab content</div>
-                    <div class="rebuy-bundle-builder__tab-content">Revitalise tab content</div>
-                    <div class="rebuy-bundle-builder__tab-content">Absolutely necessary tab content</div>
-                    <div class="rebuy-bundle-builder__tab-content">Oil saver tab content</div>
-                  </div>
-                </div>
-              </div>
-            </details>
 
             <!-- Page Body Section -->
             <div class="rebuy-bundle-builder__main-body">

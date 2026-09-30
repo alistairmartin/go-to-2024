@@ -1,0 +1,118 @@
+<!-- tabs -->
+<div class="rebuy-tabs">
+  <div class="rebuy-tabs-toggles">
+    <button type="button" class="rebuy-tabs-toggle is-active"></button>
+    <button type="button" class="rebuy-tabs-toggle"></button>
+  </div>
+
+  <!-- pdp carousel -->
+  <div class="rebuy-tabs-panel is-active" data-rebuy-id="305867" data-rebuy-shopify-product-ids="{{ product.id }}"></div>
+
+  <!-- complete the look (save with a set) -->
+  <div class="rebuy-tabs-panel" data-rebuy-id="305868" data-rebuy-shopify-product-ids="{{ product.id }}"></div>
+</div>
+
+<script>
+document.addEventListener('rebuy.loaded', () => setTimeout(() => {
+  if (document.querySelector('.product-form .product-faq')) {
+    /* dynamic placement */
+    document.querySelector('.product-form .product-faq').before(document.querySelector('.rebuy-tabs'));
+
+    const activate = (toggle) => {
+      const block = toggle.closest('.rebuy-tabs');
+      const toggles = [...block.querySelectorAll('.rebuy-tabs-toggle')];
+      const panels = [...block.querySelectorAll('.rebuy-tabs-panel')];
+      [...toggles, ...panels].forEach(el => el.classList.remove('is-active'));
+      toggle.classList.add('is-active');
+      panels[toggles.indexOf(toggle)]?.classList.add('is-active');
+      requestAnimationFrame(() => {
+        window.dispatchEvent(new Event('resize'));
+        window.dispatchEvent(new Event('scroll'));
+      });
+    };
+
+    /* label each toggle from its widget */
+    const labelTabs = () => {
+      const panels = [...document.querySelectorAll('.rebuy-tabs-panel')];
+      [...document.querySelectorAll('.rebuy-tabs-toggle')].forEach((toggle, index) => {
+        const title = (Rebuy.widgets || []).find(w => w.id == panels[index]?.dataset.rebuyId)?.data?.config?.language?.title;
+        if (title) toggle.textContent = title;
+      });
+    };
+
+    /* reveal only the toggles whose panel actually rendered */
+    const syncTabs = () => {
+      labelTabs();
+      const panels = [...document.querySelectorAll('.rebuy-tabs-panel')];
+      const visible = [...document.querySelectorAll('.rebuy-tabs-toggle')].filter((toggle, index) => {
+        const panel = panels[index];
+        const rendered = !!panel?.offsetHeight;
+        toggle.classList.toggle('is-visible', rendered);
+        return rendered;
+      });
+      if (visible.length && !visible.some(toggle => toggle.classList.contains('is-active'))) activate(visible[0]);
+      /* widgets are in, so inactive panels can leave the page entirely */
+      document.querySelectorAll('.rebuy-tabs').forEach(block => block.classList.add('is-ready'));
+    };
+
+    labelTabs();
+
+    /* give the widgets 3s to paint before deciding a panel is empty */
+    setTimeout(syncTabs, 3000);
+
+    /* delegated, so it survives the theme re-rendering the tabs */
+    document.addEventListener('click', (event) => {
+      const toggle = event.target.closest('.rebuy-tabs-toggle');
+      if (!toggle) return;
+      event.preventDefault();
+      activate(toggle);
+    });
+  }
+}, 1000));
+</script>
+
+<style>
+  .rebuy-tabs {
+    position: relative;
+    width: var(--product-info-width);
+  }
+  .rebuy-tabs-toggles {
+    display: flex;
+  }
+  .rebuy-tabs-toggle {
+    display: none;
+    white-space: nowrap;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    padding: 10px 20px;
+    min-width: 150px;
+  }
+  .rebuy-tabs-toggle.is-active {
+    background: #fef9f8;
+  }
+  .rebuy-tabs-toggle.is-visible {
+    display: block;
+  }
+  .rebuy-tabs-panel:not(.is-active) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+  }
+  .rebuy-tabs.is-ready .rebuy-tabs-panel:not(.is-active) {
+    display: none;
+  }
+
+  @media (max-width: 480px) {
+    .rebuy-tabs {
+      width: calc(100vw - 32px);
+    }
+    .rebuy-tabs-toggle {
+      min-width: 135px;
+    }
+  }
+</style>

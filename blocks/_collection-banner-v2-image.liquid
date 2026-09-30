@@ -111,12 +111,22 @@
   <div class="collection-banner-v2__image-wrap" id="block-{{ block.id }}" {{ block.shopify_attributes }}>
 
     {%- if has_image -%}
-      {%- render 'responsive-image',
-        src_desktop: image_desktop,
-        src_mobile: image_mobile,
-        alt: block.settings.alt,
-        class: 'collection-banner-v2__image'
-      -%}
+      {%- comment -%} Banner is full-bleed (100vw). Widths go to 3840 so it stays sharp on wide 2x displays. {%- endcomment -%}
+      {%- assign image_alt = block.settings.alt | default: image_desktop.alt -%}
+      <picture class="collection-banner-v2__image">
+        {%- if image_mobile.src != image_desktop.src -%}
+          {%- assign mobile_widths = '400,600,800,1000,1200,1400,1600' | split: ',' -%}
+          {%- capture mobile_srcset -%}
+            {%- for w in mobile_widths -%}
+              {%- assign w_num = w | plus: 0 -%}
+              {%- if w_num < image_mobile.width -%}{{ image_mobile | image_url: width: w_num }} {{ w_num }}w, {% endif -%}
+            {%- endfor -%}
+            {{ image_mobile | image_url: width: image_mobile.width }} {{ image_mobile.width }}w
+          {%- endcapture -%}
+          <source media="(max-width: 740px)" srcset="{{ mobile_srcset | strip }}" sizes="100vw" width="{{ image_mobile.width }}" height="{{ image_mobile.height }}">
+        {%- endif -%}
+        {{ image_desktop | image_url: width: image_desktop.width | image_tag: loading: 'lazy', sizes: '100vw', widths: '400,600,800,1000,1200,1400,1600,2000,2400,2800,3200,3840', alt: image_alt }}
+      </picture>
 
       {%- if has_video -%}
         <div class="collection-banner-v2__media">

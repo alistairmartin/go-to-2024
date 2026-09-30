@@ -1,4 +1,11 @@
 {%- assign noTabsFound = true -%}
+{%- capture is_sensitive -%}{%- render 'is-sensitive', product: product -%}{%- endcapture -%}
+{%- assign how_to_apply_label = 'HOW TO APPLY' -%}
+{%- assign clinical_label = 'CLINICAL TRIALS' -%}
+{%- if is_sensitive == 'true' -%}
+  {%- assign how_to_apply_label = 'DAILY ROUTINE' -%}
+  {%- assign clinical_label = 'CLINICAL STUDY' -%}
+{%- endif -%}
 
 <section>
   <div class="container">
@@ -13,7 +20,7 @@
              {%- if product.type == "Blush" or product.type == "Highlighter" or product.type == "Hair" -%}
                   {%- if product.metafields.custom.product_how_to_apply_image_desktop != blank -%}
                   <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-2" class="tab-list--tab active">
-                      HOW TO APPLY
+                      {{ how_to_apply_label }}
                   </button>
                     {%- assign noTabsFound = false -%}
                   {% endif %}
@@ -25,7 +32,7 @@
 
                   {%- if product.metafields.custom.product_how_to_apply_image_desktop != blank -%}
                   <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-2" class="tab-list--tab {% if product.type == "Blush" or product.type == "Highlighter" %}active{% endif %}">
-                      HOW TO APPLY
+                      {{ how_to_apply_label }}
                   </button>
                     {%- assign noTabsFound = false -%}
                   {% endif %}
@@ -36,7 +43,7 @@
 
               {%- if product.metafields.custom.product_trials__side-by-side.size >= 1 -%}
               <button data-action="toggle-tab" role="tab" aria-selected="true" aria-controls="product-content-description--tab-3" class="tab-list--tab">
-                  CLINICAL TRIALS
+                  {{ clinical_label }}
               </button>
               {%- assign noTabsFound = false -%}
               {% endif %}

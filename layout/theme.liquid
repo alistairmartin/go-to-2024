@@ -9,17 +9,9 @@
 {%- endcomment -%}
 {%- assign currentMarket = localization.market.handle | upcase -%}
 {%- capture brand -%}{%- render 'brand' -%}{%- endcapture -%}
+{%- capture is_sensitive_str -%}{%- render 'is-sensitive', product: product, collection: collection, page: page -%}{%- endcapture -%}
 {%- assign is_sensitive = false -%}
-{%- if product.handle contains 'sensitive' or collection.handle contains 'sensitive' or page.handle contains 'sensitive' -%}
-  {%- assign is_sensitive = true -%}
-{%- elsif product != blank and settings.sensitive_products != blank -%}
-  {%- for sensitive_product in settings.sensitive_products -%}
-    {%- if sensitive_product.id == product.id -%}
-      {%- assign is_sensitive = true -%}
-      {%- break -%}
-    {%- endif -%}
-  {%- endfor -%}
-{%- endif -%}
+{%- if is_sensitive_str == 'true' -%}{%- assign is_sensitive = true -%}{%- endif -%}
 
 <!doctype html>
 
@@ -125,7 +117,7 @@
 
     {%- render 'seo--collection-faq' -%}
     {%- render 'seo--article-faq' -%}
-    {% render 'rebuy-scripts' %}
+    {% comment %} {% render 'rebuy-scripts' %} {% endcomment %}
   
   </head>
 
@@ -171,7 +163,7 @@
 
     {%- if request.page_type != 'password' -%}
       {%- comment -%} Regionalisation prompt (replaces forced IP redirects) - static so it renders for every brand. {%- endcomment -%}
-      {%- section 'regionalisation' -%}
+      {% comment %} {%- section 'regionalisation' -%} {% endcomment %}
 
       {%- if brand == 'go-to' -%}
         {%- sections 'header-group' -%}
@@ -269,12 +261,12 @@
     {%- endif -%}
 
     {% render 'script--client-info' %}
-    {% render 'rebuy-extensions' %}
+    {% comment %} {% render 'rebuy-extensions' %} {% endcomment %}
 <!-- Widget : Gift with Purchase (Morning Essentials Gift) -->
-<div data-rebuy-id="308179"></div>
+{% comment %} <div data-rebuy-id="308179"></div> {% endcomment %}
 <!-- End Widget : Gift with Purchase (Morning Essentials Gift) -->
 <!-- Widget : Gift with Purchase (Subscription Gift) -->
-<div data-rebuy-id="307565"></div>
+{% comment %} <div data-rebuy-id="307565"></div> {% endcomment %}
 <!-- End Widget : Gift with Purchase (Subscription Gift) -->
   </body>
 </html>

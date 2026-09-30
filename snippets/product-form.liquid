@@ -464,7 +464,8 @@
             {%- endif -%}
 
             {%- assign foundTableDetails = false -%}
-            
+            {%- capture is_sensitive -%}{%- render 'is-sensitive', product: product -%}{%- endcapture -%}
+
             <table class="product-form--details-table">
               {%- if productMetafields.product_suitable_for != blank -%}
               <tr>
@@ -476,7 +477,7 @@
 
               {%- if productMetafields.product_good_to_know != blank -%}
               <tr>
-                <td><strong>Good To Know</strong></td>
+                <td><strong>Good to know</strong></td>
                 <td>{{ productMetafields.product_good_to_know }}</td>
               </tr>
               {%- assign foundTableDetails = true -%}
@@ -486,10 +487,10 @@
               {%- assign applicationMetafield = productMetafields.application |  metafield_tag  -%}
               {%- if application_html != blank -%}
               <tr>
-                <td><strong>How To Apply</strong></td>
+                <td><strong>How to apply</strong></td>
                 <td>{{ applicationMetafield }}
                   {%- unless product.handle contains "into-the-" -%}
-                     <a href="#learn-more"><u>See complete guide</u></a>
+                     <a href="#learn-more"><u>{% if is_sensitive == 'true' %}Meet the routine{% else %}See complete guide{% endif %}</u></a>
                   {%- endunless -%}
                 </td>
               </tr>

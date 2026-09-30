@@ -152,7 +152,12 @@
                     <collapsible-content id="block-product-tabs-4" class="collapsible anchor" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
                       <div class="collapsible__content text-container" itemprop="text">
                         <div class="rte text-base">
-                          {{ pages['shipping-returns-pdp'].content }}
+                          {%- capture is_sensitive -%}{%- render 'is-sensitive', product: product -%}{%- endcapture -%}
+                          {%- if is_sensitive == 'true' and pages['shipping-returns-sensitive-skin-pdp'].content != blank -%}
+                            {{ pages['shipping-returns-sensitive-skin-pdp'].content }}
+                          {%- else -%}
+                            {{ pages['shipping-returns-pdp'].content }}
+                          {%- endif -%}
                         </div>      
                       </div>
                     </collapsible-content>

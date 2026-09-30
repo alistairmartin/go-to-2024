@@ -1,0 +1,25 @@
+{%- comment -%}
+  Outputs "true" when the current product/collection/page is a Sensitive Skin one.
+  Rules: handle contains "sensitive", or the product is in settings.sensitive_products.
+  Sections/snippets can't see layout variables, so capture this instead:
+    {%- capture is_sensitive -%}{%- render 'is-sensitive', product: product -%}{%- endcapture -%}
+    {%- if is_sensitive == 'true' -%}...{%- endif -%}
+{%- endcomment -%}
+{%- liquid
+  assign result = false
+  if product.handle contains 'sensitive' or collection.handle contains 'sensitive' or page.handle contains 'sensitive'
+    assign result = true
+  elsif product != blank and settings.sensitive_products != blank
+    for sensitive_product in settings.sensitive_products
+      if sensitive_product.id == product.id
+        assign result = true
+        break
+      endif
+    endfor
+  endif
+  if result
+    echo 'true'
+  else
+    echo 'false'
+  endif
+-%}

@@ -419,6 +419,20 @@ $quizInk: #181818;
     color: $quizInk;
   }
 
+  // Sold out: still recommended, but dimmed with a label in place of the price.
+  &__card--sold-out {
+    .byo-quiz__card-image img { opacity: 0.45; }
+    .byo-quiz__card-price { display: none; }
+  }
+
+  &__card-sold-out {
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 700;
+    color: $quizGrey;
+    text-transform: uppercase;
+  }
+
   &__badge {
     position: absolute;
     top: 0;

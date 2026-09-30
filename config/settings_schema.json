@@ -70,6 +70,18 @@
       }
     ]
   },
+    {
+    "name": "✅ BYO Quiz",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_byo_quiz",
+        "label": "Enable BYO Routine Quiz",
+        "info": "Shows the quiz at the top of the Rebuy bundle builder.",
+        "default": true
+      }
+    ]
+  },
   {
     "name": "👨‍💻 Custom Features",
     "settings": [

@@ -5,10 +5,15 @@
 
   {% render 'rebuy-tabs' %}
 
-{% elsif page.handle contains 'bundle-builder' %}
+{% elsif page.handle contains 'build-your-routine' %}
   <!-- bb -->
   <div data-rebuy-id="305847" data-rebuy-shopify-product-ids="{{ product.id }}"></div>
-  <style>.shopify-section--main-page { display: none; }</style>
+  <style>
+    .shopify-section--main-page { display: none; }
+    /* BYO quiz: stay hidden until byo-quiz.js has moved it into the bundle builder, so it doesn't render under the banner and then jump */
+    .shopify-section--byo-quiz { display: none; }
+    .rebuy-bundle-builder__quiz .shopify-section--byo-quiz { display: block; }
+  </style>
 
 {% endif %}
 
@@ -1459,6 +1464,10 @@
             v-bind:class="['rebuy-bundle-builder__layout--' + config.layout.type]"
             ref="stepTabsWrapper"
             >
+
+            <!-- CUSTOM: BYO quiz mount. The theme section "BYO Routine Quiz" (sections/byo-quiz.liquid)
+                 moves itself in here once the widget renders. Keep this a plain div (no Vue bindings). -->
+            <div class="rebuy-bundle-builder__quiz" data-byo-quiz-mount></div>
 
             <!-- Sorting and Filtering Section -->
             <div

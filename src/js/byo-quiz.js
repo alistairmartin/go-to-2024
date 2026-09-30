@@ -49,7 +49,7 @@
     return list.length && list.indexOf("all") === -1 ? 1 : 0;
   };
 
-  var STORAGE_TTL = 1000 * 60 * 60 * 24; // a day
+  var STORAGE_TTL = 1000 * 60 * 60 * 24 * 7; // a week
 
   class BYOQuiz extends HTMLElement {
     connectedCallback() {
@@ -96,21 +96,29 @@
       return this.config.questions.every(function (q) { return !!answers[q.id]; });
     }
 
+    /**
+     * Answers live in localStorage (a week) so a refresh, a new tab or coming
+     * back later lands on the same routine. sessionStorage is checked too for
+     * anyone mid-quiz when this changed.
+     */
     restore() {
       try {
-        var raw = sessionStorage.getItem(this.storageKey);
+        var raw = localStorage.getItem(this.storageKey) || sessionStorage.getItem(this.storageKey);
         if (!raw) return;
         var saved = JSON.parse(raw);
         if (!saved || Date.now() - (saved.t || 0) > STORAGE_TTL) return;
         this.state.answers = saved.answers || {};
         this.state.step = Math.min(saved.step || 0, this.total);
+        // Reopen or stay closed as the customer last left it; failing that, a finished quiz opens so the routine is visible.
+        if (typeof saved.open === "boolean") this.setOpen(saved.open);
+        else if (this.complete) this.setOpen(true);
       } catch (err) { /* private mode etc. */ }
     }
 
     persist() {
-      try {
-        sessionStorage.setItem(this.storageKey, JSON.stringify({ answers: this.state.answers, step: this.state.step, t: Date.now() }));
-      } catch (err) { /* ignore */ }
+      var raw = JSON.stringify({ answers: this.state.answers, step: this.state.step, open: this.isOpen, t: Date.now() });
+      try { localStorage.setItem(this.storageKey, raw); } catch (err) { /* ignore */ }
+      try { sessionStorage.setItem(this.storageKey, raw); } catch (err) { /* ignore */ }
     }
 
     answerLabels() {
@@ -129,7 +137,8 @@
 
     publish(items) {
       var labels = this.answerLabels();
-      window.byo_quiz_products = (items || []).map(function (p) { return p.variant_id; });
+      // Only in-stock picks are publishable (added to the bundle / stamped as picks); sold-out ones are display only.
+      window.byo_quiz_products = (items || []).filter(function (p) { return p.available; }).map(function (p) { return p.variant_id; });
       window.byo_quiz_answers = this.complete ? labels : null;
       window.byo_quiz_progress = this.answeredCount() + "/" + this.total;
       var detail = { products: window.byo_quiz_products, answers: window.byo_quiz_answers, raw: this.state.answers, items: items || [], progress: window.byo_quiz_progress };
@@ -246,6 +255,7 @@
       var added = 0, missing = [];
       this.stampRebuy();
       (this.lastItems || []).forEach(function (item) {
+        if (!item.available) return; // sold out: shown in the routine but never added
         var vid = String(item.variant_id);
         if (inBundle.indexOf(vid) > -1) return;
         for (var i = 0; i < steps.length; i++) {
@@ -264,7 +274,7 @@
     /* ---------- recommendation ---------- */
 
     /**
-     * Greedy, most-specific-first. Every available product that matches all
+     * Greedy, most-specific-first. Every product that matches all
      * three answers is a candidate; candidates are ranked by how targeted their
      * rules are (concern > skin type > age) then by block order. One main pick
      * per step, plus any "extra" products (e.g. Fancy Face PM cleanse), never
@@ -280,7 +290,8 @@
           return mine.indexOf(s.handle) > -1 || parseList(s.excludes).indexOf(p.handle) > -1;
         });
       };
-      var eligible = this.config.products.filter(function (p) { return p.available && p.variant_id; });
+      // Sold-out products still get recommended (rendered with a "Sold out" label); only "Add all" skips them.
+      var eligible = this.config.products.filter(function (p) { return p.variant_id; });
       var candidates = eligible
         .filter(function (p) {
           return !p.fallback &&
@@ -322,10 +333,17 @@
 
     /* ---------- events ---------- */
 
-    toggle() {
-      var open = this.classList.toggle("byo-quiz--collapsed") === false;
+    get isOpen() { return !this.classList.contains("byo-quiz--collapsed"); }
+
+    setOpen(open) {
+      this.classList.toggle("byo-quiz--collapsed", !open);
       this.bodyEl.hidden = !open;
       if (this.toggleEl) this.toggleEl.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    toggle() {
+      this.setOpen(!this.isOpen);
+      this.persist();
     }
 
     onQuestionClick(evt) {
@@ -452,21 +470,23 @@
 
       var cards = items.map(function (p, i) {
         var step = String(copy.step || "Step {n}").replace("{n}", i + 1);
+        var soldOut = !p.available;
         return (
-          '<a class="byo-quiz__card" href="' + esc(p.url) + '" data-variant-id="' + esc(p.variant_id) + '">' +
+          '<a class="byo-quiz__card' + (soldOut ? " byo-quiz__card--sold-out" : "") + '" href="' + esc(p.url) + '" data-variant-id="' + esc(p.variant_id) + '">' +
             '<span class="byo-quiz__card-image">' + (p.image ? '<img src="' + esc(p.image) + '" alt="" loading="lazy" width="120" height="150">' : "") + "</span>" +
             '<span class="byo-quiz__card-info">' +
               '<span class="byo-quiz__card-cat">' + esc(catLabel[p.category] || p.category) + "</span>" +
               '<span class="byo-quiz__card-title">' + esc(p.title) + "</span>" +
               (p.subtitle ? '<span class="byo-quiz__card-sub">' + esc(p.subtitle) + "</span>" : "") +
               '<span class="byo-quiz__card-price">' + esc(p.price) + "</span>" +
+              (soldOut ? '<span class="byo-quiz__card-sold-out">' + esc(copy.sold_out || "Sold out") + "</span>" : "") +
             "</span>" +
             '<span class="byo-quiz__badge"><span class="byo-quiz__badge-usage">' + esc(p.usage || "") + '</span><span class="byo-quiz__badge-step">' + esc(step) + "</span></span>" +
           "</a>"
         );
       }).join("");
 
-      var addAll = this.config.show_add_all && items.length
+      var addAll = this.config.show_add_all && items.some(function (p) { return p.available; })
         ? '<button type="button" class="byo-quiz__add-all button button--primary" data-quiz-add-all>' + esc(copy.add_all || "Add all to bundle") + "</button>"
         : "";
 

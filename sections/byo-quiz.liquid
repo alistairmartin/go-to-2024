@@ -16,6 +16,7 @@
   step matches, e.g. an SPF) and "excludes" (handles that can't share a routine).
 {%- endcomment -%}
 
+{%- if settings.enable_byo_quiz -%}
 {{ 'byo-quiz.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'byo-quiz.min.js' | asset_url }}" defer></script>
 
@@ -60,6 +61,7 @@
         "disclaimer": {{ section.settings.disclaimer | json }},
         "footnote": {{ section.settings.footnote | json }},
         "empty": {{ section.settings.empty_message | json }},
+        "sold_out": {{ section.settings.sold_out_label | default: 'Sold out' | json }},
         "step": "Step {n}"
       },
       "show_add_all": {{ section.settings.show_add_all | json }},
@@ -110,7 +112,8 @@
         {%- for block in section.blocks -%}
           {%- assign product = block.settings.product -%}
           {%- if product == blank -%}{%- continue -%}{%- endif -%}
-          {%- assign variant = product.selected_or_first_available_variant -%}
+          {%- comment -%} Falls back to the first variant when everything is sold out, so the product can still be shown. {%- endcomment -%}
+          {%- assign variant = product.selected_or_first_available_variant | default: product.variants.first -%}
           {
             "block_id": {{ block.id | json }},
             "handle": {{ product.handle | json }},
@@ -136,6 +139,32 @@
     }
   </script>
 </byo-quiz>
+{%- endif -%}
+
+
+      {% comment %} "blocks": [
+        { "type": "product", "settings": { "category": "cleanse", "usage": "AM/PM", "ages": "all", "skins": "combination, just-skin", "concerns": "all", "subtitle": "Juicy Gel" } },
+        { "type": "product", "settings": { "category": "cleanse", "usage": "AM/PM", "ages": "all", "skins": "oily", "concerns": "all", "subtitle": "Properly Clean" } },
+        { "type": "product", "settings": { "category": "cleanse", "usage": "AM/PM", "ages": "all", "skins": "dry, very-dry", "concerns": "all", "subtitle": "Soft and Creamy" } },
+        { "type": "product", "settings": { "category": "cleanse", "usage": "AM/PM", "ages": "all", "skins": "sensitive", "concerns": "all", "subtitle": "Mellow Milk" } },
+        { "type": "product", "settings": { "category": "cleanse", "usage": "PM", "ages": "all", "skins": "!sensitive", "concerns": "all", "extra": true, "subtitle": "Fancy Face" } },
+        { "type": "product", "settings": { "category": "exfoliate", "usage": "PM", "ages": "all", "skins": "just-skin, combination, dry, very-dry, sensitive", "concerns": "fine-lines, dehydration, dullness", "subtitle": "Glow Exfoliator" } },
+        { "type": "product", "settings": { "category": "exfoliate", "usage": "PM", "ages": "all", "skins": "oily", "concerns": "congestion", "subtitle": "Clarifying Exfoliator" } },
+        { "type": "product", "settings": { "category": "exfoliate", "usage": "PM", "ages": "all", "skins": "sensitive", "concerns": "all", "subtitle": "Gentle Exfoliator" } },
+        { "type": "product", "settings": { "category": "serum", "usage": "AM/PM", "ages": "all", "skins": "!sensitive, !oily", "concerns": "dullness", "subtitle": "Much Brighter Skin" } },
+        { "type": "product", "settings": { "category": "serum", "usage": "AM/PM", "ages": "all", "skins": "!sensitive, !oily", "concerns": "dehydration", "subtitle": "Much Plumper Skin" } },
+        { "type": "product", "settings": { "category": "serum", "usage": "PM", "ages": "26-35, 36-45, 46-55, 56+", "skins": "!sensitive", "concerns": "all", "excludes": "clarifying-face-hero", "subtitle": "Very Amazing Retinal" } },
+        { "type": "product", "settings": { "category": "serum", "usage": "AM/PM", "ages": "all", "skins": "sensitive", "concerns": "all", "subtitle": "Much Calmer Skin" } },
+        { "type": "product", "settings": { "category": "oil", "usage": "AM/PM", "ages": "all", "skins": "combination, oily", "concerns": "congestion", "excludes": "face-hero, very-amazing-retinal", "subtitle": "Clarifying Face Hero" } },
+        { "type": "product", "settings": { "category": "oil", "usage": "AM/PM", "ages": "all", "skins": "!sensitive, !oily", "concerns": "fine-lines, dehydration, dullness", "excludes": "clarifying-face-hero", "subtitle": "Face Hero" } },
+        { "type": "product", "settings": { "category": "moisturiser", "usage": "AM/PM", "ages": "36-45, 46-55, 56+", "skins": "!sensitive, !oily", "concerns": "fine-lines, dullness", "subtitle": "Very Luxe Face Cream" } },
+        { "type": "product", "settings": { "category": "moisturiser", "usage": "AM/PM", "ages": "16-25, 26-35", "skins": "!sensitive, !oily", "concerns": "fine-lines, dullness", "subtitle": "Very Useful Face Cream" } },
+        { "type": "product", "settings": { "category": "moisturiser", "usage": "AM/PM", "ages": "all", "skins": "combination, oily", "concerns": "all", "subtitle": "Very Lightweight Moisturiser" } },
+        { "type": "product", "settings": { "category": "moisturiser", "usage": "AM/PM", "ages": "all", "skins": "sensitive", "concerns": "all", "subtitle": "Supremely Soothing Moisturiser" } },
+        { "type": "product", "settings": { "category": "protect", "usage": "AM", "ages": "all", "skins": "sensitive, oily", "concerns": "all", "subtitle": "Nifty Fifty Mineral" } },
+        { "type": "product", "settings": { "category": "protect", "usage": "AM", "ages": "all", "skins": "!sensitive, !oily", "concerns": "all", "subtitle": "Nifty Fifty" } },
+        { "type": "product", "settings": { "category": "protect", "usage": "AM", "ages": "all", "skins": "all", "concerns": "all", "fallback": true, "subtitle": "Nifty Fifty (fallback)" } }
+      ] {% endcomment %}
 
 {% schema %}
 {
@@ -165,6 +194,7 @@
     { "type": "text", "id": "disclaimer", "label": "Disclaimer", "default": "*Some products are intended for AM or PM use and shouldn't be combined with certain ingredients. Always follow the product directions." },
     { "type": "text", "id": "footnote", "label": "Footnote", "default": "Add these from the steps below. Any 4+ gets you 10% off!" },
     { "type": "text", "id": "empty_message", "label": "No-match message", "default": "We couldn't find a full routine for that combo. Browse the steps below to build your own." },
+    { "type": "text", "id": "sold_out_label", "label": "Sold out label", "default": "Sold out", "info": "Sold-out products still appear in the routine but are skipped by 'Add all to bundle'." },
 
     { "type": "header", "content": "Rules" },
     { "type": "range", "id": "product_cap", "label": "Maximum products in a routine", "min": 4, "max": 12, "step": 1, "default": 8 },
@@ -213,31 +243,9 @@
   ],
   "presets": [
     {
-      "name": "BYO Routine Quiz",
-      "blocks": [
-        { "type": "product", "settings": { "category": "cleanse", "usage": "AM/PM", "ages": "all", "skins": "combination, just-skin", "concerns": "all", "subtitle": "Juicy Gel" } },
-        { "type": "product", "settings": { "category": "cleanse", "usage": "AM/PM", "ages": "all", "skins": "oily", "concerns": "all", "subtitle": "Properly Clean" } },
-        { "type": "product", "settings": { "category": "cleanse", "usage": "AM/PM", "ages": "all", "skins": "dry, very-dry", "concerns": "all", "subtitle": "Soft and Creamy" } },
-        { "type": "product", "settings": { "category": "cleanse", "usage": "AM/PM", "ages": "all", "skins": "sensitive", "concerns": "all", "subtitle": "Mellow Milk" } },
-        { "type": "product", "settings": { "category": "cleanse", "usage": "PM", "ages": "all", "skins": "!sensitive", "concerns": "all", "extra": true, "subtitle": "Fancy Face" } },
-        { "type": "product", "settings": { "category": "exfoliate", "usage": "PM", "ages": "all", "skins": "just-skin, combination, dry, very-dry, sensitive", "concerns": "fine-lines, dehydration, dullness", "subtitle": "Glow Exfoliator" } },
-        { "type": "product", "settings": { "category": "exfoliate", "usage": "PM", "ages": "all", "skins": "oily", "concerns": "congestion", "subtitle": "Clarifying Exfoliator" } },
-        { "type": "product", "settings": { "category": "exfoliate", "usage": "PM", "ages": "all", "skins": "sensitive", "concerns": "all", "subtitle": "Gentle Exfoliator" } },
-        { "type": "product", "settings": { "category": "serum", "usage": "AM/PM", "ages": "all", "skins": "!sensitive, !oily", "concerns": "dullness", "subtitle": "Much Brighter Skin" } },
-        { "type": "product", "settings": { "category": "serum", "usage": "AM/PM", "ages": "all", "skins": "!sensitive, !oily", "concerns": "dehydration", "subtitle": "Much Plumper Skin" } },
-        { "type": "product", "settings": { "category": "serum", "usage": "PM", "ages": "26-35, 36-45, 46-55, 56+", "skins": "!sensitive", "concerns": "all", "excludes": "clarifying-face-hero", "subtitle": "Very Amazing Retinal" } },
-        { "type": "product", "settings": { "category": "serum", "usage": "AM/PM", "ages": "all", "skins": "sensitive", "concerns": "all", "subtitle": "Much Calmer Skin" } },
-        { "type": "product", "settings": { "category": "oil", "usage": "AM/PM", "ages": "all", "skins": "combination, oily", "concerns": "congestion", "excludes": "face-hero, very-amazing-retinal", "subtitle": "Clarifying Face Hero" } },
-        { "type": "product", "settings": { "category": "oil", "usage": "AM/PM", "ages": "all", "skins": "!sensitive, !oily", "concerns": "fine-lines, dehydration, dullness", "excludes": "clarifying-face-hero", "subtitle": "Face Hero" } },
-        { "type": "product", "settings": { "category": "moisturiser", "usage": "AM/PM", "ages": "36-45, 46-55, 56+", "skins": "!sensitive, !oily", "concerns": "fine-lines, dullness", "subtitle": "Very Luxe Face Cream" } },
-        { "type": "product", "settings": { "category": "moisturiser", "usage": "AM/PM", "ages": "16-25, 26-35", "skins": "!sensitive, !oily", "concerns": "fine-lines, dullness", "subtitle": "Very Useful Face Cream" } },
-        { "type": "product", "settings": { "category": "moisturiser", "usage": "AM/PM", "ages": "all", "skins": "combination, oily", "concerns": "all", "subtitle": "Very Lightweight Moisturiser" } },
-        { "type": "product", "settings": { "category": "moisturiser", "usage": "AM/PM", "ages": "all", "skins": "sensitive", "concerns": "all", "subtitle": "Supremely Soothing Moisturiser" } },
-        { "type": "product", "settings": { "category": "protect", "usage": "AM", "ages": "all", "skins": "sensitive, oily", "concerns": "all", "subtitle": "Nifty Fifty Mineral" } },
-        { "type": "product", "settings": { "category": "protect", "usage": "AM", "ages": "all", "skins": "!sensitive, !oily", "concerns": "all", "subtitle": "Nifty Fifty" } },
-        { "type": "product", "settings": { "category": "protect", "usage": "AM", "ages": "all", "skins": "all", "concerns": "all", "fallback": true, "subtitle": "Nifty Fifty (fallback)" } }
-      ]
+      "name": "BYO Routine Quiz"
     }
   ]
 }
 {% endschema %}
+

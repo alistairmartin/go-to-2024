@@ -2148,7 +2148,11 @@
                 <div
                     class="rebuy-bundle-builder__group-container"
                     v-bind:class="[has_container_expanded ? 'expanded' : 'default']">
-                    <div class="rebuy-bundle-builder__group-container-inner">
+                    <!-- CUSTOM: Decorative tiers (discount_type 'none') apply no discount in Rebuy, the cart function does.
+                         decorative_percent lets the summary below show that saving visually. -->
+                    <div
+                        class="rebuy-bundle-builder__group-container-inner"
+                        v-for="decorative_percent in [eligible_discount?.discount_type === 'none' ? (Number(eligible_discount.discount_value) || 10) : 0]">
                         <div class="rebuy-bundle-builder__group-container-header">
                             <div class="rebuy-bundle-builder__group-container-header--left">
                                 <h3
@@ -2182,13 +2186,15 @@
                                         const tiers = (settings?.discount?.tiers) || [];
                                         return tiers.reduce((best, tier) => {
                                             const required = Number(tier.required_quantity) || 0;
-                                            if (tier.discount_type === 'none' || count < required) return best;
+                                            if (count < required) return best;
                                             return (!best || required > (Number(best.required_quantity) || 0)) ? tier : best;
                                         }, null);
                                     })() ]"
                                     v-if="met"
                                 >
-                                    Saving {{ met.discount_type === 'percentage'
+                                    Saving {{ met.discount_type === 'none'
+                                        ? (Number(met.discount_value) || 10) + '%'
+                                        : met.discount_type === 'percentage'
                                         ? (Number(met.discount_value) || 0) + '%'
                                         : Rebuy.util.formatMoney((Number(met.discount_value) || 0) * 100) }}
                                 </span>
@@ -2342,7 +2348,17 @@
 
                                         <div class="rebuy-bundle-builder__product-holder-info--right">
                                             <div class="rebuy-bundle-builder__product-holder-info-price rebuy-product-price">
-                                                <div v-if="bundleVariantOnSale(product, product.selected_variant, true)">
+                                                <div v-if="decorative_percent">
+                                                    <span class="rebuy-money sale">
+                                                        <span class="sr-only">Sale price</span>
+                                                        <span v-html="formatMoney((bundleVariantPrice(product, product.selected_variant) * (100 - decorative_percent) / 100).toFixed(2)).replace('.00', '')"></span>
+                                                    </span>
+                                                    <span class="rebuy-money compare-at">
+                                                        <span class="sr-only">Original price</span>
+                                                        <span v-html="formatMoney(bundleVariantPrice(product, product.selected_variant)).replace('.00', '')"></span>
+                                                    </span>
+                                                </div>
+                                                <div v-if="!decorative_percent && bundleVariantOnSale(product, product.selected_variant, true)">
                                                     <span class="rebuy-money sale">
                                                         <span class="sr-only">Sale price</span>
                                                         <span v-html="formatMoney(bundleVariantPrice(product, product.selected_variant)).replace('.00', '')"></span>
@@ -2357,7 +2373,7 @@
                                                         v-html="getBundleConfigLabel('fixed_tier_discount')">
                                                     </div>
                                                 </div>
-                                                <div v-if="!(bundleVariantOnSale(product, product.selected_variant, true))">
+                                                <div v-if="!decorative_percent && !(bundleVariantOnSale(product, product.selected_variant, true))">
                                                     <span class="rebuy-money">
                                                         <span class="sr-only">Price</span>
                                                         <span v-html="formatMoney(bundleVariantPrice(product, product.selected_variant)).replace('.00', '')"></span>
@@ -2506,14 +2522,14 @@
                         <div class="rebuy-bundle-builder__group-container-action">
 
                             <!-- Total Savings Amount -->
-                            <div v-if="hasBundleBuilderTotalSavingsEnabled() && getBundleTotalSavingAmount(products) > 0"
+                            <div v-if="hasBundleBuilderTotalSavingsEnabled() && (decorative_percent ? getBundleSubtotal(products) > 0 : getBundleTotalSavingAmount(products) > 0)"
                                 class="rebuy-bundle-builder__total-savings-container">
                                 <span class="rebuy-bundle-builder__total-savings-label">
                                     Total saving
                                 </span>
                                 <span
                                     class="rebuy-bundle-builder__total-savings-amount rebuy-money sale"
-                                    v-html="`-${formatMoney(getBundleTotalSavingAmount(products))}`">
+                                    v-html="`-${formatMoney(decorative_percent ? Math.round(getBundleSubtotal(products) * decorative_percent / 100) : getBundleTotalSavingAmount(products))}`">
                                 </span>
                             </div>
                             <!-- /Total Savings Amount -->
@@ -2530,10 +2546,10 @@
                                     <span v-html="shouldDisableAddBundleToCart(products) ? 'select products' : buttonWidgetLabel()"></span>
                                     <span v-if="!hasSelectedEnabledBundleSubscription() && (bundleHasEligibleDiscount() || getBundleSubtotal(products))">•</span>
                                     <span v-if="!hasSelectedEnabledBundleSubscription()">
-                                        <span v-if="bundleHasEligibleDiscount()">
+                                        <span v-if="bundleHasEligibleDiscount() || decorative_percent">
                                             <span class="rebuy-money sale">
                                                 <span class="sr-only">Sale subtotal price</span>
-                                                <span v-html="formatMoney(getBundleDiscountedSubtotal(products)).replace('.00', '')"></span>
+                                                <span v-html="formatMoney(decorative_percent ? Math.round(getBundleSubtotal(products) * (100 - decorative_percent) / 100) : getBundleDiscountedSubtotal(products)).replace('.00', '')"></span>
                                             </span>
 
                                             <span class="rebuy-money compare-at">
@@ -2542,7 +2558,7 @@
                                             </span>
                                         </span>
 
-                                        <span v-if="!bundleHasEligibleDiscount() && getBundleSubtotal(products)" class="rebuy-money sale">
+                                        <span v-if="!bundleHasEligibleDiscount() && !decorative_percent && getBundleSubtotal(products)" class="rebuy-money sale">
                                             <span class="sr-only">Subtotal price</span>
                                             <span v-html="formatMoney(getBundleSubtotal(products)).replace('.00', '')"></span>
                                         </span>
@@ -2559,10 +2575,10 @@
                                     <span v-html="getBundleBuilderCTAButtonLabel('checkout')"></span>
                                     <span v-if="!shouldDisableAddBundleToCart(products)">•</span>
                                     <span v-if="!hasSelectedEnabledBundleSubscription()">
-                                        <span v-if="bundleHasEligibleDiscount()">
+                                        <span v-if="bundleHasEligibleDiscount() || decorative_percent">
                                             <span class="rebuy-money sale">
                                                 <span class="sr-only">Sale subtotal price</span>
-                                                <span v-html="formatMoney(getBundleDiscountedSubtotal(products))"></span>
+                                                <span v-html="formatMoney(decorative_percent ? Math.round(getBundleSubtotal(products) * (100 - decorative_percent) / 100) : getBundleDiscountedSubtotal(products))"></span>
                                             </span>
 
                                             <span class="rebuy-money compare-at">
@@ -2571,7 +2587,7 @@
                                             </span>
                                         </span>
 
-                                        <span v-if="!bundleHasEligibleDiscount() && getBundleSubtotal(products)" class="rebuy-money sale">
+                                        <span v-if="!bundleHasEligibleDiscount() && !decorative_percent && getBundleSubtotal(products)" class="rebuy-money sale">
                                             <span class="sr-only">Subtotal price</span>
                                             <span v-html="formatMoney(getBundleSubtotal(products))"></span>
                                         </span>

@@ -161,7 +161,7 @@
     {% endcomment %}
 
     {%- if request.page_type != 'password' -%}
-      {% comment %} {%- section 'regionalisation' -%} {% endcomment %}
+      {%- section 'regionalisation' -%} 
       {%- if brand == 'go-to' -%}
         {%- sections 'header-group' -%}
       {%- elsif brand == 'bro-to' -%}

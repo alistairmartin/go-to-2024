@@ -32,6 +32,8 @@
   data-cap="{{ section.settings.product_cap | default: 8 }}"
   data-min="{{ section.settings.min_items | default: 6 }}"
   data-storage-key="byo_quiz_{{ section.id }}"
+  data-shop="{{ shop.permanent_domain }}"
+  data-analytics-url="https://go-to-checkout-amd-760t.onrender.com/api/storefront/byo-quiz-event"
 >
   <div class="byo-quiz__header">
     <button type="button" class="byo-quiz__toggle" aria-expanded="{% if open_by_default %}true{% else %}false{% endif %}" aria-controls="{{ body_id }}" data-quiz-toggle>

@@ -312,9 +312,9 @@
       const popup = this.popup;
       if (!popup) return;
 
-      const headingTpl = popup.dataset.tplHeading || "We see you're in {country}";
-      const subTpl = popup.dataset.tplSubtext || 'The best shopping experience for you is on the {store} store.';
-      const ctaTpl = popup.dataset.tplCta || 'Shop now on {store}';
+      const headingTpl = popup.dataset.tplHeading || "Looks like you're in {country}";
+      const subTpl = popup.dataset.tplSubtext || 'Shop all your Go-Tos on our {store} store.';
+      const ctaTpl = popup.dataset.tplCta || 'Take me there';
 
       const headingEl = popup.querySelector('[data-geo-heading]');
       const subEl = popup.querySelector('[data-geo-subtext]');

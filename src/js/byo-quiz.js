@@ -10,6 +10,8 @@
  *        window.byo_quiz_answers   – { age, skin_type, concern } display labels | null
  *        window.byo_quiz_progress  – "0/3" … "3/3"
  *        document → "byo-quiz:answer" | "byo-quiz:complete" | "byo-quiz:reset"
+ *   4. posts usage events (view / open / answer / complete / add_all / restart)
+ *      to the checkout app (data-analytics-url) for the BYO Quiz Analytics page.
  */
 (function () {
   if (window.customElements.get("byo-quiz")) return;
@@ -51,6 +53,24 @@
 
   var STORAGE_TTL = 1000 * 60 * 60 * 24 * 7; // a week
 
+  /**
+   * Anonymous per-browser id for quiz analytics. Kept in localStorage so the
+   * same shopper counts once across visits; also written to the cart as
+   * _byo_quiz_vid so an order can be matched back to its quiz session.
+   */
+  var VISITOR_KEY = "byo_quiz_vid";
+  var visitorId = (function () {
+    var id = null;
+    try { id = localStorage.getItem(VISITOR_KEY); } catch (err) { /* ignore */ }
+    if (!id || !/^[A-Za-z0-9-]{8,64}$/.test(id)) {
+      id = (window.crypto && typeof window.crypto.randomUUID === "function")
+        ? window.crypto.randomUUID()
+        : "v" + Date.now().toString(36) + Math.random().toString(36).slice(2, 12);
+      try { localStorage.setItem(VISITOR_KEY, id); } catch (err) { /* ignore */ }
+    }
+    return id;
+  })();
+
   class BYOQuiz extends HTMLElement {
     connectedCallback() {
       // Re-runs when the element is moved into the Rebuy mount; set up only once.
@@ -85,6 +105,7 @@
       window.byoQuiz = this;
       this.render();
       this.watchForRebuy();
+      this.track("view");
     }
 
     /* ---------- state ---------- */
@@ -151,7 +172,7 @@
     /** Analytics values shared by line-item properties and cart attributes. */
     quizProperties() {
       var a = window.byo_quiz_answers;
-      var props = { _byo_quiz_progress: window.byo_quiz_progress || "0/3" };
+      var props = { _byo_quiz_progress: window.byo_quiz_progress || "0/3", _byo_quiz_vid: visitorId };
       if (a) {
         props._byo_quiz_age = a.age || "";
         props._byo_quiz_skin_type = a.skin_type || "";
@@ -172,6 +193,22 @@
           body: JSON.stringify({ attributes: attrs })
         }).catch(function () {});
       } catch (err) { /* ignore */ }
+    }
+
+    /**
+     * Fire-and-forget usage event. sendBeacon posts text/plain (no CORS
+     * preflight) and survives page navigation; fetch keepalive is the fallback.
+     */
+    track(event, extra) {
+      var url = this.dataset.analyticsUrl, shop = this.dataset.shop;
+      if (!url || !shop) return;
+      var payload = { shop: shop, visitor_id: visitorId, event: event, progress: window.byo_quiz_progress, path: window.location.pathname };
+      Object.keys(extra || {}).forEach(function (k) { payload[k] = extra[k]; });
+      var body = JSON.stringify(payload);
+      try {
+        if (navigator.sendBeacon && navigator.sendBeacon(url, body)) return;
+        fetch(url, { method: "POST", body: body, keepalive: true, mode: "no-cors" }).catch(function () {});
+      } catch (err) { /* analytics must never break the quiz */ }
     }
 
     /* ---------- Rebuy Bundle Builder integration ---------- */
@@ -344,6 +381,7 @@
     toggle() {
       this.setOpen(!this.isOpen);
       this.persist();
+      if (this.isOpen) this.track("open");
     }
 
     onQuestionClick(evt) {
@@ -360,6 +398,11 @@
         this.persist();
         window.byo_quiz_progress = this.answeredCount() + "/" + this.total;
         document.dispatchEvent(new CustomEvent("byo-quiz:answer", { detail: { question: q.id, value: option.dataset.value, progress: window.byo_quiz_progress } }));
+        this.track("answer", { question: q.id, value: option.dataset.value });
+        if (this.complete) {
+          var labels = this.answerLabels();
+          this.track("complete", { age: labels.age, skin_type: labels.skin_type, concern: labels.concern });
+        }
         if (!this.complete) { this.userAction = false; this.stampRebuy(); this.syncCartAttributes(); }
         var self = this;
         window.setTimeout(function () { self.render(); }, 160);
@@ -382,6 +425,7 @@
     }
 
     reset() {
+      this.track("restart");
       this.state = { step: 0, answers: {} };
       this.userAction = true;
       this.persist();
@@ -406,6 +450,7 @@
         if (!el.classList.contains("active") && !el.classList.contains("disabled")) { el.click(); added++; }
       });
       document.dispatchEvent(new CustomEvent("byo-quiz:add-all", { detail: { added: added, missing: missing, products: window.byo_quiz_products } }));
+      this.track("add_all", { value: String(added) });
       if (added || !missing.length) {
         button.textContent = this.config.copy.added || "Added to your bundle";
         button.classList.add("byo-quiz__add-all--done");

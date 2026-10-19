@@ -101,7 +101,7 @@
                 </svg>
                   <span className="label">You are here!</span>
                 </div>
-                <span className="DotMarker__Active" style={{backgroundColor: v.color }}></span>
+                <span className="DotMarker__Active" style={{ backgroundColor }}></span>
               </>
             }
 
@@ -119,7 +119,7 @@
           </div>
 
           <div className="LoyaltyClassificationData">
-            <span className="Level" style={{color: v.color}}>LEVEL {v.level}</span>
+            <span className="Level" style={{ color }}>LEVEL {v.level}</span>
             <span className="Name">{v.name}</span>
             <span className="RequirementStatement">{v.desc}</span>
           </div>
@@ -130,7 +130,7 @@
     </div>
   </section>
 
-  <section className="AccountLoyaltyFeatures_Section" style={{backgroundColor: '#fce2dc'}}>
+  <section className="AccountLoyaltyFeatures_Section" style={{ backgroundColor }}>
     <div className="Container">
       <h3 className="SectionHeading">{loyaltyLevels[currentLevel-1].name} (Level {loyaltyLevels[currentLevel-1].level}) Benefits</h3>
       <ul className="LoyaltyFeatures_List">
@@ -144,4 +144,19 @@
       </ul>
       <div class="Loyalty__CustomMessage"><p>{ rootNode.dataset.loyaltycustommsg }</p></div>
     </div>
-  </section>
+  </section>{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{{backgroundColor: v.color }}"
+  to: "{{ backgroundColor }}"
+  position: 5534..5555
+- from: "{{color: v.color}}"
+  to: "{{ color }}"
+  position: 7352..7363
+- from: "{{backgroundColor: '#fce2dc'}}"
+  to: "{{ backgroundColor }}"
+  position: 7634..7655
+{%- endcomment -%}

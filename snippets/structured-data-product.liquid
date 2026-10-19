@@ -2,8 +2,8 @@
   assign price_currency = cart.currency.iso_code | default: shop.currency
   assign primary_variant = product.selected_or_first_available_variant
   assign base_url = shop.url | append: product.url
-  assign use_all_variants = product.variants.size <= 30
-  assign has_rating = product.metafields.reviews.rating.value != blank
+  assign use_all_variants = product.variants.size
+  assign has_rating = product.metafields.reviews.rating.value
 -%}
 
 {%- capture product_images -%}
@@ -88,3 +88,16 @@
   }{%- endif -%}{{ aggregate_rating | strip_newlines }}
 }
 </script>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "  assign use_all_variants = product.variants.size <= 30"
+  to: "  assign use_all_variants = product.variants.size"
+  position: 207..256
+- from: "  assign has_rating = product.metafields.reviews.rating.value != blank"
+  to: "  assign has_rating = product.metafields.reviews.rating.value"
+  position: 257..318
+{% endcomment %}

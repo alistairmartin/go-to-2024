@@ -70,7 +70,7 @@
       }
     ]
   },
-    {
+  {
     "name": "✅ BYO Quiz",
     "settings": [
       {
@@ -1004,7 +1004,7 @@
       }
     ]
   },
-    {
+  {
     "name": "Cart (Image Banner)",
     "settings": [
       {
@@ -1043,12 +1043,12 @@
         "type": "header",
         "content": "Australia (AU 🇦🇺)"
       },
-       {
+      {
         "type": "image_picker",
         "id": "image_desktop_AU",
         "label": "Image Desktop (AU)"
       },
-       {
+      {
         "type": "image_picker",
         "id": "image_mobile_AU",
         "label": "Image Mobile (AU)"
@@ -1232,7 +1232,7 @@
         "type": "header",
         "content": "Shipping Motivator (NZ 🇳🇿)"
       },
-         {
+      {
         "type": "checkbox",
         "id": "shipping_motivator_NZ",
         "label": "(🟪 Go-To) Show For NZ?"

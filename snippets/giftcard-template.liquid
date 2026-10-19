@@ -21,7 +21,7 @@
                 <div class="alert alert--success">
                 {%- assign formatted_initial_value = gift_card.initial_value | money -%}
                 
-                <p>{{ 'gift_card.issued_legacy.initial_amount_html' | t }} <strong>{{ formatted_initial_value }}</strong></p>
+                <p>{{ 'gift_card.issued_legacy.initial_amount_html' | t }} <strong>{{ formatted_initial_value }}</strong></p>
     
                 {%- if gift_card.balance != gift_card.initial_value -%}
                     {%- assign formatted_balance = gift_card.balance | money: gift_card.currency -%}
@@ -80,3 +80,13 @@
     </div>
 
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{{ 'gift_card.issued_legacy.initial_amount_html' | t }}"
+  to: "{{ 'gift_card.issued_legacy.initial_amount_html' | t }}"
+  position: 1149..1204
+{% endcomment %}

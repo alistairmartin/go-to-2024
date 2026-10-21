@@ -2351,7 +2351,8 @@
                                                 <div v-if="decorative_percent">
                                                     <span class="rebuy-money sale">
                                                         <span class="sr-only">Sale price</span>
-                                                        <span v-html="formatMoney((bundleVariantPrice(product, product.selected_variant) * (100 - decorative_percent) / 100).toFixed(2)).replace('.00', '')"></span>
+                                                        <!-- bundleVariantPrice is dollars ("42.00") in AUD but cents in converted markets (USD 3000, GBP "2500"). Like Rebuy's formatMoney, treat a value with a "." as dollars, otherwise cents, and pass formatMoney integer cents -->
+                                                        <span v-html="formatMoney((p => Math.round((String(p).includes('.') ? p * 100 : Number(p)) * (100 - decorative_percent) / 100))(bundleVariantPrice(product, product.selected_variant))).replace('.00', '')"></span>
                                                     </span>
                                                     <span class="rebuy-money compare-at">
                                                         <span class="sr-only">Original price</span>
@@ -2612,3 +2613,16 @@
     </div>
 </script>
 {% endraw %}
+<script>
+  /* Smart Cart: in converted market currencies Rebuy zeroes the bundle parent's price/compare_at_price
+     (AUD is fine), so the BYOR line shows "$112.50 $0". Hide any compare-at that renders as zero. */
+  (() => {
+    const hideZeroCompareAt = () => {
+      document.querySelectorAll('.rebuy-cart__flyout-item-price .rebuy-money.compare-at').forEach((el) => {
+        const amount = Number(el.textContent.replace(/[^\d.,]/g, '').replace(/,/g, ''));
+        el.style.display = amount === 0 ? 'none' : '';
+      });
+    };
+    new MutationObserver(hideZeroCompareAt).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+  })();
+</script>

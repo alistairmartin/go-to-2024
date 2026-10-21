@@ -180,6 +180,13 @@
     pointer-events: none;
   }
 
+  /* Rows that fit on desktop (products <= per row) only get arrows on mobile. */
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} .product-list__prev-next--mobile-only {
+      display: none !important;
+    }
+  }
+
   /* Mobile arrows. Three things fight us below 1000px:
        1. `hidden-pocket` in theme.css is `display: none !important`.
        2. theme.css only positions .product-list__prev-next (and only gives the

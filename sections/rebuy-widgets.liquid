@@ -1,0 +1,42 @@
+{%- for block in section.blocks -%}
+  {%- if block.settings.widget_id != blank -%}
+    <div data-rebuy-id="{{ block.settings.widget_id | escape }}" {{ block.shopify_attributes }}></div>
+  {%- endif -%}
+{%- endfor -%}
+
+{% schema %}
+{
+  "name": "Rebuy widgets",
+  "class": "shopify-section--rebuy-widgets",
+  "blocks": [
+    {
+      "type": "widget",
+      "name": "Rebuy widget",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Title",
+          "info": "Description Of Widget .e.g. Gift with Purchase (Subscription Gift)"
+        },
+        {
+          "type": "text",
+          "id": "widget_id",
+          "label": "Rebuy widget ID",
+          "info": "The number from data-rebuy-id, e.g. 307565"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "widget",
+        "settings": {
+          "widget_id": "307565"
+        }
+      }
+    ]
+  }
+}
+{% endschema %}

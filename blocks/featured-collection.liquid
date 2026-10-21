@@ -57,7 +57,7 @@
           {%- assign smallest_image_aspect_ratio = smallest_image_aspect_ratio | at_least: product.featured_media.aspect_ratio -%}
         {%- endif -%}
 
-        {%- render 'product-item', product: product, collection: collection, reduced_content: true, show_cta: section.settings.show_cta, block: block, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, section_name: "featured-collections", outerCollectionHandle: outerCollectionHandle, enable_byo_bundle: block.settings.enable_byo_bundle, showHiddenProduct: section.settings.show_hidden_products, mobile_swipe: false, hide_variants: section.settings.hide_variants -%}
+        {%- render 'product-item', product: product, collection: collection, reduced_content: true, show_cta: section.settings.show_cta, block: block, sizes_attribute: sizes_attribute, reveal: settings.stagger_products_apparition, section_name: "featured-collections", outerCollectionHandle: outerCollectionHandle, enable_byo_bundle: block.settings.enable_byo_bundle, showHiddenProduct: section.settings.show_hidden_products, mobile_swipe: section.settings.stack_products, hide_variants: section.settings.hide_variants -%}
       {%- else -%}
         {%- assign smallest_image_aspect_ratio = 1 -%}
 
@@ -89,24 +89,27 @@
       {%- assign products_shown = collection.products_count | default: section.settings.products_count | at_most: section.settings.products_count -%}
     {%- endif -%}
 
-    {%- if products_shown > section.settings.products_per_row -%}
+    {%- comment -%}
+      Mobile cards are ~52vw, so anything over one product overflows there —
+      always render the arrows below 1000px. On desktop they only make sense
+      once there are more products than fit in a row.
+    {%- endcomment -%}
+    {%- if products_shown > 1 -%}
       {%- if smallest_image_aspect_ratio == 0 -%}
         {%- assign smallest_image_aspect_ratio = 1 -%}
       {%- endif -%}
 
-      {%- if products_shown >= 5 -%}
-        <prev-next-buttons class="product-list__prev-next hidden-pocket" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
-          <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled>
-            <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
-            {%- render 'icon' with 'brand-chevron-left', block: true, direction_aware: true -%}
-          </button>
+      <prev-next-buttons class="product-list__prev-next hidden-pocket {% if products_shown <= section.settings.products_per_row %}product-list__prev-next--mobile-only{% endif %}" style="--smallest-image-aspect-ratio: {{ smallest_image_aspect_ratio }}">
+        <button class="product-list__arrow prev-next-button prev-next-button--prev" disabled>
+          <span class="visually-hidden">{{ 'general.accessibility.previous' | t }}</span>
+          {%- render 'icon' with 'brand-chevron-left', block: true, direction_aware: true -%}
+        </button>
 
-          <button class="product-list__arrow prev-next-button prev-next-button--next">
-            <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
-            {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
-          </button>
-        </prev-next-buttons>
-      {%- endif -%}
+        <button class="product-list__arrow prev-next-button prev-next-button--next">
+          <span class="visually-hidden">{{ 'general.accessibility.next' | t }}</span>
+          {%- render 'icon' with 'brand-chevron-right', block: true, direction_aware: true -%}
+        </button>
+      </prev-next-buttons>
     {%- endif -%}
   {%- endunless -%}
 

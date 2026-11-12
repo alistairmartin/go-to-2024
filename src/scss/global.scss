@@ -6235,20 +6235,31 @@ button[aria-label="Tolstoy stories: next button"] {
     }
   }
 
+  // Match the desktop custom-layout version: Benton title, Marcel subheading/body
   .heading-main {
     font-size: 32px !important;
     margin-bottom: 30px;
     font-weight: 300;
-    font-family: "Marcel" !important;
+    font-family: "Benton" !important;
     line-height: 1.3;
+    letter-spacing: 1px;
   }
 
   .heading-secondary {
     font-size: 18px !important;
+    font-family: "Marcel" !important;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 1px;
+    line-height: 1.3;
   }
 
   p {
     font-size: 18px !important;
+    font-family: "Marcel" !important;
+    font-weight: 400;
+    letter-spacing: 1px;
+    line-height: 1.3;
   }
 
   .featured-carousel-product {

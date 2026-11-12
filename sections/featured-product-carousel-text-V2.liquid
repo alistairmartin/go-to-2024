@@ -29,6 +29,13 @@
     --primary-button-text-color: {{ button_text_color.red }}, {{ button_text_color.green }}, {{ button_text_color.blue }};
 
     --section-background: {{ section_background.red }}, {{ section_background.green }}, {{ section_background.blue }};
+
+    {%- if section.settings.button_background != 'rgba(0,0,0,0)' -%}
+      --color-button-primary-background: {{ section.settings.button_background }};
+    {%- endif -%}
+    {%- if section.settings.button_text_color != 'rgba(0,0,0,0)' -%}
+      --color-button-primary-text: {{ section.settings.button_text_color }};
+    {%- endif -%}
   }
   {%- if template.suffix == "go-to-spf-landing" -%}
   #shopify-section-{{ section.id }}  .featured-carousel-product--text-inner .title {
@@ -92,9 +99,9 @@
 
   {% comment %} https://codepen.io/aybukeceylan/pen/RwrRPoOL {% endcomment %}
   <div class="featured-carousel-product">
-    <input type="radio" name="featured-product-carousel-{{ section.id }}" id="item-1-{{ section.id }}" class="item-1" checked>
-    <input type="radio" name="featured-product-carousel-{{ section.id }}" id="item-2-{{ section.id }}" class="item-2">
-    <input type="radio" name="featured-product-carousel-{{ section.id }}" id="item-3-{{ section.id }}" class="item-3">
+    {%- for block in section.blocks -%}
+      <input type="radio" name="featured-product-carousel-{{ section.id }}" id="item-{{ forloop.index }}-{{ section.id }}" class="item-{{ forloop.index }}" {% if forloop.first %}checked{% endif %}>
+    {%- endfor -%}
   
     <div class="featured-carousel-product--items">
       {%- for block in section.blocks -%}
@@ -125,8 +132,10 @@
       {%- endfor -%}
     </div>
   
-    <button class="featured-carousel-product--arrows left" onclick="moveCarousel(-1, '{{ section.id }}')">{% render "icon" with "brand-arrow-left" %}</button>
-    <button class="featured-carousel-product--arrows right" onclick="moveCarousel(1, '{{ section.id }}')">{% render "icon" with "brand-arrow-right" %}</button>
+    {%- if section.blocks.size > 1 -%}
+      <button class="featured-carousel-product--arrows left" onclick="moveCarousel(-1, '{{ section.id }}')">{% render "icon" with "brand-arrow-left" %}</button>
+      <button class="featured-carousel-product--arrows right" onclick="moveCarousel(1, '{{ section.id }}')">{% render "icon" with "brand-arrow-right" %}</button>
+    {%- endif -%}
   </div>
   
 

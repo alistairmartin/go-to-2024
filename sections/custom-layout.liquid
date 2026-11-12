@@ -2054,6 +2054,29 @@
           "info": "Only works with button 'Outline' option"
         },
         {
+          "type": "color",
+          "id": "button_bg_desktop",
+          "label": "Button Background Colour",
+          "info": "Optional. Overrides the button style's background. Leave blank to use the style default."
+        },
+        {
+          "type": "checkbox",
+          "id": "button_bold_desktop",
+          "label": "Bold Text",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "button_min_width_desktop",
+          "label": "Min Width",
+          "min": 0,
+          "max": 600,
+          "step": 10,
+          "unit": "px",
+          "default": 0,
+          "info": "0 = no minimum width"
+        },
+        {
             "type": "header",
             "content": "--- 📱 MOBILE SETTINGS 📱 ---"
         },
@@ -2108,6 +2131,29 @@
           "label": "Button Colour",
           "default": "#000000",
           "info": "Only works with button 'Outline' option"
+        },
+        {
+          "type": "color",
+          "id": "button_bg_mobile",
+          "label": "Button Background Colour",
+          "info": "Optional. Leave blank to use the desktop background colour."
+        },
+        {
+          "type": "checkbox",
+          "id": "button_bold_mobile",
+          "label": "Bold Text",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "button_min_width_mobile",
+          "label": "Min Width",
+          "min": 0,
+          "max": 600,
+          "step": 10,
+          "unit": "px",
+          "default": 0,
+          "info": "0 = no minimum width"
         }
       ]
     },

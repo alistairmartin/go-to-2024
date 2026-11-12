@@ -8,21 +8,40 @@
 <div class="product-bar--observer">
 </div>
 
+{%- comment -%}Hide the whole bar if no selected product resolves (deleted, unpublished or unset){%- endcomment -%}
+{%- assign valid_product_count = 0 -%}
+{%- if section.blocks.size > 1 -%}
+  {%- for block in section.blocks -%}
+    {%- if all_products[block.settings.product].id != blank -%}
+      {%- assign valid_product_count = valid_product_count | plus: 1 -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- elsif all_products[section.settings.product].id != blank -%}
+  {%- assign valid_product_count = 1 -%}
+{%- endif -%}
+
+{%- if valid_product_count == 0 -%}
+  <style>#shopify-section-{{ section.id }} { display: none !important; }</style>
+{%- endif -%}
+
 {%- if section.blocks.size > 1 -%}
 
   <div class="product-has-variants">
     {%- for block in section.blocks -%}
       {%- assign product = all_products[block.settings.product] -%}
       {%- assign outerIndex = forloop.index -%}
+      {%- if product.id == blank -%}{%- continue -%}{%- endif -%}
       {%- render 'product-sticky-form--product-bar-variants', product: product, outerIndex: outerIndex -%}
     {%- endfor -%}
     </div>
 
 {% else %}
   {%- assign product = all_products[section.settings.product] -%}
-  <div class="product-no-variants">
-    {%- render 'product-sticky-form--product-bar', product: product -%}
-  </div>
+  {%- if product.id != blank -%}
+    <div class="product-no-variants">
+      {%- render 'product-sticky-form--product-bar', product: product -%}
+    </div>
+  {%- endif -%}
 
 {%- endif -%}
 

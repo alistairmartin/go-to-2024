@@ -14,6 +14,55 @@
           --button-color-text-mobile: {{ block.settings.button_color_mobile }};
           --button-color-text-desktop: {{ block.settings.button_color_desktop }};
         }
+        {%- comment -%} Optional background override. Mobile falls back to desktop. {%- endcomment -%}
+        {%- assign bg_desktop = block.settings.button_bg_desktop -%}
+        {%- assign bg_mobile = block.settings.button_bg_mobile | default: bg_desktop -%}
+        {%- if bg_mobile != blank -%}
+          #block-{{ block.id }}.button {
+            background-color: {{ bg_mobile }} !important;
+            border-color: {{ bg_mobile }} !important;
+          }
+        {%- endif -%}
+        {%- if bg_desktop != blank -%}
+          @media (min-width: 740px) {
+            #block-{{ block.id }}.button {
+              background-color: {{ bg_desktop }} !important;
+              border-color: {{ bg_desktop }} !important;
+            }
+          }
+        {%- endif -%}
+        {%- comment -%} Optional bold text, set per breakpoint. {%- endcomment -%}
+        {%- if block.settings.button_bold_mobile -%}
+          @media (max-width: 739px) {
+            #block-{{ block.id }} {
+              font-weight: 700 !important;
+            }
+          }
+        {%- endif -%}
+        {%- if block.settings.button_bold_desktop -%}
+          @media (min-width: 740px) {
+            #block-{{ block.id }} {
+              font-weight: 700 !important;
+            }
+          }
+        {%- endif -%}
+        {%- comment -%} Optional min width, set per breakpoint. 0 = no minimum. {%- endcomment -%}
+        {%- if block.settings.button_min_width_mobile > 0 -%}
+          @media (max-width: 739px) {
+            #block-{{ block.id }} {
+              min-width: {{ block.settings.button_min_width_mobile }}px;
+              justify-content: center;
+            }
+          }
+        {%- endif -%}
+        {%- if block.settings.button_min_width_desktop > 0 -%}
+          @media (min-width: 740px) {
+            #block-{{ block.id }} {
+              min-width: {{ block.settings.button_min_width_desktop }}px;
+              justify-content: center;
+            }
+          }
+        {%- endif -%}
     </style>
     {%- endcapture -%}
     {{- styles | strip_newlines | remove:" " | strip -}}

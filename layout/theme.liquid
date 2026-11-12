@@ -273,10 +273,16 @@
       });
       </script>
     {% else %}
-      
-          {% section 'rebuy-widgets' %}
-          
+    {% comment %} <!-- Widget : Gift with Purchase (Subscription Gift) -->
+    <div data-rebuy-id="307565"></div>
+    <!-- End Widget : Gift with Purchase (Subscription Gift) -->
     {% endif %}
-    
+    <!-- Widget : Gift with Purchase (Holiday Gift) -->
+<div data-rebuy-id="316052"></div>
+<!-- End Widget : Gift with Purchase (Holiday Gift) --> {% endcomment %}
+
+    {% section 'rebuy-widgets' %}
+  {% endif %}
+
   </body>
 </html>

@@ -5,8 +5,8 @@
   eu./uk./us.gotoskincare.com). This section never navigates on its own: when
   the visitor's detected country belongs to a different store than the one
   they are on, it shows a dismissible "Looks like you're in X" prompt and lets
-  THEM choose. Switching goes through Shopify's own localization form, so
-  Shopify picks the correct domain, country and currency. Crawlers (Googlebot
+  THEM choose. "Take me there" is a plain link to the target market domain
+  (no localization form POST, so no saved region preference). Crawlers (Googlebot
   crawls from US IPs) are never prompted, which keeps every regional domain
   independently indexable.
 
@@ -57,14 +57,18 @@
         <h2 id="geo-popup-heading" class="geo-popup__heading heading h5" data-geo-heading></h2>
         <p class="geo-popup__subtext" data-geo-subtext></p>
 
-        {%- form 'localization', id: 'geo-popup-localization-form', class: 'geo-popup__form' -%}
-          {%- comment -%} Shopify's localization form already emits its own return_to input; JS updates it before submit. {%- endcomment -%}
-          <input type="hidden" name="country_code" value="{{ current_country }}" data-geo-country-input>
-          <button type="submit" class="button button--primary button--full geo-popup__cta" data-geo-shop>
+        {%- comment -%}
+          Plain link to the target domain (href set by JS). Deliberately NOT
+          Shopify's localization form: that POST saves a country preference
+          cookie, and Shopify then bounces later direct visits to us./uk.
+          back to the saved domain (OMG request, Nov 2026).
+        {%- endcomment -%}
+        <div class="geo-popup__form">
+          <a href="#" class="button button--primary button--full geo-popup__cta" data-geo-shop>
             <span data-geo-cta-text>{{ section.settings.cta_text | escape }}</span>
             <svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M1 6h13M9 1l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-          </button>
-        {%- endform -%}
+          </a>
+        </div>
 
         <button type="button" class="geo-popup__stay" data-geo-stay>{{ section.settings.stay_text | escape }}</button>
       </div>
@@ -97,7 +101,7 @@
       "current_country": {{ current_country | json }},
       "auto_redirect": {{ section.settings.auto_redirect | json }},
       "cookie_domain": {{ section.settings.cookie_domain | json }},
-      "primary_hosts": {{ section.settings.primary_hosts | json }},
+      "market_domains": {{ section.settings.market_domains | json }},
       "debug": {{ section.settings.debug | json }},
       "stores": [
         {%- for block in section.blocks -%}
@@ -138,10 +142,10 @@
     },
     {
       "type": "text",
-      "id": "primary_hosts",
-      "label": "Primary store hosts",
-      "info": "Comma separated. A returning visitor who previously confirmed another store is sent there automatically ONLY from these hosts. Regional domains are never auto-redirected.",
-      "default": "gotoskincare.com,www.gotoskincare.com"
+      "id": "market_domains",
+      "label": "Market domains",
+      "info": "Comma separated market:domain pairs. \"Take me there\" links straight to the domain, so no region preference is saved.",
+      "default": "au:gotoskincare.com,nz:gotoskincare.com,international:gotoskincare.com,eu:eu.gotoskincare.com,gb:uk.gotoskincare.com,us:us.gotoskincare.com"
     },
     {
       "type": "text",

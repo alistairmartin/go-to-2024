@@ -7,17 +7,20 @@
  * forced redirect would stop it reaching AU/UK/EU URLs - a user-initiated
  * prompt avoids that entirely.
  *
- * Switching is done by submitting Shopify's own localization form, so Shopify
- * decides the destination domain, country and currency.
+ * Switching is a plain navigation to the target market domain (settings
+ * "market_domains"). We deliberately avoid Shopify's localization form: it
+ * saves a country preference cookie, and Shopify then bounces later direct
+ * visits to us./uk. back to the saved domain. We also never forward returning
+ * visitors - a URL typed directly always wins (OMG request, Nov 2026).
  */
 (function () {
   const COOKIES = {
     PROMPTED: 'GTGeoPrompted',      // popup dismissed - don't nag for a while
     MANUAL: 'GTManualRegion',       // visitor picked a store themselves
-    CONFIRMED: 'GTRegionConfirmed'  // country they confirmed via the popup / selector
+    CONFIRMED: 'GTRegionConfirmed'  // legacy - no longer set, only cleared by reset()
   };
 
-  const DAYS = { PROMPTED: 14, MANUAL: 30, CONFIRMED: 30 };
+  const DAYS = { PROMPTED: 14, MANUAL: 30 };
 
   const BOT_PATTERN = new RegExp(
     '(googlebot|google favicon|mediapartners-google|adsbot-google|google-extended|googleother|apis-google|' +
@@ -105,10 +108,6 @@
         return;
       }
 
-      // Returning visitor who confirmed another store: only the primary domain
-      // forwards them. Regional domains are never auto-redirected.
-      if (this.maybeRedirectReturningUser()) return;
-
       if (getCookie(COOKIES.MANUAL)) {
         this.log('[geo] manual selection cookie present - skipping');
         return;
@@ -154,7 +153,6 @@
 
         if (country) {
           setCookie(COOKIES.MANUAL, '1', DAYS.MANUAL, this.cookieDomain);
-          setCookie(COOKIES.CONFIRMED, country.toUpperCase(), DAYS.CONFIRMED, this.cookieDomain);
           this.log('[geo] localization form submitted', country);
         }
       }, true);
@@ -162,15 +160,22 @@
 
     /* ---------- resolution ---------- */
 
-    primaryHosts() {
-      return String(this.settings.primary_hosts || '')
-        .split(',')
-        .map((h) => h.trim().toLowerCase())
-        .filter(Boolean);
-    }
+    /**
+     * Absolute URL for the same path on the store's domain, or '' when no
+     * domain is configured for any of the store's markets.
+     */
+    storeUrl(store) {
+      const map = {};
+      String(this.settings.market_domains || '').split(',').forEach((pair) => {
+        const [market, domain] = pair.split(':').map((s) => (s || '').trim().toLowerCase());
+        if (market && domain) map[market] = domain;
+      });
 
-    isPrimaryHost() {
-      return this.primaryHosts().includes(window.location.hostname.toLowerCase());
+      const markets = String(store.markets || '').split(',');
+      const domain = markets.map((m) => map[m]).find(Boolean);
+      if (!domain) return '';
+
+      return 'https://' + domain + window.location.pathname + window.location.search;
     }
 
     storeForMarket(marketHandle) {
@@ -209,30 +214,6 @@
       }
 
       return { country: iso, name: entry.n || iso, store: targetStore };
-    }
-
-    maybeRedirectReturningUser() {
-      if (!this.isPrimaryHost()) return false;
-
-      const confirmed = getCookie(COOKIES.CONFIRMED);
-      if (!confirmed) return false;
-
-      const target = this.resolveTarget(confirmed);
-      if (!target) return false;
-
-      // One attempt per tab: if Shopify does not move us (e.g. market domain
-      // inactive) we must not loop on every page load.
-      let tried = false;
-      try { tried = Boolean(sessionStorage.getItem('GTGeoAutoTried')); } catch (e) { /* noop */ }
-      if (tried) {
-        this.log('[geo] returning-visitor redirect already attempted this session');
-        return false;
-      }
-      try { sessionStorage.setItem('GTGeoAutoTried', '1'); } catch (e) { /* noop */ }
-
-      this.log('[geo] returning visitor - forwarding to confirmed store', confirmed);
-      this.switchTo(target.country);
-      return true;
     }
 
     /* ---------- detection ---------- */
@@ -280,30 +261,18 @@
       }
 
       if (this.settings.auto_redirect) {
-        this.log('[geo] auto-redirect enabled - switching');
-        setCookie(COOKIES.CONFIRMED, target.country, DAYS.CONFIRMED, this.cookieDomain);
-        this.switchTo(target.country);
+        const url = this.storeUrl(target.store);
+        this.log('[geo] auto-redirect enabled - switching', url);
+        if (url) window.location.assign(url);
+        return;
+      }
+
+      if (!this.storeUrl(target.store)) {
+        this.log('[geo] no domain configured for store', target.store.title);
         return;
       }
 
       this.showPopup(target);
-    }
-
-    /* ---------- switching ---------- */
-
-    switchTo(iso) {
-      const form = this.querySelector('#geo-popup-localization-form');
-      if (!form) {
-        this.log('[geo] localization form missing');
-        return;
-      }
-
-      const input = form.querySelector('[data-geo-country-input]');
-      const returnTo = form.querySelector('[name="return_to"]');
-      if (input) input.value = iso;
-      if (returnTo) returnTo.value = window.location.pathname + window.location.search;
-
-      form.submit();
     }
 
     /* ---------- popup ---------- */
@@ -337,18 +306,16 @@
       if (arrow) arrow.hidden = !(hasFrom && hasTo);
       if (toFlag) toFlag.hidden = !hasTo;
 
-      const countryInput = popup.querySelector('[data-geo-country-input]');
-      const returnTo = popup.querySelector('[name="return_to"]');
-      if (countryInput) countryInput.value = target.country;
-      if (returnTo) returnTo.value = window.location.pathname + window.location.search;
-
       const shopBtn = popup.querySelector('[data-geo-shop]');
-      if (shopBtn && !shopBtn.dataset.bound) {
-        shopBtn.dataset.bound = '1';
-        shopBtn.addEventListener('click', () => {
-          setCookie(COOKIES.CONFIRMED, target.country, DAYS.CONFIRMED, this.cookieDomain);
-          setCookie(COOKIES.PROMPTED, '1', DAYS.PROMPTED, this.cookieDomain);
-        });
+      if (shopBtn) {
+        shopBtn.href = this.storeUrl(target.store);
+        if (!shopBtn.dataset.bound) {
+          shopBtn.dataset.bound = '1';
+          // Only remember that the popup was answered - no region preference.
+          shopBtn.addEventListener('click', () => {
+            setCookie(COOKIES.PROMPTED, '1', DAYS.PROMPTED, this.cookieDomain);
+          });
+        }
       }
 
       this.bindDismiss(popup);

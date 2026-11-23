@@ -231,10 +231,9 @@
           </a>
         {%- endif -%}
 
-
         {%- if currentMarket == "AU" or currentMarket == "NZ" -%}
         <a href="{% if customer %}{{ routes.account_url }}{% else %}/pages/go-to-gang{% endif %}" class="customer-accounts-login--loyalty" aria-label="{% if customer %}{{ 'header.general.account' | t | escape }}{% else %}{{ 'header.general.login' | t | escape }}{% endif %}">
-        <img src="{{ 'loyalty--go-to-gang-V2.svg' | asset_url }}" alt="Go-To Gang">
+        <img src="{{ 'loyalty--heading.svg' | asset_url }}" alt="Go-To Gang">
         </a>
         {%- endif -%}
 

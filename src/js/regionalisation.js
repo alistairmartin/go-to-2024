@@ -166,7 +166,7 @@
      */
     storeUrl(store) {
       const map = {};
-      String(this.settings.market_domains || '').split(',').forEach((pair) => {
+      String(this.settings.market_domains || '').split(/[,\n]/).forEach((pair) => {
         const [market, domain] = pair.split(':').map((s) => (s || '').trim().toLowerCase());
         if (market && domain) map[market] = domain;
       });
